@@ -6,7 +6,7 @@
 
 " ---- plugs
 
-fun! wheel#centre#plugs ()
+fun! organ#centre#plugs ()
 	" Link <plug> mappings to organ functions
 	" ---- normal maps
 	let begin = 'nnoremap <plug>('
@@ -47,7 +47,7 @@ endfun
 
 " ---- maps
 
-fun! wheel#centre#mappings (mode = 'normal')
+fun! organ#centre#mappings (mode = 'normal')
 	" Normal maps of level
 	let level = a:level
 	let mode = a:mode
@@ -59,7 +59,7 @@ fun! wheel#centre#mappings (mode = 'normal')
 	endif
 	let level_maps = s:level_{level}_{mode}_maps
 	" ---- variables
-	let prefix = g:wheel_config.prefix
+	let prefix = g:organ_config.prefix
 	let begin = mapcmd .. ' <silent> ' .. prefix
 	let middle = '<plug>('
 	let end = ')'
@@ -73,7 +73,7 @@ endfun
 
 " ---- link plugs & maps
 
-fun! wheel#centre#cables ()
+fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
-	call wheel#centre#mappings ()
+	call organ#centre#mappings ()
 endfun

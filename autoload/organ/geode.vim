@@ -40,8 +40,8 @@ fun! organ#geode#fetch (varname, conversion = 'no-conversion')
 		let varname = 's:' .. varname
 	endif
 	" ---- raw or conversion
-	if conversion ==# 'dict' && wheel#matrix#is_nested_list ({varname})
-		return wheel#matrix#items2dict ({varname})
+	if conversion ==# 'dict' && organ#matrix#is_nested_list ({varname})
+		return organ#matrix#items2dict ({varname})
 	else
 		return {varname}
 	endif

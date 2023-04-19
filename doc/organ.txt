@@ -25,7 +25,7 @@ After~
 
 Autoload~
 
-Here is a list of files in `autoload/wheel/`, and a brief description
+Here is a list of files in `autoload/organ/`, and a brief description
 of the modules within them.
 
 | File              | Description                                        |
