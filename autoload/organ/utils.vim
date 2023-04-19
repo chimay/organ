@@ -4,6 +4,20 @@
 "
 " Small tools
 
+fun! organ#utils#circular_plus (index, length)
+	" Rotate/increase index with modulo
+	return (a:index + 1) % a:length
+endfun
+
+fun! organ#utils#circular_minus (index, length)
+	" Rotate/decrease index with modulo
+	let index = (a:index - 1) % a:length
+	if index < 0
+		let index += a:length
+	endif
+	return index
+endfun
+
 fun! organ#utils#is_nested_list (argument)
 	" Whether argument is a nested list
 	" Empty list is not considered nested
