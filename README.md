@@ -6,7 +6,6 @@
 
 <!-- vim-markdown-toc -->
 
-# organ
+# Introduction
 
-TODO minimal org mode environment for vim and neovim
-
+Organ is a minimal org mode environment for vim and neovim.
