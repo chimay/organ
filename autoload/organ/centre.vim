@@ -41,7 +41,7 @@ endif
 fun! organ#centre#plugs ()
 	" Link <plug> mappings to organ functions
 	" ---- normal maps
-	let begin = 'nnoremap <plug>('
+	let begin = 'nnoremap  <plug>('
 	let middle = ') <cmd>call'
 	let end = '<cr>'
 	for item in s:normal_plugs
@@ -53,7 +53,7 @@ fun! organ#centre#plugs ()
 		exe begin .. left .. middle right .. end
 	endfor
 	" ---- visual maps
-	let begin = 'vnoremap <plug>('
+	let begin = 'vnoremap  <plug>('
 	" use colon instead of <cmd> to catch the range
 	let middle = ') :call'
 	for item in s:visual_plugs
@@ -64,16 +64,17 @@ fun! organ#centre#plugs ()
 		endif
 		exe begin .. left .. middle right .. end
 	endfor
-	" ---- expr maps
-	let begin = 'nnoremap <expr> <plug>('
-	let middle = ')'
-	for item in s:expr_plugs
+	" ---- insert maps
+	let begin = 'inoremap  <plug>('
+	let middle = ') <cmd>call'
+	let end = '<cr>'
+	for item in s:insert_plugs
 		let left = item[0]
 		let right = item[1]
 		if right !~ ')$'
 			let right ..= '()'
 		endif
-		execute begin .. left .. middle right
+		exe begin .. left .. middle right .. end
 	endfor
 endfun
 
@@ -83,23 +84,36 @@ fun! organ#centre#mappings (mode = 'normal')
 	" Normal maps of level
 	let mode = a:mode
 	" ---- mode dependent variables
+	let maplist = s:{mode}_maps
 	if mode ==# 'normal'
 		let mapcmd = 'nmap'
 	elseif mode ==# 'visual'
 		let mapcmd = 'vmap'
+	elseif mode ==# 'insert'
+		let mapcmd = 'imap'
 	endif
-	let level_maps = s:level_{level}_{mode}_maps
+	" -- buffer local maps only
+	let mapcmd ..= ' <buffer>'
 	" ---- variables
 	let prefix = g:organ_config.prefix
 	let begin = mapcmd .. ' <silent> ' .. prefix
 	let middle = '<plug>('
 	let end = ')'
 	" ---- loop
-	for item in level_maps
+	for item in maplist
 		let left = item[0]
 		let right = item[1]
 		execute begin .. left middle .. right .. end
 	endfor
+endfun
+
+fun! organ#centre#prefixless ()
+	" Prefix-less maps
+	let nmap = 'nmap <buffer> <silent>'
+	let vmap = 'vmap <buffer> <silent>'
+	let imap = 'imap <buffer> <silent>'
+	" ---- tree
+	exe imap '<m-left>   <plug>(organ-tree-promote)'
 endfun
 
 " ---- link plugs & maps
@@ -107,4 +121,7 @@ endfun
 fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
 	call organ#centre#mappings ()
+	call organ#centre#mappings ('visual')
+	call organ#centre#mappings ('insert')
+	call organ#centre#prefixless ()
 endfun

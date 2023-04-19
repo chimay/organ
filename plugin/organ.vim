@@ -7,3 +7,6 @@ if exists("g:organ_loaded")
 endif
 
 let g:organ_loaded = 1
+
+call organ#void#config ()
+call organ#centre#plugs ()

@@ -41,7 +41,7 @@ endif
 
 if ! exists('s:maps_insert')
 	let s:maps_insert = [
-		\ [ '<m-left>'        , 'organ-tree-promote'  ] ,
+		\ [ '<left>'        , 'organ-tree-promote'  ] ,
 		\ ]
 	lockvar! s:maps_insert
 endif

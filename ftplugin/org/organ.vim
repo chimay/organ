@@ -6,5 +6,4 @@ if exists("b:did_organ_ftplugin")
 endif
 let b:did_organ_ftplugin = 1
 
-" call organ#centre#plugs ()
-" call organ#centre#cables ()
+call organ#centre#cables ()
