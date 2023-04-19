@@ -30,7 +30,11 @@ of the modules within them.
 
 | File              | Description                                        |
 | ----------------- | ----------------------------------------------     |
+| centre.vim        | Commands & mappings                                |
 | geode.vim         | Internal constants for plugs & maps                |
+| tree.vim          | Headers & lists hierarchy                          |
+| utils.vim         | Small utils                                        |
+| void.vim          | Initiaze & reset variables                         |
 
 Ftplugin~
 
