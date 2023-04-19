@@ -1,2 +1,12 @@
+<!-- vim: set filetype=markdown: -->
+
+<!-- vim-markdown-toc GFM -->
+
+* [organ](#organ)
+
+<!-- vim-markdown-toc -->
+
 # organ
-minimal org mode environment for vim and neovim
+
+TODO minimal org mode environment for vim and neovim
+
