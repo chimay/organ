@@ -113,7 +113,8 @@ fun! organ#centre#prefixless ()
 	let vmap = 'vmap <buffer> <silent>'
 	let imap = 'imap <buffer> <silent>'
 	" ---- tree
-	exe imap '<m-left>   <plug>(organ-tree-promote)'
+	exe imap '<m-left>  <plug>(organ-tree-promote)'
+	exe imap '<m-right> <plug>(organ-tree-demote)'
 endfun
 
 " ---- link plugs & maps

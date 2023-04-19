@@ -8,6 +8,8 @@
 
 if ! exists('s:plugs_normal')
 	let s:plugs_normal = [
+		\ [ 'organ-tree-promote' , 'organ#tree#promote'  ] ,
+		\ [ 'organ-tree-demote'  , 'organ#tree#demote'   ] ,
 		\ ]
 	lockvar! s:plugs_normal
 endif
@@ -20,7 +22,8 @@ endif
 
 if ! exists('s:plugs_insert')
 	let s:plugs_insert = [
-		\ [ 'organ-tree-promote'   , 'organ#tree#promote'  ] ,
+		\ [ 'organ-tree-promote' , 'organ#tree#promote'  ] ,
+		\ [ 'organ-tree-demote'  , 'organ#tree#demote'   ] ,
 		\ ]
 	lockvar! s:plugs_insert
 endif
@@ -29,6 +32,8 @@ endif
 
 if ! exists('s:maps_normal')
 	let s:maps_normal = [
+		\ [ '<left>'   , 'organ-tree-promote' ] ,
+		\ [ '<right>'  , 'organ-tree-demote'  ] ,
 		\ ]
 	lockvar! s:maps_normal
 endif
@@ -41,7 +46,6 @@ endif
 
 if ! exists('s:maps_insert')
 	let s:maps_insert = [
-		\ [ '<left>'        , 'organ-tree-promote'  ] ,
 		\ ]
 	lockvar! s:maps_insert
 endif
