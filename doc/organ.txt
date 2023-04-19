@@ -29,8 +29,9 @@ Here is a list of files in `autoload/organ/`, and a brief description
 of the modules within them.
 
 | File              | Description                                        |
-| ----------------- | ----------------------------------------------     |
+| ----------------- | -------------------------------------------------- |
 | centre.vim        | Commands & mappings                                |
+| crystal.vim       | Internal constants                                 |
 | geode.vim         | Internal constants for plugs & maps                |
 | tree.vim          | Headers & lists hierarchy                          |
 | utils.vim         | Small utils                                        |

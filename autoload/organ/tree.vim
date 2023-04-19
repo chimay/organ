@@ -4,6 +4,12 @@
 "
 " Operations on org hierarchy
 
+" ---- script constants
+
+if ! exists('s:plain_list_line_pattern')
+	let s:plain_list_line_pattern = organ#crystal#fetch('plain_list/line_pattern')
+	lockvar s:plain_list_line_pattern
+endif
 
 " ---- headers
 
@@ -62,9 +68,7 @@ endfun
 fun! organ#tree#promote ()
 	" Promote header or list item
 	let line = getline('.')
-	if line =~ '^\s*[-+]'
-		call organ#tree#promote_list_item ()
-	elseif line =~ '^\s\+\*'
+	if line =~ s:plain_list_line_pattern
 		call organ#tree#promote_list_item ()
 	else
 		call organ#tree#promote_header ()
@@ -74,9 +78,7 @@ endfun
 fun! organ#tree#demote ()
 	" Demote header or list item
 	let line = getline('.')
-	if line =~ '^\s*[-+]'
-		call organ#tree#demote_list_item ()
-	elseif line =~ '^\s\+\*'
+	if line =~ s:plain_list_line_pattern
 		call organ#tree#demote_list_item ()
 	else
 		call organ#tree#demote_header ()
