@@ -4,6 +4,38 @@
 "
 " Mappings
 
+" ---- script constants
+
+if ! exists('s:normal_plugs')
+	let s:normal_plugs = organ#geode#fetch('plugs/normal')
+	lockvar s:normal_plugs
+endif
+
+if ! exists('s:visual_plugs')
+	let s:visual_plugs = organ#geode#fetch('plugs/visual')
+	lockvar s:visual_plugs
+endif
+
+if ! exists('s:insert_plugs')
+	let s:insert_plugs = organ#geode#fetch('plugs/insert')
+	lockvar s:insert_plugs
+endif
+
+if ! exists('s:normal_maps')
+	let s:normal_maps = organ#geode#fetch('maps/normal')
+	lockvar s:level_2_normal_maps
+endif
+
+if ! exists('s:visual_maps')
+	let s:visual_maps = organ#geode#fetch('maps/visual')
+	lockvar s:level_2_visual_maps
+endif
+
+if ! exists('s:insert_maps')
+	let s:insert_maps = organ#geode#fetch('maps/insert')
+	lockvar s:level_2_insert_maps
+endif
+
 " ---- plugs
 
 fun! organ#centre#plugs ()
@@ -49,7 +81,6 @@ endfun
 
 fun! organ#centre#mappings (mode = 'normal')
 	" Normal maps of level
-	let level = a:level
 	let mode = a:mode
 	" ---- mode dependent variables
 	if mode ==# 'normal'
