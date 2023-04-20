@@ -6,7 +6,8 @@
     * [What is it ?](#what-is-it-)
     * [Features](#features)
     * [Prerequisites](#prerequisites)
-* [Mappings](#mappings)
+* [Configuration](#configuration)
+* [Bindings](#bindings)
     * [Prefixless](#prefixless)
 
 <!-- vim-markdown-toc -->
@@ -36,12 +37,22 @@ This plugin should mostly work out of the box.
 If you want to export your file with org-export functions, you just need
 to have Emacs installed, and the plugin takes care of the rest.
 
-# Mappings
+# Configuration
+
+```vim
+if ! exists("g:organ_loaded")
+	let g:organ_config = {}
+	let g:organ_config.prefix = '<m-c>'
+	let g:organ_config.prefixless = 0
+endif
+```
+
+# Bindings
 
 ## Prefixless
 
-If you `set g:organ_config.prefixless = 1` in your init file, these
-mappings are available :
+If you set the `g:organ_config.prefixless` variable to a greater-than-zero
+value in your init file, these bindings become available :
 
 - `<M-p>`     : previous heading
 - `<M-n>`     : next heading
