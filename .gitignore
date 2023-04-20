@@ -1,0 +1,20 @@
+# vim: set filetype=conf
+
+# Html
+
+*.html
+
+# Tags
+
+tags
+TAGS
+gtags.files
+doc/tags
+
+# Unison backup
+
+.unison
+
+# Greniers
+
+Grenier

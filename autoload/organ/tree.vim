@@ -16,7 +16,12 @@ endif
 fun! organ#tree#promote_header ()
 	" Promote header
 	let line = getline('.')
-	let header_pattern = '^\*'
+	let filetype = &filetype
+	if filetype == 'org'
+		let header_pattern = '^\*'
+	elseif filetype == 'markdown'
+		let header_pattern = '^#'
+	endif
 	if line !~ header_pattern
 		call search(header_pattern, 'bs')
 	endif
@@ -25,13 +30,16 @@ fun! organ#tree#promote_header ()
 		echomsg 'organ tree promote header : header not found'
 		return v:false
 	endif
-	let level = line->count('*')
+	if filetype == 'org'
+		let level = line->count('*')
+	elseif filetype == 'markdown'
+		let level = line->count('#')
+	endif
 	if level <= 1
 		echomsg 'organ tree promote header : already at top level'
 		return v:false
 	endif
-	let level -= 1
-	let line = line[:level-1] .. line[level+1:]
+	let line = line[1:]
 	call setline('.', line)
 	return v:true
 endfun
@@ -39,7 +47,12 @@ endfun
 fun! organ#tree#demote_header ()
 	" Demote header
 	let line = getline('.')
-	let header_pattern = '^\*'
+	let filetype = &filetype
+	if filetype == 'org'
+		let header_pattern = '^\*'
+	elseif filetype == 'markdown'
+		let header_pattern = '^#'
+	endif
 	if line !~ header_pattern
 		call search(header_pattern, 'bs')
 	endif
@@ -48,8 +61,13 @@ fun! organ#tree#demote_header ()
 		echomsg 'organ tree demote header : header not found'
 		return v:false
 	endif
-	let line = '*' .. line
+	if filetype == 'org'
+		let line = '*' .. line
+	elseif filetype == 'markdown'
+		let line = '#' .. line
+	endif
 	call setline('.', line)
+	normal! zv
 	return v:true
 endfun
 
