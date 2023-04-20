@@ -30,14 +30,17 @@ of the modules within them.
 
 | File              | Description                                        |
 | ----------------- | -------------------------------------------------- |
-| bird.vim          | Navigation in hierarchy (headers & lists)          |
+| bird.vim          | Navigation in headings hierarchy                   |
+| bush.vim          | Operations on lists hierarchy                      |
 | centre.vim        | Commands & mappings                                |
 | crystal.vim       | Internal constants                                 |
 | geode.vim         | Internal constants for plugs & maps                |
+| monkey.vim        | Navigation in lists hierarchy                      |
 | origami.vim       | Folding                                            |
-| tree.vim          | Operations in hierarchy (headers & lists)          |
+| tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |
+| yggdrasil.vim     | Operations on generic hierarchy                    |
 
 Ftplugin~
 
