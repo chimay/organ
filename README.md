@@ -24,12 +24,12 @@ It is primarily focused on editing orgmode and markdown files.
 
 ## Features
 
-- navigate in the headers hierarchy
+- navigate in the headings hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
-  + parent header, upper level
-- modify headers hierarchy
-  + promote, demote header or list item
+  + parent heading, upper level
+- modify headings hierarchy
+  + promote, demote heading or list item
 
 ## Prerequisites
 
