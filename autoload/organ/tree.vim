@@ -50,7 +50,8 @@ fun! organ#tree#demote_header ()
 	endif
 	call setline('.', line)
 	normal! zv
-	normal! zx
+	" -- slow
+	"normal! zx
 	return v:true
 endfun
 

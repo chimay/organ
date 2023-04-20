@@ -24,6 +24,8 @@ endif
 
 if ! exists('s:plugs_insert')
 	let s:plugs_insert = [
+		\ [ 'organ-nav-previous' , 'organ#bird#previous_header' ] ,
+		\ [ 'organ-nav-next'     , 'organ#bird#next_header'     ] ,
 		\ [ 'organ-tree-promote' , 'organ#tree#promote'  ] ,
 		\ [ 'organ-tree-demote'  , 'organ#tree#demote'   ] ,
 		\ ]

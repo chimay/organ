@@ -2,10 +2,31 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [organ](#organ)
+* [Introduction](#introduction)
+    * [What is it ?](#what-is-it-)
+    * [Features](#features)
+    * [Prerequisites](#prerequisites)
 
 <!-- vim-markdown-toc -->
 
 # Introduction
+## What is it ?
 
-Organ is a minimal org mode environment for vim and neovim.
+Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
+
+It is primarily focused on editing org or markdown files.
+
+## Features
+
+- navigate in the headers hierarchy
+  + next, previous : any level
+  + forward, backward : same level as current one
+- modify headers hierarchy
+  + promote, demote header or list item
+
+## Prerequisites
+
+This plugin should mostly work out of the box.
+
+If you want to export your file with org-export functions, you just need
+to have Emacs installed, and the plugin takes care of the rest.
