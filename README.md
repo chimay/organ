@@ -44,7 +44,8 @@ to have Emacs installed, and the plugin takes care of the rest.
 if ! exists("g:organ_loaded")
 	let g:organ_config = {}
 	let g:organ_config.prefix = '<m-c>'
-	let g:organ_config.prefixless = 0
+    " enable prefixless maps
+	let g:organ_config.prefixless = 1
 endif
 ```
 
