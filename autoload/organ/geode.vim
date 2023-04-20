@@ -12,6 +12,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-nav-next'     , 'organ#bird#next_header'     ] ,
 		\ [ 'organ-nav-backward' , 'organ#bird#backward_header' ] ,
 		\ [ 'organ-nav-forward'  , 'organ#bird#forward_header'  ] ,
+		\ [ 'organ-nav-parent'   , 'organ#bird#parent_header'   ] ,
 		\ [ 'organ-tree-promote' , 'organ#tree#promote'         ] ,
 		\ [ 'organ-tree-demote'  , 'organ#tree#demote'          ] ,
 		\ ]
@@ -30,6 +31,7 @@ if ! exists('s:plugs_insert')
 		\ [ 'organ-nav-next'     , 'organ#bird#next_header'     ] ,
 		\ [ 'organ-nav-backward' , 'organ#bird#backward_header' ] ,
 		\ [ 'organ-nav-forward'  , 'organ#bird#forward_header'  ] ,
+		\ [ 'organ-nav-parent'   , 'organ#bird#parent_header'   ] ,
 		\ [ 'organ-tree-promote' , 'organ#tree#promote'         ] ,
 		\ [ 'organ-tree-demote'  , 'organ#tree#demote'          ] ,
 		\ ]
@@ -44,6 +46,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-n>'      , 'organ-nav-next'     ] ,
 		\ [ '<m-b>'      , 'organ-nav-backward' ] ,
 		\ [ '<m-f>'      , 'organ-nav-forward'  ] ,
+		\ [ '<m-u>'      , 'organ-nav-parent'   ] ,
 		\ [ '<m-left>'   , 'organ-tree-promote' ] ,
 		\ [ '<m-right>'  , 'organ-tree-demote'  ] ,
 		\ ]
@@ -62,6 +65,7 @@ if ! exists('s:maps_insert')
 		\ [ '<m-n>'      , 'organ-nav-next'     ] ,
 		\ [ '<m-b>'      , 'organ-nav-backward' ] ,
 		\ [ '<m-f>'      , 'organ-nav-forward'  ] ,
+		\ [ '<m-u>'      , 'organ-nav-parent'   ] ,
 		\ [ '<m-left>'   , 'organ-tree-promote' ] ,
 		\ [ '<m-right>'  , 'organ-tree-demote'  ] ,
 		\ ]

@@ -118,13 +118,12 @@ fun! organ#bird#backward_header ()
 		let new_linum = organ#bird#previous_header ()
 		let new_level = organ#bird#level ()
 		if new_level == old_level
-			break
+			return new_linum
 		endif
 		if new_linum >= old_linum
-			break
+			return new_linum
 		endif
 	endwhile
-	return new_linum
 endfun
 
 fun! organ#bird#forward_header ()
@@ -138,13 +137,31 @@ fun! organ#bird#forward_header ()
 		let new_linum = organ#bird#next_header ()
 		let new_level = organ#bird#level ()
 		if new_level == old_level
-			break
+			return new_linum
 		endif
 		if new_linum <= old_linum
-			break
+			return new_linum
 		endif
 	endwhile
-	return new_linum
+endfun
+
+fun! organ#bird#parent_header ()
+	" Parent upper header
+	if ! organ#bird#is_on_header_line ()
+		return organ#bird#previous_header ()
+	endif
+	let old_level = organ#bird#level ()
+	let old_linum = line('.')
+	while v:true
+		let new_linum = organ#bird#previous_header ()
+		let new_level = organ#bird#level ()
+		if new_level == old_level - 1
+			return new_linum
+		endif
+		if new_linum >= old_linum
+			return new_linum
+		endif
+	endwhile
 endfun
 
 fun! organ#bird#goto_header ()
