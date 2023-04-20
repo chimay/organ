@@ -147,9 +147,7 @@ endfun
 
 fun! organ#bird#parent_header ()
 	" Parent upper header
-	if ! organ#bird#is_on_header_line ()
-		return organ#bird#previous_header ()
-	endif
+	call organ#bird#header_line ()
 	let old_level = organ#bird#level ()
 	let old_linum = line('.')
 	while v:true

@@ -23,6 +23,7 @@ It is primarily focused on editing org or markdown files.
 - navigate in the headers hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
+  + parent header, upper level
 - modify headers hierarchy
   + promote, demote header or list item
 
