@@ -7,3 +7,4 @@ endif
 let b:did_organ_ftplugin = 1
 
 call organ#centre#cables ()
+call organ#origami#markdown_folding ()
