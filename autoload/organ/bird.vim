@@ -122,17 +122,23 @@ fun! organ#bird#backward_heading ()
 	if ! organ#bird#is_on_heading_line ()
 		return organ#bird#previous_heading ()
 	endif
-	let old_level = organ#bird#level ()
+	let start_level = organ#bird#level ()
 	let old_linum = line('.')
+	let wrapped = v:false
 	while v:true
-		let new_linum = organ#bird#previous_heading ()
-		let new_level = organ#bird#level ()
-		if new_level == old_level
-			return new_linum
+		let current_linum = organ#bird#previous_heading ()
+		let current_level = organ#bird#level ()
+		if current_level == start_level
+			return current_linum
 		endif
-		if new_linum >= old_linum
-			return new_linum
+		if current_linum >= old_linum
+			if ! wrapped
+				let wrapped = v:true
+			else
+				return current_linum
+			endif
 		endif
+		let old_linum = current_linum
 	endwhile
 endfun
 
@@ -141,35 +147,49 @@ fun! organ#bird#forward_heading ()
 	if ! organ#bird#is_on_heading_line ()
 		return organ#bird#next_heading ()
 	endif
-	let old_level = organ#bird#level ()
+	let start_level = organ#bird#level ()
 	let old_linum = line('.')
+	let wrapped = v:false
 	while v:true
-		let new_linum = organ#bird#next_heading ()
-		let new_level = organ#bird#level ()
-		if new_level == old_level
-			return new_linum
+		let current_linum = organ#bird#next_heading ()
+		let current_level = organ#bird#level ()
+		if current_level == start_level
+			return current_linum
 		endif
-		if new_linum <= old_linum
-			return new_linum
+		if current_linum <= old_linum
+			if ! wrapped
+				let wrapped = v:true
+			else
+				return current_linum
+			endif
 		endif
+		let old_linum = current_linum
 	endwhile
 endfun
 
 fun! organ#bird#parent_heading ()
 	" Parent upper header
 	call organ#bird#header_line ()
-	let old_level = organ#bird#level ()
+	let start_level = organ#bird#level ()
 	let old_linum = line('.')
+	if start_level == 1
+		return old_linum
+	endif
+	let wrapped = v:false
 	while v:true
-		let new_linum = organ#bird#previous_heading ('dont-wrap')
-		let new_level = organ#bird#level ()
-		if new_level == old_level - 1
-			return new_linum
+		let current_linum = organ#bird#previous_heading ()
+		let current_level = organ#bird#level ()
+		if current_level == start_level - 1
+			return current_linum
 		endif
-		if new_linum >= old_linum
-			return new_linum
+		if current_linum >= old_linum
+			if ! wrapped
+				let wrapped = v:true
+			else
+				return current_linum
+			endif
 		endif
-		let old_linum = new_linum
+		let old_linum = current_linum
 	endwhile
 endfun
 
