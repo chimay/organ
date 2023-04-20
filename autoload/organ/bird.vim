@@ -123,7 +123,8 @@ fun! organ#bird#backward_heading ()
 		return organ#bird#previous_heading ()
 	endif
 	let start_level = organ#bird#level ()
-	let old_linum = line('.')
+	let start_linum = line('.')
+	let old_linum = start_linum
 	let wrapped = v:false
 	while v:true
 		let current_linum = organ#bird#previous_heading ()
@@ -138,6 +139,9 @@ fun! organ#bird#backward_heading ()
 				return current_linum
 			endif
 		endif
+		if current_linum <= start_linum && wrapped
+			return current_linum
+		endif
 		let old_linum = current_linum
 	endwhile
 endfun
@@ -148,7 +152,8 @@ fun! organ#bird#forward_heading ()
 		return organ#bird#next_heading ()
 	endif
 	let start_level = organ#bird#level ()
-	let old_linum = line('.')
+	let start_linum = line('.')
+	let old_linum = start_linum
 	let wrapped = v:false
 	while v:true
 		let current_linum = organ#bird#next_heading ()
@@ -163,6 +168,9 @@ fun! organ#bird#forward_heading ()
 				return current_linum
 			endif
 		endif
+		if current_linum <= start_linum && wrapped
+			return current_linum
+		endif
 		let old_linum = current_linum
 	endwhile
 endfun
@@ -171,9 +179,10 @@ fun! organ#bird#parent_heading ()
 	" Parent upper header
 	call organ#bird#header_line ()
 	let start_level = organ#bird#level ()
-	let old_linum = line('.')
+	let start_linum = line('.')
+	let old_linum = start_linum
 	if start_level == 1
-		return old_linum
+		return start_linum
 	endif
 	let wrapped = v:false
 	while v:true
@@ -188,6 +197,9 @@ fun! organ#bird#parent_heading ()
 			else
 				return current_linum
 			endif
+		endif
+		if current_linum <= start_linum && wrapped
+			return current_linum
 		endif
 		let old_linum = current_linum
 	endwhile
