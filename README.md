@@ -6,6 +6,8 @@
     * [What is it ?](#what-is-it-)
     * [Features](#features)
     * [Prerequisites](#prerequisites)
+* [Mappings](#mappings)
+    * [Prefixless](#prefixless)
 
 <!-- vim-markdown-toc -->
 
