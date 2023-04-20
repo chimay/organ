@@ -2,7 +2,7 @@
 
 " Tree
 "
-" Operations on org hierarchy
+" Operations on orgmode or markdown hierarchy
 
 " ---- script constants
 
@@ -15,27 +15,18 @@ endif
 
 fun! organ#tree#promote_header ()
 	" Promote header
-	let line = getline('.')
-	let filetype = &filetype
-	if filetype == 'org'
-		let header_pattern = '^\*'
-	elseif filetype == 'markdown'
-		let header_pattern = '^#'
-	endif
-	if line !~ header_pattern
-		call search(header_pattern, 'bs')
-	endif
-	let line = getline('.')
-	if line !~ header_pattern
-		echomsg 'organ tree promote header : header not found'
+	if ! organ#bird#previous_header ()
 		return v:false
 	endif
+	let line = getline('.')
+	let filetype = &filetype
 	if filetype == 'org'
 		let leading = line->matchstr('^\*\+')
 	elseif filetype == 'markdown'
 		let leading = line->matchstr('^#\+')
 	endif
 	let level = len(leading)
+	echomsg 'lead lev' leading level
 	if level <= 1
 		echomsg 'organ tree promote header : already at top level'
 		return v:false
@@ -47,21 +38,11 @@ endfun
 
 fun! organ#tree#demote_header ()
 	" Demote header
-	let line = getline('.')
-	let filetype = &filetype
-	if filetype == 'org'
-		let header_pattern = '^\*'
-	elseif filetype == 'markdown'
-		let header_pattern = '^#'
-	endif
-	if line !~ header_pattern
-		call search(header_pattern, 'bs')
-	endif
-	let line = getline('.')
-	if line !~ header_pattern
-		echomsg 'organ tree demote header : header not found'
+	if ! organ#bird#previous_header ()
 		return v:false
 	endif
+	let line = getline('.')
+	let filetype = &filetype
 	if filetype == 'org'
 		let line = '*' .. line
 	elseif filetype == 'markdown'
