@@ -31,10 +31,11 @@ fun! organ#tree#promote_header ()
 		return v:false
 	endif
 	if filetype == 'org'
-		let level = line->count('*')
+		let leading = line->matchstr('^\*\+')
 	elseif filetype == 'markdown'
-		let level = line->count('#')
+		let leading = line->matchstr('^#\+')
 	endif
+	let level = len(leading)
 	if level <= 1
 		echomsg 'organ tree promote header : already at top level'
 		return v:false
