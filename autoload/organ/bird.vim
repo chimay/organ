@@ -191,7 +191,7 @@ fun! organ#bird#forward_heading ()
 				return current_linum
 			endif
 		endif
-		if current_linum <= start_linum && wrapped
+		if current_linum >= start_linum && wrapped
 			return current_linum
 		endif
 		let old_linum = current_linum
