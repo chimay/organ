@@ -9,6 +9,7 @@
 * [Configuration](#configuration)
 * [Bindings](#bindings)
     * [Prefixless](#prefixless)
+    * [With prefix](#with-prefix)
 
 <!-- vim-markdown-toc -->
 
@@ -48,7 +49,6 @@ endif
 ```
 
 # Bindings
-
 ## Prefixless
 
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
@@ -61,3 +61,16 @@ value in your init file, these bindings become available :
 - `<M-u>`     : parent heading
 - `<M-left>`  : promote heading
 - `<M-right>` : demote heading
+
+## With prefix
+
+These bindings are always available, regardless of the
+`g:organ_config.prefixless` value :
+
+- `<prefix><M-p>`     : previous heading
+- `<prefix><M-n>`     : next heading
+- `<prefix><M-b>`     : previous heading of same level
+- `<prefix><M-f>`     : next heading of same level
+- `<prefix><M-u>`     : parent heading
+- `<prefix><M-left>`  : promote heading
+- `<prefix><M-right>` : demote heading
