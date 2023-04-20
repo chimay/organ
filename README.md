@@ -9,6 +9,8 @@
 
 <!-- vim-markdown-toc -->
 
+WORK IN PROGRESS
+
 # Introduction
 ## What is it ?
 
