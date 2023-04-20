@@ -36,4 +36,15 @@ to have Emacs installed, and the plugin takes care of the rest.
 
 # Mappings
 
-- `<M-p>` : previous heading
+## Prefixless
+
+If you set `g:organ_config.prefixless > 0` in your init file, these
+mappings are available :
+
+- `<M-p>`     : previous heading
+- `<M-n>`     : next heading
+- `<M-b>`     : previous heading of same level
+- `<M-f>`     : next heading of same level
+- `<M-u>`     : parent heading
+- `<M-left>`  : promote heading
+- `<M-right>` : demote heading
