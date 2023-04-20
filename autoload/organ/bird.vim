@@ -2,7 +2,7 @@
 
 " Bird
 "
-" Navigation on orgmode or markdown hierarchy
+" Navigation on orgmode or markdown headings hierarchy
 
 " ---- helpers
 

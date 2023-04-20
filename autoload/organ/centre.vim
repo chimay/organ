@@ -116,8 +116,8 @@ fun! organ#centre#prefixless ()
 	exe nmap '<m-b>     <plug>(organ-nav-backward)'
 	exe nmap '<m-f>     <plug>(organ-nav-forward)'
 	exe nmap '<m-u>     <plug>(organ-nav-parent)'
-	exe nmap '<m-left>  <plug>(organ-tree-promote)'
-	exe nmap '<m-right> <plug>(organ-tree-demote)'
+	exe nmap '<m-left>  <plug>(organ-op-promote)'
+	exe nmap '<m-right> <plug>(organ-op-demote)'
 	" ---- visual
 	let vmap = 'vmap <buffer> <silent>'
 	" ---- normal
@@ -128,8 +128,8 @@ fun! organ#centre#prefixless ()
 	exe imap '<m-b>     <plug>(organ-nav-backward)'
 	exe imap '<m-f>     <plug>(organ-nav-forward)'
 	exe imap '<m-u>     <plug>(organ-nav-parent)'
-	exe imap '<m-left>  <plug>(organ-tree-promote)'
-	exe imap '<m-right> <plug>(organ-tree-demote)'
+	exe imap '<m-left>  <plug>(organ-op-promote)'
+	exe imap '<m-right> <plug>(organ-op-demote)'
 endfun
 
 " ---- link plugs & maps
