@@ -7,32 +7,55 @@
 " ---- helpers
 
 fun! organ#bird#is_on_heading_line ()
-	" Whether current position is on header line
+	" Whether current position is on heading line
 	let filetype = &filetype
 	if filetype == 'org'
-		let header_pattern = '^\*'
+		let heading_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let header_pattern = '^#'
+		let heading_pattern = '^#'
 	endif
 	let line = getline('.')
-	return line =~ header_pattern
+	return line =~ heading_pattern
 endfun
 
 fun! organ#bird#heading_line (goto_heading = 'goto-heading')
-	" Find current header line
+	" Find current heading line
 	let goto_heading = a:goto_heading
 	let position = getcurpos ()
 	let line = getline('.')
 	let filetype = &filetype
 	if filetype == 'org'
-		let header_pattern = '^\*'
+		let heading_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let header_pattern = '^#'
+		let heading_pattern = '^#'
 	endif
-	let linum = search(header_pattern, 'bcs')
+	let linum = search(heading_pattern, 'bcs')
 	let line = getline('.')
-	if line !~ header_pattern
-		echomsg 'organ bird header line : not found'
+	if line !~ heading_pattern
+		echomsg 'organ bird heading line : not found'
+		return v:false
+	endif
+	if goto_heading != 'goto-heading'
+		call setpos('.', position)
+	endif
+	return linum
+endfun
+
+fun! organ#bird#end_line (goto_heading = 'goto-heading')
+	" Find last line of current heading
+	let goto_heading = a:goto_heading
+	let position = getcurpos ()
+	let line = getline('.')
+	let filetype = &filetype
+	if filetype == 'org'
+		let heading_pattern = '^\*'
+	elseif filetype == 'markdown'
+		let heading_pattern = '^#'
+	endif
+	let linum = search(heading_pattern, 'bcs')
+	let line = getline('.')
+	if line !~ heading_pattern
+		echomsg 'organ bird heading line : not found'
 		return v:false
 	endif
 	if goto_heading != 'goto-heading'
@@ -42,7 +65,7 @@ fun! organ#bird#heading_line (goto_heading = 'goto-heading')
 endfun
 
 fun! organ#bird#level (goto_heading = 'goto-heading')
-	" Level of current header
+	" Level of current heading
 	let goto_heading = a:goto_heading
 	let position = getcurpos ()
 	if ! organ#bird#heading_line ()
@@ -62,28 +85,28 @@ fun! organ#bird#level (goto_heading = 'goto-heading')
 	return level
 endfun
 
-" ---- headers
+" ---- headings
 
 fun! organ#bird#previous_heading (wrap = 'wrap')
-	" Previous header
+	" Previous heading
 	let wrap = a:wrap
 	let linum = line('.')
 	call cursor(linum, 1)
 	let line = getline('.')
 	let filetype = &filetype
 	if filetype == 'org'
-		let header_pattern = '^\*'
+		let heading_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let header_pattern = '^#'
+		let heading_pattern = '^#'
 	endif
 	if wrap == 'wrap'
-		let linum = search(header_pattern, 'bsw')
+		let linum = search(heading_pattern, 'bsw')
 	else
-		let linum = search(header_pattern, 'bsW')
+		let linum = search(heading_pattern, 'bsW')
 	endif
 	let line = getline('.')
-	if line !~ header_pattern
-		echomsg 'organ bird previous header : not found'
+	if line !~ heading_pattern
+		echomsg 'organ bird previous heading : not found'
 		return v:false
 	endif
 	normal! zv
@@ -91,7 +114,7 @@ fun! organ#bird#previous_heading (wrap = 'wrap')
 endfun
 
 fun! organ#bird#next_heading (wrap = 'wrap')
-	" Next header
+	" Next heading
 	let wrap = a:wrap
 	let linum = line('.')
 	let colnum = col('$')
@@ -99,18 +122,18 @@ fun! organ#bird#next_heading (wrap = 'wrap')
 	let line = getline('.')
 	let filetype = &filetype
 	if filetype == 'org'
-		let header_pattern = '^\*'
+		let heading_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let header_pattern = '^#'
+		let heading_pattern = '^#'
 	endif
 	if wrap == 'wrap'
-		let linum = search(header_pattern, 'sw')
+		let linum = search(heading_pattern, 'sw')
 	else
-		let linum = search(header_pattern, 'sW')
+		let linum = search(heading_pattern, 'sW')
 	endif
 	let line = getline('.')
-	if line !~ header_pattern
-		echomsg 'organ bird next header : not found'
+	if line !~ heading_pattern
+		echomsg 'organ bird next heading : not found'
 		return v:false
 	endif
 	normal! zv
@@ -118,7 +141,7 @@ fun! organ#bird#next_heading (wrap = 'wrap')
 endfun
 
 fun! organ#bird#backward_heading ()
-	" Backward header of same level
+	" Backward heading of same level
 	if ! organ#bird#is_on_heading_line ()
 		return organ#bird#previous_heading ()
 	endif
@@ -147,7 +170,7 @@ fun! organ#bird#backward_heading ()
 endfun
 
 fun! organ#bird#forward_heading ()
-	" Forward header of same level
+	" Forward heading of same level
 	if ! organ#bird#is_on_heading_line ()
 		return organ#bird#next_heading ()
 	endif
@@ -176,7 +199,7 @@ fun! organ#bird#forward_heading ()
 endfun
 
 fun! organ#bird#parent_heading ()
-	" Parent upper header
+	" Parent upper heading
 	call organ#bird#heading_line ()
 	let start_level = organ#bird#level ()
 	let start_linum = line('.')
@@ -206,12 +229,12 @@ fun! organ#bird#parent_heading ()
 endfun
 
 fun! organ#bird#goto_heading ()
-	" Goto header
+	" Goto heading
 endfun
 
 " -- speed commands
 
 fun! organ#bird#speed (key)
-	" Speed key on header line
+	" Speed key on heading line
 endfun
 
