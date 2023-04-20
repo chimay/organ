@@ -32,8 +32,8 @@ endif
 
 if ! exists('s:maps_normal')
 	let s:maps_normal = [
-		\ [ '<left>'   , 'organ-tree-promote' ] ,
-		\ [ '<right>'  , 'organ-tree-demote'  ] ,
+		\ [ '<m-left>'   , 'organ-tree-promote' ] ,
+		\ [ '<m-right>'  , 'organ-tree-demote'  ] ,
 		\ ]
 	lockvar! s:maps_normal
 endif
@@ -46,6 +46,8 @@ endif
 
 if ! exists('s:maps_insert')
 	let s:maps_insert = [
+		\ [ '<m-left>'   , 'organ-tree-promote' ] ,
+		\ [ '<m-right>'  , 'organ-tree-demote'  ] ,
 		\ ]
 	lockvar! s:maps_insert
 endif

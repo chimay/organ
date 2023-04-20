@@ -12,4 +12,7 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefix')
 		let g:organ_config.prefix = '<M-c>'
 	endif
+	if ! has_key(g:organ_config, 'prefixless')
+		let g:organ_config.prefixless = 0
+	endif
 endfun

@@ -33,6 +33,7 @@ of the modules within them.
 | centre.vim        | Commands & mappings                                |
 | crystal.vim       | Internal constants                                 |
 | geode.vim         | Internal constants for plugs & maps                |
+| origami.vim       | Folding                                            |
 | tree.vim          | Headers & lists hierarchy                          |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |

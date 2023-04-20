@@ -109,10 +109,15 @@ endfun
 
 fun! organ#centre#prefixless ()
 	" Prefix-less maps
+	" ---- normal
 	let nmap = 'nmap <buffer> <silent>'
+	exe nmap '<m-left>  <plug>(organ-tree-promote)'
+	exe nmap '<m-right> <plug>(organ-tree-demote)'
+	" ---- visual
 	let vmap = 'vmap <buffer> <silent>'
+	" ---- normal
 	let imap = 'imap <buffer> <silent>'
-	" ---- tree
+	" -- tree
 	exe imap '<m-left>  <plug>(organ-tree-promote)'
 	exe imap '<m-right> <plug>(organ-tree-demote)'
 endfun
@@ -124,5 +129,7 @@ fun! organ#centre#cables ()
 	call organ#centre#mappings ()
 	call organ#centre#mappings ('visual')
 	call organ#centre#mappings ('insert')
-	call organ#centre#prefixless ()
+	if g:organ_config.prefixless > 0
+		call organ#centre#prefixless ()
+	endif
 endfun
