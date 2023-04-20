@@ -18,8 +18,8 @@ fun! organ#bird#is_on_heading_line ()
 	return line =~ header_pattern
 endfun
 
-fun! organ#bird#header_line (goto_heading = 'goto-heading')
-	" Find current header top line
+fun! organ#bird#heading_line (goto_heading = 'goto-heading')
+	" Find current header line
 	let goto_heading = a:goto_heading
 	let position = getcurpos ()
 	let line = getline('.')
@@ -45,7 +45,7 @@ fun! organ#bird#level (goto_heading = 'goto-heading')
 	" Level of current header
 	let goto_heading = a:goto_heading
 	let position = getcurpos ()
-	if ! organ#bird#header_line ()
+	if ! organ#bird#heading_line ()
 		return v:false
 	endif
 	let line = getline('.')
@@ -177,7 +177,7 @@ endfun
 
 fun! organ#bird#parent_heading ()
 	" Parent upper header
-	call organ#bird#header_line ()
+	call organ#bird#heading_line ()
 	let start_level = organ#bird#level ()
 	let start_linum = line('.')
 	let old_linum = start_linum
