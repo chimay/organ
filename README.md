@@ -33,3 +33,7 @@ This plugin should mostly work out of the box.
 
 If you want to export your file with org-export functions, you just need
 to have Emacs installed, and the plugin takes care of the rest.
+
+# Mappings
+
+- `<M-p>` : previous heading

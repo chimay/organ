@@ -6,7 +6,7 @@
 
 " ---- helpers
 
-fun! organ#bird#is_on_header_line ()
+fun! organ#bird#is_on_heading_line ()
 	" Whether current position is on header line
 	let filetype = &filetype
 	if filetype == 'org'
@@ -18,9 +18,9 @@ fun! organ#bird#is_on_header_line ()
 	return line =~ header_pattern
 endfun
 
-fun! organ#bird#header_line (goto_header = v:true)
+fun! organ#bird#header_line (goto_heading = v:true)
 	" Find current header top line
-	let goto_header = a:goto_header
+	let goto_heading = a:goto_heading
 	let position = getcurpos ()
 	let line = getline('.')
 	let filetype = &filetype
@@ -35,15 +35,15 @@ fun! organ#bird#header_line (goto_header = v:true)
 		echomsg 'organ bird header line : not found'
 		return v:false
 	endif
-	if ! goto_header
+	if ! goto_heading
 		call setpos('.', position)
 	endif
 	return linum
 endfun
 
-fun! organ#bird#level (goto_header = v:true)
+fun! organ#bird#level (goto_heading = v:true)
 	" Level of current header
-	let goto_header = a:goto_header
+	let goto_heading = a:goto_heading
 	let position = getcurpos ()
 	if ! organ#bird#header_line ()
 		return v:false
@@ -56,7 +56,7 @@ fun! organ#bird#level (goto_header = v:true)
 		let leading = line->matchstr('^#\+')
 	endif
 	let level = len(leading)
-	if ! goto_header
+	if ! goto_heading
 		call setpos('.', position)
 	endif
 	return level
@@ -64,7 +64,7 @@ endfun
 
 " ---- headers
 
-fun! organ#bird#previous_header ()
+fun! organ#bird#previous_heading ()
 	" Previous header
 	let linum = line('.')
 	call cursor(linum, 1)
@@ -85,7 +85,7 @@ fun! organ#bird#previous_header ()
 	return linum
 endfun
 
-fun! organ#bird#next_header ()
+fun! organ#bird#next_heading ()
 	" Next header
 	let linum = line('.')
 	let colnum = col('$')
@@ -107,15 +107,15 @@ fun! organ#bird#next_header ()
 	return linum
 endfun
 
-fun! organ#bird#backward_header ()
+fun! organ#bird#backward_heading ()
 	" Backward header of same level
-	if ! organ#bird#is_on_header_line ()
-		return organ#bird#previous_header ()
+	if ! organ#bird#is_on_heading_line ()
+		return organ#bird#previous_heading ()
 	endif
 	let old_level = organ#bird#level ()
 	let old_linum = line('.')
 	while v:true
-		let new_linum = organ#bird#previous_header ()
+		let new_linum = organ#bird#previous_heading ()
 		let new_level = organ#bird#level ()
 		if new_level == old_level
 			return new_linum
@@ -126,15 +126,15 @@ fun! organ#bird#backward_header ()
 	endwhile
 endfun
 
-fun! organ#bird#forward_header ()
+fun! organ#bird#forward_heading ()
 	" Forward header of same level
-	if ! organ#bird#is_on_header_line ()
-		return organ#bird#next_header ()
+	if ! organ#bird#is_on_heading_line ()
+		return organ#bird#next_heading ()
 	endif
 	let old_level = organ#bird#level ()
 	let old_linum = line('.')
 	while v:true
-		let new_linum = organ#bird#next_header ()
+		let new_linum = organ#bird#next_heading ()
 		let new_level = organ#bird#level ()
 		if new_level == old_level
 			return new_linum
@@ -145,13 +145,13 @@ fun! organ#bird#forward_header ()
 	endwhile
 endfun
 
-fun! organ#bird#parent_header ()
+fun! organ#bird#parent_heading ()
 	" Parent upper header
 	call organ#bird#header_line ()
 	let old_level = organ#bird#level ()
 	let old_linum = line('.')
 	while v:true
-		let new_linum = organ#bird#previous_header ()
+		let new_linum = organ#bird#previous_heading ()
 		let new_level = organ#bird#level ()
 		if new_level == old_level - 1
 			return new_linum
@@ -162,7 +162,7 @@ fun! organ#bird#parent_header ()
 	endwhile
 endfun
 
-fun! organ#bird#goto_header ()
+fun! organ#bird#goto_heading ()
 	" Goto header
 endfun
 

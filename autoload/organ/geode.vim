@@ -8,11 +8,11 @@
 
 if ! exists('s:plugs_normal')
 	let s:plugs_normal = [
-		\ [ 'organ-nav-previous' , 'organ#bird#previous_header' ] ,
-		\ [ 'organ-nav-next'     , 'organ#bird#next_header'     ] ,
-		\ [ 'organ-nav-backward' , 'organ#bird#backward_header' ] ,
-		\ [ 'organ-nav-forward'  , 'organ#bird#forward_header'  ] ,
-		\ [ 'organ-nav-parent'   , 'organ#bird#parent_header'   ] ,
+		\ [ 'organ-nav-previous' , 'organ#bird#previous_heading' ] ,
+		\ [ 'organ-nav-next'     , 'organ#bird#next_heading'     ] ,
+		\ [ 'organ-nav-backward' , 'organ#bird#backward_heading' ] ,
+		\ [ 'organ-nav-forward'  , 'organ#bird#forward_heading'  ] ,
+		\ [ 'organ-nav-parent'   , 'organ#bird#parent_heading'   ] ,
 		\ [ 'organ-tree-promote' , 'organ#tree#promote'         ] ,
 		\ [ 'organ-tree-demote'  , 'organ#tree#demote'          ] ,
 		\ ]
@@ -27,11 +27,11 @@ endif
 
 if ! exists('s:plugs_insert')
 	let s:plugs_insert = [
-		\ [ 'organ-nav-previous' , 'organ#bird#previous_header' ] ,
-		\ [ 'organ-nav-next'     , 'organ#bird#next_header'     ] ,
-		\ [ 'organ-nav-backward' , 'organ#bird#backward_header' ] ,
-		\ [ 'organ-nav-forward'  , 'organ#bird#forward_header'  ] ,
-		\ [ 'organ-nav-parent'   , 'organ#bird#parent_header'   ] ,
+		\ [ 'organ-nav-previous' , 'organ#bird#previous_heading' ] ,
+		\ [ 'organ-nav-next'     , 'organ#bird#next_heading'     ] ,
+		\ [ 'organ-nav-backward' , 'organ#bird#backward_heading' ] ,
+		\ [ 'organ-nav-forward'  , 'organ#bird#forward_heading'  ] ,
+		\ [ 'organ-nav-parent'   , 'organ#bird#parent_heading'   ] ,
 		\ [ 'organ-tree-promote' , 'organ#tree#promote'         ] ,
 		\ [ 'organ-tree-demote'  , 'organ#tree#demote'          ] ,
 		\ ]

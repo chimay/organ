@@ -13,7 +13,7 @@ endif
 
 " ---- headers
 
-fun! organ#tree#promote_header ()
+fun! organ#tree#promote_heading ()
 	" Promote header
 	let level = organ#bird#level ()
 	if level <= 1
@@ -26,7 +26,7 @@ fun! organ#tree#promote_header ()
 	return v:true
 endfun
 
-fun! organ#tree#demote_header ()
+fun! organ#tree#demote_heading ()
 	" Demote header
 	if ! organ#bird#header_line ()
 		return v:false
@@ -85,7 +85,7 @@ fun! organ#tree#promote ()
 	if line =~ s:plain_list_line_pattern
 		call organ#tree#promote_list_item ()
 	else
-		call organ#tree#promote_header ()
+		call organ#tree#promote_heading ()
 	endif
 endfun
 
@@ -95,6 +95,6 @@ fun! organ#tree#demote ()
 	if line =~ s:plain_list_line_pattern
 		call organ#tree#demote_list_item ()
 	else
-		call organ#tree#demote_header ()
+		call organ#tree#demote_heading ()
 	endif
 endfun
