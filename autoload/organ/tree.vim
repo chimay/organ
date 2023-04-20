@@ -15,22 +15,12 @@ endif
 
 fun! organ#tree#promote_header ()
 	" Promote header
-	if ! organ#bird#top_line ()
-		return v:false
-	endif
-	let line = getline('.')
-	let filetype = &filetype
-	if filetype == 'org'
-		let leading = line->matchstr('^\*\+')
-	elseif filetype == 'markdown'
-		let leading = line->matchstr('^#\+')
-	endif
-	let level = len(leading)
-	echomsg 'lead lev' leading level
+	let level = organ#bird#level ()
 	if level <= 1
 		echomsg 'organ tree promote header : already at top level'
 		return v:false
 	endif
+	let line = getline('.')
 	let line = line[1:]
 	call setline('.', line)
 	return v:true
@@ -38,7 +28,7 @@ endfun
 
 fun! organ#tree#demote_header ()
 	" Demote header
-	if ! organ#bird#top_line ()
+	if ! organ#bird#header_line ()
 		return v:false
 	endif
 	let line = getline('.')
