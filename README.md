@@ -40,7 +40,7 @@ to have Emacs installed, and the plugin takes care of the rest.
 
 ## Prefixless
 
-If you set `g:organ_config.prefixless > 0` in your init file, these
+If you `set g:organ_config.prefixless = 1` in your init file, these
 mappings are available :
 
 - `<M-p>`     : previous heading
