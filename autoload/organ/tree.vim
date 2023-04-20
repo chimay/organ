@@ -21,7 +21,7 @@ endfun
 
 fun! organ#tree#demote ()
 	" Demote heading
-	if ! organ#bird#heading_line ()
+	if ! organ#bird#first_line ()
 		return v:false
 	endif
 	let line = getline('.')
