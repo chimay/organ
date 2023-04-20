@@ -15,7 +15,7 @@ endif
 
 fun! organ#tree#promote_header ()
 	" Promote header
-	if ! organ#bird#previous_header ()
+	if ! organ#bird#top_line ()
 		return v:false
 	endif
 	let line = getline('.')
@@ -38,7 +38,7 @@ endfun
 
 fun! organ#tree#demote_header ()
 	" Demote header
-	if ! organ#bird#previous_header ()
+	if ! organ#bird#top_line ()
 		return v:false
 	endif
 	let line = getline('.')
@@ -50,6 +50,7 @@ fun! organ#tree#demote_header ()
 	endif
 	call setline('.', line)
 	normal! zv
+	normal! zx
 	return v:true
 endfun
 
