@@ -43,6 +43,7 @@ to have Emacs installed, and the plugin takes care of the rest.
 ```vim
 if ! exists("g:organ_loaded")
 	let g:organ_config = {}
+    " choose your mappings prefix
 	let g:organ_config.prefix = '<m-c>'
 	" enable prefixless maps
 	let g:organ_config.prefixless = 1

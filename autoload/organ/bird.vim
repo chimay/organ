@@ -34,12 +34,12 @@ fun! organ#bird#headline (move = 'dont-move')
 	endif
 endfun
 
-fun! organ#bird#tail (move = 'dont-move')
-	" Find last line of current heading
+fun! organ#bird#range (move = 'dont-move')
+	" Range of current heading
 	let move = a:move
 	let properties = organ#bird#headline_properties ()
-	let linum = properties.linum
-	if linum == 0
+	let head_linum = properties.linum
+	if head_linum == 0
 		echomsg 'organ bird forward heading : headline not found'
 		return linum
 	endif
@@ -50,17 +50,22 @@ fun! organ#bird#tail (move = 'dont-move')
 	elseif filetype == 'markdown'
 		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
 	endif
-	let forward_headline_linum = search(headline_pattern, 'nW')
-	if forward_headline_linum == 0
+	let forward_linum = search(headline_pattern, 'nW')
+	if forward_linum == 0
 		let tail_linum = line('$')
 	else
-		let tail_linum = forward_headline_linum - 1
+		let tail_linum = forward_linum - 1
 	endif
 	if move == 'move'
 		mark '
 		call cursor(tail_linum, 1)
 	endif
-	return tail_linum
+	return [head_linum, tail_linum]
+endfun
+
+fun! organ#bird#tail (move = 'dont-move')
+	" Find last line of current heading
+	return organ#bird#range()[1]
 endfun
 
 fun! organ#bird#headline_properties (move = 'dont-move')
