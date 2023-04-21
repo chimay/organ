@@ -48,18 +48,18 @@ endfun
 
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
-	let section = organ#bird#range ()
-	let headnum = range.head_linum
+	let section = organ#bird#section ()
+	let headnum = section.head_linum
 	if headnum == 0
 		echomsg 'organ tree promote subtree : headline not found'
 		return v:false
 	endif
-	let level =
-	if properties.level == 1
+	let level = section.level
+	if level == 1
 		echomsg 'organ tree promote subtree : already at top level'
 		return v:false
 	endif
-	let line = properties.line
+	let line = section.line
 	let line = line[1:]
 	call setline(linum, line)
 	return v:true
@@ -67,13 +67,13 @@ endfun
 
 fun! organ#tree#demote_subtree ()
 	" Demote subtree
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	if linum == 0
+	let section = organ#bird#section ()
+	let headnum = section.head_linum
+	if headnum == 0
 		echomsg 'organ tree demote subtree : headline not found'
 		return v:false
 	endif
-	let line = properties.line
+	let line = section.line
 	let filetype = &filetype
 	if filetype == 'org'
 		let line = '*' .. line
