@@ -57,14 +57,16 @@ endif
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
 value in your init file, these bindings become available :
 
-- `<M-p>`     : previous heading
-- `<M-n>`     : next heading
-- `<M-b>`     : previous heading of same level
-- `<M-f>`     : next heading of same level
-- `<M-u>`     : parent heading
-- `<M-d>`     : child heading
-- `<M-left>`  : promote heading
-- `<M-right>` : demote heading
+- `<M-p>`       : previous heading
+- `<M-n>`       : next heading
+- `<M-b>`       : previous heading of same level
+- `<M-f>`       : next heading of same level
+- `<M-u>`       : parent heading
+- `<M-d>`       : child heading
+- `<M-left>`    : promote heading or list item
+- `<M-right>`   : demote heading or list item
+- `<M-S-left>`  : promote subtree
+- `<M-S-right>` : demote subtree
 
 ## With prefix
 
@@ -72,11 +74,13 @@ The prefix bindings are always available, regardless of the
 `g:organ_config.prefixless` value. They are inspired by orgmode, with
 `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 
-- `<M-c><M-p>`     : previous heading
-- `<M-c><M-n>`     : next heading
-- `<M-c><M-b>`     : previous heading of same level
-- `<M-c><M-f>`     : next heading of same level
-- `<M-c><M-u>`     : parent heading
-- `<M-c><M-d>`     : child heading
-- `<M-c><M-left>`  : promote heading
-- `<M-c><M-right>` : demote heading
+- `<M-c><M-p>`       : previous heading
+- `<M-c><M-n>`       : next heading
+- `<M-c><M-b>`       : previous heading of same level
+- `<M-c><M-f>`       : next heading of same level
+- `<M-c><M-u>`       : parent heading
+- `<M-c><M-d>`       : child heading
+- `<M-c><M-left>`    : promote heading or list item
+- `<M-c><M-right>`   : demote heading or list item
+- `<M-c><M-S-left>`  : promote subtree
+- `<M-c><M-S-right>` : demote subtree
