@@ -92,7 +92,7 @@ if ! exists('s:speedkeys')
 		\ [ 'n' , 'organ#bird#next'                 ] ,
 		\ [ 'b' , 'organ#bird#backward'             ] ,
 		\ [ 'f' , 'organ#bird#forward'              ] ,
-		\ [ 'u' , 'organ#bird#parent'               ] ,
+		\ [ 'U' , 'organ#bird#parent'               ] ,
 		\ [ 'D' , 'organ#bird#child'                ] ,
 		\ [ 'h' , 'organ#yggdrasil#promote'         ] ,
 		\ [ 'l' , 'organ#yggdrasil#demote'          ] ,

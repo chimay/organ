@@ -11,7 +11,7 @@ endif
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
-				\ 'p', 'n', 'b', 'f', 'u', 'D',
+				\ 'p', 'n', 'b', 'f', 'U', 'D',
 				\ 'h', 'l', 'H', 'L'
 				\]
 	lockvar! s:speedkeys
