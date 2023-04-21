@@ -10,6 +10,7 @@
 * [Bindings](#bindings)
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
+    * [Speed keys](#speed-keys)
 
 <!-- vim-markdown-toc -->
 
