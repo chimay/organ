@@ -60,18 +60,21 @@ value in your init file, these bindings become available :
 - `<M-b>`     : previous heading of same level
 - `<M-f>`     : next heading of same level
 - `<M-u>`     : parent heading
+- `<M-d>`     : child heading
 - `<M-left>`  : promote heading
 - `<M-right>` : demote heading
 
 ## With prefix
 
-These bindings are always available, regardless of the
-`g:organ_config.prefixless` value :
+The prefix bindings are always available, regardless of the
+`g:organ_config.prefixless` value. They are inspired by orgmode, with
+`<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 
-- `<prefix><M-p>`     : previous heading
-- `<prefix><M-n>`     : next heading
-- `<prefix><M-b>`     : previous heading of same level
-- `<prefix><M-f>`     : next heading of same level
-- `<prefix><M-u>`     : parent heading
-- `<prefix><M-left>`  : promote heading
-- `<prefix><M-right>` : demote heading
+- `<M-c><M-p>`     : previous heading
+- `<M-c><M-n>`     : next heading
+- `<M-c><M-b>`     : previous heading of same level
+- `<M-c><M-f>`     : next heading of same level
+- `<M-c><M-u>`     : parent heading
+- `<M-c><M-d>`     : child heading
+- `<M-c><M-left>`  : promote heading
+- `<M-c><M-right>` : demote heading

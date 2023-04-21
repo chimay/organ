@@ -4,7 +4,7 @@
 "
 " Operations on orgmode or markdown lists hierarchy
 
-fun! organ#bush#promote_list_item ()
+fun! organ#bush#promote ()
 	" Promote list item
 	let line = getline('.')
 	if line =~ '^\s\+\*'
@@ -21,7 +21,7 @@ fun! organ#bush#promote_list_item ()
 	return v:true
 endfun
 
-fun! organ#bush#demote_list_item ()
+fun! organ#bush#demote ()
 	" Demote list item
 	let line = getline('.')
 	if line =~ '^\s*-'

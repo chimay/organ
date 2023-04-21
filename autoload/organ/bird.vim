@@ -36,19 +36,31 @@ endfun
 
 fun! organ#bird#tail (move = 'dont-move')
 	" Find last line of current heading
-	let goto_last = a:goto_last
+	let move = a:move
+	let properties = organ#bird#headline_properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird forward heading : headline not found'
+		return linum
+	endif
+	let level = properties.level
 	let filetype = &filetype
 	if filetype == 'org'
-		let headline_pattern = '^\*'
+		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
 	elseif filetype == 'markdown'
-		let headline_pattern = '^#'
+		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
 	endif
-	let linum = search(headline_pattern, 'nW')
-	let linum -= 1
+	let forward_headline_linum = search(headline_pattern, 'nW')
+	if forward_headline_linum == 0
+		let tail_linum = line('$')
+	else
+		let tail_linum = forward_headline_linum - 1
+	endif
 	if move == 'move'
-		call cursor(linum, 1)
+		mark '
+		call cursor(tail_linum, 1)
 	endif
-	return linum
+	return tail_linum
 endfun
 
 fun! organ#bird#headline_properties (move = 'dont-move')
@@ -72,9 +84,9 @@ fun! organ#bird#level (move = 'dont-move')
 	return organ#bird#headline_properties(a:move).level
 endfun
 
-" ---- previous, next, backward, forward, parent
+" ---- previous, next
 
-fun! organ#bird#previous_heading (wrap = 'wrap')
+fun! organ#bird#previous (wrap = 'wrap')
 	" Previous heading
 	let wrap = a:wrap
 	let linum = line('.')
@@ -100,7 +112,7 @@ fun! organ#bird#previous_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#next_heading (wrap = 'wrap')
+fun! organ#bird#next (wrap = 'wrap')
 	" Next heading
 	let wrap = a:wrap
 	let linum = line('.')
@@ -127,7 +139,9 @@ fun! organ#bird#next_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#backward_heading (wrap = 'wrap')
+" ---- backward, forward
+
+fun! organ#bird#backward (wrap = 'wrap')
 	" Backward heading of same level
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
@@ -143,7 +157,6 @@ fun! organ#bird#backward_heading (wrap = 'wrap')
 	elseif filetype == 'markdown'
 		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
 	endif
-	echo headline_pattern
 	if wrap == 'wrap'
 		let linum = search(headline_pattern, 'bsw')
 	else
@@ -153,7 +166,7 @@ fun! organ#bird#backward_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#forward_heading (wrap = 'wrap')
+fun! organ#bird#forward (wrap = 'wrap')
 	" Forward heading of same level
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
@@ -178,7 +191,9 @@ fun! organ#bird#forward_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#parent_heading (wrap = 'wrap')
+" ---- parent, child
+
+fun! organ#bird#parent (wrap = 'wrap')
 	" Parent heading, ie first headline of level - 1, backward
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
@@ -203,7 +218,7 @@ fun! organ#bird#parent_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#child_heading (wrap = 'wrap')
+fun! organ#bird#child (wrap = 'wrap')
 	" Child heading, or, more generally, first headline of level + 1, forward
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
