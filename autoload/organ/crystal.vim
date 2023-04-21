@@ -9,14 +9,6 @@ if ! exists('s:plain_list_line_pattern')
 	lockvar! s:plain_list_line_pattern
 endif
 
-if ! exists('s:speedkeys')
-	let s:speedkeys = [
-				\ 'p', 'n', 'b', 'f', 'U', 'D',
-				\ 'h', 'l', 'H', 'L'
-				\]
-	lockvar! s:speedkeys
-endif
-
 " ---- public interface
 
 fun! organ#crystal#fetch (varname, conversion = 'no-conversion')

@@ -96,11 +96,11 @@ active only when the cursor is on the first char of a headline :
 
 - `p` : previous heading
 - `n` : next heading
-- `b` : previous heading of same level
-- `f` : next heading of same level
-- `U` : parent heading
-- `D` : child heading
-- `h` : promote heading or list item
-- `l` : demote heading or list item
+- `b` : backward heading of same level
+- `f` : forward heading of same level
+- `-` : parent heading
+- `+` : child heading
+- `<` : promote heading or list item
+- `>` : demote heading or list item
 - `H` : promote subtree
 - `L` : demote subtree

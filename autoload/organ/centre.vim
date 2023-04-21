@@ -7,7 +7,7 @@
 " ---- script constants
 
 if ! exists('s:speedkeys')
-	let s:speedkeys = organ#crystal#fetch('speedkeys')
+	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
 	lockvar s:speedkeys
 endif
 
@@ -148,7 +148,7 @@ fun! organ#centre#speedkeys ()
 	let map = 'nnoremap <buffer>'
 	let command = "<cmd>call organ#bird#speed('"
 	let close = "')<cr>"
-	for key in s:speedkeys
+	for key in keys(s:speedkeys)
 		execute map key command  .. key .. close
 	endfor
 endfun

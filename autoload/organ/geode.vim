@@ -88,16 +88,18 @@ endif
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
-		\ [ 'p' , 'organ#bird#previous'             ] ,
-		\ [ 'n' , 'organ#bird#next'                 ] ,
-		\ [ 'b' , 'organ#bird#backward'             ] ,
-		\ [ 'f' , 'organ#bird#forward'              ] ,
-		\ [ 'U' , 'organ#bird#parent'               ] ,
-		\ [ 'D' , 'organ#bird#child'                ] ,
-		\ [ 'h' , 'organ#yggdrasil#promote'         ] ,
-		\ [ 'l' , 'organ#yggdrasil#demote'          ] ,
-		\ [ 'H' , 'organ#yggdrasil#promote_subtree' ] ,
-		\ [ 'L' , 'organ#yggdrasil#demote_subtree'  ] ,
+		\ [ 'p',        'organ#bird#previous'             ] ,
+		\ [ 'n',        'organ#bird#next'                 ] ,
+		\ [ 'b',        'organ#bird#backward'             ] ,
+		\ [ 'f',        'organ#bird#forward'              ] ,
+		\ [ '-',        'organ#bird#parent'               ] ,
+		\ [ '+',        'organ#bird#child'                ] ,
+		\ [ '<kminus>', 'organ#bird#parent'               ] ,
+		\ [ '<kplus>',  'organ#bird#child'                ] ,
+		\ [ '<',        'organ#yggdrasil#promote'         ] ,
+		\ [ '>',        'organ#yggdrasil#demote'          ] ,
+		\ [ 'H',        'organ#yggdrasil#promote_subtree' ] ,
+		\ [ 'L',        'organ#yggdrasil#demote_subtree'  ] ,
 		\ ]
 	lockvar! s:speedkeys
 endif
