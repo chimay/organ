@@ -19,7 +19,7 @@ fun! organ#bird#is_on_headline ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
-	" Find first line of current heading
+	" First line of current heading
 	let move = a:move
 	let filetype = &filetype
 	if filetype == 'org'
@@ -34,10 +34,26 @@ fun! organ#bird#headline (move = 'dont-move')
 	endif
 endfun
 
+fun! organ#bird#properties (move = 'dont-move')
+	" Properties of current headline
+	let move = a:move
+	let linum = organ#bird#headline (move)
+	let line = getline(linum)
+	let filetype = &filetype
+	if filetype == 'org'
+		let leading = line->matchstr('^\*\+')
+	elseif filetype == 'markdown'
+		let leading = line->matchstr('^#\+')
+	endif
+	let level = len(leading)
+	let properties = #{ level : level, linum : linum, line : line }
+	return properties
+endfun
+
 fun! organ#bird#range (move = 'dont-move')
 	" Range of current heading
 	let move = a:move
-	let properties = organ#bird#headline_properties ()
+	let properties = organ#bird#properties ()
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ bird forward heading : headline not found'
@@ -64,29 +80,13 @@ fun! organ#bird#range (move = 'dont-move')
 endfun
 
 fun! organ#bird#tail (move = 'dont-move')
-	" Find last line of current heading
+	" Last line of current heading
 	return organ#bird#range()[1]
-endfun
-
-fun! organ#bird#headline_properties (move = 'dont-move')
-	" Properties of current heading headline
-	let move = a:move
-	let linum = organ#bird#headline (move)
-	let line = getline(linum)
-	let filetype = &filetype
-	if filetype == 'org'
-		let leading = line->matchstr('^\*\+')
-	elseif filetype == 'markdown'
-		let leading = line->matchstr('^#\+')
-	endif
-	let level = len(leading)
-	let properties = #{ level : level, linum : linum, line : line }
-	return properties
 endfun
 
 fun! organ#bird#level (move = 'dont-move')
 	" Level of current heading
-	return organ#bird#headline_properties(a:move).level
+	return organ#bird#properties(a:move).level
 endfun
 
 " ---- previous, next
@@ -149,7 +149,7 @@ endfun
 fun! organ#bird#backward (wrap = 'wrap')
 	" Backward heading of same level
 	let wrap = a:wrap
-	let properties = organ#bird#headline_properties ()
+	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ bird backward heading : headline not found'
@@ -174,7 +174,7 @@ endfun
 fun! organ#bird#forward (wrap = 'wrap')
 	" Forward heading of same level
 	let wrap = a:wrap
-	let properties = organ#bird#headline_properties ()
+	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ bird forward heading : headline not found'
@@ -201,13 +201,18 @@ endfun
 fun! organ#bird#parent (wrap = 'wrap')
 	" Parent heading, ie first headline of level - 1, backward
 	let wrap = a:wrap
-	let properties = organ#bird#headline_properties ()
+	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ bird parent heading : headline not found'
 		return linum
 	endif
-	let level = properties.level - 1
+	let level = properties.level
+	if level == 1
+		echomsg 'organ tree parent heading : already at top level'
+		return linum
+	endif
+	let level -= 1
 	let filetype = &filetype
 	if filetype == 'org'
 		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
@@ -226,10 +231,10 @@ endfun
 fun! organ#bird#child (wrap = 'wrap')
 	" Child heading, or, more generally, first headline of level + 1, forward
 	let wrap = a:wrap
-	let properties = organ#bird#headline_properties ()
+	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird parent heading : headline not found'
+		echomsg 'organ bird child heading : headline not found'
 		return linum
 	endif
 	let level = properties.level + 1
@@ -243,6 +248,9 @@ fun! organ#bird#child (wrap = 'wrap')
 		let linum = search(headline_pattern, 'sw')
 	else
 		let linum = search(headline_pattern, 'sW')
+	endif
+	if linum == 0
+		echomsg 'organ bird child heading : child heading not found'
 	endif
 	normal! zv
 	return linum
