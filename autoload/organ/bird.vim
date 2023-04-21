@@ -38,25 +38,34 @@ fun! organ#bird#properties (move = 'dont-move')
 	" Properties of current headline
 	let move = a:move
 	let linum = organ#bird#headline (move)
-	let line = getline(linum)
+	if linum == 0
+		echomsg 'organ bird properties : headline not found'
+		return #{ level : 0, linum : 0, headline : ''}
+	endif
+	let headline = getline(linum)
 	let filetype = &filetype
 	if filetype == 'org'
-		let leading = line->matchstr('^\*\+')
+		let leading = headline->matchstr('^\*\+')
 	elseif filetype == 'markdown'
-		let leading = line->matchstr('^#\+')
+		let leading = headline->matchstr('^#\+')
 	endif
 	let level = len(leading)
-	let properties = #{ level : level, linum : linum, line : line }
+	let properties = #{ level : level, linum : linum, headline : headline }
 	return properties
+endfun
+
+fun! organ#bird#level (move = 'dont-move')
+	" Level of current heading
+	return organ#bird#properties(a:move).level
 endfun
 
 fun! organ#bird#section (move = 'dont-move')
 	" Range & properties of current section
 	let move = a:move
-	let properties = organ#bird#properties ()
+	let properties = organ#bird#properties (move)
 	let head_linum = properties.linum
 	if head_linum == 0
-		echomsg 'organ bird range : headline not found'
+		echomsg 'organ bird section : headline not found'
 		return {}
 	endif
 	let level = properties.level
@@ -76,10 +85,10 @@ fun! organ#bird#section (move = 'dont-move')
 		mark '
 		call cursor(tail_linum, 1)
 	endif
-	let line = properties.line
+	let headline = properties.headline
 	let dict = #{
 				\ head_linum : head_linum,
-				\ headline : line,
+				\ headline : headline,
 				\ level : level,
 				\ tail_linum : tail_linum,
 				\}
@@ -88,12 +97,7 @@ endfun
 
 fun! organ#bird#tail (move = 'dont-move')
 	" Last line of current
-	return organ#bird#range().tail_linum
-endfun
-
-fun! organ#bird#level (move = 'dont-move')
-	" Level of current heading
-	return organ#bird#properties(a:move).level
+	return organ#bird#section().tail_linum
 endfun
 
 " ---- previous, next
@@ -115,8 +119,7 @@ fun! organ#bird#previous (wrap = 'wrap')
 	else
 		let linum = search(headline_pattern, 'bsW')
 	endif
-	let line = getline('.')
-	if line !~ headline_pattern
+	if linum == 0
 		echomsg 'organ bird previous heading : not found'
 		return v:false
 	endif
@@ -142,8 +145,7 @@ fun! organ#bird#next (wrap = 'wrap')
 	else
 		let linum = search(headline_pattern, 'sW')
 	endif
-	let line = getline('.')
-	if line !~ headline_pattern
+	if linum == 0
 		echomsg 'organ bird next heading : not found'
 		return v:false
 	endif

@@ -18,9 +18,9 @@ fun! organ#tree#promote ()
 		echomsg 'organ tree promote heading : already at top level'
 		return v:false
 	endif
-	let line = properties.line
-	let line = line[1:]
-	call setline(linum, line)
+	let headline = properties.headline
+	let headline = headline[1:]
+	call setline(linum, headline)
 	return v:true
 endfun
 
@@ -32,14 +32,14 @@ fun! organ#tree#demote ()
 		echomsg 'organ tree demote heading : headline not found'
 		return v:false
 	endif
-	let line = properties.line
+	let headline = properties.headline
 	let filetype = &filetype
 	if filetype == 'org'
-		let line = '*' .. line
+		let headline = '*' .. headline
 	elseif filetype == 'markdown'
-		let line = '#' .. line
+		let headline = '#' .. headline
 	endif
-	call setline(linum, line)
+	call setline(linum, headline)
 	normal! zv
 	return v:true
 endfun
@@ -59,9 +59,10 @@ fun! organ#tree#promote_subtree ()
 		echomsg 'organ tree promote subtree : already at top level'
 		return v:false
 	endif
-	let line = section.line
-	let line = line[1:]
-	call setline(linum, line)
+	let tailnum = section.tail_linum
+	let headline = section.headline
+	let headline = headline[1:]
+	call setline(linum, headline)
 	return v:true
 endfun
 
@@ -73,14 +74,14 @@ fun! organ#tree#demote_subtree ()
 		echomsg 'organ tree demote subtree : headline not found'
 		return v:false
 	endif
-	let line = section.line
+	let headline = section.headline
 	let filetype = &filetype
 	if filetype == 'org'
-		let line = '*' .. line
+		let headline = '*' .. headline
 	elseif filetype == 'markdown'
-		let line = '#' .. line
+		let headline = '#' .. headline
 	endif
-	call setline(linum, line)
+	call setline(linum, headline)
 	normal! zv
 	return v:true
 endfun

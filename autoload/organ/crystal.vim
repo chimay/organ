@@ -9,16 +9,6 @@ if ! exists('s:plain_list_line_pattern')
 	lockvar! s:plain_list_line_pattern
 endif
 
-if ! exists('s:plain_list_unordered_prefixes')
-	let s:plain_list_unordered_prefixes = ['-', '+', '*']
-	lockvar! s:plain_list_unordered_prefixes
-endif
-
-if ! exists('s:plain_list_ordered_prefixes_patterns')
-	let s:plain_list_ordered_prefixes_patterns = ['[0-9]\+.', '[0-9]\+)']
-	lockvar! s:plain_list_ordered_prefixes_patterns
-endif
-
 " ---- public interface
 
 fun! organ#crystal#fetch (varname, conversion = 'no-conversion')

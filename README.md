@@ -24,6 +24,7 @@ It is primarily focused on editing orgmode and markdown files.
 
 ## Features
 
+- folding based on headings
 - navigate in the headings hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
