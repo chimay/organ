@@ -84,6 +84,24 @@ if ! exists('s:maps_insert')
 	lockvar! s:maps_insert
 endif
 
+" ---- speed keys
+
+if ! exists('s:speedkeys')
+	let s:speedkeys = [
+		\ [ 'p' , 'organ#bird#previous'             ] ,
+		\ [ 'n' , 'organ#bird#next'                 ] ,
+		\ [ 'b' , 'organ#bird#backward'             ] ,
+		\ [ 'f' , 'organ#bird#forward'              ] ,
+		\ [ 'u' , 'organ#bird#parent'               ] ,
+		\ [ 'D' , 'organ#bird#child'                ] ,
+		\ [ 'h' , 'organ#yggdrasil#promote'         ] ,
+		\ [ 'l' , 'organ#yggdrasil#demote'          ] ,
+		\ [ 'H' , 'organ#yggdrasil#promote_subtree' ] ,
+		\ [ 'L' , 'organ#yggdrasil#demote_subtree'  ] ,
+		\ ]
+	lockvar! s:speedkeys
+endif
+
 " ---- public interface
 
 fun! organ#geode#fetch (varname, conversion = 'no-conversion')

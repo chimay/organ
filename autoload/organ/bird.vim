@@ -4,6 +4,13 @@
 "
 " Navigation on orgmode or markdown headings hierarchy
 
+" ---- script constants
+
+if ! exists('s:speedkeys')
+	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
+	lockvar s:speedkeys
+endif
+
 " ---- helpers
 
 fun! organ#bird#is_on_headline ()
@@ -274,6 +281,13 @@ endfun
 " -- speed commands
 
 fun! organ#bird#speed (key)
-	" Speed key on heading line
+	" Speed key on headlines first char
+	let key = a:key
+	if ! organ#bird#is_on_headline () || col('.') != 1
+		execute 'normal!' key
+		return 0
+	endif
+	let function = s:speedkeys[key]
+	call {function}()
 endfun
 

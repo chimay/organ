@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:speedkeys')
+	let s:speedkeys = organ#crystal#fetch('speedkeys')
+	lockvar s:speedkeys
+endif
+
 if ! exists('s:normal_plugs')
 	let s:normal_plugs = organ#geode#fetch('plugs/normal')
 	lockvar s:normal_plugs
@@ -50,7 +55,7 @@ fun! organ#centre#plugs ()
 		if right !~ ')$'
 			let right ..= '()'
 		endif
-		exe begin .. left .. middle right .. end
+		execute begin .. left .. middle right .. end
 	endfor
 	" ---- visual maps
 	let begin = 'vnoremap  <plug>('
@@ -62,7 +67,7 @@ fun! organ#centre#plugs ()
 		if right !~ ')$'
 			let right ..= '()'
 		endif
-		exe begin .. left .. middle right .. end
+		execute begin .. left .. middle right .. end
 	endfor
 	" ---- insert maps
 	let begin = 'inoremap  <plug>('
@@ -74,7 +79,7 @@ fun! organ#centre#plugs ()
 		if right !~ ')$'
 			let right ..= '()'
 		endif
-		exe begin .. left .. middle right .. end
+		execute begin .. left .. middle right .. end
 	endfor
 endfun
 
@@ -111,31 +116,41 @@ fun! organ#centre#prefixless ()
 	" Prefix-less maps
 	" ---- normal
 	let nmap = 'nmap <buffer> <silent>'
-	exe nmap '<m-p>       <plug>(organ-nav-previous)'
-	exe nmap '<m-n>       <plug>(organ-nav-next)'
-	exe nmap '<m-b>       <plug>(organ-nav-backward)'
-	exe nmap '<m-f>       <plug>(organ-nav-forward)'
-	exe nmap '<m-u>       <plug>(organ-nav-parent)'
-	exe nmap '<m-d>       <plug>(organ-nav-child)'
-	exe nmap '<m-left>    <plug>(organ-op-promote)'
-	exe nmap '<m-right>   <plug>(organ-op-demote)'
-	exe nmap '<m-s-left>  <plug>(organ-op-promote-subtree)'
-	exe nmap '<m-s-right> <plug>(organ-op-demote-subtree)'
+	execute nmap '<m-p>       <plug>(organ-nav-previous)'
+	execute nmap '<m-n>       <plug>(organ-nav-next)'
+	execute nmap '<m-b>       <plug>(organ-nav-backward)'
+	execute nmap '<m-f>       <plug>(organ-nav-forward)'
+	execute nmap '<m-u>       <plug>(organ-nav-parent)'
+	execute nmap '<m-d>       <plug>(organ-nav-child)'
+	execute nmap '<m-left>    <plug>(organ-op-promote)'
+	execute nmap '<m-right>   <plug>(organ-op-demote)'
+	execute nmap '<m-s-left>  <plug>(organ-op-promote-subtree)'
+	execute nmap '<m-s-right> <plug>(organ-op-demote-subtree)'
 	" ---- visual
 	let vmap = 'vmap <buffer> <silent>'
 	" ---- normal
 	let imap = 'imap <buffer> <silent>'
 	" -- tree
-	exe imap '<m-p>       <plug>(organ-nav-previous)'
-	exe imap '<m-n>       <plug>(organ-nav-next)'
-	exe imap '<m-b>       <plug>(organ-nav-backward)'
-	exe imap '<m-f>       <plug>(organ-nav-forward)'
-	exe imap '<m-u>       <plug>(organ-nav-parent)'
-	exe imap '<m-d>       <plug>(organ-nav-child)'
-	exe imap '<m-left>    <plug>(organ-op-promote)'
-	exe imap '<m-right>   <plug>(organ-op-demote)'
-	exe imap '<m-s-left>  <plug>(organ-op-promote-subtree)'
-	exe imap '<m-s-right> <plug>(organ-op-demote-subtree)'
+	execute imap '<m-p>       <plug>(organ-nav-previous)'
+	execute imap '<m-n>       <plug>(organ-nav-next)'
+	execute imap '<m-b>       <plug>(organ-nav-backward)'
+	execute imap '<m-f>       <plug>(organ-nav-forward)'
+	execute imap '<m-u>       <plug>(organ-nav-parent)'
+	execute imap '<m-d>       <plug>(organ-nav-child)'
+	execute imap '<m-left>    <plug>(organ-op-promote)'
+	execute imap '<m-right>   <plug>(organ-op-demote)'
+	execute imap '<m-s-left>  <plug>(organ-op-promote-subtree)'
+	execute imap '<m-s-right> <plug>(organ-op-demote-subtree)'
+endfun
+
+fun! organ#centre#speedkeys ()
+	" Speed keys on headlines first char
+	let map = 'nnoremap <buffer>'
+	let command = "<cmd>call organ#bird#speed('"
+	let close = "')<cr>"
+	for key in s:speedkeys
+		execute map key command  .. key .. close
+	endfor
 endfun
 
 " ---- link plugs & maps
@@ -147,5 +162,8 @@ fun! organ#centre#cables ()
 	call organ#centre#mappings ('insert')
 	if g:organ_config.prefixless > 0
 		call organ#centre#prefixless ()
+	endif
+	if g:organ_config.speedkeys > 0
+		call organ#centre#speedkeys ()
 	endif
 endfun

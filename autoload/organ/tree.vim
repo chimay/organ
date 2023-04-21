@@ -4,7 +4,9 @@
 "
 " Operations on orgmode or markdown headings hierarchy
 
-" ---- current heading only
+" ---- promote & demote
+
+"  -- current heading only
 
 fun! organ#tree#promote ()
 	" Promote heading
@@ -44,7 +46,7 @@ fun! organ#tree#demote ()
 	return linum
 endfun
 
-" ---- subtree
+" -- subtree
 
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
@@ -88,4 +90,6 @@ fun! organ#tree#demote_subtree ()
 		endif
 	endwhile
 endfun
+
+" ---- move
 

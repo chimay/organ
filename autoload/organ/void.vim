@@ -15,4 +15,7 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefixless')
 		let g:organ_config.prefixless = 0
 	endif
+	if ! has_key(g:organ_config, 'speedkeys')
+		let g:organ_config.speedkeys = 0
+	endif
 endfun

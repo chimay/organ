@@ -48,6 +48,8 @@ if ! exists("g:organ_loaded")
 	let g:organ_config.prefix = '<m-c>'
 	" enable prefixless maps
 	let g:organ_config.prefixless = 1
+    " enable speed keys on headlines first char
+	let g:organ_config.speedkeys = 1
 endif
 ```
 
@@ -71,8 +73,8 @@ value in your init file, these bindings become available :
 ## With prefix
 
 The prefix bindings are always available, regardless of the
-`g:organ_config.prefixless` value. They are inspired by orgmode, with
-`<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
+`g:organ_config.prefixless` value. They are mostly inspired by orgmode,
+with `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 
 - `<M-c><M-p>`       : previous heading
 - `<M-c><M-n>`       : next heading
