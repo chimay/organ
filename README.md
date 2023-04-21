@@ -4,6 +4,7 @@
 
 * [Introduction](#introduction)
     * [What is it ?](#what-is-it-)
+    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
     * [Features](#features)
     * [Prerequisites](#prerequisites)
 * [Configuration](#configuration)
@@ -22,6 +23,19 @@ WORK IN PROGRESS
 Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 
 It is primarily focused on editing orgmode and markdown files.
+
+## Why another orgmode clone for vim ?
+
+First of all, it is not intended as a clone, more of a loose adaptation.
+
+The current orgmode plugins for (neo)vim are either :
+
+- abandoned and not adapted for my usage
+- writtent in lua, which means they only work for neovim
+
+Since I use both editors, I wanted to write a lightweight plugin in
+plain simple vimscript, with minimal dependancies (most of it doesn't
+need anything).
 
 ## Features
 
