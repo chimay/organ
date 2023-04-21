@@ -19,7 +19,7 @@ fun! organ#bird#is_on_headline ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
-	" First line of current heading
+	" First line of current section
 	let move = a:move
 	let filetype = &filetype
 	if filetype == 'org'
@@ -50,21 +50,21 @@ fun! organ#bird#properties (move = 'dont-move')
 	return properties
 endfun
 
-fun! organ#bird#range (move = 'dont-move')
-	" Range of current heading
+fun! organ#bird#section (move = 'dont-move')
+	" Range & properties of current section
 	let move = a:move
 	let properties = organ#bird#properties ()
 	let head_linum = properties.linum
 	if head_linum == 0
-		echomsg 'organ bird forward heading : headline not found'
-		return linum
+		echomsg 'organ bird range : headline not found'
+		return {}
 	endif
 	let level = properties.level
 	let filetype = &filetype
 	if filetype == 'org'
-		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
+		let headline_pattern = '^\*\{1,' .. level .. '\}' .. '[^*]'
 	elseif filetype == 'markdown'
-		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
+		let headline_pattern = '^#\{1,' .. level .. '\}' .. '[^#]'
 	endif
 	let forward_linum = search(headline_pattern, 'nW')
 	if forward_linum == 0
@@ -76,12 +76,19 @@ fun! organ#bird#range (move = 'dont-move')
 		mark '
 		call cursor(tail_linum, 1)
 	endif
-	return [head_linum, tail_linum]
+	let line = properties.line
+	let dict = #{
+				\ head_linum : head_linum,
+				\ headline : line,
+				\ level : level,
+				\ tail_linum : tail_linum,
+				\}
+	return dict
 endfun
 
 fun! organ#bird#tail (move = 'dont-move')
-	" Last line of current heading
-	return organ#bird#range()[1]
+	" Last line of current
+	return organ#bird#range().tail_linum
 endfun
 
 fun! organ#bird#level (move = 'dont-move')
