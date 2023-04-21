@@ -121,7 +121,7 @@ fun! organ#bird#previous (wrap = 'wrap')
 	endif
 	if linum == 0
 		echomsg 'organ bird previous heading : not found'
-		return v:false
+		return 0
 	endif
 	normal! zv
 	return linum
@@ -147,7 +147,7 @@ fun! organ#bird#next (wrap = 'wrap')
 	endif
 	if linum == 0
 		echomsg 'organ bird next heading : not found'
-		return v:false
+		return 0
 	endif
 	normal! zv
 	return linum

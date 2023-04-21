@@ -35,3 +35,11 @@ fun! organ#bush#demote ()
 	call setline('.', line)
 	return v:true
 endfun
+
+fun! organ#bush#promote_subtree ()
+	" Promote list item subtree
+endfun
+
+fun! organ#bush#demote_subtree ()
+	" Demote list item subtree
+endfun

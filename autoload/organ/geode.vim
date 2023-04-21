@@ -8,14 +8,16 @@
 
 if ! exists('s:plugs_normal')
 	let s:plugs_normal = [
-		\ [ 'organ-nav-previous' , 'organ#bird#previous'      ] ,
-		\ [ 'organ-nav-next'     , 'organ#bird#next'          ] ,
-		\ [ 'organ-nav-backward' , 'organ#bird#backward'      ] ,
-		\ [ 'organ-nav-forward'  , 'organ#bird#forward'       ] ,
-		\ [ 'organ-nav-parent'   , 'organ#bird#parent'        ] ,
-		\ [ 'organ-nav-child'    , 'organ#bird#child'         ] ,
-		\ [ 'organ-op-promote'   , 'organ#yggdrasil#promote'  ] ,
-		\ [ 'organ-op-demote'    , 'organ#yggdrasil#demote'   ] ,
+		\ [ 'organ-nav-previous'       , 'organ#bird#previous'              ] ,
+		\ [ 'organ-nav-next'           , 'organ#bird#next'                  ] ,
+		\ [ 'organ-nav-backward'       , 'organ#bird#backward'              ] ,
+		\ [ 'organ-nav-forward'        , 'organ#bird#forward'               ] ,
+		\ [ 'organ-nav-parent'         , 'organ#bird#parent'                ] ,
+		\ [ 'organ-nav-child'          , 'organ#bird#child'                 ] ,
+		\ [ 'organ-op-promote'         , 'organ#yggdrasil#promote'          ] ,
+		\ [ 'organ-op-demote'          , 'organ#yggdrasil#demote'           ] ,
+		\ [ 'organ-op-promote-subtree' , 'organ#yggdrasil#promote_subtree'  ] ,
+		\ [ 'organ-op-demote-subtree'  , 'organ#yggdrasil#demote_subtree'   ] ,
 		\ ]
 	lockvar! s:plugs_normal
 endif
@@ -28,14 +30,16 @@ endif
 
 if ! exists('s:plugs_insert')
 	let s:plugs_insert = [
-		\ [ 'organ-nav-previous' , 'organ#bird#previous' ] ,
-		\ [ 'organ-nav-next'     , 'organ#bird#next'     ] ,
-		\ [ 'organ-nav-backward' , 'organ#bird#backward' ] ,
-		\ [ 'organ-nav-forward'  , 'organ#bird#forward'  ] ,
-		\ [ 'organ-nav-parent'   , 'organ#bird#parent'   ] ,
-		\ [ 'organ-nav-child'    , 'organ#bird#child'    ] ,
-		\ [ 'organ-op-promote' , 'organ#tree#promote'    ] ,
-		\ [ 'organ-op-demote'  , 'organ#tree#demote'     ] ,
+		\ [ 'organ-nav-previous'       , 'organ#bird#previous'        ] ,
+		\ [ 'organ-nav-next'           , 'organ#bird#next'            ] ,
+		\ [ 'organ-nav-backward'       , 'organ#bird#backward'        ] ,
+		\ [ 'organ-nav-forward'        , 'organ#bird#forward'         ] ,
+		\ [ 'organ-nav-parent'         , 'organ#bird#parent'          ] ,
+		\ [ 'organ-nav-child'          , 'organ#bird#child'           ] ,
+		\ [ 'organ-op-promote'         , 'organ#tree#promote'         ] ,
+		\ [ 'organ-op-demote'          , 'organ#tree#demote'          ] ,
+		\ [ 'organ-op-promote-subtree' , 'organ#tree#promote_subtree' ] ,
+		\ [ 'organ-op-demote-subtree'  , 'organ#tree#demote_subtree'  ] ,
 		\ ]
 	lockvar! s:plugs_insert
 endif
@@ -44,14 +48,16 @@ endif
 
 if ! exists('s:maps_normal')
 	let s:maps_normal = [
-		\ [ '<m-p>'      , 'organ-nav-previous' ] ,
-		\ [ '<m-n>'      , 'organ-nav-next'     ] ,
-		\ [ '<m-b>'      , 'organ-nav-backward' ] ,
-		\ [ '<m-f>'      , 'organ-nav-forward'  ] ,
-		\ [ '<m-u>'      , 'organ-nav-parent'   ] ,
-		\ [ '<m-d>'      , 'organ-nav-child'    ] ,
-		\ [ '<m-left>'   , 'organ-op-promote'   ] ,
-		\ [ '<m-right>'  , 'organ-op-demote'    ] ,
+		\ [ '<m-p>'       , 'organ-nav-previous'       ] ,
+		\ [ '<m-n>'       , 'organ-nav-next'           ] ,
+		\ [ '<m-b>'       , 'organ-nav-backward'       ] ,
+		\ [ '<m-f>'       , 'organ-nav-forward'        ] ,
+		\ [ '<m-u>'       , 'organ-nav-parent'         ] ,
+		\ [ '<m-d>'       , 'organ-nav-child'          ] ,
+		\ [ '<m-left>'    , 'organ-op-promote'         ] ,
+		\ [ '<m-right>'   , 'organ-op-demote'          ] ,
+		\ [ '<m-s-left>'  , 'organ-op-promote-subtree' ] ,
+		\ [ '<m-s-right>' , 'organ-op-demote-subtree'  ] ,
 		\ ]
 	lockvar! s:maps_normal
 endif
@@ -64,14 +70,16 @@ endif
 
 if ! exists('s:maps_insert')
 	let s:maps_insert = [
-		\ [ '<m-p>'      , 'organ-nav-previous' ] ,
-		\ [ '<m-n>'      , 'organ-nav-next'     ] ,
-		\ [ '<m-b>'      , 'organ-nav-backward' ] ,
-		\ [ '<m-f>'      , 'organ-nav-forward'  ] ,
-		\ [ '<m-u>'      , 'organ-nav-parent'   ] ,
-		\ [ '<m-d>'      , 'organ-nav-child'    ] ,
-		\ [ '<m-left>'   , 'organ-op-promote'   ] ,
-		\ [ '<m-right>'  , 'organ-op-demote'    ] ,
+		\ [ '<m-p>'      , 'organ-nav-previous'        ] ,
+		\ [ '<m-n>'      , 'organ-nav-next'            ] ,
+		\ [ '<m-b>'      , 'organ-nav-backward'        ] ,
+		\ [ '<m-f>'      , 'organ-nav-forward'         ] ,
+		\ [ '<m-u>'      , 'organ-nav-parent'          ] ,
+		\ [ '<m-d>'      , 'organ-nav-child'           ] ,
+		\ [ '<m-left>'   , 'organ-op-promote'          ] ,
+		\ [ '<m-right>'  , 'organ-op-demote'           ] ,
+		\ [ '<m-s-left>'  , 'organ-op-promote-subtree' ] ,
+		\ [ '<m-s-right>' , 'organ-op-demote-subtree'  ] ,
 		\ ]
 	lockvar! s:maps_insert
 endif

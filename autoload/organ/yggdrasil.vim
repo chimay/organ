@@ -32,3 +32,26 @@ fun! organ#yggdrasil#demote ()
 		call organ#tree#demote ()
 	endif
 endfun
+
+" ---- promote & demote subtree
+
+fun! organ#yggdrasil#promote_subtree ()
+	" Promote heading or list item subtree
+	let line = getline('.')
+	if line =~ s:plain_list_line_pattern
+		call organ#bush#promote_subtree ()
+	else
+		call organ#tree#promote_subtree ()
+	endif
+endfun
+
+fun! organ#yggdrasil#demote_subtree ()
+	" Demote heading or list item subtree
+	let line = getline('.')
+	if line =~ s:plain_list_line_pattern
+		call organ#bush#demote_subtree ()
+	else
+		call organ#tree#demote_subtree ()
+	endif
+endfun
+

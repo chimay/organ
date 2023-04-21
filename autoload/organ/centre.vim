@@ -111,27 +111,31 @@ fun! organ#centre#prefixless ()
 	" Prefix-less maps
 	" ---- normal
 	let nmap = 'nmap <buffer> <silent>'
-	exe nmap '<m-p>     <plug>(organ-nav-previous)'
-	exe nmap '<m-n>     <plug>(organ-nav-next)'
-	exe nmap '<m-b>     <plug>(organ-nav-backward)'
-	exe nmap '<m-f>     <plug>(organ-nav-forward)'
-	exe nmap '<m-u>     <plug>(organ-nav-parent)'
-	exe nmap '<m-d>     <plug>(organ-nav-child)'
-	exe nmap '<m-left>  <plug>(organ-op-promote)'
-	exe nmap '<m-right> <plug>(organ-op-demote)'
+	exe nmap '<m-p>       <plug>(organ-nav-previous)'
+	exe nmap '<m-n>       <plug>(organ-nav-next)'
+	exe nmap '<m-b>       <plug>(organ-nav-backward)'
+	exe nmap '<m-f>       <plug>(organ-nav-forward)'
+	exe nmap '<m-u>       <plug>(organ-nav-parent)'
+	exe nmap '<m-d>       <plug>(organ-nav-child)'
+	exe nmap '<m-left>    <plug>(organ-op-promote)'
+	exe nmap '<m-right>   <plug>(organ-op-demote)'
+	exe nmap '<m-s-left>  <plug>(organ-op-promote-subtree)'
+	exe nmap '<m-s-right> <plug>(organ-op-demote-subtree)'
 	" ---- visual
 	let vmap = 'vmap <buffer> <silent>'
 	" ---- normal
 	let imap = 'imap <buffer> <silent>'
 	" -- tree
-	exe imap '<m-p>     <plug>(organ-nav-previous)'
-	exe imap '<m-n>     <plug>(organ-nav-next)'
-	exe imap '<m-b>     <plug>(organ-nav-backward)'
-	exe imap '<m-f>     <plug>(organ-nav-forward)'
-	exe imap '<m-u>     <plug>(organ-nav-parent)'
-	exe imap '<m-d>     <plug>(organ-nav-child)'
-	exe imap '<m-left>  <plug>(organ-op-promote)'
-	exe imap '<m-right> <plug>(organ-op-demote)'
+	exe imap '<m-p>       <plug>(organ-nav-previous)'
+	exe imap '<m-n>       <plug>(organ-nav-next)'
+	exe imap '<m-b>       <plug>(organ-nav-backward)'
+	exe imap '<m-f>       <plug>(organ-nav-forward)'
+	exe imap '<m-u>       <plug>(organ-nav-parent)'
+	exe imap '<m-d>       <plug>(organ-nav-child)'
+	exe imap '<m-left>    <plug>(organ-op-promote)'
+	exe imap '<m-right>   <plug>(organ-op-demote)'
+	exe imap '<m-s-left>  <plug>(organ-op-promote-subtree)'
+	exe imap '<m-s-right> <plug>(organ-op-demote-subtree)'
 endfun
 
 " ---- link plugs & maps

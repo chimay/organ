@@ -12,16 +12,16 @@ fun! organ#tree#promote ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ tree promote heading : headline not found'
-		return v:false
+		return 0
 	endif
 	if properties.level == 1
 		echomsg 'organ tree promote heading : already at top level'
-		return v:false
+		return 0
 	endif
 	let headline = properties.headline
 	let headline = headline[1:]
 	call setline(linum, headline)
-	return v:true
+	return linum
 endfun
 
 fun! organ#tree#demote ()
@@ -30,7 +30,7 @@ fun! organ#tree#demote ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ tree demote heading : headline not found'
-		return v:false
+		return 0
 	endif
 	let headline = properties.headline
 	let filetype = &filetype
@@ -41,7 +41,7 @@ fun! organ#tree#demote ()
 	endif
 	call setline(linum, headline)
 	normal! zv
-	return v:true
+	return linum
 endfun
 
 " ---- subtree
@@ -52,18 +52,22 @@ fun! organ#tree#promote_subtree ()
 	let headnum = section.head_linum
 	if headnum == 0
 		echomsg 'organ tree promote subtree : headline not found'
-		return v:false
+		return 0
 	endif
 	let level = section.level
 	if level == 1
 		echomsg 'organ tree promote subtree : already at top level'
-		return v:false
+		return 0
 	endif
 	let tailnum = section.tail_linum
-	let headline = section.headline
-	let headline = headline[1:]
-	call setline(linum, headline)
-	return v:true
+	while v:true
+		let linum = organ#tree#promote ()
+		let linum = organ#bird#next ('move')
+		if linum >= tailnum || linum == 0
+			call cursor(headnum, 1)
+			return linum
+		endif
+	endwhile
 endfun
 
 fun! organ#tree#demote_subtree ()
@@ -72,17 +76,16 @@ fun! organ#tree#demote_subtree ()
 	let headnum = section.head_linum
 	if headnum == 0
 		echomsg 'organ tree demote subtree : headline not found'
-		return v:false
+		return 0
 	endif
-	let headline = section.headline
-	let filetype = &filetype
-	if filetype == 'org'
-		let headline = '*' .. headline
-	elseif filetype == 'markdown'
-		let headline = '#' .. headline
-	endif
-	call setline(linum, headline)
-	normal! zv
-	return v:true
+	let tailnum = section.tail_linum
+	while v:true
+		let linum = organ#tree#demote ()
+		let linum = organ#bird#next ('move')
+		if linum >= tailnum || linum == 0
+			call cursor(headnum, 1)
+			return linum
+		endif
+	endwhile
 endfun
 
