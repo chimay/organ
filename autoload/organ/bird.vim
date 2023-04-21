@@ -203,6 +203,31 @@ fun! organ#bird#parent_heading (wrap = 'wrap')
 	return linum
 endfun
 
+fun! organ#bird#child_heading (wrap = 'wrap')
+	" Child or lower heading
+	let wrap = a:wrap
+	let properties = organ#bird#headline_properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird parent heading : headline not found'
+		return linum
+	endif
+	let level = properties.level + 1
+	let filetype = &filetype
+	if filetype == 'org'
+		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
+	elseif filetype == 'markdown'
+		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
+	endif
+	if wrap == 'wrap'
+		let linum = search(headline_pattern, 'bsw')
+	else
+		let linum = search(headline_pattern, 'bsW')
+	endif
+	normal! zv
+	return linum
+endfun
+
 " ---- goto
 
 fun! organ#bird#goto ()
