@@ -6,70 +6,55 @@
 
 " ---- helpers
 
-fun! organ#bird#is_on_first_line ()
-	" Whether current position is on heading line
+fun! organ#bird#is_on_headline ()
+	" Whether current position is on headline
 	let filetype = &filetype
 	if filetype == 'org'
-		let heading_pattern = '^\*'
+		let headline_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let heading_pattern = '^#'
+		let headline_pattern = '^#'
 	endif
 	let line = getline('.')
-	return line =~ heading_pattern
+	return line =~ headline_pattern
 endfun
 
-fun! organ#bird#first_line (goto_head = 'goto-head')
-	" Find first line (head line) of current heading
-	let goto_head = a:goto_head
+fun! organ#bird#headline (move = 'dont-move')
+	" Find first line of current heading
+	let move = a:move
 	let filetype = &filetype
 	if filetype == 'org'
-		let heading_pattern = '^\*'
+		let headline_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let heading_pattern = '^#'
+		let headline_pattern = '^#'
 	endif
-	if goto_head != 'goto-head'
-		let linum = search(heading_pattern, 'bcnW')
+	if move == 'move'
+		return search(headline_pattern, 'bcsW')
 	else
-		let linum = search(heading_pattern, 'bcsW')
+		return search(headline_pattern, 'bcnW')
 	endif
-	if linum == 0
-		echomsg 'organ bird heading line : not found'
-		return v:false
-	endif
-	return linum
 endfun
 
-fun! organ#bird#last_line (goto_last = 'goto-last')
+fun! organ#bird#tail (move = 'dont-move')
 	" Find last line of current heading
 	let goto_last = a:goto_last
 	let filetype = &filetype
 	if filetype == 'org'
-		let heading_pattern = '^\*'
+		let headline_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let heading_pattern = '^#'
+		let headline_pattern = '^#'
 	endif
-	if goto_last != 'goto-last'
-		let linum = search(heading_pattern, 'nW')
-		let linum -= 1
-	else
-		let linum = search(heading_pattern, 'sW')
-		let linum -= 1
+	let linum = search(headline_pattern, 'nW')
+	let linum -= 1
+	if move == 'move'
 		call cursor(linum, 1)
-	endif
-	if linum == 0
-		echomsg 'organ bird heading line : not found'
-		return v:false
 	endif
 	return linum
 endfun
 
-fun! organ#bird#level (goto_head = 'goto-head')
-	" Level of current heading
-	let goto_head = a:goto_head
-	let linum = organ#bird#first_line (goto_head)
-	if linum == 0
-		return v:false
-	endif
+fun! organ#bird#headline_properties (move = 'dont-move')
+	" Properties of current heading headline
+	let move = a:move
+	let linum = organ#bird#headline (move)
 	let line = getline(linum)
 	let filetype = &filetype
 	if filetype == 'org'
@@ -78,7 +63,13 @@ fun! organ#bird#level (goto_head = 'goto-head')
 		let leading = line->matchstr('^#\+')
 	endif
 	let level = len(leading)
-	return level
+	let properties = #{ level : level, linum : linum, line : line }
+	return properties
+endfun
+
+fun! organ#bird#level (move = 'dont-move')
+	" Level of current heading
+	return organ#bird#headline_properties(a:move).level
 endfun
 
 " ---- previous, next, backward, forward, parent
@@ -91,17 +82,17 @@ fun! organ#bird#previous_heading (wrap = 'wrap')
 	let line = getline('.')
 	let filetype = &filetype
 	if filetype == 'org'
-		let heading_pattern = '^\*'
+		let headline_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let heading_pattern = '^#'
+		let headline_pattern = '^#'
 	endif
 	if wrap == 'wrap'
-		let linum = search(heading_pattern, 'bsw')
+		let linum = search(headline_pattern, 'bsw')
 	else
-		let linum = search(heading_pattern, 'bsW')
+		let linum = search(headline_pattern, 'bsW')
 	endif
 	let line = getline('.')
-	if line !~ heading_pattern
+	if line !~ headline_pattern
 		echomsg 'organ bird previous heading : not found'
 		return v:false
 	endif
@@ -118,17 +109,17 @@ fun! organ#bird#next_heading (wrap = 'wrap')
 	let line = getline('.')
 	let filetype = &filetype
 	if filetype == 'org'
-		let heading_pattern = '^\*'
+		let headline_pattern = '^\*'
 	elseif filetype == 'markdown'
-		let heading_pattern = '^#'
+		let headline_pattern = '^#'
 	endif
 	if wrap == 'wrap'
-		let linum = search(heading_pattern, 'sw')
+		let linum = search(headline_pattern, 'sw')
 	else
-		let linum = search(heading_pattern, 'sW')
+		let linum = search(headline_pattern, 'sW')
 	endif
 	let line = getline('.')
-	if line !~ heading_pattern
+	if line !~ headline_pattern
 		echomsg 'organ bird next heading : not found'
 		return v:false
 	endif
@@ -136,92 +127,80 @@ fun! organ#bird#next_heading (wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#bird#backward_heading ()
+fun! organ#bird#backward_heading (wrap = 'wrap')
 	" Backward heading of same level
-	if ! organ#bird#is_on_first_line ()
-		return organ#bird#previous_heading ()
+	let wrap = a:wrap
+	let properties = organ#bird#headline_properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird backward heading : headline not found'
+		return linum
 	endif
-	let start_level = organ#bird#level ()
-	let start_linum = line('.')
-	let old_linum = start_linum
-	let wrapped = v:false
-	while v:true
-		let current_linum = organ#bird#previous_heading ()
-		let current_level = organ#bird#level ()
-		if current_level == start_level
-			return current_linum
-		endif
-		if current_linum >= old_linum
-			if ! wrapped
-				let wrapped = v:true
-			else
-				return current_linum
-			endif
-		endif
-		if current_linum <= start_linum && wrapped
-			return current_linum
-		endif
-		let old_linum = current_linum
-	endwhile
+	let level = properties.level
+	let filetype = &filetype
+	if filetype == 'org'
+		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
+	elseif filetype == 'markdown'
+		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
+	endif
+	echo headline_pattern
+	if wrap == 'wrap'
+		let linum = search(headline_pattern, 'bsw')
+	else
+		let linum = search(headline_pattern, 'bsW')
+	endif
+	normal! zv
+	return linum
 endfun
 
-fun! organ#bird#forward_heading ()
+fun! organ#bird#forward_heading (wrap = 'wrap')
 	" Forward heading of same level
-	if ! organ#bird#is_on_first_line ()
-		return organ#bird#next_heading ()
+	let wrap = a:wrap
+	let properties = organ#bird#headline_properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird forward heading : headline not found'
+		return linum
 	endif
-	let start_level = organ#bird#level ()
-	let start_linum = line('.')
-	let old_linum = start_linum
-	let wrapped = v:false
-	while v:true
-		let current_linum = organ#bird#next_heading ()
-		let current_level = organ#bird#level ()
-		if current_level == start_level
-			return current_linum
-		endif
-		if current_linum <= old_linum
-			if ! wrapped
-				let wrapped = v:true
-			else
-				return current_linum
-			endif
-		endif
-		if current_linum >= start_linum && wrapped
-			return current_linum
-		endif
-		let old_linum = current_linum
-	endwhile
+	let level = properties.level
+	let filetype = &filetype
+	if filetype == 'org'
+		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
+	elseif filetype == 'markdown'
+		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
+	endif
+	if wrap == 'wrap'
+		let linum = search(headline_pattern, 'sw')
+	else
+		let linum = search(headline_pattern, 'sW')
+	endif
+	normal! zv
+	return linum
 endfun
 
-fun! organ#bird#parent_heading ()
+fun! organ#bird#parent_heading (wrap = 'wrap')
 	" Parent upper heading
-	call organ#bird#heading_line ()
-	let start_level = organ#bird#level ()
-	let start_linum = line('.')
-	let old_linum = start_linum
-	if start_level == 1
-		return start_linum
+	let wrap = a:wrap
+	let properties = organ#bird#headline_properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird parent heading : headline not found'
+		return linum
 	endif
-	let wrapped = v:false
-	while v:true
-		let current_linum = organ#bird#previous_heading ()
-		let current_level = organ#bird#level ()
-		if current_level == start_level - 1
-			return current_linum
-		endif
-		if current_linum >= old_linum
-			if ! wrapped
-				let wrapped = v:true
-			else
-				return current_linum
-			endif
-		endif
-		if current_linum <= start_linum && wrapped
-			return current_linum
-		endif
-		let old_linum = current_linum
-	endwhile
+	let level = properties.level - 1
+	let filetype = &filetype
+	if filetype == 'org'
+		let headline_pattern = '^' .. repeat('\*', level) .. '[^*]'
+	elseif filetype == 'markdown'
+		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
+	endif
+	if wrap == 'wrap'
+		let linum = search(headline_pattern, 'bsw')
+	else
+		let linum = search(headline_pattern, 'bsW')
+	endif
+	normal! zv
+	return linum
 endfun
 
 " ---- goto
