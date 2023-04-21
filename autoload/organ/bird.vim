@@ -40,7 +40,7 @@ fun! organ#bird#properties (move = 'dont-move')
 	let linum = organ#bird#headline (move)
 	if linum == 0
 		echomsg 'organ bird properties : headline not found'
-		return #{ level : 0, linum : 0, headline : ''}
+		return #{ linum : 0, headline : '', level : 0 }
 	endif
 	let headline = getline(linum)
 	let filetype = &filetype
@@ -50,7 +50,7 @@ fun! organ#bird#properties (move = 'dont-move')
 		let leading = headline->matchstr('^#\+')
 	endif
 	let level = len(leading)
-	let properties = #{ level : level, linum : linum, headline : headline }
+	let properties = #{ linum : linum, headline : headline, level : level }
 	return properties
 endfun
 
@@ -66,7 +66,7 @@ fun! organ#bird#section (move = 'dont-move')
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ bird section : headline not found'
-		return {}
+		return #{ head_linum : 0, headline : '', level : 0, tail_linum : 0 }
 	endif
 	let level = properties.level
 	let filetype = &filetype
