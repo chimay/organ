@@ -179,7 +179,7 @@ fun! organ#bird#forward_heading (wrap = 'wrap')
 endfun
 
 fun! organ#bird#parent_heading (wrap = 'wrap')
-	" Parent upper heading
+	" Parent heading, ie first headline of level - 1, backward
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
 	let linum = properties.linum
@@ -204,7 +204,7 @@ fun! organ#bird#parent_heading (wrap = 'wrap')
 endfun
 
 fun! organ#bird#child_heading (wrap = 'wrap')
-	" Child or lower heading
+	" Child heading, or, more generally, first headline of level + 1, forward
 	let wrap = a:wrap
 	let properties = organ#bird#headline_properties ()
 	let linum = properties.linum
@@ -220,9 +220,9 @@ fun! organ#bird#child_heading (wrap = 'wrap')
 		let headline_pattern = '^' .. repeat('#', level) .. '[^#]'
 	endif
 	if wrap == 'wrap'
-		let linum = search(headline_pattern, 'bsw')
+		let linum = search(headline_pattern, 'sw')
 	else
-		let linum = search(headline_pattern, 'bsW')
+		let linum = search(headline_pattern, 'sW')
 	endif
 	normal! zv
 	return linum
