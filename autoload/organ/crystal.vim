@@ -4,6 +4,11 @@
 "
 " Internal Constants made crystal clear
 
+if ! exists('s:separator_level')
+	let s:separator_level = ' ⧽ '
+	lockvar! s:separator_level
+endif
+
 if ! exists('s:plain_list_line_pattern')
 	let s:plain_list_line_pattern = '^\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]'
 	lockvar! s:plain_list_line_pattern
