@@ -131,7 +131,7 @@ fun! organ#geode#fetch (varname, conversion = 'no-conversion')
 		let varname = 's:' .. varname
 	endif
 	" ---- raw or conversion
-	if conversion ==# 'dict' && organ#utils#is_nested_list ({varname})
+	if conversion ==# 'dict'
 		return organ#utils#items2dict ({varname})
 	else
 		return {varname}

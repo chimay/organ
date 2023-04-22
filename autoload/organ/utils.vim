@@ -38,8 +38,12 @@ endfun
 
 fun! organ#utils#items2dict (items)
 	" Convert items list -> dictionary
+	let items = a:items
+	if ! organ#utils#is_nested_list (items)
+		return {}
+	endif
 	let dict = {}
-	for [key, val] in a:items
+	for [key, val] in items
 		let dict[key] = val
 	endfor
 	return dict

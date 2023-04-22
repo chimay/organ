@@ -159,12 +159,10 @@ fun! organ#centre#speedkeys ()
 		execute map key command  .. key .. close
 	endfor
 	let close = "', '>')<cr>"
-	if ! empty(s:speedkeys_with_angle)
-		for key in keys(s:speedkeys_with_angle)
-			let angle = '<' .. key .. '>'
-			execute map angle command  .. key .. close
-		endfor
-	endif
+	for key in keys(s:speedkeys_with_angle)
+		let angled = '<' .. key .. '>'
+		execute map angled command  .. key .. close
+	endfor
 endfun
 
 " ---- link plugs & maps
