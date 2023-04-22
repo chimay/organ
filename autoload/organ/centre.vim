@@ -11,6 +11,11 @@ if ! exists('s:speedkeys')
 	lockvar s:speedkeys
 endif
 
+if ! exists('s:speedkeys_with_angle')
+	let s:speedkeys_with_angle = organ#geode#fetch('speedkeys/with_angle', 'dict')
+	lockvar s:speedkeys_with_angle
+endif
+
 if ! exists('s:normal_plugs')
 	let s:normal_plugs = organ#geode#fetch('plugs/normal')
 	lockvar s:normal_plugs
@@ -122,6 +127,7 @@ fun! organ#centre#prefixless ()
 	execute nmap '<m-f>       <plug>(organ-nav-forward)'
 	execute nmap '<m-u>       <plug>(organ-nav-parent)'
 	execute nmap '<m-d>       <plug>(organ-nav-child)'
+	execute nmap '<m-i>       <plug>(organ-nav-info)'
 	execute nmap '<m-left>    <plug>(organ-op-promote)'
 	execute nmap '<m-right>   <plug>(organ-op-demote)'
 	execute nmap '<m-s-left>  <plug>(organ-op-promote-subtree)'
@@ -137,6 +143,7 @@ fun! organ#centre#prefixless ()
 	execute imap '<m-f>       <plug>(organ-nav-forward)'
 	execute imap '<m-u>       <plug>(organ-nav-parent)'
 	execute imap '<m-d>       <plug>(organ-nav-child)'
+	execute imap '<m-i>       <plug>(organ-nav-info)'
 	execute imap '<m-left>    <plug>(organ-op-promote)'
 	execute imap '<m-right>   <plug>(organ-op-demote)'
 	execute imap '<m-s-left>  <plug>(organ-op-promote-subtree)'
@@ -151,6 +158,13 @@ fun! organ#centre#speedkeys ()
 	for key in keys(s:speedkeys)
 		execute map key command  .. key .. close
 	endfor
+	let close = "', '>')<cr>"
+	if ! empty(s:speedkeys_with_angle)
+		for key in keys(s:speedkeys_with_angle)
+			let angle = '<' .. key .. '>'
+			execute map angle command  .. key .. close
+		endfor
+	endif
 endfun
 
 " ---- link plugs & maps

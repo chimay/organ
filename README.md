@@ -114,6 +114,7 @@ active only when the cursor is on the first char of a headline :
 - `f` : forward heading of same level
 - `-` : parent heading
 - `+` : child heading
+- `w` : where am I ? full headings path (chapter, section, subsection, ...)
 - `<` : promote heading or list item
 - `>` : demote heading or list item
 - `H` : promote subtree

@@ -11,6 +11,11 @@ if ! exists('s:speedkeys')
 	lockvar s:speedkeys
 endif
 
+if ! exists('s:speedkeys_with_angle')
+	let s:speedkeys_with_angle = organ#geode#fetch('speedkeys/with_angle', 'dict')
+	lockvar s:speedkeys_with_angle
+endif
+
 " ---- helpers
 
 fun! organ#bird#is_on_headline ()
@@ -57,13 +62,25 @@ fun! organ#bird#properties (move = 'dont-move')
 		let leading = headline->matchstr('^#\+')
 	endif
 	let level = len(leading)
-	let properties = #{ linum : linum, headline : headline, level : level }
+	" -- assume a space before the title
+	let title = headline[level + 1:]
+	let properties = #{
+				\ linum : linum,
+				\ headline : headline,
+				\ level : level,
+				\ title : title
+				\}
 	return properties
 endfun
 
 fun! organ#bird#level (move = 'dont-move')
 	" Level of current heading
 	return organ#bird#properties(a:move).level
+endfun
+
+fun! organ#bird#title (move = 'dont-move')
+	" Level of current heading
+	return organ#bird#properties(a:move).title
 endfun
 
 fun! organ#bird#section (move = 'dont-move')
@@ -93,10 +110,12 @@ fun! organ#bird#section (move = 'dont-move')
 		call cursor(tail_linum, 1)
 	endif
 	let headline = properties.headline
+	let title = properties.title
 	let dict = #{
 				\ head_linum : head_linum,
 				\ headline : headline,
 				\ level : level,
+				\ title : title,
 				\ tail_linum : tail_linum,
 				\}
 	return dict
@@ -104,7 +123,7 @@ endfun
 
 fun! organ#bird#tail (move = 'dont-move')
 	" Last line of current
-	return organ#bird#section().tail_linum
+	return organ#bird#section(a:move).tail_linum
 endfun
 
 " ---- previous, next
@@ -214,10 +233,14 @@ endfun
 
 " ---- parent, child
 
-fun! organ#bird#parent (wrap = 'wrap')
+fun! organ#bird#parent (wrap = 'wrap', ...)
 	" Parent heading, ie first headline of level - 1, backward
 	let wrap = a:wrap
-	let properties = organ#bird#properties ()
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#bird#properties ()
+	endif
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ bird parent heading : headline not found'
@@ -272,6 +295,33 @@ fun! organ#bird#child (wrap = 'wrap')
 	return linum
 endfun
 
+" ---- full path of chapters, sections, subsections, and so on
+
+fun! organ#bird#path ()
+	" Full headings path
+	let position = getcurpos ()
+	let properties = organ#bird#properties ('move')
+	let path = properties.title
+	while v:true
+		if properties.linum == 0
+			call setpos('.', position)
+			return path
+		endif
+		if properties.level == 1
+			call setpos('.', position)
+			return path
+		endif
+		call organ#bird#parent ('wrap', properties)
+		let properties = organ#bird#properties ('move')
+		let path = properties.title .. '/' .. path
+	endwhile
+endfun
+
+fun! organ#bird#info ()
+	" Echo full headings path
+	echomsg organ#bird#path ()
+endfun
+
 " ---- goto
 
 fun! organ#bird#goto ()
@@ -280,14 +330,20 @@ endfun
 
 " -- speed commands
 
-fun! organ#bird#speed (key)
+fun! organ#bird#speed (key, angle = 'no-angle')
 	" Speed key on headlines first char
 	let key = a:key
+	let angle = a:angle
+	if angle ==# 'with-angle' || angle ==# '>'
+		let function = s:speedkeys_with_angle[key]
+		let key = '<' .. key .. '>'
+	else
+		let function = s:speedkeys[key]
+	endif
 	if ! organ#bird#is_on_headline () || col('.') != 1
 		execute 'normal!' key
 		return 0
 	endif
-	let function = s:speedkeys[key]
 	call {function}()
 endfun
 

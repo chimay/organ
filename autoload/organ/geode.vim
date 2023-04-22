@@ -14,6 +14,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-nav-forward'        , 'organ#bird#forward'               ] ,
 		\ [ 'organ-nav-parent'         , 'organ#bird#parent'                ] ,
 		\ [ 'organ-nav-child'          , 'organ#bird#child'                 ] ,
+		\ [ 'organ-nav-info'           , 'organ#bird#info'                  ] ,
 		\ [ 'organ-op-promote'         , 'organ#yggdrasil#promote'          ] ,
 		\ [ 'organ-op-demote'          , 'organ#yggdrasil#demote'           ] ,
 		\ [ 'organ-op-promote-subtree' , 'organ#yggdrasil#promote_subtree'  ] ,
@@ -36,6 +37,7 @@ if ! exists('s:plugs_insert')
 		\ [ 'organ-nav-forward'        , 'organ#bird#forward'         ] ,
 		\ [ 'organ-nav-parent'         , 'organ#bird#parent'          ] ,
 		\ [ 'organ-nav-child'          , 'organ#bird#child'           ] ,
+		\ [ 'organ-nav-info'           , 'organ#bird#info'            ] ,
 		\ [ 'organ-op-promote'         , 'organ#tree#promote'         ] ,
 		\ [ 'organ-op-demote'          , 'organ#tree#demote'          ] ,
 		\ [ 'organ-op-promote-subtree' , 'organ#tree#promote_subtree' ] ,
@@ -54,6 +56,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-f>'       , 'organ-nav-forward'        ] ,
 		\ [ '<m-u>'       , 'organ-nav-parent'         ] ,
 		\ [ '<m-d>'       , 'organ-nav-child'          ] ,
+		\ [ '<m-i>'       , 'organ-nav-info'           ] ,
 		\ [ '<m-left>'    , 'organ-op-promote'         ] ,
 		\ [ '<m-right>'   , 'organ-op-demote'          ] ,
 		\ [ '<m-s-left>'  , 'organ-op-promote-subtree' ] ,
@@ -70,14 +73,15 @@ endif
 
 if ! exists('s:maps_insert')
 	let s:maps_insert = [
-		\ [ '<m-p>'      , 'organ-nav-previous'        ] ,
-		\ [ '<m-n>'      , 'organ-nav-next'            ] ,
-		\ [ '<m-b>'      , 'organ-nav-backward'        ] ,
-		\ [ '<m-f>'      , 'organ-nav-forward'         ] ,
-		\ [ '<m-u>'      , 'organ-nav-parent'          ] ,
-		\ [ '<m-d>'      , 'organ-nav-child'           ] ,
-		\ [ '<m-left>'   , 'organ-op-promote'          ] ,
-		\ [ '<m-right>'  , 'organ-op-demote'           ] ,
+		\ [ '<m-p>'       , 'organ-nav-previous'       ] ,
+		\ [ '<m-n>'       , 'organ-nav-next'           ] ,
+		\ [ '<m-b>'       , 'organ-nav-backward'       ] ,
+		\ [ '<m-f>'       , 'organ-nav-forward'        ] ,
+		\ [ '<m-u>'       , 'organ-nav-parent'         ] ,
+		\ [ '<m-d>'       , 'organ-nav-child'          ] ,
+		\ [ '<m-i>'       , 'organ-nav-info'           ] ,
+		\ [ '<m-left>'    , 'organ-op-promote'         ] ,
+		\ [ '<m-right>'   , 'organ-op-demote'          ] ,
 		\ [ '<m-s-left>'  , 'organ-op-promote-subtree' ] ,
 		\ [ '<m-s-right>' , 'organ-op-demote-subtree'  ] ,
 		\ ]
@@ -94,14 +98,19 @@ if ! exists('s:speedkeys')
 		\ [ 'f',        'organ#bird#forward'              ] ,
 		\ [ '-',        'organ#bird#parent'               ] ,
 		\ [ '+',        'organ#bird#child'                ] ,
-		\ [ '<kminus>', 'organ#bird#parent'               ] ,
-		\ [ '<kplus>',  'organ#bird#child'                ] ,
+		\ [ 'w',        'organ#bird#info'                 ] ,
 		\ [ '<',        'organ#yggdrasil#promote'         ] ,
 		\ [ '>',        'organ#yggdrasil#demote'          ] ,
 		\ [ 'H',        'organ#yggdrasil#promote_subtree' ] ,
 		\ [ 'L',        'organ#yggdrasil#demote_subtree'  ] ,
 		\ ]
 	lockvar! s:speedkeys
+endif
+
+if ! exists('s:speedkeys_with_angle')
+	let s:speedkeys_with_angle = [
+		\ ]
+	lockvar! s:speedkeys_with_angle
 endif
 
 " ---- public interface
