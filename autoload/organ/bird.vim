@@ -366,7 +366,7 @@ fun! organ#bird#cycle_current_fold ()
 		execute range .. 'foldopen!'
 	else
 		execute range .. 'foldclose!'
-		for iter in range(1, level -1)
+		for iter in range(1, level - 1)
 			normal! zo
 		endfor
 	endif

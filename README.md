@@ -119,8 +119,8 @@ active only when the cursor is on the first char of a headline :
 - `-`      : parent heading
 - `+`      : child heading, loosely speaking : first headline of level + 1, forward
 - `w`      : where am I ? full headings path (chapter, section, subsection, ...)
-- `x`      : cycle current fold visibility
-- `X`      : cycle all folds visibility
+- `*`      : cycle current fold visibility
+- `#`      : cycle all folds visibility
 - `<`      : promote heading or list item
 - `>`      : demote heading or list item
 - `H`      : promote subtree
