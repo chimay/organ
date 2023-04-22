@@ -6,7 +6,7 @@
 
 " ---- promote & demote
 
-"  -- current heading only
+" -- current heading only
 
 fun! organ#tree#promote ()
 	" Promote heading
@@ -64,7 +64,7 @@ fun! organ#tree#promote_subtree ()
 	let tail_linum = section.tail_linum
 	while v:true
 		let linum = organ#tree#promote ()
-		let linum = organ#bird#next ('move')
+		let linum = organ#bird#next ('move', 'dont-wrap')
 		if linum >= tail_linum || linum == 0
 			call cursor(head_linum, 1)
 			return linum
@@ -83,45 +83,12 @@ fun! organ#tree#demote_subtree ()
 	let tail_linum = section.tail_linum
 	while v:true
 		let linum = organ#tree#demote ()
-		let linum = organ#bird#next ('move')
+		let linum = organ#bird#next ('move', 'dont-wrap')
 		if linum >= tail_linum || linum == 0
 			call cursor(head_linum, 1)
 			return linum
 		endif
 	endwhile
-endfun
-
-" ---- move
-
-fun! organ#tree#move_subtree_backward ()
-	" Move subtree backward
-	let section = organ#bird#section ('move')
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
-	let range = head_linum .. ',' .. tail_linum
-	let level = section.level
-	let headline_pattern = organ#bird#headline_pattern (1, level)
-	let flags = organ#bird#search_flags ('backward', 'dont-move', 'dont-wrap')
-	let target = search(headline_pattern, flags) - 1
-	execute range .. 'move' target
-	call cursor(target + 1, 1)
-	return target
-endfun
-
-fun! organ#tree#move_subtree_forward ()
-	" Move subtree forward
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
-	let range = head_linum .. ',' .. tail_linum
-	let level = section.level
-	call cursor(tail_linum + 1, 1)
-	let forward_section = organ#bird#section ()
-	let target = forward_section.tail_linum
-	execute range .. 'move' target
-	echomsg range .. 'move' target
-	call cursor(target + 1, 1)
-	return target
 endfun
 
 " ---- select, yank, delete
@@ -157,3 +124,35 @@ fun! organ#tree#delete_subtree ()
 	return section
 endfun
 
+" ---- move
+
+fun! organ#tree#move_subtree_backward ()
+	" Move subtree backward
+	let section = organ#bird#section ('move')
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	let level = section.level
+	let headline_pattern = organ#bird#headline_pattern (1, level)
+	let flags = organ#bird#search_flags ('backward', 'dont-move', 'dont-wrap')
+	let target = search(headline_pattern, flags) - 1
+	execute range .. 'move' target
+	call cursor(target + 1, 1)
+	return target
+endfun
+
+fun! organ#tree#move_subtree_forward ()
+	" Move subtree forward
+	let section = organ#bird#section ()
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	let level = section.level
+	call cursor(tail_linum + 1, 1)
+	let forward_section = organ#bird#section ()
+	let target = forward_section.tail_linum
+	execute range .. 'move' target
+	echomsg range .. 'move' target
+	call cursor(target + 1, 1)
+	return target
+endfun
