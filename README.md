@@ -164,7 +164,6 @@ This should have the same effect as writing :
 
 ```vim
 nmap <buffer><silent> <c-p> <plug>(organ-previous)
-nmap <buffer><silent> <c-p> <plug>(organ-previous)
 ```
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim` somewhere
