@@ -43,3 +43,11 @@ endfun
 fun! organ#bush#demote_subtree ()
 	" Demote list item subtree
 endfun
+
+fun! organ#bush#move_subtree_backward ()
+	" Move subtree backward
+endfun
+
+fun! organ#bush#move_subtree_forward ()
+	" Move_subtree_forward
+endfun

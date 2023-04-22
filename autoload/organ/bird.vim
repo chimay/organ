@@ -119,7 +119,8 @@ fun! organ#bird#section (move = 'dont-move')
 	endif
 	let level = properties.level
 	let headline_pattern = organ#bird#headline_pattern (1, level)
-	let forward_linum = search(headline_pattern, 'nW')
+	let flags = organ#bird#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let forward_linum = search(headline_pattern, flags)
 	if forward_linum == 0
 		let tail_linum = line('$')
 	else
@@ -127,7 +128,7 @@ fun! organ#bird#section (move = 'dont-move')
 	endif
 	if move == 'move'
 		mark '
-		call cursor(tail_linum, 1)
+		call cursor(head_linum, 1)
 	endif
 	let headline = properties.headline
 	let title = properties.title

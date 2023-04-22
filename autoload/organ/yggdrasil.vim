@@ -55,3 +55,24 @@ fun! organ#yggdrasil#demote_subtree ()
 	endif
 endfun
 
+" ---- promote & demote subtree
+
+fun! organ#yggdrasil#move_subtree_backward ()
+	" Move subtree backward
+	let line = getline('.')
+	if line =~ s:plain_list_line_pattern
+		call organ#bush#move_subtree_backward ()
+	else
+		call organ#tree#move_subtree_backward ()
+	endif
+endfun
+
+fun! organ#yggdrasil#move_subtree_forward ()
+	" Move subtree forward
+	let line = getline('.')
+	if line =~ s:plain_list_line_pattern
+		call organ#bush#move_subtree_forward ()
+	else
+		call organ#tree#move_subtree_forward ()
+	endif
+endfun
