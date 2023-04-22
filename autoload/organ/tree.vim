@@ -148,15 +148,23 @@ fun! organ#tree#move_subtree_forward ()
 	let tail_linum = section.tail_linum
 	let range = head_linum .. ',' .. tail_linum
 	let level = section.level
-	if tail_linum == line('$')
-		call cursor(tail_linum, 1)
+	let same_pattern = organ#bird#headline_pattern (level, level)
+	let level -= 1
+	let upper_pattern = organ#bird#headline_pattern (level, level)
+	let flags = organ#bird#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let same_linum = search(same_pattern, flags)
+	let upper_linum = search(upper_pattern, flags)
+	echomsg same_linum upper_linum
+	if same_linum < upper_linum
+		call cursor(same_linum, 1)
+		let same_section = organ#bird#section ()
+		let target = same_section.tail_linum
 	else
-		call cursor(tail_linum + 1, 1)
+		call cursor(upper_linum, 1)
+		let headline_pattern = organ#bird#headline_pattern ()
+		let target = search(headline_pattern, flags) - 1
 	endif
-	let forward_section = organ#bird#section ()
-	let target = forward_section.tail_linum
 	execute range .. 'move' target
-	echomsg range .. 'move' target
 	let spread = tail_linum - head_linum
 	let new_place = target - spread
 	call cursor(new_place, 1)
