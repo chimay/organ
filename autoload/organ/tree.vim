@@ -155,7 +155,7 @@ fun! organ#tree#move_subtree_forward ()
 	let same_linum = search(same_pattern, flags)
 	let upper_linum = search(upper_pattern, flags)
 	echomsg same_linum upper_linum
-	if same_linum < upper_linum
+	if same_linum < upper_linum || upper_linum == 0
 		call cursor(same_linum, 1)
 		let same_section = organ#bird#section ()
 		let target = same_section.tail_linum
@@ -165,6 +165,7 @@ fun! organ#tree#move_subtree_forward ()
 		let target = search(headline_pattern, flags) - 1
 	endif
 	execute range .. 'move' target
+	echomsg range .. 'move' target
 	let spread = tail_linum - head_linum
 	let new_place = target - spread
 	call cursor(new_place, 1)
