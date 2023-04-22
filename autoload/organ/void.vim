@@ -9,13 +9,16 @@ fun! organ#void#config ()
 	if ! exists('g:organ_config')
 		let g:organ_config = {}
 	endif
+	if ! has_key(g:organ_config, 'speedkeys')
+		let g:organ_config.speedkeys = 0
+	endif
 	if ! has_key(g:organ_config, 'prefix')
 		let g:organ_config.prefix = '<M-c>'
 	endif
 	if ! has_key(g:organ_config, 'prefixless')
 		let g:organ_config.prefixless = 0
 	endif
-	if ! has_key(g:organ_config, 'speedkeys')
-		let g:organ_config.speedkeys = 0
+	if ! has_key(g:organ_config, 'prefixless_plugs')
+		let g:organ_config.prefixless_plugs = []
 	endif
 endfun

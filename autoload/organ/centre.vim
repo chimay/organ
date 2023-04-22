@@ -117,45 +117,36 @@ fun! organ#centre#mappings (mode = 'normal')
 	endfor
 endfun
 
-fun! organ#centre#prefixless ()
-	" Prefix-less maps
-	" ---- normal
-	let nmap = 'nmap <buffer> <silent>'
-	execute nmap '<m-p>       <plug>(organ-nav-previous)'
-	execute nmap '<m-n>       <plug>(organ-nav-next)'
-	execute nmap '<m-b>       <plug>(organ-nav-backward)'
-	execute nmap '<m-f>       <plug>(organ-nav-forward)'
-	execute nmap '<m-u>       <plug>(organ-nav-parent)'
-	execute nmap '<m-d>       <plug>(organ-nav-loose-child)'
-	execute nmap '<m-s-d>     <plug>(organ-nav-strict-child)'
-	execute nmap '<m-w>       <plug>(organ-nav-whereami)'
-	execute nmap '<m-v>       <plug>(organ-nav-cycle-current-fold)'
-	execute nmap '<m-s-v>     <plug>(organ-nav-cycle-all-folds)'
-	execute nmap '<m-@>       <plug>(organ-op-select-subtree)'
-	execute nmap '<m-left>    <plug>(organ-op-promote)'
-	execute nmap '<m-right>   <plug>(organ-op-demote)'
-	execute nmap '<m-s-left>  <plug>(organ-op-promote-subtree)'
-	execute nmap '<m-s-right> <plug>(organ-op-demote-subtree)'
-	" ---- visual
-	let vmap = 'vmap <buffer> <silent>'
-	" ---- normal
-	let imap = 'imap <buffer> <silent>'
-	" -- tree
-	execute imap '<m-p>       <plug>(organ-nav-previous)'
-	execute imap '<m-n>       <plug>(organ-nav-next)'
-	execute imap '<m-b>       <plug>(organ-nav-backward)'
-	execute imap '<m-f>       <plug>(organ-nav-forward)'
-	execute imap '<m-u>       <plug>(organ-nav-parent)'
-	execute imap '<m-d>       <plug>(organ-nav-loose-child)'
-	execute imap '<m-s-d>     <plug>(organ-nav-strict-child)'
-	execute imap '<m-w>       <plug>(organ-nav-whereami)'
-	execute imap '<m-v>       <plug>(organ-nav-cycle-current-fold)'
-	execute imap '<m-s-v>     <plug>(organ-nav-cycle-all-folds)'
-	execute imap '<m-@>       <plug>(organ-op-select-subtree)'
-	execute imap '<m-left>    <plug>(organ-op-promote)'
-	execute imap '<m-right>   <plug>(organ-op-demote)'
-	execute imap '<m-s-left>  <plug>(organ-op-promote-subtree)'
-	execute imap '<m-s-right> <plug>(organ-op-demote-subtree)'
+fun! organ#centre#prefixless (mode = 'normal')
+	" Normal maps of level
+	let mode = a:mode
+	" ---- mode dependent variables
+	let maplist = s:{mode}_maps
+	if mode ==# 'normal'
+		let mapcmd = 'nmap'
+	elseif mode ==# 'visual'
+		let mapcmd = 'vmap'
+	elseif mode ==# 'insert'
+		let mapcmd = 'imap'
+	endif
+	" -- buffer local maps only
+	let mapcmd ..= ' <buffer>'
+	" ---- variables
+	let prefix = g:organ_config.prefix
+	let begin = mapcmd .. ' <silent> '
+	let middle = '<plug>('
+	let end = ')'
+	" ---- loop
+	let plugs = g:organ_config.prefixless_plugs
+	let empty_plugs = empty(plugs)
+	for item in maplist
+		let left = item[0]
+		let right = item[1]
+		if ! empty_plugs && plugs->index(right) < 0
+			continue
+		endif
+		execute begin .. left middle .. right .. end
+	endfor
 endfun
 
 fun! organ#centre#speedkeys ()
@@ -182,6 +173,7 @@ fun! organ#centre#cables ()
 	call organ#centre#mappings ('insert')
 	if g:organ_config.prefixless > 0
 		call organ#centre#prefixless ()
+		call organ#centre#prefixless ('insert')
 	endif
 	if g:organ_config.speedkeys > 0
 		call organ#centre#speedkeys ()
