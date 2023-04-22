@@ -97,13 +97,32 @@ endfun
 
 fun! organ#tree#select_subtree ()
 	" Visually select subtree
-	let position = getcurpos ()
 	let section = organ#bird#section ()
 	let head_linum = section.head_linum
 	let tail_linum = section.tail_linum
 	execute head_linum .. 'mark <'
 	execute tail_linum .. 'mark >'
 	normal! gv
+	return section
+endfun
+
+fun! organ#tree#yank_subtree ()
+	" Visually yank subtree
+	let section = organ#bird#section ()
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'yank "'
+	return section
+endfun
+
+fun! organ#tree#delete_subtree ()
+	" Visually delete subtree
+	let section = organ#bird#section ()
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'delete "'
 	return section
 endfun
 

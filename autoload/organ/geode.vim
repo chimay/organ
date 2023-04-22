@@ -4,6 +4,37 @@
 "
 " Internal Constants for plugs & maps
 
+" ---- speed keys
+
+if ! exists('s:speedkeys')
+	let s:speedkeys = [
+		\ [ 'p',        'organ#bird#previous'             ] ,
+		\ [ 'n',        'organ#bird#next'                 ] ,
+		\ [ 'b',        'organ#bird#backward'             ] ,
+		\ [ 'f',        'organ#bird#forward'              ] ,
+		\ [ '-',        'organ#bird#parent'               ] ,
+		\ [ '~',        'organ#bird#loose_child'          ] ,
+		\ [ '+',        'organ#bird#strict_child'         ] ,
+		\ [ 'w',        'organ#bird#whereami'             ] ,
+		\ [ '*',        'organ#bird#cycle_current_fold'   ] ,
+		\ [ '#',        'organ#bird#cycle_all_folds'      ] ,
+		\ [ '@',        'organ#tree#select_subtree'       ] ,
+		\ [ 'yy',       'organ#tree#yank_subtree'         ] ,
+		\ [ 'dd',       'organ#tree#delete_subtree'       ] ,
+		\ [ '<',        'organ#yggdrasil#promote'         ] ,
+		\ [ '>',        'organ#yggdrasil#demote'          ] ,
+		\ [ 'H',        'organ#yggdrasil#promote_subtree' ] ,
+		\ [ 'L',        'organ#yggdrasil#demote_subtree'  ] ,
+		\ ]
+	lockvar! s:speedkeys
+endif
+
+if ! exists('s:speedkeys_with_angle')
+	let s:speedkeys_with_angle = [
+		\ ]
+	lockvar! s:speedkeys_with_angle
+endif
+
 " ---- plugs
 
 if ! exists('s:plugs_normal')
@@ -18,11 +49,13 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-whereami'           , 'organ#bird#whereami'             ] ,
 		\ [ 'organ-cycle-current-fold' , 'organ#bird#cycle_current_fold'   ] ,
 		\ [ 'organ-cycle-all-folds'    , 'organ#bird#cycle_all_folds'      ] ,
-		\ [ 'organ-select-subtree'      , 'organ#tree#select_subtree'       ] ,
-		\ [ 'organ-promote'             , 'organ#yggdrasil#promote'         ] ,
-		\ [ 'organ-demote'              , 'organ#yggdrasil#demote'          ] ,
-		\ [ 'organ-promote-subtree'     , 'organ#yggdrasil#promote_subtree' ] ,
-		\ [ 'organ-demote-subtree'      , 'organ#yggdrasil#demote_subtree'  ] ,
+		\ [ 'organ-select-subtree'     , 'organ#tree#select_subtree'       ] ,
+		\ [ 'organ-yank-subtree'       , 'organ#tree#yank_subtree'         ] ,
+		\ [ 'organ-delete-subtree'     , 'organ#tree#delete_subtree'       ] ,
+		\ [ 'organ-promote'            , 'organ#yggdrasil#promote'         ] ,
+		\ [ 'organ-demote'             , 'organ#yggdrasil#demote'          ] ,
+		\ [ 'organ-promote-subtree'    , 'organ#yggdrasil#promote_subtree' ] ,
+		\ [ 'organ-demote-subtree'     , 'organ#yggdrasil#demote_subtree'  ] ,
 		\ ]
 	lockvar! s:plugs_normal
 endif
@@ -51,12 +84,14 @@ if ! exists('s:maps_normal')
 		\ [ '<m-s-d>'     , 'organ-strict-child'       ] ,
 		\ [ '<m-w>'       , 'organ-whereami'           ] ,
 		\ [ '<m-v>'       , 'organ-cycle-current-fold' ] ,
-		\ [ '<m-s-v>'     , 'organ-cycle-fold-folds'   ] ,
-		\ [ '<m-@>'       , 'organ-select-subtree'      ] ,
-		\ [ '<m-left>'    , 'organ-promote'             ] ,
-		\ [ '<m-right>'   , 'organ-demote'              ] ,
-		\ [ '<m-s-left>'  , 'organ-promote-subtree'     ] ,
-		\ [ '<m-s-right>' , 'organ-demote-subtree'      ] ,
+		\ [ '<m-s-v>'     , 'organ-cycle-all-folds'    ] ,
+		\ [ '<m-@>'       , 'organ-select-subtree'     ] ,
+		\ [ '<m-y>'       , 'organ-yank-subtree'       ] ,
+		\ [ '<m-c-d>'     , 'organ-delete-subtree'     ] ,
+		\ [ '<m-left>'    , 'organ-promote'            ] ,
+		\ [ '<m-right>'   , 'organ-demote'             ] ,
+		\ [ '<m-s-left>'  , 'organ-promote-subtree'    ] ,
+		\ [ '<m-s-right>' , 'organ-demote-subtree'     ] ,
 		\ ]
 	lockvar! s:maps_normal
 endif
@@ -79,41 +114,13 @@ if ! exists('s:maps_insert')
 		\ [ '<m-w>'       , 'organ-whereami'           ] ,
 		\ [ '<m-v>'       , 'organ-cycle-current-fold' ] ,
 		\ [ '<m-s-v>'     , 'organ-cycle-fold-folds'   ] ,
-		\ [ '<m-@>'       , 'organ-select-subtree'      ] ,
-		\ [ '<m-left>'    , 'organ-promote'             ] ,
-		\ [ '<m-right>'   , 'organ-demote'              ] ,
-		\ [ '<m-s-left>'  , 'organ-promote-subtree'     ] ,
-		\ [ '<m-s-right>' , 'organ-demote-subtree'      ] ,
+		\ [ '<m-@>'       , 'organ-select-subtree'     ] ,
+		\ [ '<m-left>'    , 'organ-promote'            ] ,
+		\ [ '<m-right>'   , 'organ-demote'             ] ,
+		\ [ '<m-s-left>'  , 'organ-promote-subtree'    ] ,
+		\ [ '<m-s-right>' , 'organ-demote-subtree'     ] ,
 		\ ]
 	lockvar! s:maps_insert
-endif
-
-" ---- speed keys
-
-if ! exists('s:speedkeys')
-	let s:speedkeys = [
-		\ [ 'p',        'organ#bird#previous'             ] ,
-		\ [ 'n',        'organ#bird#next'                 ] ,
-		\ [ 'b',        'organ#bird#backward'             ] ,
-		\ [ 'f',        'organ#bird#forward'              ] ,
-		\ [ '-',        'organ#bird#parent'               ] ,
-		\ [ '+',        'organ#bird#loose_child'          ] ,
-		\ [ 'w',        'organ#bird#whereami'             ] ,
-		\ [ '*',        'organ#bird#cycle_current_fold'   ] ,
-		\ [ '#',        'organ#bird#cycle_all_folds'      ] ,
-		\ [ '@',        'organ#tree#select_subtree'       ] ,
-		\ [ '<',        'organ#yggdrasil#promote'         ] ,
-		\ [ '>',        'organ#yggdrasil#demote'          ] ,
-		\ [ 'H',        'organ#yggdrasil#promote_subtree' ] ,
-		\ [ 'L',        'organ#yggdrasil#demote_subtree'  ] ,
-		\ ]
-	lockvar! s:speedkeys
-endif
-
-if ! exists('s:speedkeys_with_angle')
-	let s:speedkeys_with_angle = [
-		\ ]
-	lockvar! s:speedkeys_with_angle
 endif
 
 " ---- public interface

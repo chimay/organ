@@ -145,3 +145,22 @@ with `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 - `<M-c><M-right>`   : demote heading or list item
 - `<M-c><M-S-left>`  : promote subtree
 - `<M-c><M-S-right>` : demote subtree
+
+## Custom
+
+You can trigger filetype autocommands to define your own maps :
+
+```vim
+autocmd FileType org nmap <buffer><silent> <c-p> <plug>(organ-previous)
+autocmd FileType markdown nmap <buffer><silent> <c-p> <plug>(organ-previous)
+```
+
+This should have the same effect as writing :
+
+```vim
+nmap <buffer><silent> <c-p> <plug>(organ-previous)
+nmap <buffer><silent> <c-p> <plug>(organ-previous)
+```
+
+in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim` somewhere
+in your runtimepath.

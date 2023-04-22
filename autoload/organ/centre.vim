@@ -46,6 +46,23 @@ if ! exists('s:insert_maps')
 	lockvar s:level_2_insert_maps
 endif
 
+" ---- speed keys
+
+fun! organ#centre#speedkeys ()
+	" Speed keys on headlines first char
+	let map = 'nnoremap <buffer>'
+	let command = "<cmd>call organ#bird#speed('"
+	let close = "')<cr>"
+	for key in keys(s:speedkeys)
+		execute map key command  .. key .. close
+	endfor
+	let close = "', '>')<cr>"
+	for key in keys(s:speedkeys_with_angle)
+		let angled = '<' .. key .. '>'
+		execute map angled command  .. key .. close
+	endfor
+endfun
+
 " ---- plugs
 
 fun! organ#centre#plugs ()
@@ -146,21 +163,6 @@ fun! organ#centre#prefixless (mode = 'normal')
 			continue
 		endif
 		execute begin .. left middle .. right .. end
-	endfor
-endfun
-
-fun! organ#centre#speedkeys ()
-	" Speed keys on headlines first char
-	let map = 'nnoremap <buffer>'
-	let command = "<cmd>call organ#bird#speed('"
-	let close = "')<cr>"
-	for key in keys(s:speedkeys)
-		execute map key command  .. key .. close
-	endfor
-	let close = "', '>')<cr>"
-	for key in keys(s:speedkeys_with_angle)
-		let angled = '<' .. key .. '>'
-		execute map angled command  .. key .. close
 	endfor
 endfun
 
