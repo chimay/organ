@@ -159,7 +159,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 	let flags = organ#bird#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
-		echomsg 'organ bird previous heading : not found'
+		echomsg 'organ bird previous : not found'
 		return 0
 	endif
 	normal! zv
@@ -178,7 +178,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	let flags = organ#bird#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
-		echomsg 'organ bird next heading : not found'
+		echomsg 'organ bird next : not found'
 		return 0
 	endif
 	normal! zv
@@ -194,7 +194,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird backward heading : headline not found'
+		echomsg 'organ bird backward : headline not found'
 		return linum
 	endif
 	let level = properties.level
@@ -212,7 +212,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird forward heading : headline not found'
+		echomsg 'organ bird forward : headline not found'
 		return linum
 	endif
 	let level = properties.level
@@ -236,18 +236,22 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 	endif
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird parent heading : headline not found'
+		echomsg 'organ bird parent : current headline not found'
 		return linum
 	endif
 	let level = properties.level
 	if level == 1
-		echomsg 'organ tree parent heading : already at top level'
+		echomsg 'organ bird parent : already at top level'
 		return linum
 	endif
 	let level -= 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
 	let flags = organ#bird#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
+	if linum == 0
+		echomsg 'organ bird parent : no parent found'
+		return linum
+	endif
 	normal! zv
 	return linum
 endfun
@@ -259,13 +263,17 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird child heading : headline not found'
+		echomsg 'organ bird loose child : current headline not found'
 		return linum
 	endif
 	let level = properties.level + 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
 	let flags = organ#bird#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
+	if linum == 0
+		echomsg 'organ bird loose child : no child found'
+		return linum
+	endif
 	normal! zv
 	return linum
 endfun
@@ -274,17 +282,24 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	" First child section, strictly speaking
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	" TODO
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	if linum == 0
-		echomsg 'organ bird child heading : headline not found'
+	let section = organ#bird#section ()
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	if head_linum == 0 || tail_linum == 0
+		echomsg 'organ bird strict child : headline not found'
 		return linum
 	endif
-	let level = properties.level + 1
+	let level = section.level + 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
 	let flags = organ#bird#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
+	if linum == 0 || linum > tail_linum
+		"echomsg 'organ bird strict child : no child found'
+		call setpos('.', position)
+		return 0
+	endif
 	normal! zv
 	return linum
 endfun
@@ -292,7 +307,7 @@ endfun
 " ---- full path of chapters, sections, subsections, and so on
 
 fun! organ#bird#path (move = 'dont-move')
-	" Full headings path
+	" Full headings path of current section : part, chapter, ...
 	let move = a:move
 	let position = getcurpos ()
 	let properties = organ#bird#properties ('move')
@@ -317,8 +332,8 @@ fun! organ#bird#path (move = 'dont-move')
 endfun
 
 fun! organ#bird#whereami (move = 'dont-move')
-	" Echo full headings path
-	echomsg organ#bird#path (a:move)
+	" Echo full section path
+	echomsg 'organ path :' organ#bird#path (a:move)
 endfun
 
 " ---- visibility
@@ -326,15 +341,34 @@ endfun
 fun! organ#bird#cycle_current_fold ()
 	" Cycle current fold visibility
 	let position = getcurpos ()
-	let foldclosed = foldclosed('.')
-	let linum_forward = organ#bird#forward()
-	let linum_child = organ#bird#child()
-	if foldclosed > 0
-		normal! zo
-	elseif foldlevel == 1
-		normal! zO
+	" ---- current section
+	let section = organ#bird#section ()
+	let headnum = section.head_linum
+	let tailnum = section.tail_linum
+	let range = headnum .. ',' .. tailnum
+	let level = section.level
+	" ---- folds closed ?
+	let current_closed = foldclosed('.')
+	let linum_child = organ#bird#strict_child ('dont-move')
+	if linum_child == 0
+		let child_closed = -1
 	else
-		normal zC
+		let child_closed = foldclosed(linum_child)
+	endif
+	echomsg current_closed child_closed
+	" ---- cycle
+	if current_closed > 0 && child_closed > 0
+		normal! zo
+		"execute range .. 'foldopen'
+	elseif current_closed < 0 && child_closed > 0
+		execute range .. 'foldopen!'
+	elseif current_closed > 0 && child_closed < 0
+		execute range .. 'foldopen!'
+	else
+		execute range .. 'foldclose!'
+		for iter in range(1, level -1)
+			normal! zo
+		endfor
 	endif
 endfun
 
