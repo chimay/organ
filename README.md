@@ -125,7 +125,8 @@ let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
 You can list all available plugs with the command `:map <plug>(organ-`.
 
 Note that once you are on the first char of a headline, the speedkeys
-become available. The plug `organ-previous` brings you precisely there.
+become available. The plug `organ-previous` brings you precisely there,
+and is therefore the most used map.
 
 
 ## With prefix
