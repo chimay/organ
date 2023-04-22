@@ -18,6 +18,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-nav-whereami'           , 'organ#bird#whereami'             ] ,
 		\ [ 'organ-nav-cycle-current-fold' , 'organ#bird#cycle_current_fold'   ] ,
 		\ [ 'organ-nav-cycle-all-folds'    , 'organ#bird#cycle_all_folds'      ] ,
+		\ [ 'organ-op-select-subtree'      , 'organ#tree#select_subtree'       ] ,
 		\ [ 'organ-op-promote'             , 'organ#yggdrasil#promote'         ] ,
 		\ [ 'organ-op-demote'              , 'organ#yggdrasil#demote'          ] ,
 		\ [ 'organ-op-promote-subtree'     , 'organ#yggdrasil#promote_subtree' ] ,
@@ -33,20 +34,7 @@ if ! exists('s:plugs_visual')
 endif
 
 if ! exists('s:plugs_insert')
-	let s:plugs_insert = [
-		\ [ 'organ-nav-previous'       , 'organ#bird#previous'        ] ,
-		\ [ 'organ-nav-next'           , 'organ#bird#next'            ] ,
-		\ [ 'organ-nav-backward'       , 'organ#bird#backward'        ] ,
-		\ [ 'organ-nav-forward'        , 'organ#bird#forward'         ] ,
-		\ [ 'organ-nav-parent'         , 'organ#bird#parent'          ] ,
-		\ [ 'organ-nav-loose-child'    , 'organ#bird#loose_child'     ] ,
-		\ [ 'organ-nav-strict-child'   , 'organ#bird#strict_child'    ] ,
-		\ [ 'organ-nav-whereami'       , 'organ#bird#whereami'        ] ,
-		\ [ 'organ-op-promote'         , 'organ#tree#promote'         ] ,
-		\ [ 'organ-op-demote'          , 'organ#tree#demote'          ] ,
-		\ [ 'organ-op-promote-subtree' , 'organ#tree#promote_subtree' ] ,
-		\ [ 'organ-op-demote-subtree'  , 'organ#tree#demote_subtree'  ] ,
-		\ ]
+	let s:plugs_insert = s:plugs_normal
 	lockvar! s:plugs_insert
 endif
 
@@ -64,6 +52,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-w>'       , 'organ-nav-whereami'           ] ,
 		\ [ '<m-v>'       , 'organ-nav-cycle-current-fold' ] ,
 		\ [ '<m-s-v>'     , 'organ-nav-cycle-fold-folds'   ] ,
+		\ [ '<m-@>'       , 'organ-op-select-subtree'      ] ,
 		\ [ '<m-left>'    , 'organ-op-promote'             ] ,
 		\ [ '<m-right>'   , 'organ-op-demote'              ] ,
 		\ [ '<m-s-left>'  , 'organ-op-promote-subtree'     ] ,
@@ -90,6 +79,7 @@ if ! exists('s:maps_insert')
 		\ [ '<m-w>'       , 'organ-nav-whereami'           ] ,
 		\ [ '<m-v>'       , 'organ-nav-cycle-current-fold' ] ,
 		\ [ '<m-s-v>'     , 'organ-nav-cycle-fold-folds'   ] ,
+		\ [ '<m-@>'       , 'organ-op-select-subtree'      ] ,
 		\ [ '<m-left>'    , 'organ-op-promote'             ] ,
 		\ [ '<m-right>'   , 'organ-op-demote'              ] ,
 		\ [ '<m-s-left>'  , 'organ-op-promote-subtree'     ] ,
@@ -111,6 +101,7 @@ if ! exists('s:speedkeys')
 		\ [ 'w',        'organ#bird#whereami'             ] ,
 		\ [ '*',        'organ#bird#cycle_current_fold'   ] ,
 		\ [ '#',        'organ#bird#cycle_all_folds'      ] ,
+		\ [ '@',        'organ#tree#select_subtree'       ] ,
 		\ [ '<',        'organ#yggdrasil#promote'         ] ,
 		\ [ '>',        'organ#yggdrasil#demote'          ] ,
 		\ [ 'H',        'organ#yggdrasil#promote_subtree' ] ,

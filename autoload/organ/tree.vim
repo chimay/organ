@@ -51,8 +51,8 @@ endfun
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
 	let section = organ#bird#section ()
-	let headnum = section.head_linum
-	if headnum == 0
+	let head_linum = section.head_linum
+	if head_linum == 0
 		echomsg 'organ tree promote subtree : headline not found'
 		return 0
 	endif
@@ -61,12 +61,12 @@ fun! organ#tree#promote_subtree ()
 		echomsg 'organ tree promote subtree : already at top level'
 		return 0
 	endif
-	let tailnum = section.tail_linum
+	let tail_linum = section.tail_linum
 	while v:true
 		let linum = organ#tree#promote ()
 		let linum = organ#bird#next ('move')
-		if linum >= tailnum || linum == 0
-			call cursor(headnum, 1)
+		if linum >= tail_linum || linum == 0
+			call cursor(head_linum, 1)
 			return linum
 		endif
 	endwhile
@@ -75,21 +75,35 @@ endfun
 fun! organ#tree#demote_subtree ()
 	" Demote subtree
 	let section = organ#bird#section ()
-	let headnum = section.head_linum
-	if headnum == 0
+	let head_linum = section.head_linum
+	if head_linum == 0
 		echomsg 'organ tree demote subtree : headline not found'
 		return 0
 	endif
-	let tailnum = section.tail_linum
+	let tail_linum = section.tail_linum
 	while v:true
 		let linum = organ#tree#demote ()
 		let linum = organ#bird#next ('move')
-		if linum >= tailnum || linum == 0
-			call cursor(headnum, 1)
+		if linum >= tail_linum || linum == 0
+			call cursor(head_linum, 1)
 			return linum
 		endif
 	endwhile
 endfun
 
 " ---- move
+
+" ---- select, yank, delete
+
+fun! organ#tree#select_subtree ()
+	" Visually select subtree
+	let position = getcurpos ()
+	let section = organ#bird#section ()
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	execute head_linum .. 'mark <'
+	execute tail_linum .. 'mark >'
+	normal! gv
+	return section
+endfun
 

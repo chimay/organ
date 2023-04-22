@@ -82,6 +82,7 @@ value in your init file, these bindings become available :
 - `<M-d>`       : child heading, loosely speaking : first headline of level + 1, forward
 - `<M-S-d>`     : child heading, strictly speaking
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
+- `<M-@>`       : select subtree
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote subtree
@@ -101,6 +102,7 @@ with `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 - `<M-c><M-d>`       : child heading, loosely speaking : first headline of level + 1, forward
 - `<M-c><M-S-d>`     : child heading, strictly speaking
 - `<M-c><M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
+- `<M-c><M-@>`       : select subtree
 - `<M-c><M-left>`    : promote heading or list item
 - `<M-c><M-right>`   : demote heading or list item
 - `<M-c><M-S-left>`  : promote subtree
@@ -121,6 +123,7 @@ active only when the cursor is on the first char of a headline :
 - `w`      : where am I ? full headings path (chapter, section, subsection, ...)
 - `*`      : cycle current fold visibility
 - `#`      : cycle all folds visibility
+- `@`      : select subtree
 - `<`      : promote heading or list item
 - `>`      : demote heading or list item
 - `H`      : promote subtree

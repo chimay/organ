@@ -343,9 +343,9 @@ fun! organ#bird#cycle_current_fold ()
 	let position = getcurpos ()
 	" ---- current section
 	let section = organ#bird#section ()
-	let headnum = section.head_linum
-	let tailnum = section.tail_linum
-	let range = headnum .. ',' .. tailnum
+	let head_linum = section.head_linum
+	let tail_linum = section.tail_linum
+	let range = head_linum .. ',' .. tail_linum
 	let level = section.level
 	" ---- folds closed ?
 	let current_closed = foldclosed('.')
