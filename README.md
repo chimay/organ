@@ -80,6 +80,7 @@ value in your init file, these bindings become available :
 - `<M-f>`       : next heading of same level
 - `<M-u>`       : parent heading
 - `<M-d>`       : child heading
+- `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote subtree
@@ -97,6 +98,7 @@ with `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
 - `<M-c><M-f>`       : next heading of same level
 - `<M-c><M-u>`       : parent heading
 - `<M-c><M-d>`       : child heading
+- `<M-c><M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-c><M-left>`    : promote heading or list item
 - `<M-c><M-right>`   : demote heading or list item
 - `<M-c><M-S-left>`  : promote subtree
@@ -108,14 +110,16 @@ If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
 value in your init file, the speed keys become available. They are
 active only when the cursor is on the first char of a headline :
 
-- `p` : previous heading
-- `n` : next heading
-- `b` : backward heading of same level
-- `f` : forward heading of same level
-- `-` : parent heading
-- `+` : child heading
-- `w` : where am I ? full headings path (chapter, section, subsection, ...)
-- `<` : promote heading or list item
-- `>` : demote heading or list item
-- `H` : promote subtree
-- `L` : demote subtree
+- `p`      : previous heading
+- `n`      : next heading
+- `b`      : backward heading of same level
+- `f`      : forward heading of same level
+- `-`      : parent heading
+- `+`      : child heading
+- `w`      : where am I ? full headings path (chapter, section, subsection, ...)
+- `x`      : cycle current fold visibility
+- `X`      : cycle all folds visibility
+- `<`      : promote heading or list item
+- `>`      : demote heading or list item
+- `H`      : promote subtree
+- `L`      : demote subtree

@@ -317,9 +317,30 @@ fun! organ#bird#path ()
 	endwhile
 endfun
 
-fun! organ#bird#info ()
+fun! organ#bird#whereami ()
 	" Echo full headings path
 	echomsg organ#bird#path ()
+endfun
+
+" ---- visibility
+
+fun! organ#bird#cycle_current_fold ()
+	" Cycle current fold visibility
+endfun
+
+fun! organ#bird#cycle_all_folds ()
+	" Cycle folds visibility in all file
+	" ---- max fold level of all file
+	"let line_range = range(1, line('$'))
+	"let max_foldlevel = max(map(line_range, { n -> foldlevel(n) }))
+	" ---- cycle
+	if &foldlevel == 0
+		setlocal foldlevel=1
+	elseif &foldlevel == 1
+		setlocal foldlevel=10
+	else
+		setlocal foldlevel=0
+	endif
 endfun
 
 " ---- goto
@@ -336,12 +357,13 @@ fun! organ#bird#speed (key, angle = 'no-angle')
 	let angle = a:angle
 	if angle ==# 'with-angle' || angle ==# '>'
 		let function = s:speedkeys_with_angle[key]
-		let key = '<' .. key .. '>'
+		execute 'let key =' '"\<' .. key .. '>"'
 	else
 		let function = s:speedkeys[key]
 	endif
 	if ! organ#bird#is_on_headline () || col('.') != 1
 		execute 'normal!' key
+		echomsg 'normal!' key
 		return 0
 	endif
 	call {function}()
