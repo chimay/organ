@@ -166,5 +166,5 @@ This should have the same effect as writing :
 nmap <buffer><silent> <c-p> <plug>(organ-previous)
 ```
 
-in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim` somewhere
+in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
