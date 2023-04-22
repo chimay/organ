@@ -148,11 +148,17 @@ fun! organ#tree#move_subtree_forward ()
 	let tail_linum = section.tail_linum
 	let range = head_linum .. ',' .. tail_linum
 	let level = section.level
-	call cursor(tail_linum + 1, 1)
+	if tail_linum == line('$')
+		call cursor(tail_linum, 1)
+	else
+		call cursor(tail_linum + 1, 1)
+	endif
 	let forward_section = organ#bird#section ()
 	let target = forward_section.tail_linum
 	execute range .. 'move' target
 	echomsg range .. 'move' target
-	call cursor(target + 1, 1)
-	return target
+	let spread = tail_linum - head_linum
+	let new_place = target - spread
+	call cursor(new_place, 1)
+	return new_place
 endfun
