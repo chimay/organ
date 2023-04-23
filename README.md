@@ -143,8 +143,8 @@ value in your init file, these bindings become available :
 - `<M-CR>`      : new subtree or list item
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
-- `<M-S-left>`  : promote subtree
-- `<M-S-right>` : demote subtree
+- `<M-S-left>`  : promote heading or list subtree
+- `<M-S-right>` : demote heading or list subtree
 - `<M-up>`      : move subtree or list item up
 - `<M-down>`    : move subtree or list item down
 - `<M-e>`       : export with pandoc
