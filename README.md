@@ -155,6 +155,9 @@ avoid conflicts with other plugins. Examples with the default prefix
 - `<M-c><M-b>`       : previous heading of same level
 - `<M-c><M-f>`       : next heading of same level
 
+You can customize the prefix by setting `g:organ_config.prefix` to the
+key you want.
+
 The prefix bindings are always available, regardless of the
 `g:organ_config.prefixless` value. They are mostly inspired by orgmode,
 with `<C-...>` replaced by `<M-...>`.
