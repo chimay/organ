@@ -140,17 +140,18 @@ value in your init file, these bindings become available :
 - `<M-@>`       : select subtree
 - `<M-y>`       : yank subtree
 - `<M-d>`       : delete subtree
+- `<M-CR>`      : new subtree or list item
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote subtree
 - `<M-S-right>` : demote subtree
-- `<M-up>`      : move subtree up
-- `<M-down>`    : move subtree down
+- `<M-up>`      : move subtree or list item up
+- `<M-down>`    : move subtree or list item down
 - `<M-e>`       : export with pandoc
-- `<M-E>`       : export with emacs
+- `<M-S-e>`     : export with emacs
 
-You can customize `g:organ_config.prefixless_modes` to create these maps
-only in the modes you specify.
+You can customize `g:organ_config.prefixless_modes` to create prefixless
+maps only in the modes you specify.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
