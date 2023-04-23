@@ -185,14 +185,14 @@ The prefix bindings are always available, regardless of the
 You can trigger filetype autocommands to define your own maps :
 
 ```vim
-autocmd FileType org nmap <buffer><silent> <c-p> <plug>(organ-previous)
-autocmd FileType markdown nmap <buffer><silent> <c-p> <plug>(organ-previous)
+autocmd FileType org nmap <buffer> <c-p> <plug>(organ-previous)
+autocmd FileType markdown nmap <buffer> <c-p> <plug>(organ-previous)
 ```
 
 This should have the same effect as writing :
 
 ```vim
-nmap <buffer><silent> <c-p> <plug>(organ-previous)
+nmap <buffer> <c-p> <plug>(organ-previous)
 ```
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
