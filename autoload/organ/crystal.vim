@@ -26,7 +26,7 @@ endif
 " ---- plain lists
 
 if ! exists('s:list_pattern')
-	let s:list_pattern = '^\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]'
+	let s:list_pattern = '^\%(\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]\)\s*'
 	lockvar! s:list_attern
 endif
 

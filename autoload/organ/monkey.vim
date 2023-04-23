@@ -37,3 +37,23 @@ fun! organ#monkey#level ()
 	let level = indnum / s:indent_length + 1
 	return level
 endfun
+
+fun! organ#monkey#properties ()
+	" Properties of current list item
+	let linum = line('.')
+	let itemline = getline('.')
+	let level = organ#monkey#level ()
+	let pattern = s:list_pattern
+	let content = substitute(itemline, pattern, '', '')
+	let properties = #{
+				\ linum : linum,
+				\ itemline : itemline,
+				\ level : level,
+				\ content : content
+				\}
+	return properties
+endfun
+
+fun! organ#monkey#subtree ()
+	" Range & properties of current list subtree
+endfun

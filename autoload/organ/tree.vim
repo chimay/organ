@@ -67,18 +67,18 @@ endfun
 
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
 	if head_linum == 0
 		echomsg 'organ tree promote subtree : headline not found'
 		return 0
 	endif
-	let level = section.level
+	let level = subtree.level
 	if level == 1
 		echomsg 'organ tree promote subtree : already at top level'
 		return 0
 	endif
-	let tail_linum = section.tail_linum
+	let tail_linum = subtree.tail_linum
 	while v:true
 		let linum = organ#tree#promote ()
 		let linum = organ#bird#next ('move', 'dont-wrap')
@@ -91,13 +91,13 @@ endfun
 
 fun! organ#tree#demote_subtree ()
 	" Demote subtree
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
 	if head_linum == 0
 		echomsg 'organ tree demote subtree : headline not found'
 		return 0
 	endif
-	let tail_linum = section.tail_linum
+	let tail_linum = subtree.tail_linum
 	while v:true
 		let linum = organ#tree#demote ()
 		let linum = organ#bird#next ('move', 'dont-wrap')
@@ -112,44 +112,44 @@ endfun
 
 fun! organ#tree#select_subtree ()
 	" Visually select subtree
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	execute head_linum .. 'mark <'
 	execute tail_linum .. 'mark >'
 	normal! gv
-	return section
+	return subtree
 endfun
 
 fun! organ#tree#yank_subtree ()
 	" Visually yank subtree
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'yank "'
-	return section
+	return subtree
 endfun
 
 fun! organ#tree#delete_subtree ()
 	" Visually delete subtree
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'delete "'
-	return section
+	return subtree
 endfun
 
 " ---- move
 
 fun! organ#tree#move_subtree_backward ()
 	" Move subtree backward
-	let section = organ#bird#section ('move')
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ('move')
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
-	let level = section.level
+	let level = subtree.level
 	let headline_pattern = organ#bird#headline_pattern (1, level)
 	let flags = organ#bird#search_flags ('backward', 'dont-move', 'dont-wrap')
 	let target = search(headline_pattern, flags) - 1
@@ -160,11 +160,11 @@ endfun
 
 fun! organ#tree#move_subtree_forward ()
 	" Move subtree forward
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
-	let level = section.level
+	let level = subtree.level
 	let same_pattern = organ#bird#headline_pattern (level, level)
 	let level -= 1
 	let upper_pattern = organ#bird#headline_pattern (level, level)
@@ -173,8 +173,8 @@ fun! organ#tree#move_subtree_forward ()
 	let upper_linum = search(upper_pattern, flags)
 	if same_linum < upper_linum || upper_linum == 0
 		call cursor(same_linum, 1)
-		let same_section = organ#bird#section ()
-		let target = same_section.tail_linum
+		let same_subtree = organ#bird#subtree ()
+		let target = same_subtree.tail_linum
 	else
 		call cursor(upper_linum, 1)
 		let headline_pattern = organ#bird#headline_pattern ()

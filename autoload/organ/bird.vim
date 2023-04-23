@@ -78,7 +78,7 @@ fun! organ#bird#is_on_headline ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
-	" First line of current section
+	" First line of current subtree
 	let move = a:move
 	let headline_pattern = organ#bird#headline_pattern ()
 	let flags = organ#bird#search_flags ('backward', move, 'dont-wrap')
@@ -122,13 +122,13 @@ fun! organ#bird#title (move = 'dont-move')
 	return organ#bird#properties(a:move).title
 endfun
 
-fun! organ#bird#section (move = 'dont-move')
-	" Range & properties of current section
+fun! organ#bird#subtree (move = 'dont-move')
+	" Range & properties of current subtree
 	let move = a:move
 	let properties = organ#bird#properties (move)
 	let head_linum = properties.linum
 	if head_linum == 0
-		echomsg 'organ bird section : headline not found'
+		echomsg 'organ bird subtree : headline not found'
 		return #{ head_linum : 0, headline : '', level : 0, tail_linum : 0 }
 	endif
 	let level = properties.level
@@ -158,7 +158,7 @@ endfun
 
 fun! organ#bird#tail (move = 'dont-move')
 	" Last line of current
-	return organ#bird#section(a:move).tail_linum
+	return organ#bird#subtree(a:move).tail_linum
 endfun
 
 " ---- previous, next
@@ -241,7 +241,7 @@ endfun
 " ---- parent, child
 
 fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
-	" Parent section, ie first headline of level - 1, backward
+	" Parent headline, ie first headline of level - 1, backward
 	let move = a:move
 	let wrap = a:wrap
 	if a:0 > 0
@@ -272,7 +272,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 endfun
 
 fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
-	" Child section, or, more generally, first headline of level + 1, forward
+	" Child headline, or, more generally, first headline of level + 1, forward
 	let move = a:move
 	let wrap = a:wrap
 	let properties = organ#bird#properties ()
@@ -294,19 +294,19 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 endfun
 
 fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
-	" First child section, strictly speaking
+	" First child subtree, strictly speaking
 	let move = a:move
 	let wrap = a:wrap
 	let position = getcurpos ()
 	" TODO
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	if head_linum == 0 || tail_linum == 0
 		echomsg 'organ bird strict child : headline not found'
 		return linum
 	endif
-	let level = section.level + 1
+	let level = subtree.level + 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
 	let flags = organ#bird#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
@@ -319,10 +319,10 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	return linum
 endfun
 
-" ---- full path of chapters, sections, subsections, and so on
+" ---- full path of subtree : chapter, section, subsection, and so on
 
 fun! organ#bird#path (move = 'dont-move')
-	" Full headings path of current section : part, chapter, ...
+	" Full headings path of current subtree : part, chapter, ...
 	let move = a:move
 	let position = getcurpos ()
 	let properties = organ#bird#properties ('move')
@@ -347,7 +347,7 @@ fun! organ#bird#path (move = 'dont-move')
 endfun
 
 fun! organ#bird#whereami (move = 'dont-move')
-	" Echo full section path
+	" Echo full subtree path
 	echomsg 'organ path :' organ#bird#path (a:move)
 endfun
 
@@ -389,12 +389,12 @@ endfun
 fun! organ#bird#cycle_current_fold ()
 	" Cycle current fold visibility
 	let position = getcurpos ()
-	" ---- current section
-	let section = organ#bird#section ()
-	let head_linum = section.head_linum
-	let tail_linum = section.tail_linum
+	" ---- current subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
-	let level = section.level
+	let level = subtree.level
 	" ---- folds closed ?
 	let current_closed = foldclosed('.')
 	let linum_child = organ#bird#strict_child ('dont-move')
@@ -454,4 +454,3 @@ fun! organ#bird#speed (key, angle = 'no-angle')
 	endif
 	call {function}()
 endfun
-
