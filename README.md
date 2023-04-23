@@ -56,8 +56,9 @@ need anything to work).
 This plugin should work out of the box, apart from a few advanced
 features.
 
-TODO If you want to export your file with org-export functions, you just
-need to have Emacs installed, and the plugin takes care of the rest.
+TODO If you want to export your file to another format, you just
+need to have pandoc installed, and the plugin takes care of the rest.
+For org file, it can also be done with Emacs installed.
 
 If you want to navigate to an headline in another org or markdown file,
 you can install [wheel](https://github.com/chimay/wheel) : it has a
