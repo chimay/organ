@@ -130,8 +130,8 @@ value in your init file, these bindings become available :
 - `<M-up>`      : move subtree up
 - `<M-down>`    : move subtree down
 
-If some of them conflicts with your settings, you can restrict them to
-a sublist. Example :
+If there are some conflicts with your settings, you can restrict them
+to a sublist. Example :
 
 
 ```vim
