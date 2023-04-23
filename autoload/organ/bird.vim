@@ -6,9 +6,14 @@
 
 " ---- script constants
 
-if ! exists('s:separator_level')
-	let s:separator_level = organ#crystal#fetch('separator/level')
-	lockvar s:separator_level
+if ! exists('s:level_separator')
+	let s:level_separator = organ#crystal#fetch('separator/level')
+	lockvar s:level_separator
+endif
+
+if ! exists('s:field_separ')
+	let s:field_separ = wheel#crystal#fetch('separator/field')
+	lockvar s:field_separ
 endif
 
 if ! exists('s:speedkeys')
@@ -305,6 +310,22 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	return linum
 endfun
 
+" ---- goto
+
+fun! organ#bird#goto ()
+	" Goto heading with completion
+	let prompt = 'Switch to line : '
+	let complete = 'customlist,organ#complete#headline'
+	let record = input(prompt, '', complete)
+	if empty(record)
+		return -1
+	endif
+	echomsg record
+	let fields = split(record, s:field_separ)
+	let linum = str2nr(fields[0])
+	return cursor(linum, 1)
+endfun
+
 " ---- full path of chapters, sections, subsections, and so on
 
 fun! organ#bird#path (move = 'dont-move')
@@ -328,7 +349,7 @@ fun! organ#bird#path (move = 'dont-move')
 		endif
 		call organ#bird#parent ('move', 'wrap', properties)
 		let properties = organ#bird#properties ('move')
-		let path = properties.title .. s:separator_level .. path
+		let path = properties.title .. s:level_separator .. path
 	endwhile
 endfun
 
@@ -386,12 +407,6 @@ fun! organ#bird#cycle_all_folds ()
 	else
 		setlocal foldlevel=0
 	endif
-endfun
-
-" ---- goto
-
-fun! organ#bird#goto ()
-	" Goto heading with completion
 endfun
 
 " -- speed commands

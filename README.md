@@ -12,6 +12,7 @@
     * [Speed keys](#speed-keys)
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
+    * [Custom](#custom)
 
 <!-- vim-markdown-toc -->
 
@@ -82,6 +83,7 @@ active only when the cursor is on the first char of a headline :
 - `f`      : forward heading of same level
 - `-`      : parent heading
 - `+`      : child heading, loosely speaking : first headline of level + 1, forward
+- `h`      : go to headline, with prompt completion
 - `w`      : where am I ? full headings path (chapter, section, subsection, ...)
 - `*`      : cycle current fold visibility
 - `#`      : cycle all folds visibility
@@ -102,13 +104,14 @@ value in your init file, these bindings become available :
 - `<M-n>`       : next heading
 - `<M-b>`       : previous heading of same level
 - `<M-f>`       : next heading of same level
-- `<M-u>`       : parent heading
-- `<M-d>`       : child heading, loosely speaking : first headline of level + 1, forward
-- `<M-S-d>`     : child heading, strictly speaking
+- `<M-u>`       : upper, parent heading
+- `<M-l>`       : lower, child heading, loosely speaking : first headline of level + 1, forward
+- `<M-S-l>`     : lower, child heading, strictly speaking
+- `<M-h>`       : go to headline, with prompt completion
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-@>`       : select subtree
 - `<M-y>`       : yank subtree
-- `<M-C-d>`     : delete subtree
+- `<M-d>`       : delete subtree
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote subtree
@@ -128,28 +131,20 @@ Note that once you are on the first char of a headline, the speedkeys
 become available. The plug `organ-previous` brings you precisely there,
 and is therefore the most used map.
 
-
 ## With prefix
 
-The prefix bindings are always available, regardless of the
-`g:organ_config.prefixless` value. They are mostly inspired by orgmode,
-with `<C-...>` replaced by `<M-...>`. The default prefix is `<M-c>` :
+These are the same as the prefixless maps, but preceded by a prefix to
+avoid conflicts with other plugins. Examples with the default prefix
+`<M-c>` :
 
 - `<M-c><M-p>`       : previous heading
 - `<M-c><M-n>`       : next heading
 - `<M-c><M-b>`       : previous heading of same level
 - `<M-c><M-f>`       : next heading of same level
-- `<M-c><M-u>`       : parent heading
-- `<M-c><M-d>`       : child heading, loosely speaking : first headline of level + 1, forward
-- `<M-c><M-S-d>`     : child heading, strictly speaking
-- `<M-c><M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
-- `<M-c><M-@>`       : select subtree
-- `<M-c><M-y>`       : yank subtree
-- `<M-c><M-C-d>`     : delete subtree
-- `<M-c><M-left>`    : promote heading or list item
-- `<M-c><M-right>`   : demote heading or list item
-- `<M-c><M-S-left>`  : promote subtree
-- `<M-c><M-S-right>` : demote subtree
+
+The prefix bindings are always available, regardless of the
+`g:organ_config.prefixless` value. They are mostly inspired by orgmode,
+with `<C-...>` replaced by `<M-...>`.
 
 ## Custom
 
