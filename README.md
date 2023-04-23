@@ -211,5 +211,5 @@ Completion is available for subcommands.
 I suggest you map it to a convenient key, eg :
 
 ```vim
-autocmd FileType org,markdown nnoremap <buffer> <d-o> :Organ<space>
+autocmd FileType org,markdown nnoremap <buffer> <m-o> :Organ<space>
 ```
