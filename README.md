@@ -145,8 +145,8 @@ value in your init file, these bindings become available :
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote heading or list subtree
 - `<M-S-right>` : demote heading or list subtree
-- `<M-up>`      : move subtree or list item up
-- `<M-down>`    : move subtree or list item down
+- `<M-up>`      : move heading or list subtree up
+- `<M-down>`    : move heading or list subtree down
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs
 
