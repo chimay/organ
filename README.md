@@ -81,8 +81,9 @@ active only when the cursor is on the first char of a headline :
 - `n`      : next heading
 - `b`      : backward heading of same level
 - `f`      : forward heading of same level
-- `-`      : parent heading
-- `+`      : child heading, loosely speaking : first headline of level + 1, forward
+- `-`      : upper, parent heading
+- `~`      : lower, child heading, loosely speaking : first headline of level + 1, forward
+- `+`      : lower, child heading, strictly speaking
 - `w`      : where am I ? full headings path (part, chapter, section, subsection, ...)
 - `h`      : go to headline, with prompt completion of full headings path
 - `*`      : cycle current fold visibility
