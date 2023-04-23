@@ -12,7 +12,8 @@ fun! organ#tree#new ()
 	let level = properties.level
 	let line = organ#bird#char()->repeat(level)
 	let line ..= ' '
-	call append('.', line)
+	let linelist = [line, '']
+	call append('.', linelist)
 	let linum = line('.') + 1
 	call cursor(linum, 1)
 	let colnum = col('$')
