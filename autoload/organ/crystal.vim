@@ -35,6 +35,11 @@ if ! exists('s:list_indent')
 	lockvar! s:list_indent
 endif
 
+if ! exists('s:list_indent_length')
+	let s:list_indent_length = len(s:list_indent)
+	lockvar! s:list_indent_length
+endif
+
 " --- export formats
 
 if ! exists('s:export_formats_pandoc')
