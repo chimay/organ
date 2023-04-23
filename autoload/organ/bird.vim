@@ -50,6 +50,15 @@ fun! organ#bird#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
 	return flags
 endfun
 
+fun! organ#bird#char ()
+	" Headline char
+	if &filetype == 'org'
+		return '*'
+	elseif &filetype == 'markdown'
+		return '#'
+	endif
+endfun
+
 fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level
 	let minlevel = a:minlevel

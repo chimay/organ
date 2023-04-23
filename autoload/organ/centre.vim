@@ -201,8 +201,9 @@ fun! organ#centre#cables ()
 	call organ#centre#mappings ('visual')
 	call organ#centre#mappings ('insert')
 	if g:organ_config.prefixless > 0
-		call organ#centre#prefixless ()
-		call organ#centre#prefixless ('insert')
+		for mode in g:organ_config.prefixless_modes
+			call organ#centre#prefixless (mode)
+		endfor
 	endif
 	if g:organ_config.speedkeys > 0
 		call organ#centre#speedkeys ()

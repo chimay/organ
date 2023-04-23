@@ -23,11 +23,16 @@ if ! exists('s:separator_field_bar')
 	lockvar! s:separator_field_bar
 endif
 
-" ---- patterns
+" ---- plain lists
 
-if ! exists('s:plain_list_line_pattern')
-	let s:plain_list_line_pattern = '^\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]'
-	lockvar! s:plain_list_line_pattern
+if ! exists('s:list_pattern')
+	let s:list_pattern = '^\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]'
+	lockvar! s:list_attern
+endif
+
+if ! exists('s:list_indent')
+	let s:list_indent = '  '
+	lockvar! s:list_indent
 endif
 
 " --- export formats

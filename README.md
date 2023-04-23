@@ -77,6 +77,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefix = '<m-c>'
   " enable prefixless maps
   let g:organ_config.prefixless = 1
+  " prefixless maps in these modes
+  let g:organ_config.prefixless_modes = ['normal', 'insert']
   " enable only the prefixless maps you want
   " see the output of :map <plug>(organ- to see available plugs
   let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
@@ -146,6 +148,9 @@ value in your init file, these bindings become available :
 - `<M-down>`    : move subtree down
 - `<M-e>`       : export with pandoc
 - `<M-E>`       : export with emacs
+
+You can customize `g:organ_config.prefixless_modes` to create these maps
+only in the modes you specify.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :

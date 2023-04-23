@@ -87,9 +87,18 @@ content
 
 content
 
-## part 3.3
+# part 3.3
 
 content
+
+- item 1
+- item 2
+  + item 2.1
+  + item 2.2
+  + item 2.3
+    * item 2.3.1
+    * item 2.3.2
+- item 3
 
 ### chapter 3.3.1
 

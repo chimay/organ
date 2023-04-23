@@ -4,6 +4,22 @@
 "
 " Operations on orgmode or markdown headings hierarchy
 
+" ---- new heading
+
+fun! organ#tree#new ()
+	" New heading
+	let properties = organ#bird#properties ()
+	let level = properties.level
+	let line = organ#bird#char()->repeat(level)
+	let line ..= ' '
+	call append('.', line)
+	let linum = line('.') + 1
+	call cursor(linum, 1)
+	let colnum = col('$')
+	call cursor(linum, colnum)
+	startinsert!
+endfun
+
 " ---- promote & demote
 
 " -- current heading only

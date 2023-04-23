@@ -18,6 +18,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefixless')
 		let g:organ_config.prefixless = 0
 	endif
+	if ! has_key(g:organ_config, 'prefixless_modes')
+		let g:organ_config.prefixless_modes = ['normal', 'insert']
+	endif
 	if ! has_key(g:organ_config, 'prefixless_plugs')
 		let g:organ_config.prefixless_plugs = []
 	endif
