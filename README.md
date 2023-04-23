@@ -51,7 +51,7 @@ need anything to work).
   + select, yank, delete subtree
   + move subtree up or down
 
-## Prerequisites
+## Dependancies
 
 This plugin should work out of the box, apart from a few advanced
 features.
