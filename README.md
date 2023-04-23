@@ -62,7 +62,7 @@ need to have Emacs installed, and the plugin takes care of the rest.
 If you want to navigate to an headline in another org or markdown file,
 you can install [wheel](https://github.com/chimay/wheel) : it has a
 prompt completion function (launched with `<plug>(wheel-prompt-outline)`)
-that looks for headlines in all the group files.
+that looks for headlines in all files of a group.
 
 # Configuration
 
