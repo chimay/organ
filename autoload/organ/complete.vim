@@ -20,8 +20,13 @@ if ! exists('s:pandoc_formats')
 	lockvar s:pandoc_formats
 endif
 
+if ! exists('s:emacs_functions')
+	let s:emacs_functions = organ#crystal#fetch('export/functions/emacs', 'dict')
+	lockvar s:emacs_functions
+endif
+
 if ! exists('s:emacs_formats')
-	let s:emacs_formats = organ#crystal#fetch('export/formats/emacs')
+	let s:emacs_formats = keys(s:emacs_functions)
 	lockvar s:emacs_formats
 endif
 
@@ -53,6 +58,7 @@ endfun
 fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
 	" Complete buffer line
 	let choices = s:emacs_formats
+	echomsg s:emacs_formats
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun

@@ -56,9 +56,9 @@ need anything to work).
 This plugin should work out of the box, apart from a few advanced
 features.
 
-TODO If you want to export your file to another format, you just
-need to have pandoc installed, and the plugin takes care of the rest.
-For org file, it can also be done with Emacs installed.
+If you want to export your file to another format, you just need to have
+pandoc installed, and the plugin takes care of the rest.  For org files,
+it can also be done with Emacs installed.
 
 If you want to navigate to an headline in another org or markdown file,
 you can install [wheel](https://github.com/chimay/wheel) : it has a
@@ -109,6 +109,8 @@ active only when the cursor is on the first char of a headline :
 - `L`      : demote subtree
 - `U`      : move subtree up
 - `D`      : move subtree down
+- `e`      : export with pandoc
+- `E`      : export with emacs
 
 The prompt completion of headlines is intended to wark roughly as with
 the combo org-goto and helm in Emacs. A space is interpreted as
@@ -141,6 +143,8 @@ value in your init file, these bindings become available :
 - `<M-S-right>` : demote subtree
 - `<M-up>`      : move subtree up
 - `<M-down>`    : move subtree down
+- `<M-e>`       : export with pandoc
+- `<M-E>`       : export with emacs
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :

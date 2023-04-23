@@ -28,6 +28,8 @@ if ! exists('s:speedkeys')
 		\ [ 'L',        'organ#yggdrasil#demote_subtree'        ] ,
 		\ [ 'U',        'organ#yggdrasil#move_subtree_backward' ] ,
 		\ [ 'D',        'organ#yggdrasil#move_subtree_forward'  ] ,
+		\ [ 'e',        'organ#pipe#pandoc_export'              ] ,
+		\ [ 'E',        'organ#pipe#emacs_export'               ] ,
 		\ ]
 	lockvar! s:speedkeys
 endif
@@ -62,6 +64,8 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-demote-subtree'     , 'organ#yggdrasil#demote_subtree'        ] ,
 		\ [ 'organ-move-subtree-up'    , 'organ#yggdrasil#move_subtree_backward' ] ,
 		\ [ 'organ-move-subtree-down'  , 'organ#yggdrasil#move_subtree_forward'  ] ,
+		\ [ 'organ-export-pandoc'      , 'organ#pipe#pandoc_export'              ] ,
+		\ [ 'organ-export-emacs'       , 'organ#pipe#emacs_export'               ] ,
 		\ ]
 	lockvar! s:plugs_normal
 endif
@@ -101,6 +105,8 @@ if ! exists('s:maps_normal')
 		\ [ '<m-s-right>' , 'organ-demote-subtree'     ] ,
 		\ [ '<m-up>'      , 'organ-move-subtree-up'    ] ,
 		\ [ '<m-down>'    , 'organ-move-subtree-down'  ] ,
+		\ [ '<m-e>'       , 'organ-export-pandoc'      ] ,
+		\ [ '<m-s-e>'     , 'organ-export-emacs'       ] ,
 		\ ]
 	lockvar! s:maps_normal
 endif

@@ -87,11 +87,15 @@ if ! exists('s:export_formats_pandoc')
 	lockvar! s:export_formats_pandoc
 endif
 
-if ! exists('s:export_formats_emacs')
-	let s:export_formats_emacs = [
-				\ 'html',
+if ! exists('s:export_functions_emacs')
+	let s:export_functions_emacs = [
+				\ ['ascii', 'org-ascii-export-to-ascii'],
+				\ ['html', 'org-html-export-to-html'],
+				\ ['latex', 'org-latex-export-to-latex'],
+				\ ['markdown', 'org-md-export-to-markdown'],
+				\ ['pdf', 'org-latex-export-to-pdf'],
 				\]
-	lockvar! s:export_formats_emacs
+	lockvar! s:export_functions_emacs
 endif
 
 " ---- public interface

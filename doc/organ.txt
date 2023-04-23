@@ -40,6 +40,7 @@ of the modules within them.
 | monkey.vim        | Navigation in lists hierarchy                      |
 | origami.vim       | Folding                                            |
 | perspective.vim   | content generators for prompt                      |
+| pipe.vim          | export using pandoc or emacs                       |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |
