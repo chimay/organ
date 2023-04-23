@@ -91,10 +91,12 @@ active only when the cursor is on the first char of a headline :
 - `@`      : select subtree
 - `yy`     : yank subtree
 - `dd`     : delete subtree
-- `<`      : promote heading or list item
-- `>`      : demote heading or list item
+- `<`      : promote heading
+- `>`      : demote heading
 - `H`      : promote subtree
 - `L`      : demote subtree
+- `U`      : move subtree up
+- `D`      : move subtree down
 
 ## Prefixless
 
@@ -117,6 +119,8 @@ value in your init file, these bindings become available :
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote subtree
 - `<M-S-right>` : demote subtree
+- `<M-up>`      : move subtree up
+- `<M-down>`    : move subtree down
 
 If some of them conflicts with your settings, you can restrict them to
 a sublist. Example :
