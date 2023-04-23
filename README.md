@@ -60,7 +60,7 @@ TODO If you want to export your file with org-export functions, you just
 need to have Emacs installed, and the plugin takes care of the rest.
 
 If you want to navigate to an headline in another org or markdown file,
-you should install [wheel](https://github.com/chimay/wheel) : it has a
+consider to install [wheel](https://github.com/chimay/wheel) : it has a
 prompt completion function (launched with `<plug>(wheel-prompt-outline)`)
 that looks for headlines in all the group files.
 
