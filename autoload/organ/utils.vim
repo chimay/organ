@@ -48,3 +48,68 @@ fun! organ#utils#items2dict (items)
 	endfor
 	return dict
 endfun
+
+fun! organ#utils#items2keys (items)
+	" Return list of keys from dict given by items list
+	let items = a:items
+	if ! organ#utils#is_nested_list (items)
+		return []
+	endif
+	let keylist = []
+	for [key, val] in items
+		eval keylist->add(key)
+	endfor
+	return keylist
+endfun
+
+fun! organ#utils#items2values (items)
+	" Return list of values from dict given by items list
+	let items = a:items
+	if ! organ#utils#is_nested_list (items)
+		return []
+	endif
+	let valist = []
+	for [key, val] in items
+		eval valist->add(val)
+	endfor
+	return valist
+endfun
+
+fun! organ#utils#call (function, ...)
+	" Call function depicted as a Funcref or a string
+	" Optional arguments are passed to Fun
+	if empty(a:function)
+		return v:false
+	endif
+	let arguments = a:000
+	let Fun = a:function
+	let kind = type(Fun)
+	if kind == v:t_func
+		if empty(arguments)
+			" form : Fun = function('name') without argument
+			return Fun()
+		else
+			" form : Fun = function('name') with arguments
+			return call(Fun, arguments)
+		endif
+	elseif kind == v:t_string
+		if Fun =~ '\m)$'
+			" form : Fun = 'function(...)'
+			" a:000 of organ#metafun#call is ignored
+			return eval(Fun)
+			" works, but less elegant
+			"execute 'let value =' Fun
+		elseif empty(arguments)
+			" form : Fun = 'function' without argument
+			return {Fun}()
+		else
+			" form : Fun = 'function' with arguments
+			return call(Fun, arguments)
+		endif
+	else
+		echomsg 'organ gear call : bad argument'
+		" likely not a representation of a function
+		" simply forward concatened arguments
+		return [Fun] + arguments
+	endif
+endfun

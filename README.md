@@ -6,13 +6,14 @@
     * [What is it ?](#what-is-it-)
     * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
     * [Features](#features)
-    * [Prerequisites](#prerequisites)
+    * [Dependancies](#dependancies)
 * [Configuration](#configuration)
 * [Bindings](#bindings)
     * [Speed keys](#speed-keys)
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
+* [Meta-command](#meta-command)
 
 <!-- vim-markdown-toc -->
 
@@ -196,3 +197,14 @@ nmap <buffer><silent> <c-p> <plug>(organ-previous)
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
+
+# Meta-command
+
+The `:Organ` meta-command gives you access to almost all the plugin
+features :
+
+```vim
+:Organ subcommand
+```
+
+Completion is available for subcommands.

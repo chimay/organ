@@ -30,6 +30,11 @@ if ! exists('s:emacs_formats')
 	lockvar s:emacs_formats
 endif
 
+if ! exists('s:subcommands_actions')
+	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
+	lockvar s:subcommands_actions
+endif
+
 " ---- headlines
 
 fun! organ#complete#headline (arglead, cmdline, cursorpos)
@@ -61,4 +66,38 @@ fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
 	echomsg s:emacs_formats
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+" ---- meta command
+
+fun! organ#complete#meta_command (arglead, cmdline, cursorpos)
+	" Completion for :Organ meta command
+	let cmdline = a:cmdline
+	let arglead = a:arglead
+	let cursorpos = a:cursorpos
+	" ---- words
+	let wordlist = split(cmdline)
+	let length =  len(wordlist)
+	" ---- checks
+	if length == 0
+		return []
+	endif
+	if wordlist[0] !=# 'Organ'
+		return []
+	endif
+	" ---- last word
+	let last = wordlist[-1]
+	let last_list = split(last, '[,;]')
+	" ---- cursor after a partial word ?
+	let blank = cmdline[cursorpos - 1] =~ '\m\s'
+	" ---- subcommand
+	let subcommands = organ#utils#items2keys(s:subcommands_actions)
+	if length == 1 && blank
+		return subcommands
+	endif
+	if length == 2 && ! blank
+		return organ#kyusu#pour(last_list, subcommands)
+	endif
+	let subcommand = wordlist[1]
+	return []
 endfun

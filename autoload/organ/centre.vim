@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:subcommands_actions')
+	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
+	lockvar s:subcommands_actions
+endif
+
 if ! exists('s:speedkeys')
 	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
 	lockvar s:speedkeys
@@ -45,6 +50,28 @@ if ! exists('s:insert_maps')
 	let s:insert_maps = organ#geode#fetch('maps/insert')
 	lockvar s:level_2_insert_maps
 endif
+
+" ---- commands
+
+fun! organ#centre#meta (subcommand)
+	" Function for meta command
+	let subcommand = a:subcommand
+	" ---- subcommands without argument
+	let action_dict = organ#utils#items2dict(s:subcommands_actions)
+	let action = action_dict[subcommand]
+	if action ==# 'organ#void#nope'
+		echomsg 'organ centre meta-command : this action need a third argument'
+		return v:false
+	endif
+	return organ#utils#call(action)
+endfun
+
+fun! organ#centre#commands ()
+	" Define commands
+	" ---- meta command
+	command! -nargs=* -complete=customlist,organ#complete#meta_command
+				\ Organ call organ#centre#meta(<f-args>)
+endfun
 
 " ---- speed keys
 
