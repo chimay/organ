@@ -60,7 +60,7 @@ fun! organ#bird#char ()
 endfun
 
 fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
-	" Headline pattern of level
+	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if &filetype == 'org'
@@ -78,7 +78,7 @@ fun! organ#bird#is_on_headline ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
-	" First line of current subtree
+	" Headline of current subtree
 	let move = a:move
 	let headline_pattern = organ#bird#headline_pattern ()
 	let flags = organ#bird#search_flags ('backward', move, 'dont-wrap')
@@ -113,12 +113,12 @@ fun! organ#bird#properties (move = 'dont-move')
 endfun
 
 fun! organ#bird#level (move = 'dont-move')
-	" Level of current heading
+	" Level of current subtree
 	return organ#bird#properties(a:move).level
 endfun
 
 fun! organ#bird#title (move = 'dont-move')
-	" Level of current heading
+	" Title of current subtree
 	return organ#bird#properties(a:move).title
 endfun
 
@@ -146,18 +146,18 @@ fun! organ#bird#subtree (move = 'dont-move')
 	endif
 	let headline = properties.headline
 	let title = properties.title
-	let dict = #{
+	let subtree = #{
 				\ head_linum : head_linum,
 				\ headline : headline,
 				\ level : level,
 				\ title : title,
 				\ tail_linum : tail_linum,
 				\}
-	return dict
+	return subtree
 endfun
 
 fun! organ#bird#tail (move = 'dont-move')
-	" Last line of current
+	" Last line of current subtree
 	return organ#bird#subtree(a:move).tail_linum
 endfun
 
@@ -348,7 +348,8 @@ endfun
 
 fun! organ#bird#whereami (move = 'dont-move')
 	" Echo full subtree path
-	echomsg 'organ path :' organ#bird#path (a:move)
+	let dashboard = 'organ: ' .. organ#bird#path (a:move)
+	echomsg dashboard
 endfun
 
 " ---- goto
