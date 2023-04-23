@@ -208,7 +208,7 @@ features :
 
 Completion is available for subcommands.
 
-I suggest you map it to a convenient key, eg :
+I suggest you map it to a convenient key. Example :
 
 ```vim
 autocmd FileType org,markdown nnoremap <buffer> <m-o> :Organ<space>
