@@ -98,6 +98,14 @@ active only when the cursor is on the first char of a headline :
 - `U`      : move subtree up
 - `D`      : move subtree down
 
+The prompt completion of headlines is intended to wark roughly as with
+the combo org-goto and helm in Emacs. A space is interpreted as
+a logical and, a `|` as a logical or. In fact, it works exactly as in
+[wheel](https://github.com/chimay/wheel). For further details, please
+refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion)
+on the wheel wiki.
+
 ## Prefixless
 
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
