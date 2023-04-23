@@ -98,6 +98,7 @@ content
   + item 2.3
     * item 2.3.1
     * item 2.3.2
+  + item 2.4
 - item 3
 
 ### chapter 3.3.1

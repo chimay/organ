@@ -151,7 +151,7 @@ fun! organ#tree#move_subtree_backward ()
 	let range = head_linum .. ',' .. tail_linum
 	let level = subtree.level
 	let headline_pattern = organ#bird#headline_pattern (1, level)
-	let flags = organ#bird#search_flags ('backward', 'dont-move', 'dont-wrap')
+	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
 	let target = search(headline_pattern, flags) - 1
 	execute range .. 'move' target
 	call cursor(target + 1, 1)
@@ -168,7 +168,7 @@ fun! organ#tree#move_subtree_forward ()
 	let same_pattern = organ#bird#headline_pattern (level, level)
 	let level -= 1
 	let upper_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let same_linum = search(same_pattern, flags)
 	let upper_linum = search(upper_pattern, flags)
 	if same_linum < upper_linum || upper_linum == 0

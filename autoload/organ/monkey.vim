@@ -25,14 +25,14 @@ endif
 
 fun! organ#monkey#level ()
 	" Level of current list item
-	let line = getline('.')
-	if line !~ s:list_pattern
-		echomsg 'organ monkey level : not on a list item list'
+	let itemline = getline('.')
+	if itemline !~ s:list_pattern
+		echomsg 'organ monkey level : not on a list line'
 		return -1
 	endif
 	let spaces = repeat(' ', &tabstop)
-	let line = substitute(line, '	', spaces, 'g')
-	let indent = line->matchstr('^\s*')
+	let itemline = substitute(itemline, '	', spaces, 'g')
+	let indent = itemline->matchstr('^\s*')
 	let indnum = len(indent)
 	let level = indnum / s:indent_length + 1
 	return level
@@ -40,8 +40,12 @@ endfun
 
 fun! organ#monkey#properties ()
 	" Properties of current list item
-	let linum = line('.')
 	let itemline = getline('.')
+	if itemline !~ s:list_pattern
+		echomsg 'organ monkey level : not on a list line'
+		return -1
+	endif
+	let linum = line('.')
 	let level = organ#monkey#level ()
 	let pattern = s:list_pattern
 	let content = substitute(itemline, pattern, '', '')
@@ -57,6 +61,17 @@ endfun
 fun! organ#monkey#subtree ()
 	" Range & properties of current list subtree
 	let properties = organ#monkey#properties ()
+	let level = properties.level
+	let pattern = '^' .. s:list_indent->repeat(level - 1)
+	let pattern ..= '[-+*0-9]'
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let forward_linum = search(pattern, flags)
+	echomsg pattern forward_linum
+	if forward_linum == 0
+		let tail_linum = line('$')
+	else
+		let tail_linum = forward_linum - 1
+	endif
 	let subtree = #{
 				\ head_linum : properties.linum,
 				\ itemline : properties.itemline,

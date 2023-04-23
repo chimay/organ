@@ -4,6 +4,28 @@
 "
 " Small tools
 
+fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
+	" Search flags
+	let course = a:course
+	let move = a:move
+	let wrap = a:wrap
+	let flags = ''
+	if course == 'backward'
+		let flags ..= 'b'
+	endif
+	if move == 'move'
+		let flags ..= 's'
+	else
+		let flags ..= 'n'
+	endif
+	if wrap == 'wrap'
+		let flags ..= 'w'
+	else
+		let flags ..= 'W'
+	endif
+	return flags
+endfun
+
 fun! organ#utils#circular_plus (index, length)
 	" Rotate/increase index with modulo
 	return (a:index + 1) % a:length

@@ -28,28 +28,6 @@ endif
 
 " ---- helpers
 
-fun! organ#bird#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
-	" Search flags
-	let course = a:course
-	let move = a:move
-	let wrap = a:wrap
-	let flags = ''
-	if course == 'backward'
-		let flags ..= 'b'
-	endif
-	if move == 'move'
-		let flags ..= 's'
-	else
-		let flags ..= 'n'
-	endif
-	if wrap == 'wrap'
-		let flags ..= 'w'
-	else
-		let flags ..= 'W'
-	endif
-	return flags
-endfun
-
 fun! organ#bird#char ()
 	" Headline char
 	if &filetype == 'org'
@@ -81,7 +59,7 @@ fun! organ#bird#headline (move = 'dont-move')
 	" Headline of current subtree
 	let move = a:move
 	let headline_pattern = organ#bird#headline_pattern ()
-	let flags = organ#bird#search_flags ('backward', move, 'dont-wrap')
+	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
 	let flags ..= 'c'
 	return search(headline_pattern, flags)
 endfun
@@ -133,7 +111,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	endif
 	let level = properties.level
 	let headline_pattern = organ#bird#headline_pattern (1, level)
-	let flags = organ#bird#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(headline_pattern, flags)
 	if forward_linum == 0
 		let tail_linum = line('$')
@@ -171,7 +149,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 	call cursor(linum, 1)
 	let line = getline('.')
 	let headline_pattern = organ#bird#headline_pattern ()
-	let flags = organ#bird#search_flags ('backward', move, wrap)
+	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
 		echomsg 'organ bird previous : not found'
@@ -190,7 +168,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	call cursor(linum, colnum)
 	let line = getline('.')
 	let headline_pattern = organ#bird#headline_pattern ()
-	let flags = organ#bird#search_flags ('forward', move, wrap)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
 		echomsg 'organ bird next : not found'
@@ -214,7 +192,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	endif
 	let level = properties.level
 	let headline_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('backward', move, wrap)
+	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	normal! zv
 	return linum
@@ -232,7 +210,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	endif
 	let level = properties.level
 	let headline_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('forward', move, wrap)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	normal! zv
 	return linum
@@ -261,7 +239,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 	endif
 	let level -= 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('backward', move, wrap)
+	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
 		echomsg 'organ bird parent : no parent found'
@@ -283,7 +261,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 	endif
 	let level = properties.level + 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('forward', move, wrap)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
 		echomsg 'organ bird loose child : no child found'
@@ -308,7 +286,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	endif
 	let level = subtree.level + 1
 	let headline_pattern = organ#bird#headline_pattern (level, level)
-	let flags = organ#bird#search_flags ('forward', move, wrap)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0 || linum > tail_linum
 		"echomsg 'organ bird strict child : no child found'
