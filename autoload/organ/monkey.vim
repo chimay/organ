@@ -56,4 +56,13 @@ endfun
 
 fun! organ#monkey#subtree ()
 	" Range & properties of current list subtree
+	let properties = organ#monkey#properties ()
+	let subtree = #{
+				\ head_linum : properties.linum,
+				\ itemline : properties.itemline,
+				\ level : properties.level,
+				\ content : properties.content,
+				\ tail_linum : tail_linum,
+				\}
+	return subtree
 endfun
