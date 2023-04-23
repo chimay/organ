@@ -19,7 +19,7 @@ if ! exists('s:command_meta_actions')
 				\ [ 'info'              , 'organ#bird#whereami'                   ] ,
 				\ [ 'goto-headline'     , 'organ#bird#goto_path'                  ] ,
 				\ [ 'cycle-current'     , 'organ#bird#cycle_current_fold'         ] ,
-				\ [ 'cycle-global'      , 'organ#bird#cycle_all_fold'             ] ,
+				\ [ 'cycle-global'      , 'organ#bird#cycle_all_folds'            ] ,
 				\ [ 'select-subtree'    , 'organ#tree#select_subtree'             ] ,
 				\ [ 'yank-subtree'      , 'organ#tree#yank_subtree'               ] ,
 				\ [ 'delete-subtree'    , 'organ#tree#delete_subtree'             ] ,
@@ -27,8 +27,8 @@ if ! exists('s:command_meta_actions')
 				\ [ 'demote'            , 'organ#yggdrasil#demote'                ] ,
 				\ [ 'promote-subtree'   , 'organ#yggdrasil#promote_subtree'       ] ,
 				\ [ 'demote-subtree'    , 'organ#yggdrasil#demote_subtree'        ] ,
-				\ [ 'move-subtree-down' , 'organ#yggdrasil#move_subtree_backward' ] ,
-				\ [ 'move-subtree-up'   , 'organ#yggdrasil#move_subtree_forward'  ] ,
+				\ [ 'move-subtree-up'   , 'organ#yggdrasil#move_subtree_backward' ] ,
+				\ [ 'move-subtree-down' , 'organ#yggdrasil#move_subtree_forward'  ] ,
 				\ ]
 	lockvar! s:command_meta_actions
 endif
