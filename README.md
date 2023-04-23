@@ -185,8 +185,7 @@ The prefix bindings are always available, regardless of the
 You can trigger filetype autocommands to define your own maps :
 
 ```vim
-autocmd FileType org nmap <buffer> <c-p> <plug>(organ-previous)
-autocmd FileType markdown nmap <buffer> <c-p> <plug>(organ-previous)
+autocmd FileType org,markdown nmap <buffer> <c-p> <plug>(organ-previous)
 ```
 
 This should have the same effect as writing :
@@ -208,3 +207,9 @@ features :
 ```
 
 Completion is available for subcommands.
+
+I suggest you map it to a convenient key, eg :
+
+```vim
+autocmd FileType org,markdown nnoremap <buffer> <d-o> :Organ<space>
+```
