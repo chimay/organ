@@ -19,7 +19,7 @@ endif
 
 " ---- helpers
 
-fun! wheel#kyusu#steep (wordlist, unused, value)
+fun! organ#kyusu#steep (wordlist, unused, value)
 	" Whether value matches all words of wordlist
 	" Word beginning by a ! means logical not
 	" Pipe | in word means logical or
@@ -45,10 +45,10 @@ endfun
 
 " ---- prompt completion
 
-fun! wheel#kyusu#pour (wordlist, list)
+fun! organ#kyusu#pour (wordlist, list)
 	" Return elements of list matching words of wordlist
 	let list = deepcopy(a:list)
-	let Matches = function('wheel#kyusu#steep', [a:wordlist])
+	let Matches = function('organ#kyusu#steep', [a:wordlist])
 	let candidates = filter(list, Matches)
 	return candidates
 endfun

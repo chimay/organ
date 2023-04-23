@@ -39,7 +39,7 @@ of the modules within them.
 | kyusu.vim         | Filters for prompt & dedicated buffers             |
 | monkey.vim        | Navigation in lists hierarchy                      |
 | origami.vim       | Folding                                            |
-| perspective.vim   | Non wheel content generators for prompt & mandalas |
+| perspective.vim   | content generators for prompt                      |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |

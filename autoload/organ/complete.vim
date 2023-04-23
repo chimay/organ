@@ -17,6 +17,13 @@ fun! organ#complete#headline (arglead, cmdline, cursorpos)
 	" Complete buffer line
 	let choices = organ#perspective#headlines ()
 	let wordlist = split(a:cmdline)
-	return wheel#kyusu#pour(wordlist, choices)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#path (arglead, cmdline, cursorpos)
+	" Complete buffer line
+	let choices = organ#perspective#paths ()
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
 endfun
 

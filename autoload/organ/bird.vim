@@ -12,7 +12,7 @@ if ! exists('s:level_separator')
 endif
 
 if ! exists('s:field_separ')
-	let s:field_separ = wheel#crystal#fetch('separator/field')
+	let s:field_separ = organ#crystal#fetch('separator/field')
 	lockvar s:field_separ
 endif
 
@@ -312,7 +312,7 @@ endfun
 
 " ---- goto
 
-fun! organ#bird#goto ()
+fun! organ#bird#goto_headline ()
 	" Goto heading with completion
 	let prompt = 'Switch to line : '
 	let complete = 'customlist,organ#complete#headline'
@@ -320,10 +320,27 @@ fun! organ#bird#goto ()
 	if empty(record)
 		return -1
 	endif
+	let fields = split(record, s:field_separ)
+	let linum = str2nr(fields[0])
+	call cursor(linum, 1)
+	normal! zv
+	return linum
+endfun
+
+fun! organ#bird#goto_path ()
+	" Goto heading with completion
+	let prompt = 'Switch to line : '
+	let complete = 'customlist,organ#complete#path'
+	let record = input(prompt, '', complete)
+	if empty(record)
+		return -1
+	endif
 	echomsg record
 	let fields = split(record, s:field_separ)
 	let linum = str2nr(fields[0])
-	return cursor(linum, 1)
+	call cursor(linum, 1)
+	normal! zv
+	return linum
 endfun
 
 " ---- full path of chapters, sections, subsections, and so on
