@@ -310,6 +310,38 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	return linum
 endfun
 
+" ---- full path of chapters, sections, subsections, and so on
+
+fun! organ#bird#path (move = 'dont-move')
+	" Full headings path of current section : part, chapter, ...
+	let move = a:move
+	let position = getcurpos ()
+	let properties = organ#bird#properties ('move')
+	let path = properties.title
+	while v:true
+		if properties.linum == 0
+			if move != 'move'
+				call setpos('.', position)
+			endif
+			return path
+		endif
+		if properties.level == 1
+			if move != 'move'
+				call setpos('.', position)
+			endif
+			return path
+		endif
+		call organ#bird#parent ('move', 'wrap', properties)
+		let properties = organ#bird#properties ('move')
+		let path = properties.title .. s:level_separator .. path
+	endwhile
+endfun
+
+fun! organ#bird#whereami (move = 'dont-move')
+	" Echo full section path
+	echomsg 'organ path :' organ#bird#path (a:move)
+endfun
+
 " ---- goto
 
 fun! organ#bird#goto_headline ()
@@ -341,38 +373,6 @@ fun! organ#bird#goto_path ()
 	call cursor(linum, 1)
 	normal! zv
 	return linum
-endfun
-
-" ---- full path of chapters, sections, subsections, and so on
-
-fun! organ#bird#path (move = 'dont-move')
-	" Full headings path of current section : part, chapter, ...
-	let move = a:move
-	let position = getcurpos ()
-	let properties = organ#bird#properties ('move')
-	let path = properties.title
-	while v:true
-		if properties.linum == 0
-			if move != 'move'
-				call setpos('.', position)
-			endif
-			return path
-		endif
-		if properties.level == 1
-			if move != 'move'
-				call setpos('.', position)
-			endif
-			return path
-		endif
-		call organ#bird#parent ('move', 'wrap', properties)
-		let properties = organ#bird#properties ('move')
-		let path = properties.title .. s:level_separator .. path
-	endwhile
-endfun
-
-fun! organ#bird#whereami (move = 'dont-move')
-	" Echo full section path
-	echomsg 'organ path :' organ#bird#path (a:move)
 endfun
 
 " ---- visibility

@@ -83,8 +83,8 @@ active only when the cursor is on the first char of a headline :
 - `f`      : forward heading of same level
 - `-`      : parent heading
 - `+`      : child heading, loosely speaking : first headline of level + 1, forward
-- `h`      : go to headline, with prompt completion
-- `w`      : where am I ? full headings path (chapter, section, subsection, ...)
+- `w`      : where am I ? full headings path (part, chapter, section, subsection, ...)
+- `h`      : go to headline, with prompt completion of full headings path
 - `*`      : cycle current fold visibility
 - `#`      : cycle all folds visibility
 - `@`      : select subtree
@@ -107,7 +107,7 @@ value in your init file, these bindings become available :
 - `<M-u>`       : upper, parent heading
 - `<M-l>`       : lower, child heading, loosely speaking : first headline of level + 1, forward
 - `<M-S-l>`     : lower, child heading, strictly speaking
-- `<M-h>`       : go to headline, with prompt completion
+- `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-@>`       : select subtree
 - `<M-y>`       : yank subtree
