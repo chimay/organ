@@ -30,6 +30,70 @@ if ! exists('s:plain_list_line_pattern')
 	lockvar! s:plain_list_line_pattern
 endif
 
+" --- export formats
+
+if ! exists('s:export_formats_pandoc')
+	let s:export_formats_pandoc = [
+				\ 'asciidoc',
+				\ 'beamer',
+				\ 'bibtex',
+				\ 'biblatex',
+				\ 'chunkedhtml',
+				\ 'commonmark',
+				\ 'commonmark_x',
+				\ 'context',
+				\ 'csljson',
+				\ 'docbook',
+				\ 'docx',
+				\ 'dokuwiki',
+				\ 'epub',
+				\ 'fb2',
+				\ 'gfm',
+				\ 'haddock',
+				\ 'html',
+				\ 'icml',
+				\ 'ipynb',
+				\ 'jats',
+				\ 'jira',
+				\ 'json',
+				\ 'latex',
+				\ 'man',
+				\ 'markdown',
+				\ 'markua',
+				\ 'mediawiki',
+				\ 'ms',
+				\ 'muse',
+				\ 'native',
+				\ 'odt',
+				\ 'opml',
+				\ 'opendocument',
+				\ 'org',
+				\ 'pdf',
+				\ 'plain',
+				\ 'pptx',
+				\ 'rst',
+				\ 'rtf',
+				\ 'texinfo',
+				\ 'textile',
+				\ 'slideous',
+				\ 'slidy',
+				\ 'dzslides',
+				\ 'revealjs',
+				\ 's5',
+				\ 'tei',
+				\ 'xwiki',
+				\ 'zimwiki',
+				\]
+	lockvar! s:export_formats_pandoc
+endif
+
+if ! exists('s:export_formats_emacs')
+	let s:export_formats_emacs = [
+				\ 'html',
+				\]
+	lockvar! s:export_formats_emacs
+endif
+
 " ---- public interface
 
 fun! organ#crystal#fetch (varname, conversion = 'no-conversion')

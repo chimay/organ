@@ -57,3 +57,10 @@ fun! organ#pipe#emacs_export (output_format)
 	call system(command)
 	return command
 endfun
+
+fun! organ#pipe#interface ()
+	" Export interface
+	let prompt = 'Switch to line : '
+	let complete = 'customlist,organ#complete#pandoc_formats'
+	let record = input(prompt, '', complete)
+endfun

@@ -346,7 +346,7 @@ endfun
 
 fun! organ#bird#goto_headline ()
 	" Goto heading with completion
-	let prompt = 'Switch to line : '
+	let prompt = 'Goto headline : '
 	let complete = 'customlist,organ#complete#headline'
 	let record = input(prompt, '', complete)
 	if empty(record)
@@ -361,7 +361,7 @@ endfun
 
 fun! organ#bird#goto_path ()
 	" Goto heading with completion
-	let prompt = 'Switch to line : '
+	let prompt = 'Goto headline : '
 	let complete = 'customlist,organ#complete#path'
 	let record = input(prompt, '', complete)
 	if empty(record)

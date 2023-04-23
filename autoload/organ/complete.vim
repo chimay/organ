@@ -13,6 +13,20 @@
 " Note : kyusu#pour makes a deepcopy of the list before
 " processing, no need to do it here
 
+" ---- script constants
+
+if ! exists('s:pandoc_formats')
+	let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
+	lockvar s:pandoc_formats
+endif
+
+if ! exists('s:emacs_formats')
+	let s:emacs_formats = organ#crystal#fetch('export/formats/emacs')
+	lockvar s:emacs_formats
+endif
+
+" ---- headlines
+
 fun! organ#complete#headline (arglead, cmdline, cursorpos)
 	" Complete buffer line
 	let choices = organ#perspective#headlines ()
@@ -27,3 +41,18 @@ fun! organ#complete#path (arglead, cmdline, cursorpos)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
+" ---- export
+
+fun! organ#complete#pandoc_formats (arglead, cmdline, cursorpos)
+	" Complete buffer line
+	let choices = s:pandoc_formats
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
+	" Complete buffer line
+	let choices = s:emacs_formats
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
