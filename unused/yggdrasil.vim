@@ -1,14 +1,14 @@
 " vim: set ft=vim fdm=indent iskeyword&:
 
-" Tree
+" Yggdrasil
 "
 " Operations on orgmode or markdown headings or items hierarchy
 
 " ---- script constants
 
-if ! exists('s:list_pattern')
-	let s:list_pattern = organ#crystal#fetch('list/pattern')
-	lockvar s:list_pattern
+if ! exists('s:itemhead_pattern')
+	let s:itemhead_pattern = organ#crystal#fetch('list/itemhead/pattern')
+	lockvar s:itemhead_pattern
 endif
 
 " ---- new

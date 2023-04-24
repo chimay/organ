@@ -25,9 +25,9 @@ endif
 
 " ---- plain lists
 
-if ! exists('s:list_pattern')
-	let s:list_pattern = '^\%(\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]\)\s*'
-	lockvar! s:list_attern
+if ! exists('s:list_itemhead_pattern')
+	let s:list_itemhead_pattern = '^\%(\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]\)\s*'
+	lockvar! s:list_itemhead_pattern
 endif
 
 if ! exists('s:list_indent')

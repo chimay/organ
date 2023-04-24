@@ -35,16 +35,17 @@ of the modules within them.
 | centre.vim        | Commands & mappings                                |
 | complete.vim      | Completion functions                               |
 | crystal.vim       | Internal constants                                 |
+| diadem.vim        | Internal constants for meta command                |
 | geode.vim         | Internal constants for plugs & maps                |
+| eagle.vim         | Navigation & operations on generic hierrachy       |
 | kyusu.vim         | Filters for prompt & dedicated buffers             |
-| monkey.vim        | Navigation in lists hierarchy                      |
+| colibri.vim       | Navigation in lists hierarchy                      |
 | origami.vim       | Folding                                            |
 | perspective.vim   | content generators for prompt                      |
 | pipe.vim          | export using pandoc or emacs                       |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |
-| yggdrasil.vim     | Operations on generic hierarchy                    |
 
 Ftplugin~
 

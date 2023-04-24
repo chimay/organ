@@ -1,14 +1,14 @@
 " vim: set ft=vim fdm=indent iskeyword&:
 
-" Monkey
+" Colibri
 "
 " Navigation on orgmode or markdown lists hierarchy
 
 " ---- script constants
 
-if ! exists('s:list_pattern')
-	let s:list_pattern = organ#crystal#fetch('list/pattern')
-	lockvar s:list_pattern
+if ! exists('s:itemhead_pattern')
+	let s:itemhead_pattern = organ#crystal#fetch('list/itemhead/pattern')
+	lockvar s:itemhead_pattern
 endif
 
 if ! exists('s:list_indent')
@@ -23,44 +23,52 @@ endif
 
 " ---- helpers
 
-fun! organ#monkey#level ()
+fun! organ#colibri#is_in_list ()
+	" Whether current line is in a list
+	let line = getline('.')
+	if line =~ itemhead_pattern
+		return v:true
+	endif
+endfun
+
+fun! organ#colibri#level ()
 	" Level of current list item
-	let itemline = getline('.')
-	if itemline !~ s:list_pattern
-		echomsg 'organ monkey level : not on a list line'
+	let itemhead = getline('.')
+	if itemhead !~ s:itemhead_pattern
+		echomsg 'organ colibri level : not on a list line'
 		return -1
 	endif
 	let spaces = repeat(' ', &tabstop)
-	let itemline = substitute(itemline, '	', spaces, 'g')
-	let indent = itemline->matchstr('^\s*')
+	let itemhead = substitute(itemhead, '	', spaces, 'g')
+	let indent = itemhead->matchstr('^\s*')
 	let indnum = len(indent)
 	let level = indnum / s:indent_length + 1
 	return level
 endfun
 
-fun! organ#monkey#properties ()
+fun! organ#colibri#properties ()
 	" Properties of current list item
-	let itemline = getline('.')
-	if itemline !~ s:list_pattern
-		echomsg 'organ monkey level : not on a list line'
+	let itemhead = getline('.')
+	if itemhead !~ s:itemhead_pattern
+		echomsg 'organ colibri level : not on a list line'
 		return -1
 	endif
 	let linum = line('.')
-	let level = organ#monkey#level ()
-	let pattern = s:list_pattern
-	let content = substitute(itemline, pattern, '', '')
+	let level = organ#colibri#level ()
+	let pattern = s:itemhead_pattern
+	let content = substitute(itemhead, pattern, '', '')
 	let properties = #{
 				\ linum : linum,
-				\ itemline : itemline,
+				\ itemhead : itemhead,
 				\ level : level,
 				\ content : content
 				\}
 	return properties
 endfun
 
-fun! organ#monkey#subtree ()
+fun! organ#colibri#subtree ()
 	" Range & properties of current list subtree
-	let properties = organ#monkey#properties ()
+	let properties = organ#colibri#properties ()
 	let level = properties.level
 	let pattern = '^' .. s:list_indent->repeat(level - 1)
 	let pattern ..= '[-+*0-9]'
@@ -74,7 +82,7 @@ fun! organ#monkey#subtree ()
 	endif
 	let subtree = #{
 				\ head_linum : properties.linum,
-				\ itemline : properties.itemline,
+				\ itemhead : properties.itemhead,
 				\ level : properties.level,
 				\ content : properties.content,
 				\ tail_linum : tail_linum,
