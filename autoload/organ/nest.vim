@@ -5,7 +5,7 @@
 " Navigation and operations on orgmode or markdown
 " headings or items hierarchy
 
-fun! organ#eagle#navig (function)
+fun! organ#nest#navig (function)
 	" Choose to apply headline or list navigation function
 	let function = a:function
 	if organ#colibri#is_in_list ()
@@ -15,7 +15,7 @@ fun! organ#eagle#navig (function)
 	endif
 endfun
 
-fun! organ#eagle#oper (function)
+fun! organ#nest#oper (function)
 	" Choose to apply headline or list operation function
 	let function = a:function
 	if organ#colibri#is_in_list ()
