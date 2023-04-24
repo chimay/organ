@@ -6,15 +6,27 @@
 
 " ---- script constants
 
-if ! exists('s:list_indent')
-	let s:list_indent = organ#crystal#fetch('list/indent')
-	lockvar s:list_indent
+if ! exists('s:indent')
+	let s:indent = organ#crystal#fetch('list/indent')
+	lockvar s:indent
 endif
 
-" ---- new
+" ---- new list item
 
 fun! organ#bush#new ()
 	" New list item
+	" TODO
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	let line = organ#bird#char()->repeat(level)
+	let line ..= ' '
+	let linelist = [line, '']
+	call append('.', linelist)
+	let linum = line('.') + 1
+	call cursor(linum, 1)
+	let colnum = col('$')
+	call cursor(linum, colnum)
+	startinsert!
 endfun
 
 " ---- promote & demote
