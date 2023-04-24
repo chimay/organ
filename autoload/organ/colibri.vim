@@ -118,7 +118,6 @@ fun! organ#colibri#start (move = 'dont-move')
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	while v:true
 		let linum = search(space_pattern, flags)
-		echomsg linum
 		if linum == 0
 			let linum = 1
 			if move != 'move'
@@ -128,7 +127,8 @@ fun! organ#colibri#start (move = 'dont-move')
 			endif
 			return linum
 		endif
-		call cursor(linum + 1, 1)
+		let previous = getline(linum - 1)
+		call cursor(previous, 1)
 		if ! organ#colibri#is_in_list ()
 			let linum += 1
 			if move != 'move'
