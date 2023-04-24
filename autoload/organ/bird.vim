@@ -440,7 +440,6 @@ fun! organ#bird#speed (key, angle = 'no-angle')
 	endif
 	if ! organ#bird#is_on_headline () || col('.') != 1
 		execute 'normal!' key
-		echomsg 'normal!' key
 		return 0
 	endif
 	call {function}()
