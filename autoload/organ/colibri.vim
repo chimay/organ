@@ -193,7 +193,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	endif
 	let linum = organ#colibri#itemhead (move)
 	if linum == 0
-		echomsg 'organ bird properties : itemhead not found'
+		echomsg 'organ colibri properties : itemhead not found'
 		return #{ linum : 0, itemhead : '', level : 0, content : '' }
 	endif
 	let itemhead = getline(linum)
@@ -253,5 +253,163 @@ endfun
 fun! organ#colibri#tail (move = 'dont-move')
 	" Last line of current list subtree
 	return organ#colibri#subtree(a:move).tail_linum
+endfun
+
+" ---- previous, next
+
+fun! organ#colibri#previous (move = 'move', wrap = 'wrap')
+	" Previous list item
+	let move = a:move
+	let wrap = a:wrap
+	let linum = line('.')
+	call cursor(linum, 1)
+	let line = getline('.')
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('backward', move, wrap)
+	let linum = search(itemhead_pattern, flags)
+	if linum == 0
+		echomsg 'organ colibri previous : not found'
+		return 0
+	endif
+	normal! zv
+	return linum
+endfun
+
+fun! organ#colibri#next (move = 'move', wrap = 'wrap')
+	" Next list item
+	let move = a:move
+	let wrap = a:wrap
+	let linum = line('.')
+	let colnum = col('$')
+	call cursor(linum, colnum)
+	let line = getline('.')
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('forward', move, wrap)
+	let linum = search(itemhead_pattern, flags)
+	if linum == 0
+		echomsg 'organ colibri next : not found'
+		return 0
+	endif
+	normal! zv
+	return linum
+endfun
+
+" ---- backward, forward
+
+fun! organ#colibri#backward (move = 'move', wrap = 'wrap')
+	" Backward item of same level
+	let move = a:move
+	let wrap = a:wrap
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ colibri backward : item not found'
+		return linum
+	endif
+	let level = properties.level
+	let itemhead_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('backward', move, wrap)
+	let linum = search(itemhead_pattern, flags)
+	normal! zv
+	return linum
+endfun
+
+fun! organ#colibri#forward (move = 'move', wrap = 'wrap')
+	" Forward item of same level
+	let move = a:move
+	let wrap = a:wrap
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ colibri forward : item not found'
+		return linum
+	endif
+	let level = properties.level
+	let itemhead_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
+	let linum = search(itemhead_pattern, flags)
+	normal! zv
+	return linum
+endfun
+
+" ---- parent, child
+
+fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
+	" Parent headline, ie first headline of level - 1, backward
+	let move = a:move
+	let wrap = a:wrap
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird parent : current headline not found'
+		return linum
+	endif
+	let level = properties.level
+	if level == 1
+		echomsg 'organ bird parent : already at top level'
+		return linum
+	endif
+	let level -= 1
+	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('backward', move, wrap)
+	let linum = search(headline_pattern, flags)
+	if linum == 0
+		echomsg 'organ bird parent : no parent found'
+		return linum
+	endif
+	normal! zv
+	return linum
+endfun
+
+fun! organ#colibri#loose_child (move = 'move', wrap = 'wrap')
+	" Child headline, or, more generally, first headline of level + 1, forward
+	let move = a:move
+	let wrap = a:wrap
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	if linum == 0
+		echomsg 'organ bird loose child : current headline not found'
+		return linum
+	endif
+	let level = properties.level + 1
+	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
+	let linum = search(headline_pattern, flags)
+	if linum == 0
+		echomsg 'organ bird loose child : no child found'
+		return linum
+	endif
+	normal! zv
+	return linum
+endfun
+
+fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
+	" First child subtree, strictly speaking
+	let move = a:move
+	let wrap = a:wrap
+	let position = getcurpos ()
+	" TODO
+	let subtree = organ#colibri#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	if head_linum == 0 || tail_linum == 0
+		echomsg 'organ bird strict child : headline not found'
+		return linum
+	endif
+	let level = subtree.level + 1
+	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('forward', move, wrap)
+	let linum = search(headline_pattern, flags)
+	if linum == 0 || linum > tail_linum
+		"echomsg 'organ bird strict child : no child found'
+		call setpos('.', position)
+		return 0
+	endif
+	normal! zv
+	return linum
 endfun
 
