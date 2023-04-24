@@ -99,7 +99,8 @@ content
   + item 2.3
     * item 2.3.1
     * item 2.3.2
-      bla bla
+      text
+      more
   + item 2.4
 - item 3
 

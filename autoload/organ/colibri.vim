@@ -42,10 +42,8 @@ endfun
 fun! organ#colibri#itemhead_pattern (minlevel = 1, maxlevel = 100, indent = 0)
 	" Item head pattern of level between minlevel and maxlevel
 	" All list is indented with indent * s:indent_length
-	let minlevel = a:minlevel + a:indent
-	let maxlevel = a:maxlevel + a:indent
-	let min = minlevel - 1
-	let max = maxlevel - 1
+	let min = a:minlevel + a:indent - 1
+	let max = a:maxlevel + a:indent - 1
 	if min == 0 && &filetype == 'org'
 		let pattern = '^\%(\%(' .. s:indent .. '\)\{' .. min .. ',' .. max .. '\}'
 		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)\)\|'
@@ -67,25 +65,6 @@ fun! organ#colibri#is_on_itemhead ()
 	return line =~ organ#colibri#generic_pattern ()
 endfun
 
-fun! organ#colibri#is_in_list ()
-	" Whether current line is in a list
-	let linum = line('.')
-	let line = getline(linum)
-	let itemhead_pattern = organ#colibri#generic_pattern ()
-	if line =~ itemhead_pattern
-		return v:true
-	endif
-	if line =~ '^\s*$'
-		if linum == line('$')
-			return v:false
-		endif
-		let next = getline(linum + 1)
-		if next !~ s:itemhead_pattern
-			return v:false
-		endif
-	endif
-endfun
-
 fun! organ#colibri#itemhead (move = 'dont-move')
 	" Head of current list item
 	let move = a:move
@@ -93,6 +72,34 @@ fun! organ#colibri#itemhead (move = 'dont-move')
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
 	let flags ..= 'c'
 	return search(itemhead_pattern, flags)
+endfun
+
+fun! organ#colibri#is_in_list (move = 'dont-move')
+	" Whether current line is in a list
+	let move = a:move
+	let linum = line('.')
+	let current_line = getline(linum)
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	if current_line =~ itemhead_pattern
+		return v:true
+	endif
+	if current_line =~ '^\s*$'
+		if linum == line('$')
+			return v:false
+		endif
+		let next = getline(linum + 1)
+		if next !~ itemhead_pattern
+			return v:false
+		endif
+	endif
+	let head_linum = organ#colibri#itemhead (move)
+	let linelist = getline(head_linum, linum - 1)
+	for line in linelist
+		if line =~ '^\s*$'
+			return v:false
+		endif
+	endfor
+	return v:true
 endfun
 
 fun! organ#colibri#level ()
