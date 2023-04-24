@@ -106,12 +106,12 @@ content
 
 ### chapter 3.3.1
 
-content
-
 1. item 1
 2. item 2
 
 3. item 2
+
+content
 
 #### section 3.3.1.1
 

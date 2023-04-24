@@ -102,6 +102,24 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	return v:true
 endfun
 
+fun! organ#colibri#are_on_same_list (one, two)
+	" Check if line numbers one and two are on the same list
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let linelist = getline(a:one, a:two)
+	let air = v:false
+	for line in linelist
+		if air && line !~ itemhead_pattern
+			return v:false
+		endif
+		if line =~ '^\s*$'
+			let air = v:true
+		else
+			let air = v:false
+		endif
+	endfor
+	return v:true
+endfun
+
 fun! organ#colibri#properties (move = 'dont-move')
 	" Properties of current list item
 	let move = a:move
@@ -147,9 +165,9 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(itemhead_pattern, flags)
-	" TODO : check if same list
-	if forward_linum == 0
-		let tail_linum = line('$')
+	let same_list = organ#colibri#are_on_same_list (head_linum, forward_linum)
+	if forward_linum == 0 || ! same_list
+		let tail_linum = search('^\s*$', flags) - 1
 	else
 		let tail_linum = forward_linum - 1
 	endif
