@@ -102,22 +102,34 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	return v:true
 endfun
 
-fun! organ#colibri#are_on_same_list (one, two)
-	" Check if line numbers one and two are on the same list
+fun! organ#colibri#final (move = 'dont-move')
+	" Line number of the last line in current list
+	let move = a:move
+	if ! organ#colibri#is_in_list ()
+		echomsg 'organ colibri final : not in a list'
+		return 0
+	endif
+	let position = getcurpos ()
+	let space_pattern = '^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let linelist = getline(a:one, a:two)
-	let air = v:false
-	for line in linelist
-		if air && line !~ itemhead_pattern
-			return v:false
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	while v:true
+		let linum = search(space_pattern, flags)
+		let next = getline(linum + 1)
+		if next !~ itemhead_pattern
+			let linum -= 1
+			if move != 'move'
+				call setpos('.', position)
+			else
+				call cursor(linum, 1)
+			endif
+			return linum
 		endif
-		if line =~ '^\s*$'
-			let air = v:true
-		else
-			let air = v:false
-		endif
-	endfor
-	return v:true
+	endwhile
+	if move != 'move'
+		call setpos('.', position)
+	endif
+	return 0
 endfun
 
 fun! organ#colibri#properties (move = 'dont-move')
@@ -147,7 +159,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 				\ linum : linum,
 				\ itemhead : itemhead,
 				\ level : level,
-				\ content : content
+				\ content : content,
 				\}
 	return properties
 endfun
@@ -165,9 +177,9 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(itemhead_pattern, flags)
-	let same_list = organ#colibri#are_on_same_list (head_linum, forward_linum)
-	if forward_linum == 0 || ! same_list
-		let tail_linum = search('^\s*$', flags) - 1
+	let final = organ#colibri#final ()
+	if forward_linum == 0 || forward_linum > final
+		let tail_linum = final
 	else
 		let tail_linum = forward_linum - 1
 	endif

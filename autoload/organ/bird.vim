@@ -97,7 +97,7 @@ fun! organ#bird#properties (move = 'dont-move')
 				\ linum : linum,
 				\ headline : headline,
 				\ level : level,
-				\ title : title
+				\ title : title,
 				\}
 	return properties
 endfun
