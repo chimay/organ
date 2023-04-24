@@ -49,9 +49,9 @@ fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
 endfun
 
 fun! organ#bird#is_on_headline ()
-	" Whether current position is on headline
-	let headline_pattern = organ#bird#headline_pattern ()
+	" Whether current line is an headline
 	let line = getline('.')
+	let headline_pattern = organ#bird#headline_pattern ()
 	return line =~ headline_pattern
 endfun
 

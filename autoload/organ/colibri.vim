@@ -23,11 +23,40 @@ endif
 
 " ---- helpers
 
+fun! organ#colibri#itemhead_pattern (indent = 0, minlevel = 1, maxlevel = 100)
+	" Item head pattern of level between minlevel and maxlevel
+	" All list is indented with indent * s:indent_length
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	if &filetype == 'org'
+		return '^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
+	elseif &filetype == 'markdown'
+		return '^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
+	endif
+endfun
+
+fun! organ#colibri#is_on_itemhead ()
+	" Whether current line is a item head
+	let headline_pattern = organ#bird#headline_pattern ()
+	let line = getline('.')
+	return line =~ headline_pattern
+endfun
+
 fun! organ#colibri#is_in_list ()
 	" Whether current line is in a list
-	let line = getline('.')
-	if line =~ itemhead_pattern
+	let linum = line('.')
+	let line = getline(linum)
+	if line =~ s:itemhead_pattern
 		return v:true
+	endif
+	if line =~ '^\s*$'
+		if linum == line('$')
+			return v:false
+		endif
+		let next = getline(linum + 1)
+		if next !~ s:itemhead_pattern
+			return v:false
+		endif
 	endif
 endfun
 
