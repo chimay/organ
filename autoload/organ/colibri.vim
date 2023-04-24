@@ -102,32 +102,28 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	return v:true
 endfun
 
-fun! organ#colibri#level ()
-	" Level of current list item
-	let itemhead = getline('.')
-	let itemhead_pattern = organ#colibri#generic_pattern ()
-	if itemhead !~ itemhead_pattern
-		echomsg 'organ colibri level : not on a list line'
-		return -1
+fun! organ#colibri#properties (move = 'dont-move')
+	" Properties of current list item
+	let move = a:move
+	if ! organ#colibri#is_in_list ()
+		echomsg 'organ colibri properties : not in a list'
+		return #{ linum : 0, itemhead : '', level : 0, content : '' }
 	endif
+	let linum = organ#colibri#itemhead (move)
+	if linum == 0
+		echomsg 'organ bird properties : itemhead not found'
+		return #{ linum : 0, itemhead : '', level : 0, content : '' }
+	endif
+	let itemhead = getline(linum)
+	" ---- tab -> spaces
 	let spaces = repeat(' ', &tabstop)
 	let itemhead = substitute(itemhead, '	', spaces, 'g')
+	" ---- computing level
 	let indent = itemhead->matchstr('^\s*')
 	let indnum = len(indent)
 	let level = indnum / s:indent_length + 1
-	return level
-endfun
-
-fun! organ#colibri#properties ()
-	" Properties of current list item
-	let itemhead = getline('.')
+	" ---- content without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	if itemhead !~ itemhead_pattern
-		echomsg 'organ colibri level : not on a list line'
-		return -1
-	endif
-	let linum = line('.')
-	let level = organ#colibri#level ()
 	let content = substitute(itemhead, itemhead_pattern, '', '')
 	let properties = #{
 				\ linum : linum,
@@ -138,15 +134,20 @@ fun! organ#colibri#properties ()
 	return properties
 endfun
 
-fun! organ#colibri#subtree ()
+fun! organ#colibri#subtree (move = 'dont-move')
 	" Range & properties of current list subtree
-	let properties = organ#colibri#properties ()
+	let move = a:move
+	let properties = organ#colibri#properties (move)
+	let head_linum = properties.linum
+	if head_linum == 0
+		echomsg 'organ colibri subtree : itemhead not found'
+		return #{ head_linum : 0, itemhead : '', level : 0, content : '', tail_linum : 0 }
+	endif
 	let level = properties.level
-	let pattern = '^' .. s:indent->repeat(level - 1)
-	let pattern ..= '[-+*0-9]'
+	let itemhead_pattern = organ#colibri#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(pattern, flags)
-	echomsg pattern forward_linum
+	let forward_linum = search(itemhead_pattern, flags)
+	" TODO : check if same list
 	if forward_linum == 0
 		let tail_linum = line('$')
 	else

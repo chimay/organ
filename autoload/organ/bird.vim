@@ -82,7 +82,7 @@ fun! organ#bird#properties (move = 'dont-move')
 	let linum = organ#bird#headline (move)
 	if linum == 0
 		echomsg 'organ bird properties : headline not found'
-		return #{ linum : 0, headline : '', level : 0 }
+		return #{ linum : 0, headline : '', level : 0, title : '' }
 	endif
 	let headline = getline(linum)
 	if &filetype == 'org'
@@ -119,7 +119,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ bird subtree : headline not found'
-		return #{ head_linum : 0, headline : '', level : 0, tail_linum : 0 }
+		return #{ head_linum : 0, headline : '', level : 0, title : '', tail_linum : 0 }
 	endif
 	let level = properties.level
 	let headline_pattern = organ#bird#level_pattern (1, level)
