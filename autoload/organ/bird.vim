@@ -47,7 +47,7 @@ fun! organ#bird#generic_pattern ()
 	endif
 endfun
 
-fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
+fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
@@ -122,7 +122,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 		return #{ head_linum : 0, headline : '', level : 0, tail_linum : 0 }
 	endif
 	let level = properties.level
-	let headline_pattern = organ#bird#headline_pattern (1, level)
+	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(headline_pattern, flags)
 	if forward_linum == 0
@@ -203,7 +203,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level
-	let headline_pattern = organ#bird#headline_pattern (level, level)
+	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	normal! zv
@@ -221,7 +221,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level
-	let headline_pattern = organ#bird#headline_pattern (level, level)
+	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	normal! zv
@@ -250,7 +250,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 		return linum
 	endif
 	let level -= 1
-	let headline_pattern = organ#bird#headline_pattern (level, level)
+	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
@@ -272,7 +272,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level + 1
-	let headline_pattern = organ#bird#headline_pattern (level, level)
+	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
@@ -297,7 +297,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = subtree.level + 1
-	let headline_pattern = organ#bird#headline_pattern (level, level)
+	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0 || linum > tail_linum

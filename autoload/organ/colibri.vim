@@ -39,7 +39,7 @@ fun! organ#colibri#generic_pattern ()
 	endif
 endfun
 
-fun! organ#colibri#itemhead_pattern (minlevel = 1, maxlevel = 100, indent = 0)
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100, indent = 0)
 	" Item head pattern of level between minlevel and maxlevel
 	" All list is indented with indent * s:indent_length
 	let min = a:minlevel + a:indent - 1
