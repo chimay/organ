@@ -93,6 +93,9 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 		endif
 	endif
 	let head_linum = organ#colibri#itemhead (move)
+	if head_linum == 0
+		return v:false
+	endif
 	let linelist = getline(head_linum, linum - 1)
 	for line in linelist
 		if line =~ '^\s*$'
@@ -100,6 +103,46 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 		endif
 	endfor
 	return v:true
+endfun
+
+fun! organ#colibri#start (move = 'dont-move')
+	" Line number of the first line in current list
+	let move = a:move
+	if ! organ#colibri#is_in_list ()
+		echomsg 'organ colibri start : not in a list'
+		return 0
+	endif
+	let position = getcurpos ()
+	let space_pattern = '^\s*$'
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
+	while v:true
+		let linum = search(space_pattern, flags)
+		echomsg linum
+		if linum == 0
+			let linum = 1
+			if move != 'move'
+				call setpos('.', position)
+			else
+				call cursor(linum, 1)
+			endif
+			return linum
+		endif
+		call cursor(linum + 1, 1)
+		if ! organ#colibri#is_in_list ()
+			let linum += 1
+			if move != 'move'
+				call setpos('.', position)
+			else
+				call cursor(linum, 1)
+			endif
+			return linum
+		endif
+	endwhile
+	if move != 'move'
+		call setpos('.', position)
+	endif
+	return 0
 endfun
 
 fun! organ#colibri#final (move = 'dont-move')
@@ -115,6 +158,15 @@ fun! organ#colibri#final (move = 'dont-move')
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	while v:true
 		let linum = search(space_pattern, flags)
+		if linum == 0
+			let linum = line('$')
+			if move != 'move'
+				call setpos('.', position)
+			else
+				call cursor(linum, 1)
+			endif
+			return linum
+		endif
 		let next = getline(linum + 1)
 		if next !~ itemhead_pattern
 			let linum -= 1
