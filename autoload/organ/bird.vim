@@ -37,6 +37,16 @@ fun! organ#bird#char ()
 	endif
 endfun
 
+fun! organ#bird#generic_pattern ()
+	if &filetype == 'org'
+		return '^\*'
+	elseif &filetype == 'markdown'
+		return '^#'
+	else
+		echomsg 'organ bird generic pattern : filetype not supported'
+	endif
+endfun
+
 fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
@@ -45,20 +55,22 @@ fun! organ#bird#headline_pattern (minlevel = 1, maxlevel = 100)
 		return '^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
 	elseif &filetype == 'markdown'
 		return '^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
+	else
+		echomsg 'organ bird headline pattern : filetype not supported'
 	endif
 endfun
 
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
 	let line = getline('.')
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	return line =~ headline_pattern
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
 	" Headline of current subtree
 	let move = a:move
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
 	let flags ..= 'c'
 	return search(headline_pattern, flags)
@@ -148,7 +160,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 	let linum = line('.')
 	call cursor(linum, 1)
 	let line = getline('.')
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
@@ -167,7 +179,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	let colnum = col('$')
 	call cursor(linum, colnum)
 	let line = getline('.')
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0

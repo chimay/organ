@@ -177,7 +177,7 @@ fun! organ#tree#move_subtree_forward ()
 		let target = same_subtree.tail_linum
 	else
 		call cursor(upper_linum, 1)
-		let headline_pattern = organ#bird#headline_pattern ()
+		let headline_pattern = organ#bird#generic_pattern ()
 		let target = search(headline_pattern, flags) - 1
 	endif
 	execute range .. 'move' target

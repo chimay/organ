@@ -15,7 +15,7 @@ endif
 
 fun! organ#perspective#headlines_numbers ()
 	" List of headlines line numbers
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	let position = getcurpos()
 	let runme = 'global /' .. headline_pattern .. '/number'
 	let returnlist = execute(runme)
@@ -34,7 +34,7 @@ endfun
 
 fun! organ#perspective#headlines ()
 	" List of headlines
-	let headline_pattern = organ#bird#headline_pattern ()
+	let headline_pattern = organ#bird#generic_pattern ()
 	let position = getcurpos()
 	let runme = 'global /' .. headline_pattern .. '/number'
 	let returnlist = execute(runme)
