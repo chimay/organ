@@ -216,6 +216,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 	return properties
 endfun
 
+fun! organ#colibri#level (move = 'dont-move')
+	" Level of current list subtree
+	return organ#colibri#level(a:move).level
+endfun
+
 fun! organ#colibri#subtree (move = 'dont-move')
 	" Range & properties of current list subtree
 	let move = a:move
@@ -244,3 +249,9 @@ fun! organ#colibri#subtree (move = 'dont-move')
 				\}
 	return subtree
 endfun
+
+fun! organ#colibri#tail (move = 'dont-move')
+	" Last line of current list subtree
+	return organ#colibri#subtree(a:move).tail_linum
+endfun
+
