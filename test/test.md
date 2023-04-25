@@ -12,6 +12,7 @@
 
   + item 2.4
 - item 3
+  + item 3.1
 
 # book 1
 

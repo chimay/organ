@@ -16,16 +16,6 @@ if ! exists('s:field_separ')
 	lockvar s:field_separ
 endif
 
-if ! exists('s:speedkeys')
-	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
-	lockvar s:speedkeys
-endif
-
-if ! exists('s:speedkeys_with_angle')
-	let s:speedkeys_with_angle = organ#geode#fetch('speedkeys/with_angle', 'dict')
-	lockvar s:speedkeys_with_angle
-endif
-
 " ---- helpers
 
 fun! organ#bird#char ()
@@ -424,23 +414,4 @@ fun! organ#bird#cycle_all_folds ()
 	else
 		setlocal foldlevel=0
 	endif
-endfun
-
-" -- speed commands
-
-fun! organ#bird#speed (key, angle = 'no-angle')
-	" Speed key on headlines first char
-	let key = a:key
-	let angle = a:angle
-	if angle ==# 'with-angle' || angle ==# '>'
-		let function = s:speedkeys_with_angle[key]
-		execute 'let key =' '"\<' .. key .. '>"'
-	else
-		let function = s:speedkeys[key]
-	endif
-	if ! organ#bird#is_on_headline () || col('.') != 1
-		execute 'normal!' key
-		return 0
-	endif
-	call {function}()
 endfun

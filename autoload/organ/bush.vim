@@ -6,9 +6,9 @@
 
 " ---- script constants
 
-if ! exists('s:indent')
-	let s:indent = organ#crystal#fetch('list/indent')
-	lockvar s:indent
+if ! exists('s:indent_length')
+	let s:indent_length = organ#crystal#fetch('list/indent/length')
+	lockvar s:indent_length
 endif
 
 " ---- new list item

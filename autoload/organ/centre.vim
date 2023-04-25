@@ -16,11 +16,6 @@ if ! exists('s:speedkeys')
 	lockvar s:speedkeys
 endif
 
-if ! exists('s:speedkeys_with_angle')
-	let s:speedkeys_with_angle = organ#geode#fetch('speedkeys/with_angle', 'dict')
-	lockvar s:speedkeys_with_angle
-endif
-
 if ! exists('s:normal_plugs')
 	let s:normal_plugs = organ#geode#fetch('plugs/normal')
 	lockvar s:normal_plugs
@@ -78,15 +73,10 @@ endfun
 fun! organ#centre#speedkeys ()
 	" Speed keys on headlines first char
 	let map = 'nnoremap <buffer>'
-	let command = "<cmd>call organ#bird#speed('"
+	let command = "<cmd>call organ#nest#speed('"
 	let close = "')<cr>"
 	for key in keys(s:speedkeys)
 		execute map key command  .. key .. close
-	endfor
-	let close = "', '>')<cr>"
-	for key in keys(s:speedkeys_with_angle)
-		let angled = '<' .. key .. '>'
-		execute map angled command  .. key .. close
 	endfor
 endfun
 

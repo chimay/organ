@@ -8,13 +8,13 @@
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
-		\ [ 'p',        'organ#bird#previous'              ] ,
-		\ [ 'n',        'organ#bird#next'                  ] ,
-		\ [ 'b',        'organ#bird#backward'              ] ,
-		\ [ 'f',        'organ#bird#forward'               ] ,
-		\ [ '-',        'organ#bird#parent'                ] ,
-		\ [ '~',        'organ#bird#loose_child'           ] ,
-		\ [ '+',        'organ#bird#strict_child'          ] ,
+		\ [ 'p',        "organ#nest#navig('previous')"     ] ,
+		\ [ 'n',        "organ#nest#navig('next')"         ] ,
+		\ [ 'b',        "organ#nest#navig('backward')"     ] ,
+		\ [ 'f',        "organ#nest#navig('forward')"      ] ,
+		\ [ '^',        "organ#nest#navig('parent')"       ] ,
+		\ [ '~',        "organ#nest#navig('loose_child')"  ] ,
+		\ [ '-',        "organ#nest#navig('strict_child')" ] ,
 		\ [ 'w',        'organ#bird#whereami'              ] ,
 		\ [ 'h',        'organ#bird#goto_path'             ] ,
 		\ [ '*',        'organ#bird#cycle_current_fold'    ] ,
@@ -32,12 +32,6 @@ if ! exists('s:speedkeys')
 		\ [ 'E',        'organ#pipe#emacs_export'          ] ,
 		\ ]
 	lockvar! s:speedkeys
-endif
-
-if ! exists('s:speedkeys_with_angle')
-	let s:speedkeys_with_angle = [
-		\ ]
-	lockvar! s:speedkeys_with_angle
 endif
 
 " ---- plugs

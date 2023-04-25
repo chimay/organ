@@ -16,11 +16,6 @@ if ! exists('s:itemhead_pattern_markdown')
 	lockvar s:itemhead_pattern_markdown
 endif
 
-if ! exists('s:indent')
-	let s:indent = organ#crystal#fetch('list/indent')
-	lockvar s:indent
-endif
-
 if ! exists('s:indent_length')
 	let s:indent_length = organ#crystal#fetch('list/indent/length')
 	lockvar s:indent_length
@@ -37,26 +32,6 @@ fun! organ#colibri#generic_pattern ()
 	else
 		echomsg 'organ colibri generic pattern : filetype not supported'
 	endif
-endfun
-
-fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100, indent = 0)
-	" Item head pattern of level between minlevel and maxlevel
-	" All list is indented with indent * s:indent_length
-	let min = a:minlevel + a:indent - 1
-	let max = a:maxlevel + a:indent - 1
-	if min == 0 && &filetype == 'org'
-		let pattern = '^\%(\%(' .. s:indent .. '\)\{' .. min .. ',' .. max .. '\}'
-		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)\)\|'
-		let pattern ..= '\%(^[-+]\|^[0-9]\+[.)]\)'
-		return pattern
-	endif
-	let pattern = '^\%(' .. s:indent .. '\)\{' .. min .. ',' .. max .. '\}'
-	if &filetype == 'org'
-		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)'
-	elseif &filetype == 'markdown'
-		let pattern ..= '\%([-+*]\|[0-9]\+[.]\)'
-	endif
-	return pattern
 endfun
 
 fun! organ#colibri#is_on_itemhead ()
@@ -182,6 +157,29 @@ fun! organ#colibri#final (move = 'dont-move')
 		call setpos('.', position)
 	endif
 	return 0
+endfun
+
+fun! organ#colibri#common_indent ()
+	" Common indent of current list, in number of spaces
+endfun
+
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
+	" Item head pattern of level between minlevel and maxlevel
+	" All list is indented with indent * s:indent_length
+	let min = (a:minlevel - 1) * s:indent_length
+	let max = (a:maxlevel - 1) * s:indent_length
+	" TODO : add common indent
+	let pattern = '^ \{' .. min .. ',' .. max .. '\}'
+	if &filetype == 'org'
+		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)'
+	elseif &filetype == 'markdown'
+		let pattern ..= '\%([-+*]\|[0-9]\+[.]\)'
+	endif
+	if &filetype == 'org'
+		let pattern ..= '\&^[^*]'
+		return pattern
+	endif
+	return pattern
 endfun
 
 fun! organ#colibri#properties (move = 'dont-move')

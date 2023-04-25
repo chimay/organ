@@ -35,12 +35,8 @@ if ! exists('s:list_itemhead_pattern_markdown')
 	lockvar! s:list_itemhead_pattern_markdown
 endif
 
-if ! exists('s:list_indent')
-	let s:list_indent = '  '
-	lockvar! s:list_indent
-endif
-
 if ! exists('s:list_indent_length')
+	" in number of spaces
 	let s:list_indent_length = len(s:list_indent)
 	lockvar! s:list_indent_length
 endif
