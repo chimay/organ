@@ -17,10 +17,11 @@ fun! organ#bush#indent_item (level)
 	let len_prefix = len(properties.prefix)
 	let shift = organ#colibri#common_indent ()
 	let step = g:organ_config.list.indent_length
-	let numspaces = shift + step * (level - 1)
 	let spaces = '^\s*'
-	let indent = repeat(' ', numspaces)
 	" ---- item head line
+	let numspaces = shift + step * level
+	echomsg shift step level numspaces
+	let indent = repeat(' ', numspaces)
 	let line = getline(head)
 	let line = substitute(line, spaces, indent, '')
 	call setline(head, line)
@@ -116,7 +117,6 @@ fun! organ#bush#promote ()
 			let stripe = organ#utils#circular_minus(index, len_unordered)
 			let first = unordered[stripe]
 			let line = substitute(line, second, first, '')
-			echomsg second first line
 			call setline(linum, line)
 			return linum
 		endif

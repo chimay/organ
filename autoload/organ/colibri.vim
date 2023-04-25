@@ -238,10 +238,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
 	" ---- prefix
-	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let prefix = itemhead->matchstr(itemhead_pattern)
+	let prefix_pattern = '\S\+\s*'
+	let prefix = itemhead->matchstr(prefix_pattern)
 	let prefix = substitute(prefix, '^\s*', '', '')
 	" ---- text without prefix
+	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let text = substitute(itemhead, itemhead_pattern, '', '')
 	let properties = #{
 				\ linum : linum,
