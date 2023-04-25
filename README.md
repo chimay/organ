@@ -5,6 +5,7 @@
 * [Introduction](#introduction)
     * [What is it ?](#what-is-it-)
     * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+    * [Differences with standard orgmode](#differences-with-standard-orgmode)
     * [Features](#features)
     * [Dependancies](#dependancies)
 * [Configuration](#configuration)
@@ -36,7 +37,11 @@ The current orgmode plugins for (neo)vim are either :
 
 Since I use both editors, I wanted to write a lightweight plugin in
 plain simple vimscript, with minimal dependancies (most of it doesn't
-need anything to work).
+need anything else to work).
+
+## Differences with standard orgmode
+
+- speed keys are also available in first char of list item
 
 ## Features
 
@@ -59,7 +64,8 @@ features.
 
 If you want to export your file to another format, you just need to have
 pandoc installed, and the plugin takes care of the rest.  For org files,
-it can also be done with emacs installed.
+it can also be done with emacs installed, at least with the formats
+supported by orgmode.
 
 If you want to navigate to an headline in another org or markdown file,
 you can install [wheel](https://github.com/chimay/wheel) : it has a
@@ -71,7 +77,7 @@ that looks for headlines in all orgmode or markdown files of a group.
 ```vim
 if ! exists("g:organ_loaded")
   let g:organ_config = {}
-  " enable speed keys on headlines first char
+  " enable speed keys on headlines and list items first char
   let g:organ_config.speedkeys = 1
   " choose your mappings prefix
   let g:organ_config.prefix = '<m-c>'
@@ -82,6 +88,8 @@ if ! exists("g:organ_loaded")
   " enable only the prefixless maps you want
   " see the output of :map <plug>(organ- to see available plugs
   let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
+  " number of spaces to indent lists
+  let g:organ_config.list_indent_length = 2
 endif
 ```
 

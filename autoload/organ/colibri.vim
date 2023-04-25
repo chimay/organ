@@ -16,11 +16,6 @@ if ! exists('s:itemhead_pattern_markdown')
 	lockvar s:itemhead_pattern_markdown
 endif
 
-if ! exists('s:indent_length')
-	let s:indent_length = organ#crystal#fetch('list/indent/length')
-	lockvar s:indent_length
-endif
-
 " ---- helpers
 
 fun! organ#colibri#generic_pattern ()
@@ -180,9 +175,9 @@ endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	" Item head pattern of level between minlevel and maxlevel
-	" All list is indented with indent * s:indent_length
-	let min = (a:minlevel - 1) * s:indent_length
-	let max = (a:maxlevel - 1) * s:indent_length
+	let indent_length = g:organ_config.list_indent_length
+	let min = (a:minlevel - 1) * indent_length
+	let max = (a:maxlevel - 1) * indent_length
 	let shift = organ#colibri#common_indent ()
 	let min += shift
 	let max += shift
@@ -217,9 +212,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let itemhead = substitute(itemhead, '	', spaces, 'g')
 	" ---- computing level
 	let indent = itemhead->matchstr('^\s*')
-	let lenindent = len(indent)
-	let lenindent -= organ#colibri#common_indent ()
-	let level = lenindent / s:indent_length + 1
+	let numspaces = len(indent)
+	let common_indent = organ#colibri#common_indent ()
+	let numspaces -= common_indent
+	let indent_length = g:organ_config.list_indent_length
+	let level = numspaces / indent_length + 1
 	" ---- content without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let content = substitute(itemhead, itemhead_pattern, '', '')

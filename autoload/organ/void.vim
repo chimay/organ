@@ -24,4 +24,7 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefixless_plugs')
 		let g:organ_config.prefixless_plugs = []
 	endif
+	if ! has_key(g:organ_config, 'list_indent_length')
+		let g:organ_config.list_indent_length = 2
+	endif
 endfun

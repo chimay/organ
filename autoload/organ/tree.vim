@@ -21,6 +21,39 @@ fun! organ#tree#new ()
 	startinsert!
 endfun
 
+" ---- select, yank, delete
+
+fun! organ#tree#select_subtree ()
+	" Visually select subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	execute head_linum .. 'mark <'
+	execute tail_linum .. 'mark >'
+	normal! gv
+	return subtree
+endfun
+
+fun! organ#tree#yank_subtree ()
+	" Visually yank subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'yank "'
+	return subtree
+endfun
+
+fun! organ#tree#delete_subtree ()
+	" Visually delete subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'delete "'
+	return subtree
+endfun
+
 " ---- promote & demote
 
 " -- current heading only
@@ -106,39 +139,6 @@ fun! organ#tree#demote_subtree ()
 			return linum
 		endif
 	endwhile
-endfun
-
-" ---- select, yank, delete
-
-fun! organ#tree#select_subtree ()
-	" Visually select subtree
-	let subtree = organ#bird#subtree ()
-	let head_linum = subtree.head_linum
-	let tail_linum = subtree.tail_linum
-	execute head_linum .. 'mark <'
-	execute tail_linum .. 'mark >'
-	normal! gv
-	return subtree
-endfun
-
-fun! organ#tree#yank_subtree ()
-	" Visually yank subtree
-	let subtree = organ#bird#subtree ()
-	let head_linum = subtree.head_linum
-	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
-	execute range .. 'yank "'
-	return subtree
-endfun
-
-fun! organ#tree#delete_subtree ()
-	" Visually delete subtree
-	let subtree = organ#bird#subtree ()
-	let head_linum = subtree.head_linum
-	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
-	execute range .. 'delete "'
-	return subtree
 endfun
 
 " ---- move
