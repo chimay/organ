@@ -1,32 +1,30 @@
-" vim: set ft=vim fdm=indent iskeyword&:
-
+" -im: set ft=vim fdm=indent iskeyword&:
+  -
 " Colibri
 "
 " Navigation on orgmode or markdown lists hierarchy
 
 " ---- script constants
 
-if ! exists('s:itemhead_pattern_org')
-	let s:itemhead_pattern_org = organ#crystal#fetch('list/itemhead/pattern/org')
-	lockvar s:itemhead_pattern_org
-endif
-
-if ! exists('s:itemhead_pattern_markdown')
-	let s:itemhead_pattern_markdown = organ#crystal#fetch('list/itemhead/pattern/markdown')
-	lockvar s:itemhead_pattern_markdown
-endif
-
 " ---- helpers
 
 fun! organ#colibri#generic_pattern ()
 	" Generic pattern of item head line
-	if &filetype == 'org'
-		return s:itemhead_pattern_org
-	elseif &filetype == 'markdown'
-		return s:itemhead_pattern_markdown
-	else
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		echomsg 'organ colibri generic pattern : filetype not supported'
+		return ''
 	endif
+	let unordered = g:organ_config.list.unordered[&filetype]
+	let unordered = unordered->join('')
+	let ordered = g:organ_config.list.ordered[&filetype]
+	let ordered = ordered->join('')
+	let pattern = '\%(^\s*[' .. unordered .. ']\s\+\|'
+	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
+	if &filetype == 'org'
+		let pattern ..= '\&^[^*]'
+		return pattern
+	endif
+	return pattern
 endfun
 
 fun! organ#colibri#is_on_itemhead ()
@@ -175,18 +173,23 @@ endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	" Item head pattern of level between minlevel and maxlevel
-	let indent_length = g:organ_config.list_indent_length
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		echomsg 'organ colibri generic pattern : filetype not supported'
+		return ''
+	endif
+	let indent_length = g:organ_config.list.indent_length
 	let min = (a:minlevel - 1) * indent_length
 	let max = (a:maxlevel - 1) * indent_length
 	let shift = organ#colibri#common_indent ()
 	let min += shift
 	let max += shift
+	let unordered = g:organ_config.list.unordered[&filetype]
+	let unordered = unordered->join('')
+	let ordered = g:organ_config.list.ordered[&filetype]
+	let ordered = ordered->join('')
 	let pattern = '^ \{' .. min .. ',' .. max .. '\}'
-	if &filetype == 'org'
-		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)'
-	elseif &filetype == 'markdown'
-		let pattern ..= '\%([-+*]\|[0-9]\+[.]\)'
-	endif
+	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
+	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype == 'org'
 		let pattern ..= '\&^[^*]'
 		return pattern
@@ -215,7 +218,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let numspaces = len(indent)
 	let common_indent = organ#colibri#common_indent ()
 	let numspaces -= common_indent
-	let indent_length = g:organ_config.list_indent_length
+	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
 	" ---- content without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()

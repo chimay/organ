@@ -23,18 +23,6 @@ if ! exists('s:separator_field_bar')
 	lockvar! s:separator_field_bar
 endif
 
-" ---- plain lists
-
-if ! exists('s:list_itemhead_pattern_org')
-	let s:list_itemhead_pattern_org = '^\%(\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.)]\)\s*'
-	lockvar! s:list_itemhead_pattern_org
-endif
-
-if ! exists('s:list_itemhead_pattern_markdown')
-	let s:list_itemhead_pattern_markdown = '^\%(\s*[-+]\|^\s\+\*\|^\s*[0-9]\+[.]\)\s*'
-	lockvar! s:list_itemhead_pattern_markdown
-endif
-
 " --- export formats
 
 if ! exists('s:export_formats_pandoc')

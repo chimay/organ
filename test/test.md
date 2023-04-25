@@ -5,8 +5,8 @@
   + item 2.2
 
   + item 2.3
-    * item 2.3.1
-    * item 2.3.2
+    - item 2.3.1
+    - item 2.3.2
       text
       more
 
@@ -112,8 +112,8 @@ content
   + item 2.2
 
   + item 2.3
-    * item 2.3.1
-    * item 2.3.2
+    - item 2.3.1
+    - item 2.3.2
       text
       more
 
@@ -136,8 +136,8 @@ content
        + item 2.2
 
        + item 2.3
-         * item 2.3.1
-         * item 2.3.2
+         - item 2.3.1
+         - item 2.3.2
            text
            more
 
@@ -178,8 +178,8 @@ content
   + item 2.2
 
   + item 2.3
-    * item 2.3.1
-    * item 2.3.2
+    - item 2.3.1
+    - item 2.3.2
       text
       more
 

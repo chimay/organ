@@ -28,7 +28,7 @@ and agility.
 
 ## Differences with standard orgmode
 
-- speed keys are also available in first char of list item
+- speed keys are also available in first char of list item line
 - movements can
   + wrap around the end of the file
   + cross over a parend headline
@@ -80,7 +80,8 @@ need anything else to work).
 ```vim
 if ! exists("g:organ_loaded")
   let g:organ_config = {}
-  " enable speed keys on headlines and list items first char
+  let g:organ_config.list = {}
+  " enable speed keys on first char of headlines and list items lines
   let g:organ_config.speedkeys = 1
   " choose your mappings prefix
   let g:organ_config.prefix = '<m-c>'
@@ -92,7 +93,11 @@ if ! exists("g:organ_loaded")
   " see the output of :map <plug>(organ- to see available plugs
   let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
   " number of spaces to indent lists
-  let g:organ_config.list_indent_length = 2
+  let g:organ_config.list.indent_length = 2
+  " items chars in unordered list
+  let g:organ_config.list.unordered = #{ org : ['-', '+', '*'], markdown : ['-', '+']}
+  " items chars in ordered list
+  let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
 endif
 ```
 
@@ -102,7 +107,7 @@ endif
 If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
 value in your init file, the speed keys become available. They are
 active only when the cursor is on the first char of a headline or a list
-item :
+item line :
 
 - `p`      : previous heading
 - `n`      : next heading

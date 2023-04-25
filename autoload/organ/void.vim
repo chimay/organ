@@ -9,6 +9,7 @@ fun! organ#void#config ()
 	if ! exists('g:organ_config')
 		let g:organ_config = {}
 	endif
+	" ---- generic
 	if ! has_key(g:organ_config, 'speedkeys')
 		let g:organ_config.speedkeys = 0
 	endif
@@ -24,7 +25,31 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefixless_plugs')
 		let g:organ_config.prefixless_plugs = []
 	endif
-	if ! has_key(g:organ_config, 'list_indent_length')
-		let g:organ_config.list_indent_length = 2
+	" ---- list
+	if ! has_key(g:organ_config, 'list')
+		let g:organ_config.list = {}
+	endif
+	if ! has_key(g:organ_config.list, 'indent_length')
+		let g:organ_config.list.indent_length = 2
+	endif
+	" -- unordered chars
+	if ! has_key(g:organ_config.list, 'unordered')
+		let g:organ_config.list.unordered = {}
+	endif
+	if ! has_key(g:organ_config.list.unordered, 'org')
+		let g:organ_config.list.unordered.org = ['-', '+', '*']
+	endif
+	if ! has_key(g:organ_config.list.unordered, 'markdown')
+		let g:organ_config.list.unordered.markdown = ['-', '+']
+	endif
+	" -- ordered chars
+	if ! has_key(g:organ_config.list, 'ordered')
+		let g:organ_config.list.ordered = {}
+	endif
+	if ! has_key(g:organ_config.list.ordered, 'org')
+		let g:organ_config.list.ordered.org = ['.', ')']
+	endif
+	if ! has_key(g:organ_config.list.ordered, 'markdown')
+		let g:organ_config.list.ordered.markdown = ['.']
 	endif
 endfun
