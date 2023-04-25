@@ -31,9 +31,9 @@ fun! organ#bush#select_subtree ()
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
-	execute head_linum .. 'mark <'
-	execute tail_linum .. 'mark >'
-	normal! gv
+	call cursor(head_linum, 1)
+	normal! V
+	call cursor(tail_linum, 1)
 	return subtree
 endfun
 
