@@ -145,7 +145,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefix = '<m-c>'
   " enable prefixless maps
   let g:organ_config.prefixless = 1
-  " prefixless maps in these modes
+  " prefixless maps in these modes (default)
   let g:organ_config.prefixless_modes = ['normal', 'insert']
   " enable only the prefixless maps you want
   " see the output of :map <plug>(organ- to see available plugs
