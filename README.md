@@ -29,20 +29,20 @@ and agility.
 ## Differences with standard orgmode
 
 - speed keys are also available in first char of list item
-- move up / down a subtree can
+- movements can
   + wrap around the end of the file
   + cross over a parend headline
 
 ## Features
 
 - folding based on headings
-- navigate in the headings hierarchy
+- navigate in the headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
   + parent heading, upper level
   + child heading, lower level : loosely or strictly speaking
   + go to another headline with prompt completion of full path
-- modify headings hierarchy
+- modify hierarchy
   + promote, demote heading or list item
   + select, yank, delete subtree
   + move subtree up or down
@@ -54,7 +54,7 @@ features.
 
 If you want to export your file to another format, you just need to have
 pandoc installed, and the plugin takes care of the rest.  For org files,
-it can also be done with emacs installed, at least with the formats
+it can also be done with emacs installed, at least for the formats
 supported by orgmode.
 
 If you want to navigate to an headline in another org or markdown file,
