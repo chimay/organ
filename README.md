@@ -26,22 +26,12 @@ Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 It is primarily focused on editing orgmode and markdown files with ease
 and agility.
 
-## Why another orgmode clone for vim ?
-
-First of all, it is not intended as a clone, more of a loose adaptation.
-
-The current orgmode plugins for (neo)vim are either :
-
-- abandoned and not adapted for my usage
-- writtent in lua, which means they only work for neovim
-
-Since I use both editors, I wanted to write a lightweight plugin in
-plain simple vimscript, with minimal dependancies (most of it doesn't
-need anything else to work).
-
 ## Differences with standard orgmode
 
 - speed keys are also available in first char of list item
+- move up / down a subtree can
+  + wrap around the end of the file
+  + cross over a parend headline
 
 ## Features
 
@@ -71,6 +61,19 @@ If you want to navigate to an headline in another org or markdown file,
 you can install [wheel](https://github.com/chimay/wheel) : it has a
 prompt completion function (launched with `<plug>(wheel-prompt-outline)`)
 that looks for headlines in all orgmode or markdown files of a group.
+
+## Why another orgmode clone for vim ?
+
+First of all, it is not intended as a clone, more of a loose adaptation.
+
+The current orgmode plugins for (neo)vim are either :
+
+- abandoned and not adapted for my usage
+- writtent in lua, which means they only work for neovim
+
+Since I use both editors, I wanted to write a lightweight plugin in
+plain simple vimscript, with minimal dependancies (most of it doesn't
+need anything else to work).
 
 # Configuration
 
