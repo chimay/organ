@@ -29,9 +29,9 @@ endfun
 
 fun! organ#bird#generic_pattern ()
 	if &filetype == 'org'
-		return '^\*'
+		return '\m^\*'
 	elseif &filetype == 'markdown'
-		return '^#'
+		return '\m^#'
 	else
 		echomsg 'organ bird generic pattern : filetype not supported'
 	endif
@@ -42,9 +42,9 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if &filetype == 'org'
-		return '^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
+		return '\m^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
 	elseif &filetype == 'markdown'
-		return '^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
+		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
 	else
 		echomsg 'organ bird headline pattern : filetype not supported'
 	endif

@@ -11,14 +11,22 @@
 fun! organ#bush#indent_item (level)
 	" Indent current list item
 	let level = a:level
-	let head = organ#colibri#itemhead ()
+	let properties = organ#colibri#properties ()
+	let head = properties.linum
 	let tail = organ#colibri#itemtail ()
+	let len_prefix = len(properties.prefix)
 	let shift = organ#colibri#common_indent ()
 	let step = g:organ_config.list.indent_length
 	let numspaces = shift + step * (level - 1)
 	let spaces = '^\s*'
 	let indent = repeat(' ', numspaces)
-	for linum in range(head, tail)
+	" ---- item head line
+	let line = getline(head)
+	let line = substitute(line, spaces, indent, '')
+	call setline(head, line)
+	" ---- other lines
+	let indent = repeat(' ', numspaces + len_prefix)
+	for linum in range(head + 1, tail)
 		let line = getline(linum)
 		let line = substitute(line, spaces, indent, '')
 		call setline(linum, line)
@@ -87,16 +95,18 @@ fun! organ#bush#promote ()
 		echomsg 'organ colibri generic pattern : filetype not supported'
 		return ''
 	endif
-	let linum = organ#colibri#itemhead ()
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
 	let line = getline(linum)
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
 	let line = substitute(line, '	', spaces, 'g')
-	let indent_length = g:organ_config.list.indent_length
-	let list_indent = repeat(' ', indent_length)
-	if line[:indent_length - 1] == list_indent
-		let line = line[indent_length:]
+	let level = properties.level
+	if level == 1
+		echomsg 'organ bush promote : already at top level'
+		return 0
 	endif
+	call organ#bush#indent_item (level - 1)
 	" ---- unordered item
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)
@@ -132,15 +142,18 @@ fun! organ#bush#demote ()
 		echomsg 'organ colibri generic pattern : filetype not supported'
 		return ''
 	endif
-	let linum = organ#colibri#itemhead ()
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
 	let line = getline(linum)
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
 	let line = substitute(line, '	', spaces, 'g')
-	let indent_length = g:organ_config.list.indent_length
-	let list_indent = repeat(' ', indent_length)
-	let line = list_indent .. line
-	call setline(linum, line)
+	let level = properties.level
+	if level == 1
+		echomsg 'organ bush promote : already at top level'
+		return 0
+	endif
+	call organ#bush#indent_item (level + 1)
 	" ---- unordered item
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)

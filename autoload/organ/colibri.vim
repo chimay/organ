@@ -1,5 +1,5 @@
-" -im: set ft=vim fdm=indent iskeyword&:
-  -
+" vim: set ft=vim fdm=indent iskeyword&:
+
 " Colibri
 "
 " Navigation on orgmode or markdown lists hierarchy
@@ -18,7 +18,7 @@ fun! organ#colibri#generic_pattern ()
 	let unordered = unordered->join('')
 	let ordered = g:organ_config.list.ordered[&filetype]
 	let ordered = ordered->join('')
-	let pattern = '\%(^\s*[' .. unordered .. ']\s\+\|'
+	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype == 'org'
 		let pattern ..= '\&^[^*]'
@@ -81,7 +81,7 @@ fun! organ#colibri#start (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let hollow_pattern = '^\s*$'
+	let hollow_pattern = '\m^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	while v:true
@@ -121,7 +121,7 @@ fun! organ#colibri#final (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let hollow_pattern = '^\s*$'
+	let hollow_pattern = '\m^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	while v:true
@@ -174,8 +174,8 @@ fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
 	let first = organ#colibri#start ()
 	let last =  organ#colibri#final ()
-	let indent_pattern = '^\s*'
-	let hollow_pattern = '^\s*$'
+	let indent_pattern = '\m^\s*'
+	let hollow_pattern = '\m^\s*$'
 	let linelist = getline(first, last)
 	let indentlist = []
 	for line in linelist
@@ -205,7 +205,7 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	let unordered = unordered->join('')
 	let ordered = g:organ_config.list.ordered[&filetype]
 	let ordered = ordered->join('')
-	let pattern = '^ \{' .. min .. ',' .. max .. '\}'
+	let pattern = '\m^ \{' .. min .. ',' .. max .. '\}'
 	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
 	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype == 'org'
@@ -238,13 +238,18 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let numspaces -= common_indent
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
-	" ---- text without prefix
+	" ---- prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let prefix = itemhead->matchstr(itemhead_pattern)
+	echomsg prefix
+	let prefix = substitute(prefix, '^\s*', '', '')
+	" ---- text without prefix
 	let text = substitute(itemhead, itemhead_pattern, '', '')
 	let properties = #{
 				\ linum : linum,
 				\ itemhead : itemhead,
 				\ level : level,
+				\ prefix : prefix,
 				\ text : text,
 				\}
 	return properties
@@ -278,6 +283,7 @@ fun! organ#colibri#subtree (move = 'dont-move')
 				\ head_linum : properties.linum,
 				\ itemhead : properties.itemhead,
 				\ level : properties.level,
+				\ prefix : properties.prefix,
 				\ text : properties.text,
 				\ tail_linum : tail_linum,
 				\}
