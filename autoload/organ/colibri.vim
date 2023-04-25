@@ -22,7 +22,6 @@ fun! organ#colibri#generic_pattern ()
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype == 'org'
 		let pattern ..= '\&^[^*]'
-		return pattern
 	endif
 	return pattern
 endfun
@@ -241,7 +240,6 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" ---- prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let prefix = itemhead->matchstr(itemhead_pattern)
-	echomsg prefix
 	let prefix = substitute(prefix, '^\s*', '', '')
 	" ---- text without prefix
 	let text = substitute(itemhead, itemhead_pattern, '', '')

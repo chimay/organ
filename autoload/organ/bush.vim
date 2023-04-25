@@ -149,10 +149,6 @@ fun! organ#bush#demote ()
 	let spaces = repeat(' ', &tabstop)
 	let line = substitute(line, '	', spaces, 'g')
 	let level = properties.level
-	if level == 1
-		echomsg 'organ bush promote : already at top level'
-		return 0
-	endif
 	call organ#bush#indent_item (level + 1)
 	" ---- unordered item
 	let unordered = g:organ_config.list.unordered[&filetype]
