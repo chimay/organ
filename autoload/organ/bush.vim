@@ -67,46 +67,81 @@ fun! organ#bush#promote ()
 		echomsg 'organ colibri generic pattern : filetype not supported'
 		return ''
 	endif
-	let unordered = g:organ_config.list.unordered[&filetype]
-	let unordered = unordered->join('')
-	let ordered = g:organ_config.list.ordered[&filetype]
-	let ordered = ordered->join('')
-	let line = getline('.')
-	if line =~ '^\s\+\*'
-		let line = substitute(line, '*', '+', '')
-	elseif line =~ '^\s*+'
-		let line = substitute(line, '+', '-', '')
-	elseif line =~ '^\s*-'
-		let line = substitute(line, '-', '*', '')
-	endif
+	let linum = organ#colibri#itemhead ()
+	let line = getline(linum)
+	" --- indent
 	let spaces = repeat(' ', &tabstop)
 	let line = substitute(line, '	', spaces, 'g')
-	let indent_length = g:organ_config.list_indent_length
+	let indent_length = g:organ_config.list.indent_length
 	let list_indent = repeat(' ', indent_length)
 	if line[:indent_length - 1] == list_indent
-		let line = line[2:]
+		let line = line[indent_length:]
 	endif
-	call setline('.', line)
-	return v:true
+	" ---- unordered item
+	let unordered = g:organ_config.list.unordered[&filetype]
+	let len_unordered = len(unordered)
+	for index in range(len(unordered))
+		let second = unordered[index]
+		if line =~ '^\s*' .. second
+			let first = organ#utils#circular_minus(index, len_unordered)
+			let line = substitute(line, second, first, '')
+			call setline(linum, line)
+			return linum
+		endif
+	endfor
+	" ---- ordered item
+	let ordered = g:organ_config.list.ordered[&filetype]
+	let len_ordered = len(ordered)
+	for index in range(len(ordered))
+		let second = ordered[index]
+		if line =~ '^\s*' .. second
+			let first = organ#utils#circular_minus(index, len_ordered)
+			let line = substitute(line, second, first, '')
+			call setline(linum, line)
+			return linum
+		endif
+	endfor
 endfun
 
 fun! organ#bush#demote ()
 	" Demote list item
-	let line = getline('.')
-	if line =~ '^\s*-'
-		let line = substitute(line, '-', '+', '')
-	elseif line =~ '^\s*+'
-		let line = substitute(line, '+', '*', '')
-	elseif line =~ '^\s\+\*'
-		let line = substitute(line, '*', '-', '')
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		echomsg 'organ colibri generic pattern : filetype not supported'
+		return ''
 	endif
+	let linum = organ#colibri#itemhead ()
+	let line = getline(linum)
+	" --- indent
 	let spaces = repeat(' ', &tabstop)
 	let line = substitute(line, '	', spaces, 'g')
-	let indent_length = g:organ_config.list_indent_length
+	let indent_length = g:organ_config.list.indent_length
 	let list_indent = repeat(' ', indent_length)
 	let line = list_indent .. line
-	call setline('.', line)
-	return v:true
+	call setline(linum, line)
+	" ---- unordered item
+	let unordered = g:organ_config.list.unordered[&filetype]
+	let len_unordered = len(unordered)
+	for index in range(len(unordered))
+		let first = unordered[index]
+		if line =~ '^\s*' .. first
+			let second = organ#utils#circular_plus(index, len_unordered)
+			let line = substitute(line, first, second, '')
+			call setline(linum, line)
+			return linum
+		endif
+	endfor
+	" ---- ordered item
+	let ordered = g:organ_config.list.ordered[&filetype]
+	let len_ordered = len(ordered)
+	for index in range(len(ordered))
+		let first = ordered[index]
+		if line =~ '^\s*' .. first
+			let second = organ#utils#circular_plus(index, len_ordered)
+			let line = substitute(line, first, second, '')
+			call setline(linum, line)
+			return linum
+		endif
+	endfor
 endfun
 
 " -- subtree
