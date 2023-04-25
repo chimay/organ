@@ -90,7 +90,8 @@ endif
 
 If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
 value in your init file, the speed keys become available. They are
-active only when the cursor is on the first char of a headline :
+active only when the cursor is on the first char of a headline or a list
+item :
 
 - `p`      : previous heading
 - `n`      : next heading

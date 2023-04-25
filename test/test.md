@@ -122,13 +122,27 @@ content
 
 ### chapter 3.3.1
 
-1. item 1
-2. item 2
+   1. item 1
+   2. item 2
 
-3. item 3
-  3.1 item 3.1
+   3. item 3
+     3.1 item 3.1
 
 content
+
+     - item 1
+     - item 2
+       + item 2.1
+       + item 2.2
+
+       + item 2.3
+         * item 2.3.1
+         * item 2.3.2
+           text
+           more
+
+       + item 2.4
+     - item 3
 
 #### section 3.3.1.1
 

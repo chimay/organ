@@ -88,11 +88,11 @@ fun! organ#colibri#start (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let space_pattern = '^\s*$'
+	let hollow_pattern = '^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	while v:true
-		let linum = search(space_pattern, flags)
+		let linum = search(hollow_pattern, flags)
 		if linum == 0
 			let linum = 1
 			if move != 'move'
@@ -128,11 +128,11 @@ fun! organ#colibri#final (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let space_pattern = '^\s*$'
+	let hollow_pattern = '^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	while v:true
-		let linum = search(space_pattern, flags)
+		let linum = search(hollow_pattern, flags)
 		if linum == 0
 			let linum = line('$')
 			if move != 'move'
@@ -161,6 +161,21 @@ endfun
 
 fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
+	let first = organ#colibri#start ()
+	let last =  organ#colibri#final ()
+	let indent_pattern = '^\s*'
+	let hollow_pattern = '^\s*$'
+	let linelist = getline(first, last)
+	let indentlist = []
+	for line in linelist
+		if line =~ hollow_pattern
+			continue
+		endif
+		let leading = line->matchstr(indent_pattern)
+		let indent = len(leading)
+		eval indentlist->add(indent)
+	endfor
+	return min(indentlist)
 endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
@@ -168,7 +183,9 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	" All list is indented with indent * s:indent_length
 	let min = (a:minlevel - 1) * s:indent_length
 	let max = (a:maxlevel - 1) * s:indent_length
-	" TODO : add common indent
+	let shift = organ#colibri#common_indent ()
+	let min += shift
+	let max += shift
 	let pattern = '^ \{' .. min .. ',' .. max .. '\}'
 	if &filetype == 'org'
 		let pattern ..= '\%([-+*]\|[0-9]\+[.)]\)'
@@ -200,8 +217,9 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let itemhead = substitute(itemhead, '	', spaces, 'g')
 	" ---- computing level
 	let indent = itemhead->matchstr('^\s*')
-	let indnum = len(indent)
-	let level = indnum / s:indent_length + 1
+	let lenindent = len(indent)
+	let lenindent -= organ#colibri#common_indent ()
+	let level = lenindent / s:indent_length + 1
 	" ---- content without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let content = substitute(itemhead, itemhead_pattern, '', '')
@@ -410,4 +428,3 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 	normal! zv
 	return linum
 endfun
-
