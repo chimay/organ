@@ -149,12 +149,12 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefixless_modes = ['normal', 'insert']
   " enable only the prefixless maps you want
   " see the output of :map <plug>(organ- to see available plugs
-  let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
-  " number of spaces to indent lists
+  "let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
+  " number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
-  " items chars in unordered list
+  " items chars in unordered list (default)
   let g:organ_config.list.unordered = #{ org : ['-', '+', '*'], markdown : ['-', '+']}
-  " items chars in ordered list
+  " items chars in ordered list (default)
   let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
 endif
 ```
