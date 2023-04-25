@@ -136,11 +136,6 @@ fun! organ#bird#subtree (move = 'dont-move')
 	return subtree
 endfun
 
-fun! organ#bird#tail (move = 'dont-move')
-	" Last line of current subtree
-	return organ#bird#subtree(a:move).tail_linum
-endfun
-
 " ---- previous, next
 
 fun! organ#bird#previous (move = 'move', wrap = 'wrap')

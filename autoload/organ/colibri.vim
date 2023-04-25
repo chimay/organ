@@ -152,6 +152,20 @@ fun! organ#colibri#final (move = 'dont-move')
 	return 0
 endfun
 
+fun! organ#colibri#itemtail (move = 'dont-move')
+	" Last line of current list item
+	let move = a:move
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('forward', move, 'dont-wrap')
+	let linum = search(itemhead_pattern, flags)
+	let final = organ#colibri#final (move)
+	if linum == 0 || linum > final
+		return final
+	endif
+	let linum -= 1
+	return linum
+endfun
+
 fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
 	let first = organ#colibri#start ()
@@ -227,14 +241,14 @@ fun! organ#colibri#properties (move = 'dont-move')
 				\ linum : linum,
 				\ itemhead : itemhead,
 				\ level : level,
-				\ content : content,
+				\ text : text,
 				\}
 	return properties
 endfun
 
 fun! organ#colibri#level (move = 'dont-move')
 	" Level of current list subtree
-	return organ#colibri#level(a:move).level
+	return organ#colibri#properties(a:move).level
 endfun
 
 fun! organ#colibri#subtree (move = 'dont-move')
@@ -260,15 +274,10 @@ fun! organ#colibri#subtree (move = 'dont-move')
 				\ head_linum : properties.linum,
 				\ itemhead : properties.itemhead,
 				\ level : properties.level,
-				\ content : properties.content,
+				\ text : properties.text,
 				\ tail_linum : tail_linum,
 				\}
 	return subtree
-endfun
-
-fun! organ#colibri#tail (move = 'dont-move')
-	" Last line of current list subtree
-	return organ#colibri#subtree(a:move).tail_linum
 endfun
 
 " ---- previous, next
