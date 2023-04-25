@@ -4,10 +4,15 @@
 
 * [Introduction](#introduction)
     * [What is it ?](#what-is-it-)
-    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
     * [Features](#features)
     * [Dependancies](#dependancies)
+    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+* [Installation](#installation)
+    * [Using vim-packager](#using-vim-packager)
+    * [Using minpac](#using-minpac)
+    * [Using vim-plug](#using-vim-plug)
+    * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
 * [Configuration](#configuration)
 * [Bindings](#bindings)
     * [Speed keys](#speed-keys)
@@ -74,6 +79,59 @@ The current orgmode plugins for (neo)vim are either :
 Since I use both editors, I wanted to write a lightweight plugin in
 plain simple vimscript, with minimal dependancies (most of it doesn't
 need anything else to work).
+
+# Installation
+## Using vim-packager
+
+Simply add this line after `packager#init()` to your initialisation file :
+
+~~~vim
+call packager#add('chimay/organ', { 'type' : 'start' })
+~~~
+
+and run `:PackagerInstall` (see the
+[vim-packager readme](https://github.com/kristijanhusak/vim-packager)).
+
+## Using minpac
+
+Simply add this line after `minpac#init()` to your initialisation file :
+
+~~~vim
+call minpac#add('chimay/organ', { 'type' : 'start' })
+~~~
+
+and run `:PackUpdate` (see the
+[minpac readme](https://github.com/k-takata/minpac)).
+
+## Using vim-plug
+
+The syntax should be similar with other git oriented plugin managers :
+
+~~~vim
+Plug 'chimay/organ'
+~~~
+
+and run `:PlugInstall` to install.
+
+## Cloning the repo in a pack-start directory
+
+You can clone the repository somewhere in your `runtime-search-path`. You
+can get a minimal version by asking a shallow clone (depth 1) and
+filtering out the screenshots blobs :
+
+```vim
+mkdir -p ~/.local/share/nvim/site/pack/foo/start
+cd ~/.local/share/nvim/site/pack/foo/start
+git clone --depth 1 --filter=blob:none https://github.com/chimay/organ
+```
+
+If you install or update with git, don't forget to run :
+
+```vim
+:helptags doc
+```
+
+to be able to use the inline help.
 
 # Configuration
 
