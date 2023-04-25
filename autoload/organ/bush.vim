@@ -82,9 +82,11 @@ fun! organ#bush#promote ()
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let second = unordered[index]
-		if line =~ '^\s*' .. second
-			let first = organ#utils#circular_minus(index, len_unordered)
+		if line =~ '^\s*[' .. second .. ']'
+			let stripe = organ#utils#circular_minus(index, len_unordered)
+			let first = unordered[stripe]
 			let line = substitute(line, second, first, '')
+			echomsg second first line
 			call setline(linum, line)
 			return linum
 		endif
@@ -94,8 +96,9 @@ fun! organ#bush#promote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let second = ordered[index]
-		if line =~ '^\s*' .. second
-			let first = organ#utils#circular_minus(index, len_ordered)
+		if line =~ '^\s*[' .. second .. ']'
+			let stripe = organ#utils#circular_minus(index, len_ordered)
+			let first = unordered[stripe]
 			let line = substitute(line, second, first, '')
 			call setline(linum, line)
 			return linum
@@ -123,8 +126,9 @@ fun! organ#bush#demote ()
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let first = unordered[index]
-		if line =~ '^\s*' .. first
-			let second = organ#utils#circular_plus(index, len_unordered)
+		if line =~ '^\s*[' .. first .. ']'
+			let stripe = organ#utils#circular_plus(index, len_unordered)
+			let second = unordered[stripe]
 			let line = substitute(line, first, second, '')
 			call setline(linum, line)
 			return linum
@@ -135,8 +139,9 @@ fun! organ#bush#demote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let first = ordered[index]
-		if line =~ '^\s*' .. first
-			let second = organ#utils#circular_plus(index, len_ordered)
+		if line =~ '^\s*[' .. first .. ']'
+			let stripe = organ#utils#circular_plus(index, len_ordered)
+			let second = ordered[stripe]
 			let line = substitute(line, first, second, '')
 			call setline(linum, line)
 			return linum
