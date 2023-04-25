@@ -156,13 +156,17 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	" Last line of current list item
 	let move = a:move
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let flags = organ#utils#search_flags ('forward', move, 'dont-wrap')
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let linum = search(itemhead_pattern, flags)
-	let final = organ#colibri#final (move)
-	if linum == 0 || linum > final
-		return final
+	let final = organ#colibri#final ()
+	if linum == 0
+		let linum = final
 	endif
 	let linum -= 1
+	let linum = min([linum, final])
+	if move == 'move'
+		call cursor(linum, 1)
+	endif
 	return linum
 endfun
 
