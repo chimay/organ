@@ -220,12 +220,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let move = a:move
 	if ! organ#colibri#is_in_list ()
 		echomsg 'organ colibri properties : not in a list'
-		return #{ linum : 0, itemhead : '', level : 0, content : '' }
+		return #{ linum : 0, itemhead : '', level : 0, text : '' }
 	endif
 	let linum = organ#colibri#itemhead (move)
 	if linum == 0
 		echomsg 'organ colibri properties : itemhead not found'
-		return #{ linum : 0, itemhead : '', level : 0, content : '' }
+		return #{ linum : 0, itemhead : '', level : 0, text : '' }
 	endif
 	let itemhead = getline(linum)
 	" ---- tab -> spaces
@@ -238,9 +238,9 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let numspaces -= common_indent
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
-	" ---- content without prefix
+	" ---- text without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let content = substitute(itemhead, itemhead_pattern, '', '')
+	let text = substitute(itemhead, itemhead_pattern, '', '')
 	let properties = #{
 				\ linum : linum,
 				\ itemhead : itemhead,
@@ -262,7 +262,7 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ colibri subtree : itemhead not found'
-		return #{ head_linum : 0, itemhead : '', level : 0, content : '', tail_linum : 0 }
+		return #{ head_linum : 0, itemhead : '', level : 0, text : '', tail_linum : 0 }
 	endif
 	let level = properties.level
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)

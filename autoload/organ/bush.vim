@@ -6,6 +6,26 @@
 
 " ---- script constants
 
+" ---- helpers
+
+fun! organ#bush#indent_item (level)
+	" Indent current list item
+	let level = a:level
+	let head = organ#colibri#itemhead ()
+	let tail = organ#colibri#itemtail ()
+	let shift = organ#colibri#common_indent ()
+	let step = g:organ_config.list.indent_length
+	let numspaces = shift + step * (level - 1)
+	let spaces = '^\s*'
+	let indent = repeat(' ', numspaces)
+	for linum in range(head, tail)
+		let line = getline(linum)
+		let line = substitute(line, spaces, indent, '')
+		call setline(linum, line)
+	endfor
+	return numspaces
+endfun
+
 " ---- new list item
 
 fun! organ#bush#new ()
