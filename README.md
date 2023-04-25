@@ -137,24 +137,25 @@ to be able to use the inline help.
 
 ```vim
 if ! exists("g:organ_loaded")
+  " ---- initialize dicts
   let g:organ_config = {}
   let g:organ_config.list = {}
-  " enable speed keys on first char of headlines and list items lines
+  " ---- enable speed keys on first char of headlines and list items lines
   let g:organ_config.speedkeys = 1
-  " choose your mappings prefix
+  " ---- choose your mappings prefix
   let g:organ_config.prefix = '<m-c>'
-  " enable prefixless maps
+  " ---- enable prefixless maps
   let g:organ_config.prefixless = 1
-  " prefixless maps in these modes (default)
+  " ---- prefixless maps in these modes (default)
   let g:organ_config.prefixless_modes = ['normal', 'insert']
-  " enable only the prefixless maps you want
-  " see the output of :map <plug>(organ- to see available plugs
-  "let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
-  " number of spaces to indent lists (default)
+  " ---- enable only the prefixless maps you want
+  " ---- see the output of :map <plug>(organ- to see available plugs
+  " let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
+  " ---- number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
-  " items chars in unordered list (default)
+  " ---- items chars in unordered list (default)
   let g:organ_config.list.unordered = #{ org : ['-', '+', '*'], markdown : ['-', '+']}
-  " items chars in ordered list (default)
+  " ---- items chars in ordered list (default)
   let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
 endif
 ```

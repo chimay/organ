@@ -63,6 +63,14 @@ endfun
 
 fun! organ#bush#promote ()
 	" Promote list item
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		echomsg 'organ colibri generic pattern : filetype not supported'
+		return ''
+	endif
+	let unordered = g:organ_config.list.unordered[&filetype]
+	let unordered = unordered->join('')
+	let ordered = g:organ_config.list.ordered[&filetype]
+	let ordered = ordered->join('')
 	let line = getline('.')
 	if line =~ '^\s\+\*'
 		let line = substitute(line, '*', '+', '')
