@@ -30,7 +30,6 @@ fun! organ#bush#indent_item (level)
 	endif
 	let numspaces += len_prefix
 	let indent = repeat(' ', numspaces)
-	echomsg head tail
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
 		let line = substitute(line, spaces, indent, '')
@@ -41,13 +40,13 @@ endfun
 
 fun! organ#bush#update_counters ()
 	" Update counters in ordered list
-	" TODO
+	let counter_start = g:organ_config.list.counter_start
 	let position = getcurpos ()
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
 	let counters = {}
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let counter_pattern = '[0-9]\+'
+	let counter_pattern = '\m^\s*\zs[0-9]\+'
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	call cursor(first, 1)
 	let linum = first
@@ -55,24 +54,27 @@ fun! organ#bush#update_counters ()
 		if linum > last
 			break
 		endif
-		let line = getline(linum)
-		let count = line->matchstr(counter_pattern)
+		let properties = organ#colibri#properties ()
+		let prefix = properties.prefix
+		let count = prefix->matchstr(counter_pattern)
 		if empty(count)
+			let linum = search(itemhead_pattern, flags)
 			continue
 		endif
-		let properties = organ#colibri#properties ()
 		let level = properties.level
+		let line = properties.itemhead
 		if ! has_key(counters, level)
-			let counters[level] = str2nr(count)
+			let counters[level] = counter_start
 		else
 			let counters[level] += 1
-			let count = counters[level]
-			let line = substitute(line, counter_pattern, count, '')
-			call setline(linum, line)
 		endif
+		let count = counters[level]
+		let line = substitute(line, counter_pattern, count, '')
+		call setline(linum, line)
 		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)
+	return counters
 endfun
 
 " ---- new list item
@@ -289,6 +291,7 @@ fun! organ#bush#move_subtree_backward ()
 	let target = search(itemhead_pattern, flags) - 1
 	execute range .. 'move' target
 	call cursor(target + 1, 1)
+	call organ#bush#update_counters ()
 	return target
 endfun
 
@@ -318,5 +321,6 @@ fun! organ#bush#move_subtree_forward ()
 	let spread = tail_linum - head_linum
 	let new_place = target - spread
 	call cursor(new_place, 1)
+	call organ#bush#update_counters ()
 	return new_place
 endfun

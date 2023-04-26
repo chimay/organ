@@ -20,7 +20,7 @@ fun! organ#colibri#generic_pattern ()
 	let ordered = ordered->join('')
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		let pattern ..= '\&^[^*]'
 	endif
 	return pattern
@@ -161,14 +161,14 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	let final = organ#colibri#list_end ()
 	if linum == 0
 		let linum = final
-		if move == 'move'
+		if move ==# 'move'
 			call cursor(linum, 1)
 		endif
 		return linum
 	endif
 	let linum -= 1
 	let linum = min([linum, final])
-	if move == 'move'
+	if move ==# 'move'
 		call cursor(linum, 1)
 	endif
 	return linum
@@ -212,7 +212,7 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	let pattern = '\m^ \{' .. min .. ',' .. max .. '\}'
 	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
 	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		let pattern ..= '\&^[^*]'
 		return pattern
 	endif

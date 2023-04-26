@@ -45,7 +45,7 @@ fun! organ#nest#speed (key, angle = 'no-angle')
 	let tree = organ#bird#is_on_headline ()
 	let tree = tree || organ#colibri#is_on_itemhead ()
 	if first_char && tree
-		if angle == 'angle' || angle == '>'
+		if angle ==# 'angle' || angle ==# '>'
 			let key = '<' .. key .. '>'
 		endif
 		let action = s:speedkeys[key]

@@ -157,6 +157,10 @@ if ! exists("g:organ_loaded")
   let g:organ_config.list.unordered = #{ org : ['-', '+', '*'], markdown : ['-', '+']}
   " ---- items chars in ordered list (default)
   let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
+  " ---- first item counter in an ordered list
+  " ---- must be >= 0
+  " ---- default 1
+  let g:organ_config.list.counter_start = 1
 endif
 ```
 

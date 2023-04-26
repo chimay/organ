@@ -10,15 +10,15 @@ fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
 	let move = a:move
 	let wrap = a:wrap
 	let flags = ''
-	if course == 'backward'
+	if course ==# 'backward'
 		let flags ..= 'b'
 	endif
-	if move == 'move'
+	if move ==# 'move'
 		let flags ..= 's'
 	else
 		let flags ..= 'n'
 	endif
-	if wrap == 'wrap'
+	if wrap ==# 'wrap'
 		let flags ..= 'w'
 	else
 		let flags ..= 'W'

@@ -52,4 +52,7 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list.ordered, 'markdown')
 		let g:organ_config.list.ordered.markdown = ['.']
 	endif
+	if ! has_key(g:organ_config.list, 'counter_start')
+		let g:organ_config.list.counter_start = 1
+	endif
 endfun

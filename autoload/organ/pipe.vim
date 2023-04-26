@@ -29,7 +29,7 @@ fun! organ#pipe#extensions (output_format)
 	let output_format = a:output_format
 	let input_extension = '\.' .. bufname('%')->fnamemodify(':e')
 	let output_extension = '\.' .. output_format
-	if output_format == 'markdown'
+	if output_format ==# 'markdown'
 		let output_extension = '\.md'
 	endif
 	return [input_extension, output_extension]

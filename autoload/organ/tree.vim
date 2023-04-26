@@ -86,9 +86,9 @@ fun! organ#tree#demote ()
 	endif
 	let headline = properties.headline
 	let filetype = &filetype
-	if filetype == 'org'
+	if filetype ==# 'org'
 		let headline = '*' .. headline
-	elseif filetype == 'markdown'
+	elseif filetype ==# 'markdown'
 		let headline = '#' .. headline
 	endif
 	call setline(linum, headline)

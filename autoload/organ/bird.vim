@@ -20,9 +20,9 @@ endif
 
 fun! organ#bird#char ()
 	" Headline char
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		return '*'
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		return '#'
 	endif
 endfun
@@ -30,7 +30,7 @@ endfun
 fun! organ#bird#generic_pattern ()
 	if &filetype == 'org'
 		return '\m^\*'
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		return '\m^#'
 	else
 		echomsg 'organ bird generic pattern : filetype not supported'
@@ -43,7 +43,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	let maxlevel = a:maxlevel
 	if &filetype == 'org'
 		return '\m^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
 	else
 		echomsg 'organ bird headline pattern : filetype not supported'
@@ -75,9 +75,9 @@ fun! organ#bird#properties (move = 'dont-move')
 		return #{ linum : 0, headline : '', level : 0, title : '' }
 	endif
 	let headline = getline(linum)
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		let leading = headline->matchstr('\m^\*\+')
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		let leading = headline->matchstr('\m^#\+')
 	endif
 	let level = len(leading)
