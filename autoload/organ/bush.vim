@@ -50,6 +50,14 @@ fun! organ#bush#new ()
 	" ---- prefix
 	let prefix = properties.prefix
 	let line = indent .. prefix
+	" ---- increment if needed
+	let number_pattern = '[0-9]\+'
+	let number = line->matchstr(number_pattern)
+	if ! empty(number)
+		let number = str2nr(number) + 1
+		let line = substitute(line, number_pattern, number, '')
+	endif
+	" ---- append to buffer
 	call append('.', line)
 	let linum = line('.') + 1
 	call cursor(linum, 1)
