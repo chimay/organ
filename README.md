@@ -67,8 +67,8 @@ it can also be done with emacs installed, at least for the formats
 supported by orgmode.
 
 If you want to navigate to an headline in another org or markdown file,
-you can install [wheel](https://github.com/chimay/wheel) : it has a
-prompt completion function (launched with `<plug>(wheel-prompt-outline)`)
+you can install [wheel](https://github.com/chimay/wheel) : it has a prompt
+function with completion (launched with `<plug>(wheel-prompt-outline)`)
 that looks for headlines in all orgmode or markdown files of a group.
 
 ## Why another orgmode clone for vim ?
@@ -199,14 +199,6 @@ item line :
 - `e`          : export with pandoc
 - `E`          : export with emacs
 
-The prompt completion of headlines is intended to wark roughly as with
-the combo org-goto and helm in Emacs. A space is interpreted as
-a logical and, a `|` as a logical or. In fact, it works exactly as in
-[wheel](https://github.com/chimay/wheel). For further details, please
-refer to the
-[completion page](https://github.com/chimay/wheel/wiki/completion)
-on the wheel wiki.
-
 ## Prefixless
 
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
@@ -286,6 +278,16 @@ nmap <buffer> <c-p> <plug>(organ-previous)
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
+
+# Prompt completion
+
+The prompt completion of headlines is intended to wark roughly as with
+the combo org-goto and helm in Emacs. A space is interpreted as
+a logical and, a `|` as a logical or. In fact, it works exactly as in
+[wheel](https://github.com/chimay/wheel). For further details, please
+refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion)
+on the wheel wiki.
 
 # Meta-command
 

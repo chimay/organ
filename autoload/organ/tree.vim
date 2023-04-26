@@ -166,11 +166,15 @@ fun! organ#tree#move_subtree_forward ()
 	let range = head_linum .. ',' .. tail_linum
 	let level = subtree.level
 	let same_pattern = organ#bird#level_pattern (level, level)
-	let level -= 1
-	let upper_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let same_linum = search(same_pattern, flags)
-	let upper_linum = search(upper_pattern, flags)
+	if level >= 2
+		let level -= 1
+		let upper_pattern = organ#bird#level_pattern (level, level)
+		let upper_linum = search(upper_pattern, flags)
+	else
+		let upper_linum = line('$')
+	endif
 	if same_linum < upper_linum || upper_linum == 0
 		call cursor(same_linum, 1)
 		let same_subtree = organ#bird#subtree ()
