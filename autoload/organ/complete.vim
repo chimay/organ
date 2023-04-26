@@ -38,14 +38,21 @@ endif
 " ---- headlines
 
 fun! organ#complete#headline (arglead, cmdline, cursorpos)
-	" Complete buffer line
+	" Complete headline
 	let choices = organ#perspective#headlines ()
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
 fun! organ#complete#path (arglead, cmdline, cursorpos)
-	" Complete buffer line
+	" Complete full headline path
+	let choices = organ#perspective#paths ()
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#path_except_current (arglead, cmdline, cursorpos)
+	" Complete full headline path, but not children of current subtree
 	let choices = organ#perspective#paths ()
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
@@ -54,14 +61,14 @@ endfun
 " ---- export
 
 fun! organ#complete#pandoc_formats (arglead, cmdline, cursorpos)
-	" Complete buffer line
+	" Complete supported pandoc output formats
 	let choices = s:pandoc_formats
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
 fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
-	" Complete buffer line
+	" Complete supported emacs/orgmode output formats
 	let choices = s:emacs_formats
 	echomsg s:emacs_formats
 	let wordlist = split(a:cmdline)

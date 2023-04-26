@@ -204,7 +204,7 @@ endfun
 " ---- move to another subtree path, aka org-refile
 
 fun! organ#tree#moveto ()
-	" Move current subtree to another path
+	" Move current subtree to another one
 	" ---- range of current subtree
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
@@ -212,6 +212,8 @@ fun! organ#tree#moveto ()
 	let range = head_linum .. ',' .. tail_linum
 	" ---- find target subtree
 	let prompt = 'Move current subtree to : '
+	" TODO : completion function that excludes strict children
+	" of current one
 	let complete = 'customlist,organ#complete#path'
 	let record = input(prompt, '', complete)
 	if empty(record)
