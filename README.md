@@ -50,6 +50,7 @@ and agility.
     - strictly speaking : must be in the current subtree
   + go to another headline with prompt completion of full path
 - modify headings or list items
+  + new headline or list item
   + select, yank, delete subtree
   + promote, demote heading or list item
   + move subtree up or down
@@ -220,10 +221,10 @@ value in your init file, these bindings become available :
 - `<M-S-l>`     : lower, child heading, strictly speaking
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
+- `<M-CR>`      : new subtree or list item
 - `<M-@>`       : select subtree
 - `<M-y>`       : yank subtree
 - `<M-d>`       : delete subtree
-- `<M-CR>`      : new subtree or list item
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote heading or list subtree
