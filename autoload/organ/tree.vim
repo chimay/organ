@@ -203,7 +203,7 @@ endfun
 
 " ---- move to another subtree path, aka org-refile
 
-fun! organ#tree#move_after ()
+fun! organ#tree#moveto ()
 	" Move current subtree to another path
 	" ---- range of current subtree
 	let subtree = organ#bird#subtree ()

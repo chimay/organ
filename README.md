@@ -198,7 +198,7 @@ item line :
 - `L`          : demote subtree
 - `U`          : move subtree up
 - `D`          : move subtree down
-- `M`          : move subtree after headline, with prompt completion
+- `M`          : move subtree in another one, with prompt completion
 - `e`          : export with pandoc
 - `E`          : export with emacs
 
@@ -226,7 +226,7 @@ value in your init file, these bindings become available :
 - `<M-S-right>` : demote heading or list subtree
 - `<M-up>`      : move heading or list subtree up
 - `<M-down>`    : move heading or list subtree down
-- `<M-m>`       : move subtree after headline, with prompt completion
+- `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs
 
