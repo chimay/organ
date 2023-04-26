@@ -45,7 +45,9 @@ and agility.
   + next, previous : any level
   + forward, backward : same level as current one
   + parent heading, upper level
-  + child heading, lower level : loosely or strictly speaking
+  + child heading, lower level :
+    - loosely speaking : first headline of level + 1, forward
+    - strictly speaking : must be in the current subtree
   + go to another headline with prompt completion of full path
 - modify headings or list items
   + select, yank, delete subtree
@@ -178,7 +180,7 @@ item line :
 - `<home>`     : backward heading of same level
 - `<end>`      : forward heading of same level
 - `^`          : upper, parent heading
-- `~`          : lower, child heading, loosely speaking : first headline of level + 1, forward
+- `~`          : lower, child heading, loosely speaking
 - `-`          : lower, child heading, strictly speaking
 - `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
 - `h`          : go to headline, with prompt completion of full headings path
