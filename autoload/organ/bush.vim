@@ -13,26 +13,26 @@ fun! organ#bush#indent_item (level)
 	let level = a:level
 	let properties = organ#colibri#properties ()
 	let head = properties.linum
+	let itemhead = properties.itemhead
 	let tail = organ#colibri#itemtail ()
 	let len_prefix = len(properties.prefix)
 	let shift = organ#colibri#common_indent ()
 	let step = g:organ_config.list.indent_length
 	let spaces = '^\s*'
 	" ---- item head line
-	let numspaces = shift + step * level
-	echomsg shift step level numspaces
+	let numspaces = shift + step * (level - 1)
 	let indent = repeat(' ', numspaces)
-	let line = getline(head)
-	let line = substitute(line, spaces, indent, '')
-	call setline(head, line)
+	let itemhead = substitute(itemhead, spaces, indent, '')
+	call setline(head, itemhead)
 	" ---- other lines
-	let indent = repeat(' ', numspaces + len_prefix)
+	let numspaces += len_prefix
+	let indent = repeat(' ', numspaces)
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
 		let line = substitute(line, spaces, indent, '')
 		call setline(linum, line)
 	endfor
-	return numspaces
+	return itemhead
 endfun
 
 " ---- new list item
@@ -98,26 +98,26 @@ fun! organ#bush#promote ()
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
-	let line = getline(linum)
+	let itemhead = properties.itemhead
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
-	let line = substitute(line, '	', spaces, 'g')
+	let itemhead = substitute(itemhead, '	', spaces, 'g')
 	let level = properties.level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
 		return 0
 	endif
-	call organ#bush#indent_item (level - 1)
+	let itemhead = organ#bush#indent_item (level - 1)
 	" ---- unordered item
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let second = unordered[index]
-		if line =~ '^\s*[' .. second .. ']'
+		if itemhead =~ '^\s*[' .. second .. ']'
 			let stripe = organ#utils#circular_minus(index, len_unordered)
 			let first = unordered[stripe]
-			let line = substitute(line, second, first, '')
-			call setline(linum, line)
+			let itemhead = substitute(itemhead, second, first, '')
+			call setline(linum, itemhead)
 			return linum
 		endif
 	endfor
@@ -126,11 +126,11 @@ fun! organ#bush#promote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let second = ordered[index]
-		if line =~ '^\s*[' .. second .. ']'
+		if itemhead =~ '^\s*[' .. second .. ']'
 			let stripe = organ#utils#circular_minus(index, len_ordered)
 			let first = unordered[stripe]
-			let line = substitute(line, second, first, '')
-			call setline(linum, line)
+			let itemhead = substitute(itemhead, second, first, '')
+			call setline(linum, itemhead)
 			return linum
 		endif
 	endfor
@@ -144,22 +144,22 @@ fun! organ#bush#demote ()
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
-	let line = getline(linum)
+	let itemhead = properties.itemhead
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
-	let line = substitute(line, '	', spaces, 'g')
+	let itemhead = substitute(itemhead, '	', spaces, 'g')
 	let level = properties.level
-	call organ#bush#indent_item (level + 1)
+	let itemhead = organ#bush#indent_item (level + 1)
 	" ---- unordered item
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let first = unordered[index]
-		if line =~ '^\s*[' .. first .. ']'
+		if itemhead =~ '^\s*[' .. first .. ']'
 			let stripe = organ#utils#circular_plus(index, len_unordered)
 			let second = unordered[stripe]
-			let line = substitute(line, first, second, '')
-			call setline(linum, line)
+			let itemhead = substitute(itemhead, first, second, '')
+			call setline(linum, itemhead)
 			return linum
 		endif
 	endfor
@@ -168,11 +168,11 @@ fun! organ#bush#demote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let first = ordered[index]
-		if line =~ '^\s*[' .. first .. ']'
+		if itemhead =~ '^\s*[' .. first .. ']'
 			let stripe = organ#utils#circular_plus(index, len_ordered)
 			let second = ordered[stripe]
-			let line = substitute(line, first, second, '')
-			call setline(linum, line)
+			let itemhead = substitute(itemhead, first, second, '')
+			call setline(linum, itemhead)
 			return linum
 		endif
 	endfor
