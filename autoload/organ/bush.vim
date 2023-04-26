@@ -39,7 +39,7 @@ fun! organ#bush#indent_item (level)
 	return itemhead
 endfun
 
-fun! organ#bush#recount ()
+fun! organ#bush#update_counters ()
 	" Update counters in ordered list
 	" TODO
 	let position = getcurpos ()
@@ -47,13 +47,30 @@ fun! organ#bush#recount ()
 	let last =  organ#colibri#list_end ()
 	let counters = {}
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
+	let counter_pattern = '[0-9]\+'
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	call cursor(first, 1)
+	let linum = first
 	while v:true
-		let linum = search(itemhead_pattern, flags)
 		if linum > last
 			break
 		endif
+		let line = getline(linum)
+		let count = line->matchstr(counter_pattern)
+		if empty(count)
+			continue
+		endif
+		let properties = organ#colibri#properties ()
+		let level = properties.level
+		if ! has_key(counters, level)
+			let counters[level] = str2nr(count)
+		else
+			let counters[level] += 1
+			let count = counters[level]
+			let line = substitute(line, counter_pattern, count, '')
+			call setline(linum, line)
+		endif
+		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)
 endfun
@@ -72,17 +89,10 @@ fun! organ#bush#new ()
 	" ---- prefix
 	let prefix = properties.prefix
 	let line = indent .. prefix
-	" ---- increment if needed
-	let counter_pattern = '[0-9]\+'
-	let counter = line->matchstr(counter_pattern)
-	if ! empty(counter)
-		let counter = str2nr(counter) + 1
-		let line = substitute(line, counter_pattern, counter, '')
-	endif
 	" ---- append to buffer
 	call append('.', line)
 	" ---- update counters
-	call organ#bush#recount ()
+	call organ#bush#update_counters ()
 	" ---- move cursor
 	let linum = line('.') + 1
 	call cursor(linum, 1)
@@ -156,6 +166,7 @@ fun! organ#bush#promote ()
 			let first = unordered[stripe]
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
+			call organ#bush#update_counters ()
 			return linum
 		endif
 	endfor
@@ -169,6 +180,7 @@ fun! organ#bush#promote ()
 			let first = ordered[stripe]
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
+			call organ#bush#update_counters ()
 			return linum
 		endif
 	endfor
@@ -198,6 +210,7 @@ fun! organ#bush#demote ()
 			let second = unordered[stripe]
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
+			call organ#bush#update_counters ()
 			return linum
 		endif
 	endfor
@@ -211,6 +224,7 @@ fun! organ#bush#demote ()
 			let second = ordered[stripe]
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
+			call organ#bush#update_counters ()
 			return linum
 		endif
 	endfor
