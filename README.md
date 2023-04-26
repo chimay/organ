@@ -55,6 +55,7 @@ and agility.
   + select, yank, delete subtree
   + promote, demote heading or list item
   + move subtree up or down
+  + move current subtree in another one (aka org-refile)
 - export in another format using pandoc or emacs
 
 ## Dependancies
