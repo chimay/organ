@@ -91,7 +91,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-h>'       , 'organ-goto'               ] ,
 		\ [ '<m-v>'       , 'organ-cycle-current-fold' ] ,
 		\ [ '<m-s-v>'     , 'organ-cycle-all-folds'    ] ,
-		\ [ '<m-cr>'      , 'organ-new'                ] ,
+		\ [ '<cr>'        , 'organ-new'                ] ,
 		\ [ '<m-&>'       , 'organ-select-subtree'     ] ,
 		\ [ '<m-y>'       , 'organ-yank-subtree'       ] ,
 		\ [ '<m-d>'       , 'organ-delete-subtree'     ] ,

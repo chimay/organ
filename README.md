@@ -19,6 +19,7 @@
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
+* [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
 
 <!-- vim-markdown-toc -->
@@ -213,7 +214,7 @@ value in your init file, these bindings become available :
 - `<M-S-l>`     : lower, child heading, strictly speaking
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
-- `<M-CR>`      : new subtree or list item
+- `<CR>`        : new subtree or list item
 - `<M-&>`       : select subtree
 - `<M-y>`       : yank subtree
 - `<M-d>`       : delete subtree
