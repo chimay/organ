@@ -161,6 +161,10 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	let final = organ#colibri#list_end ()
 	if linum == 0
 		let linum = final
+		if move == 'move'
+			call cursor(linum, 1)
+		endif
+		return linum
 	endif
 	let linum -= 1
 	let linum = min([linum, final])

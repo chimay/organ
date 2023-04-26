@@ -25,8 +25,12 @@ fun! organ#bush#indent_item (level)
 	let itemhead = substitute(itemhead, spaces, indent, '')
 	call setline(head, itemhead)
 	" ---- other lines
+	if head >= tail
+		return itemhead
+	endif
 	let numspaces += len_prefix
 	let indent = repeat(' ', numspaces)
+	echomsg head tail
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
 		let line = substitute(line, spaces, indent, '')
@@ -35,11 +39,29 @@ fun! organ#bush#indent_item (level)
 	return itemhead
 endfun
 
+fun! organ#bush#recount ()
+	" Update counters in ordered list
+	" TODO
+	let position = getcurpos ()
+	let first = organ#colibri#list_start ()
+	let last =  organ#colibri#list_end ()
+	let counters = {}
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
+	call cursor(first, 1)
+	while v:true
+		let linum = search(itemhead_pattern, flags)
+		if linum > last
+			break
+		endif
+	endwhile
+	call setpos('.', position)
+endfun
+
 " ---- new list item
 
 fun! organ#bush#new ()
 	" New list item
-	" TODO
 	let properties = organ#colibri#properties ()
 	" ---- indent
 	let level = properties.level
@@ -51,14 +73,17 @@ fun! organ#bush#new ()
 	let prefix = properties.prefix
 	let line = indent .. prefix
 	" ---- increment if needed
-	let number_pattern = '[0-9]\+'
-	let number = line->matchstr(number_pattern)
-	if ! empty(number)
-		let number = str2nr(number) + 1
-		let line = substitute(line, number_pattern, number, '')
+	let counter_pattern = '[0-9]\+'
+	let counter = line->matchstr(counter_pattern)
+	if ! empty(counter)
+		let counter = str2nr(counter) + 1
+		let line = substitute(line, counter_pattern, counter, '')
 	endif
 	" ---- append to buffer
 	call append('.', line)
+	" ---- update counters
+	call organ#bush#recount ()
+	" ---- move cursor
 	let linum = line('.') + 1
 	call cursor(linum, 1)
 	let colnum = col('$')
@@ -142,7 +167,6 @@ fun! organ#bush#promote ()
 		if itemhead =~ '\m^\s*[0-9]\+' .. second
 			let stripe = organ#utils#circular_minus(index, len_ordered)
 			let first = ordered[stripe]
-			echomsg second first
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
 			return linum
@@ -185,7 +209,6 @@ fun! organ#bush#demote ()
 		if itemhead =~ '\m^\s*[0-9]\+' .. first
 			let stripe = organ#utils#circular_plus(index, len_ordered)
 			let second = ordered[stripe]
-			echomsg first second
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
 			return linum
@@ -212,7 +235,7 @@ fun! organ#bush#promote_subtree ()
 	while v:true
 		let linum = organ#bush#promote ()
 		let linum = organ#colibri#next ('move', 'dont-wrap')
-		if linum >= tail_linum || linum == 0
+		if linum > tail_linum || linum == 0
 			call cursor(head_linum, 1)
 			return linum
 		endif
@@ -231,7 +254,7 @@ fun! organ#bush#demote_subtree ()
 	while v:true
 		let linum = organ#bush#demote ()
 		let linum = organ#colibri#next ('move', 'dont-wrap')
-		if linum >= tail_linum || linum == 0
+		if linum > tail_linum || linum == 0
 			call cursor(head_linum, 1)
 			return linum
 		endif
