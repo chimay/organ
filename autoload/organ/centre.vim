@@ -80,7 +80,6 @@ fun! organ#centre#speedkeys ()
 		if key[0] == '<' && key[-1:] == '>'
 			let arg_key = key[1:-2]
 			execute map key command  .. arg_key .. close_angle
-			echomsg map key command  .. arg_key .. close_angle
 		else
 			execute map key command  .. key .. close
 		endif

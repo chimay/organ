@@ -168,28 +168,28 @@ value in your init file, the speed keys become available. They are
 active only when the cursor is on the first char of a headline or a list
 item line :
 
-- `p`      : previous heading
-- `n`      : next heading
-- `b`      : backward heading of same level
-- `f`      : forward heading of same level
-- `-`      : upper, parent heading
-- `~`      : lower, child heading, loosely speaking : first headline of level + 1, forward
-- `+`      : lower, child heading, strictly speaking
-- `w`      : where am I ? full headings path (part, chapter, section, subsection, ...)
-- `h`      : go to headline, with prompt completion of full headings path
-- `*`      : cycle current fold visibility
-- `#`      : cycle all folds visibility
-- `@`      : select subtree
-- `yy`     : yank subtree
-- `dd`     : delete subtree
-- `<`      : promote heading
-- `>`      : demote heading
-- `H`      : promote subtree
-- `L`      : demote subtree
-- `U`      : move subtree up
-- `D`      : move subtree down
-- `e`      : export with pandoc
-- `E`      : export with emacs
+- `<pageup>`   : previous heading
+- `<pagedown>` : next heading
+- `<home>`     : backward heading of same level
+- `<end>`      : forward heading of same level
+- `^`          : upper, parent heading
+- `~`          : lower, child heading, loosely speaking : first headline of level + 1, forward
+- `-`          : lower, child heading, strictly speaking
+- `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
+- `h`          : go to headline, with prompt completion of full headings path
+- `*`          : cycle current fold visibility
+- `#`          : cycle all folds visibility
+- `&`          : select subtree
+- `yy`         : yank subtree
+- `dd`         : delete subtree
+- `<del>`      : promote heading (and delete a level of indent)
+- `<ins>`      : demote heading (and insert a level of indent)
+- `H`          : promote subtree
+- `L`          : demote subtree
+- `U`          : move subtree up
+- `D`          : move subtree down
+- `e`          : export with pandoc
+- `E`          : export with emacs
 
 The prompt completion of headlines is intended to wark roughly as with
 the combo org-goto and helm in Emacs. A space is interpreted as
@@ -254,7 +254,7 @@ avoid conflicts with other plugins. Examples with the default prefix
 - `<M-c><M-b>`       : previous heading of same level
 - `<M-c><M-f>`       : next heading of same level
 
-They are mostly inspired by orgmode, with `<C-...>` replaced by `<M-...>`.
+Some of them are inspired by orgmode, with `<C-...>` replaced by `<M-...>`.
 
 You can customize the prefix by setting `g:organ_config.prefix` to the
 key you want.
