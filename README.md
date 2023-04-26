@@ -214,7 +214,7 @@ value in your init file, these bindings become available :
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-CR>`      : new subtree or list item
-- `<M-@>`       : select subtree
+- `<M-&>`       : select subtree
 - `<M-y>`       : yank subtree
 - `<M-d>`       : delete subtree
 - `<M-left>`    : promote heading or list item
