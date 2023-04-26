@@ -342,7 +342,6 @@ fun! organ#bird#goto_path ()
 	if empty(record)
 		return -1
 	endif
-	echomsg record
 	let fields = split(record, s:field_separ)
 	let linum = str2nr(fields[0])
 	call cursor(linum, 1)
@@ -369,7 +368,6 @@ fun! organ#bird#cycle_current_fold ()
 	else
 		let child_closed = foldclosed(linum_child)
 	endif
-	echomsg current_closed child_closed
 	" ---- cycle
 	if current_closed > 0 && child_closed > 0
 		normal! zo

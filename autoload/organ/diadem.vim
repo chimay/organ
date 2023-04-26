@@ -29,6 +29,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'demote-subtree'        , "organ#nest#oper('demote_subtree')"        ] ,
 		\ [ 'move-subtree-up'       , "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'move-subtree-down'     , "organ#nest#oper('move_subtree_forward')"  ] ,
+		\ [ 'move-after'            , 'organ#tree#move_after'                    ] ,
 		\ [ 'export-with-pandoc'    , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'     , 'organ#pipe#emacs_export'                  ] ,
 		\ ]

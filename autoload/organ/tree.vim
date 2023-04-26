@@ -4,6 +4,13 @@
 "
 " Operations on orgmode or markdown headings hierarchy
 
+" ---- script constants
+
+if ! exists('s:field_separ')
+	let s:field_separ = organ#crystal#fetch('separator/field')
+	lockvar s:field_separ
+endif
+
 " ---- new heading
 
 fun! organ#tree#new ()
@@ -192,4 +199,37 @@ fun! organ#tree#move_subtree_forward ()
 	let new_place = target - spread
 	call cursor(new_place, 1)
 	return new_place
+endfun
+
+" ---- move to another subtree path, aka org-refile
+
+fun! organ#tree#move_after ()
+	" Move current subtree to another path
+	" ---- range of current subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	" ---- find target subtree
+	let prompt = 'Move current subtree to : '
+	let complete = 'customlist,organ#complete#path'
+	let record = input(prompt, '', complete)
+	if empty(record)
+		return -1
+	endif
+	let fields = split(record, s:field_separ)
+	let linum = str2nr(fields[0])
+	call cursor(linum, 1)
+	let subtree = organ#bird#subtree ()
+	let target = subtree.tail_linum
+	" ---- move
+	execute range .. 'move' target
+	if target < head_linum
+		call cursor(target + 1, 1)
+	else
+		let spread = tail_linum - head_linum
+		let new_place = target - spread
+		call cursor(new_place, 1)
+	endif
+	return target
 endfun

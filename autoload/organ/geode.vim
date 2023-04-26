@@ -28,6 +28,7 @@ if ! exists('s:speedkeys')
 		\ [ 'L',          "organ#nest#oper('demote_subtree')"        ] ,
 		\ [ 'U',          "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'D',          "organ#nest#oper('move_subtree_forward')"  ] ,
+		\ [ 'M',          "organ#tree#move_after"                    ] ,
 		\ [ 'e',          'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'E',          'organ#pipe#emacs_export'                  ] ,
 		\ ]
@@ -59,6 +60,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-demote-subtree'     , "organ#nest#oper('demote_subtree')"        ] ,
 		\ [ 'organ-move-subtree-up'    , "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'organ-move-subtree-down'  , "organ#nest#oper('move_subtree_forward')"  ] ,
+		\ [ 'organ-move-after'         , 'organ#tree#move_after'                    ] ,
 		\ [ 'organ-export-pandoc'      , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'       , 'organ#pipe#emacs_export'                  ] ,
 		\ ]
@@ -91,7 +93,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-h>'       , 'organ-goto'               ] ,
 		\ [ '<m-v>'       , 'organ-cycle-current-fold' ] ,
 		\ [ '<m-s-v>'     , 'organ-cycle-all-folds'    ] ,
-		\ [ '<cr>'        , 'organ-new'                ] ,
+		\ [ '<m-cr>'      , 'organ-new'                ] ,
 		\ [ '<m-&>'       , 'organ-select-subtree'     ] ,
 		\ [ '<m-y>'       , 'organ-yank-subtree'       ] ,
 		\ [ '<m-d>'       , 'organ-delete-subtree'     ] ,
@@ -101,6 +103,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-s-right>' , 'organ-demote-subtree'     ] ,
 		\ [ '<m-up>'      , 'organ-move-subtree-up'    ] ,
 		\ [ '<m-down>'    , 'organ-move-subtree-down'  ] ,
+		\ [ '<m-m>'       , 'organ-move-after'         ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'      ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'       ] ,
 		\ ]
