@@ -41,11 +41,16 @@ fun! organ#bush#new ()
 	" New list item
 	" TODO
 	let properties = organ#colibri#properties ()
+	" ---- indent
 	let level = properties.level
-	"let line = organ#colibri#char()->repeat(level)
-	let line ..= ' '
-	let linelist = [line, '']
-	call append('.', linelist)
+	let shift = organ#colibri#common_indent ()
+	let step = g:organ_config.list.indent_length
+	let numspaces = shift + step * (level - 1)
+	let indent = repeat(' ', numspaces)
+	" ---- prefix
+	let prefix = properties.prefix
+	let line = indent .. prefix
+	call append('.', line)
 	let linum = line('.') + 1
 	call cursor(linum, 1)
 	let colnum = col('$')

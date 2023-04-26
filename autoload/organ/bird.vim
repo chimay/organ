@@ -92,16 +92,6 @@ fun! organ#bird#properties (move = 'dont-move')
 	return properties
 endfun
 
-fun! organ#bird#level (move = 'dont-move')
-	" Level of current subtree
-	return organ#bird#properties(a:move).level
-endfun
-
-fun! organ#bird#title (move = 'dont-move')
-	" Title of current subtree
-	return organ#bird#properties(a:move).title
-endfun
-
 fun! organ#bird#subtree (move = 'dont-move')
 	" Range & properties of current subtree
 	let move = a:move

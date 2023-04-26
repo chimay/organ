@@ -73,7 +73,7 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	return v:true
 endfun
 
-fun! organ#colibri#start (move = 'dont-move')
+fun! organ#colibri#list_start (move = 'dont-move')
 	" Line number of the first line in current list
 	let move = a:move
 	if ! organ#colibri#is_in_list ()
@@ -113,7 +113,7 @@ fun! organ#colibri#start (move = 'dont-move')
 	return 0
 endfun
 
-fun! organ#colibri#final (move = 'dont-move')
+fun! organ#colibri#list_end (move = 'dont-move')
 	" Line number of the last line in current list
 	let move = a:move
 	if ! organ#colibri#is_in_list ()
@@ -158,7 +158,7 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let linum = search(itemhead_pattern, flags)
-	let final = organ#colibri#final ()
+	let final = organ#colibri#list_end ()
 	if linum == 0
 		let linum = final
 	endif
@@ -172,8 +172,8 @@ endfun
 
 fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
-	let first = organ#colibri#start ()
-	let last =  organ#colibri#final ()
+	let first = organ#colibri#list_start ()
+	let last =  organ#colibri#list_end ()
 	let indent_pattern = '\m^\s*'
 	let hollow_pattern = '\m^\s*$'
 	let linelist = getline(first, last)
@@ -255,11 +255,6 @@ fun! organ#colibri#properties (move = 'dont-move')
 	return properties
 endfun
 
-fun! organ#colibri#level (move = 'dont-move')
-	" Level of current list subtree
-	return organ#colibri#properties(a:move).level
-endfun
-
 fun! organ#colibri#subtree (move = 'dont-move')
 	" Range & properties of current list subtree
 	let move = a:move
@@ -273,7 +268,7 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(itemhead_pattern, flags)
-	let final = organ#colibri#final ()
+	let final = organ#colibri#list_end ()
 	if forward_linum == 0 || forward_linum > final
 		let tail_linum = final
 	else
