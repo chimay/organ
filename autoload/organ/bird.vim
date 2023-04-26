@@ -6,9 +6,9 @@
 
 " ---- script constants
 
-if ! exists('s:level_separator')
-	let s:level_separator = organ#crystal#fetch('separator/level')
-	lockvar s:level_separator
+if ! exists('s:level_separ')
+	let s:level_separ = organ#crystal#fetch('separator/level')
+	lockvar s:level_separ
 endif
 
 if ! exists('s:field_separ')
@@ -307,7 +307,7 @@ fun! organ#bird#path (move = 'dont-move')
 		endif
 		call organ#bird#parent ('move', 'wrap', properties)
 		let properties = organ#bird#properties ('move')
-		let path = properties.title .. s:level_separator .. path
+		let path = properties.title .. s:level_separ .. path
 	endwhile
 endfun
 

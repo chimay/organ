@@ -212,9 +212,7 @@ fun! organ#tree#moveto ()
 	let range = head_linum .. ',' .. tail_linum
 	" ---- find target subtree
 	let prompt = 'Move current subtree to : '
-	" TODO : completion function that excludes strict children
-	" of current one
-	let complete = 'customlist,organ#complete#path'
+	let complete = 'customlist,organ#complete#path_moveto'
 	let record = input(prompt, '', complete)
 	if empty(record)
 		return -1

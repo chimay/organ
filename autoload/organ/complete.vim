@@ -51,11 +51,16 @@ fun! organ#complete#path (arglead, cmdline, cursorpos)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
-fun! organ#complete#path_except_current (arglead, cmdline, cursorpos)
+fun! organ#complete#path_not_child (arglead, cmdline, cursorpos)
 	" Complete full headline path, but not children of current subtree
+	" Used by tree moveto
 	let choices = organ#perspective#paths ()
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	let headlines = organ#kyusu#pour(wordlist, choices)
+	let current = organ#bird#path ()
+	let Matches = function('organ#kyusu#not_child', [current])
+	eval headlines->filter(Matches)
+	return headlines
 endfun
 
 " ---- export

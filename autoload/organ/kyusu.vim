@@ -12,9 +12,14 @@
 
 " ---- script constants
 
-if ! exists('s:unused')
-	let s:unused = 0
-	lockvar s:unused
+if ! exists('s:level_separ')
+	let s:level_separ = organ#crystal#fetch('separator/level')
+	lockvar s:level_separ
+endif
+
+if ! exists('s:field_separ')
+	let s:field_separ = organ#crystal#fetch('separator/field')
+	lockvar s:field_separ
 endif
 
 " ---- helpers
@@ -41,6 +46,21 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 		endif
 	endfor
 	return match
+endfun
+
+" ---- children subtree, for tree moveto
+
+fun! organ#kyusu#not_child (path, unused_key, value)
+	" True if value is not a children of path
+	let path = a:path
+	let value = a:value
+	let value = split(value, s:field_separ)[1]
+	let path = split(path, s:level_separ)
+	let value = split(value, s:level_separ)
+	let index = min([len(path), len(value)]) - 1
+	let not_child = path[:index] != value[:index]
+	echomsg path value path[:index] value[:index] index not_child
+	return not_child
 endfun
 
 " ---- prompt completion
