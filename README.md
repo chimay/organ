@@ -41,16 +41,17 @@ and agility.
 ## Features
 
 - folding based on headings
-- navigate in the headings or list items hierarchy
+- navigate in headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
   + parent heading, upper level
   + child heading, lower level : loosely or strictly speaking
   + go to another headline with prompt completion of full path
-- modify hierarchy
-  + promote, demote heading or list item
+- modify headings or list items
   + select, yank, delete subtree
+  + promote, demote heading or list item
   + move subtree up or down
+- export in another format using pandoc or emacs
 
 ## Dependancies
 

@@ -37,7 +37,7 @@ of the modules within them.
 | crystal.vim       | Internal constants                                 |
 | diadem.vim        | Internal constants for meta command                |
 | geode.vim         | Internal constants for plugs & maps                |
-| eagle.vim         | Navigation & operations on generic hierrachy       |
+| nest.vim          | Navigation & operations on generic hierrachy       |
 | kyusu.vim         | Filters for prompt & dedicated buffers             |
 | colibri.vim       | Navigation in lists hierarchy                      |
 | origami.vim       | Folding                                            |
