@@ -307,19 +307,21 @@ fun! organ#bush#move_subtree_forward ()
 	let same_linum = search(same_pattern, flags)
 	if level >= 2
 		let level -= 1
-		let upper_pattern = organ#bird#level_pattern (level, level)
+		let upper_pattern = organ#colibri#level_pattern (level, level)
 		let upper_linum = search(upper_pattern, flags)
 	else
 		let upper_linum = 0
 	endif
-	if same_linum < upper_linum || upper_linum == 0
+	if same_linum > 0 && (same_linum < upper_linum || upper_linum == 0)
 		call cursor(same_linum, 1)
 		let same_subtree = organ#colibri#subtree ()
 		let target = same_subtree.tail_linum
 	else
 		call cursor(upper_linum, 1)
-		let itemhead_pattern = organ#colibri#generic_pattern ()
-		let target = search(itemhead_pattern, flags) - 1
+		let target = organ#colibri#itemtail ()
+		if target == -1
+			let target = line('$')
+		endif
 	endif
 	execute range .. 'move' target
 	let spread = tail_linum - head_linum

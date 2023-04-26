@@ -175,7 +175,7 @@ fun! organ#tree#move_subtree_forward ()
 	else
 		let upper_linum = 0
 	endif
-	if same_linum < upper_linum || upper_linum == 0
+	if same_linum > 0 && (same_linum < upper_linum || upper_linum == 0)
 		call cursor(same_linum, 1)
 		let same_subtree = organ#bird#subtree ()
 		let target = same_subtree.tail_linum
@@ -183,6 +183,9 @@ fun! organ#tree#move_subtree_forward ()
 		call cursor(upper_linum, 1)
 		let headline_pattern = organ#bird#generic_pattern ()
 		let target = search(headline_pattern, flags) - 1
+		if target == -1
+			let target = line('$')
+		endif
 	endif
 	execute range .. 'move' target
 	let spread = tail_linum - head_linum

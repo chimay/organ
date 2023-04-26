@@ -24,6 +24,7 @@ content
     * item 2.3.2
       some text
       and more
+  + item 2.4
 - item 3
 
 
