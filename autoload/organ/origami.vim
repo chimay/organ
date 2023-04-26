@@ -9,7 +9,7 @@
 fun! organ#origami#orgmode_folding_expr (linum)
 	" Orgmode folding expression
 	let content = getline(a:linum)
-	let begin = '^\*\{'
+	let begin = '\m^\*\{'
 	let end = '} '
 	for level in range(1, 9)
 		let pattern = begin .. level .. end
@@ -56,7 +56,7 @@ endfun
 fun! organ#origami#markdown_folding_expr (linum)
 	" Markdown folding expression
 	let content = getline(a:linum)
-	let begin = '^#\{'
+	let begin = '\m^#\{'
 	let end = '} '
 	for level in range(1, 9)
 		let pattern = begin .. level .. end

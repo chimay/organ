@@ -75,8 +75,15 @@ fun! organ#centre#speedkeys ()
 	let map = 'nnoremap <buffer>'
 	let command = "<cmd>call organ#nest#speed('"
 	let close = "')<cr>"
+	let close_angle = "', '>')<cr>"
 	for key in keys(s:speedkeys)
-		execute map key command  .. key .. close
+		if key[0] == '<' && key[-1:] == '>'
+			let arg_key = key[1:-2]
+			execute map key command  .. arg_key .. close_angle
+			echomsg map key command  .. arg_key .. close_angle
+		else
+			execute map key command  .. key .. close
+		endif
 	endfor
 endfun
 

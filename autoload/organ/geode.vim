@@ -8,7 +8,7 @@
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
-		\ [ 'p',        "organ#nest#navig('previous')"             ] ,
+		\ [ '<bs>',     "organ#nest#navig('previous')"             ] ,
 		\ [ 'n',        "organ#nest#navig('next')"                 ] ,
 		\ [ 'b',        "organ#nest#navig('backward')"             ] ,
 		\ [ 'f',        "organ#nest#navig('forward')"              ] ,

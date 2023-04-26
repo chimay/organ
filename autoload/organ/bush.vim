@@ -18,7 +18,7 @@ fun! organ#bush#indent_item (level)
 	let len_prefix = len(properties.prefix)
 	let shift = organ#colibri#common_indent ()
 	let step = g:organ_config.list.indent_length
-	let spaces = '^\s*'
+	let spaces = '\m^\s*'
 	" ---- item head line
 	let numspaces = shift + step * (level - 1)
 	let indent = repeat(' ', numspaces)
@@ -113,7 +113,7 @@ fun! organ#bush#promote ()
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let second = unordered[index]
-		if itemhead =~ '^\s*[' .. second .. ']'
+		if itemhead =~ '\m^\s*[' .. second .. ']'
 			let stripe = organ#utils#circular_minus(index, len_unordered)
 			let first = unordered[stripe]
 			let itemhead = substitute(itemhead, second, first, '')
@@ -126,7 +126,7 @@ fun! organ#bush#promote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let second = ordered[index]
-		if itemhead =~ '^\s*[' .. second .. ']'
+		if itemhead =~ '\m^\s*[' .. second .. ']'
 			let stripe = organ#utils#circular_minus(index, len_ordered)
 			let first = unordered[stripe]
 			let itemhead = substitute(itemhead, second, first, '')
@@ -155,7 +155,7 @@ fun! organ#bush#demote ()
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let first = unordered[index]
-		if itemhead =~ '^\s*[' .. first .. ']'
+		if itemhead =~ '\m^\s*[' .. first .. ']'
 			let stripe = organ#utils#circular_plus(index, len_unordered)
 			let second = unordered[stripe]
 			let itemhead = substitute(itemhead, first, second, '')
@@ -168,7 +168,7 @@ fun! organ#bush#demote ()
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let first = ordered[index]
-		if itemhead =~ '^\s*[' .. first .. ']'
+		if itemhead =~ '\m^\s*[' .. first .. ']'
 			let stripe = organ#utils#circular_plus(index, len_ordered)
 			let second = ordered[stripe]
 			let itemhead = substitute(itemhead, first, second, '')

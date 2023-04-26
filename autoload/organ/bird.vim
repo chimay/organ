@@ -76,9 +76,9 @@ fun! organ#bird#properties (move = 'dont-move')
 	endif
 	let headline = getline(linum)
 	if &filetype == 'org'
-		let leading = headline->matchstr('^\*\+')
+		let leading = headline->matchstr('\m^\*\+')
 	elseif &filetype == 'markdown'
-		let leading = headline->matchstr('^#\+')
+		let leading = headline->matchstr('\m^#\+')
 	endif
 	let level = len(leading)
 	" -- assume a space before the title

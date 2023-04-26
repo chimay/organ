@@ -47,10 +47,11 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	let linum = line('.')
 	let current_line = getline(linum)
 	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let hollow_pattern = '\m^\s*$'
 	if current_line =~ itemhead_pattern
 		return v:true
 	endif
-	if current_line =~ '^\s*$'
+	if current_line =~ hollow_pattern
 		if linum == line('$')
 			return v:false
 		endif
@@ -65,7 +66,7 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	endif
 	let linelist = getline(head_linum, linum - 1)
 	for line in linelist
-		if line =~ '^\s*$'
+		if line =~ hollow_pattern
 			return v:false
 		endif
 	endfor
@@ -231,7 +232,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let spaces = repeat(' ', &tabstop)
 	let itemhead = substitute(itemhead, '	', spaces, 'g')
 	" ---- computing level
-	let indent = itemhead->matchstr('^\s*')
+	let indent = itemhead->matchstr('\m^\s*')
 	let numspaces = len(indent)
 	let common_indent = organ#colibri#common_indent ()
 	let numspaces -= common_indent
@@ -240,7 +241,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" ---- prefix
 	let prefix_pattern = '\S\+\s*'
 	let prefix = itemhead->matchstr(prefix_pattern)
-	let prefix = substitute(prefix, '^\s*', '', '')
+	let prefix = substitute(prefix, '\m^\s*', '', '')
 	" ---- text without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let text = substitute(itemhead, itemhead_pattern, '', '')
