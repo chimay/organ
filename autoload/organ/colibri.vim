@@ -239,7 +239,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
 	" ---- prefix
-	let prefix_pattern = '\S\+\s*'
+	let prefix_pattern = '\S\+\s\+'
 	let prefix = itemhead->matchstr(prefix_pattern)
 	let prefix = substitute(prefix, '\m^\s*', '', '')
 	" ---- text without prefix

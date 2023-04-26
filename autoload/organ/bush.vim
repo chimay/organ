@@ -117,8 +117,8 @@ fun! organ#bush#promote ()
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
-		let second = unordered[index]
-		if itemhead =~ '\m^\s*[' .. second .. ']'
+		let second = '[' .. unordered[index] .. ']'
+		if itemhead =~ '\m^\s*' .. second
 			let stripe = organ#utils#circular_minus(index, len_unordered)
 			let first = unordered[stripe]
 			let itemhead = substitute(itemhead, second, first, '')
@@ -130,10 +130,11 @@ fun! organ#bush#promote ()
 	let ordered = g:organ_config.list.ordered[&filetype]
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
-		let second = ordered[index]
-		if itemhead =~ '\m^\s*[' .. second .. ']'
+		let second = '[' .. ordered[index] .. ']'
+		if itemhead =~ '\m^\s*[0-9]\+' .. second
 			let stripe = organ#utils#circular_minus(index, len_ordered)
-			let first = unordered[stripe]
+			let first = ordered[stripe]
+			echomsg second first
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
 			return linum
@@ -159,8 +160,8 @@ fun! organ#bush#demote ()
 	let unordered = g:organ_config.list.unordered[&filetype]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
-		let first = unordered[index]
-		if itemhead =~ '\m^\s*[' .. first .. ']'
+		let first = '[' .. unordered[index] .. ']'
+		if itemhead =~ '\m^\s*' .. first
 			let stripe = organ#utils#circular_plus(index, len_unordered)
 			let second = unordered[stripe]
 			let itemhead = substitute(itemhead, first, second, '')
@@ -172,10 +173,11 @@ fun! organ#bush#demote ()
 	let ordered = g:organ_config.list.ordered[&filetype]
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
-		let first = ordered[index]
-		if itemhead =~ '\m^\s*[' .. first .. ']'
+		let first = '[' .. ordered[index] .. ']'
+		if itemhead =~ '\m^\s*[0-9]\+' .. first
 			let stripe = organ#utils#circular_plus(index, len_ordered)
 			let second = ordered[stripe]
+			echomsg first second
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
 			return linum

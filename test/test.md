@@ -145,6 +145,30 @@ content
        + item 2.4
      - item 3
 
+content
+
+   1. item 1
+   2. item 2
+     1. item 2.1
+     2. item 2.2
+
+-    3. item 2.3
+       1. item 2.3.1
+       2. item 2.3.2
+
+text
+
+1. item 1
+2. item 2
+  1. item 2.1
+  2. item 2.2
+
+  3. item 2.3
+    1. item 2.3.1
+    2. item 2.3.2
+       bla bla
+
+
 #### section 3.3.1.1
 
 content
