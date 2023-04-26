@@ -303,7 +303,6 @@ fun! organ#bush#move_subtree_forward ()
 	let range = head_linum .. ',' .. tail_linum
 	let level = subtree.level
 	let same_pattern = organ#colibri#level_pattern (level, level)
-	let level -= 1
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let same_linum = search(same_pattern, flags)
 	if level >= 2
@@ -311,7 +310,7 @@ fun! organ#bush#move_subtree_forward ()
 		let upper_pattern = organ#bird#level_pattern (level, level)
 		let upper_linum = search(upper_pattern, flags)
 	else
-		let upper_linum = line('$')
+		let upper_linum = 0
 	endif
 	if same_linum < upper_linum || upper_linum == 0
 		call cursor(same_linum, 1)

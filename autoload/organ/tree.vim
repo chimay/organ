@@ -173,7 +173,7 @@ fun! organ#tree#move_subtree_forward ()
 		let upper_pattern = organ#bird#level_pattern (level, level)
 		let upper_linum = search(upper_pattern, flags)
 	else
-		let upper_linum = line('$')
+		let upper_linum = 0
 	endif
 	if same_linum < upper_linum || upper_linum == 0
 		call cursor(same_linum, 1)
