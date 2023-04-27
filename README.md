@@ -3,24 +3,26 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-	* [What is it ?](#what-is-it-)
-	* [Features](#features)
-	* [Differences with standard orgmode](#differences-with-standard-orgmode)
-	* [Dependancies](#dependancies)
-	* [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+    * [What is it ?](#what-is-it-)
+    * [Features](#features)
+    * [Differences with standard orgmode](#differences-with-standard-orgmode)
+    * [Dependancies](#dependancies)
+    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
 * [Installation](#installation)
-	* [Using vim-packager](#using-vim-packager)
-	* [Using minpac](#using-minpac)
-	* [Using vim-plug](#using-vim-plug)
-	* [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
+    * [Using vim-packager](#using-vim-packager)
+    * [Using minpac](#using-minpac)
+    * [Using vim-plug](#using-vim-plug)
+    * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
 * [Configuration](#configuration)
 * [Bindings](#bindings)
-	* [Speed keys](#speed-keys)
-	* [Prefixless](#prefixless)
-	* [With prefix](#with-prefix)
-	* [Custom](#custom)
+    * [Speed keys](#speed-keys)
+    * [Prefixless](#prefixless)
+    * [With prefix](#with-prefix)
+    * [Custom](#custom)
 * [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
+* [Autocommands](#autocommands)
+* [Related](#related)
 
 <!-- vim-markdown-toc -->
 
@@ -29,8 +31,8 @@
 
 Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 
-It is primarily focused on editing orgmode and markdown files with ease
-and agility.
+It is primarily focused on editing orgmode and markdown documents with
+ease and agility.
 
 ## Features
 
@@ -50,7 +52,7 @@ and agility.
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
 - expand shortcut to template (aka org-structure-template)
-  + currently only available in org files
+  + markdown support limited to code blocks
 - create link with url completion
   + store url at cursor
 - export in another format using pandoc or emacs
@@ -81,14 +83,14 @@ that looks for headlines in all orgmode or markdown files of a group.
 
 First of all, it is not intended as a clone, more of a loose adaptation.
 
-The current orgmode plugins for (neo)vim are either :
+The current orgmode plugins for (neo)vim that I could find are either :
 
 - abandoned and not adapted for my usage
-- writtent in lua, which means they only work for neovim
+- written in python
+- written in lua, which means they only work with neovim
 
-Since I use both editors, I wanted to write a lightweight plugin in
-plain simple vimscript, with minimal dependancies (most of it doesn't
-need anything else to work).
+I wanted to write a lightweight plugin in plain simple vimscript, with
+minimal dependancies (most of it doesn't need anything else to work).
 
 # Installation
 ## Using vim-packager
@@ -316,6 +318,13 @@ features :
 :Organ subcommand
 ```
 
+Examples :
+
+```vim
+:Organ store-url
+:Organ export-with-pandoc
+```
+
 Completion is available for subcommands.
 
 I suggest you map it to a convenient key. Example :
@@ -323,3 +332,25 @@ I suggest you map it to a convenient key. Example :
 ```vim
 autocmd FileType org,markdown nnoremap <buffer> <m-o> :Organ<space>
 ```
+
+# Autocommands
+
+If you copy some links back and forth from org to markdown, you can
+automatically convert the links at buffer write with the following
+autocommands :
+
+```vim
+augroup organ
+  autocmd!
+  " convert links org <-> markdown
+  autocmd bufwritepost *.md call organ#vine#org2markdown ()
+  autocmd bufwritepost *.org call organ#vine#markdown2org ()
+augroup END
+
+```
+
+# Related
+
+- [vim-orgmode](https://github.com/jceb/vim-orgmode) (python)
+- [vimOrganizer](https://github.com/hsitz/VimOrganizer) (abandoned)
+- [nvim-orgmode](https://github.com/nvim-orgmode/orgmode) (lua, neovim only)

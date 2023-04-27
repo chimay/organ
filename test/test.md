@@ -180,6 +180,12 @@ content
 
 ## part 3.4
 
+[desc](ftp://toto.tutu)
+<file:test.md::*chapter 3.3.2>
+
+[[file:test.md::*chapter 3.3.2][desc]]
+[[file:test.md::*chapter 3.3.2]]
+
 content
 
 ### chapter 3.4.1

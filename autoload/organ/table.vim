@@ -4,3 +4,6 @@
 "
 " Table operations
 
+fun! organ#table#align (char = '|')
+	" Align char in all table lines
+endfun

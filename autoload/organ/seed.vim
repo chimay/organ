@@ -10,9 +10,6 @@
 
 fun! organ#seed#expand ()
 	" Expand template at current line
-	if &filetype != 'org'
-		echomsg 'organ seed expand : filetype not supported'
-	endif
 	let line = getline('.')
 	let trigger_pattern = '\m\s*\zs.*$'
 	let trigger = line->matchstr(trigger_pattern)
@@ -100,8 +97,13 @@ fun! organ#seed#source (...)
 	if empty(lang)
 		return ''
 	endif
-	let open = '#+begin_src ' .. lang
-	let close = '#+end_src'
+	if &filetype == 'org'
+		let open = '#+begin_src ' .. lang
+		let close = '#+end_src'
+	elseif &filetype == 'markdown'
+		let open = '```' .. lang
+		let close = '```'
+	endif
 	let linum = line('.')
 	call setline(linum, open)
 	call append(linum, '')

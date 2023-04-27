@@ -87,3 +87,21 @@ fun! organ#vine#new ()
 	let colnum += lenlink
 	call cursor(linum, colnum)
 endfun
+
+" ---- convert org <-> markdown
+
+fun! organ#vine#org2markdown ()
+	" Convert org links to markdown
+	" ---- links without description
+	silent! %substitute/\[\[\([^]]*\)\]\]/<\1>/g
+	" ---- links with description
+	silent! %substitute/\[\[\([^]]*\)\]\[\([^]]*\)\]\]/[\2](\1)/g
+endfun
+
+fun! organ#vine#markdown2org ()
+	" Convert markdown links to org
+	" ---- links without description
+	silent! %substitute/<\([^>]*\)>/[[\1]]/g
+	" ---- links with description
+	silent! %substitute/\[\([^]]*\)\](\([^)]*\))/[[\2][\1]]/g
+endfun
