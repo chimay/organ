@@ -172,6 +172,9 @@ fun! organ#bush#promote ()
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
 			call organ#bush#update_counters ()
+			if mode() == 'i'
+				startinsert!
+			endif
 			return linum
 		endif
 	endfor
@@ -186,6 +189,9 @@ fun! organ#bush#promote ()
 			let itemhead = substitute(itemhead, second, first, '')
 			call setline(linum, itemhead)
 			call organ#bush#update_counters ()
+			if mode() == 'i'
+				startinsert!
+			endif
 			return linum
 		endif
 	endfor
@@ -216,6 +222,9 @@ fun! organ#bush#demote ()
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
 			call organ#bush#update_counters ()
+			if mode() == 'i'
+				startinsert!
+			endif
 			return linum
 		endif
 	endfor
@@ -230,6 +239,9 @@ fun! organ#bush#demote ()
 			let itemhead = substitute(itemhead, first, second, '')
 			call setline(linum, itemhead)
 			call organ#bush#update_counters ()
+			if mode() == 'i'
+				startinsert!
+			endif
 			return linum
 		endif
 	endfor

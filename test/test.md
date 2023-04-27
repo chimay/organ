@@ -192,8 +192,6 @@ content
 
 ### chapter 3.4.3
 
-  <v
-
 content
 
 - item 1

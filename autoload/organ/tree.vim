@@ -80,6 +80,9 @@ fun! organ#tree#promote ()
 	let headline = properties.headline
 	let headline = headline[1:]
 	call setline(linum, headline)
+	if mode() == 'i'
+		startinsert!
+	endif
 	return linum
 endfun
 
@@ -100,6 +103,9 @@ fun! organ#tree#demote ()
 	endif
 	call setline(linum, headline)
 	normal! zv
+	if mode() == 'i'
+		startinsert!
+	endif
 	return linum
 endfun
 

@@ -56,6 +56,8 @@ and agility.
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
+- expand shortcut to template (aka org-structure-template)
+  + currently only available in org files
 - export in another format using pandoc or emacs
 
 ## Dependancies
@@ -167,6 +169,13 @@ if ! exists("g:organ_loaded")
   " ---- must be >= 0
   " ---- default 1
   let g:organ_config.list.counter_start = 1
+  " ---- shortcuts to expand templates
+  " ---- examples from default settings
+  " ---- run :echo g:organ_config.templates to see all
+  " -- #+begin_center bloc
+  let g:organ_config.templates['<c'] = 'center'
+  " -- #+include: line
+  let g:organ_config.templates['+i'] = 'include'
 endif
 ```
 
@@ -227,6 +236,7 @@ value in your init file, these bindings become available :
 - `<M-up>`      : move heading or list subtree up
 - `<M-down>`    : move heading or list subtree down
 - `<M-m>`       : move subtree in another one, with prompt completion
+- `<M-t>`       : expand template
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs
 
