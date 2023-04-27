@@ -56,6 +56,7 @@ ease and agility.
 - create link with url completion
   + store url at cursor
 - export in another format using pandoc or emacs
+- convert headings and links org <-> markdown
 
 ## Differences with standard orgmode
 
