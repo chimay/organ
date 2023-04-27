@@ -62,6 +62,8 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-move-subtree-down'  , "organ#nest#oper('move_subtree_forward')"  ] ,
 		\ [ 'organ-moveto'             , 'organ#tree#moveto'                        ] ,
 		\ [ 'organ-expand-template'    , 'organ#seed#expand'                        ] ,
+		\ [ 'organ-store-url'          , 'organ#vine#store'                         ] ,
+		\ [ 'organ-new-link'           , 'organ#vine#new'                           ] ,
 		\ [ 'organ-export-pandoc'      , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'       , 'organ#pipe#emacs_export'                  ] ,
 		\ ]
@@ -106,6 +108,8 @@ if ! exists('s:maps_normal')
 		\ [ '<m-down>'    , 'organ-move-subtree-down'  ] ,
 		\ [ '<m-m>'       , 'organ-moveto'             ] ,
 		\ [ '<m-t>'       , 'organ-expand-template'    ] ,
+		\ [ '<m-s>'       , 'organ-store-url'          ] ,
+		\ [ '<m-@>'       , 'organ-new-link'           ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'      ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'       ] ,
 		\ ]

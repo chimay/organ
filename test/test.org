@@ -134,9 +134,12 @@ content
 
 ** part 3.1
 
-content
+content text
 
 ** part 3.2
+:properties:
+:custom_id: section:part_three_two
+:end:
 
 content
 

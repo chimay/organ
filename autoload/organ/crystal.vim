@@ -55,6 +55,31 @@ if ! exists('s:templates_languages')
 	lockvar! s:templates_languages
 endif
 
+" ---- links
+
+if ! exists('s:url_prefixes')
+	let s:url_prefixes = [
+		\ 'bibtex:',
+		\ 'docview:',
+		\ 'elisp:',
+		\ 'eww:',
+		\ 'file:',
+		\ 'file+emacs:',
+		\ 'file+sys:',
+		\ 'ftp:',
+		\ 'help:',
+		\ 'http:',
+		\ 'https:',
+		\ 'info:',
+		\ 'irc:',
+		\ 'mailto:',
+		\ 'news:',
+		\ 'rmail:',
+		\ 'shell:',
+		\]
+	lockvar! s:url_prefixes
+endif
+
 " ---- export formats
 
 if ! exists('s:export_formats_pandoc')

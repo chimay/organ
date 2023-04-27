@@ -20,6 +20,11 @@ if ! exists('s:src_langs')
 	lockvar s:src_langs
 endif
 
+if ! exists('s:url_prefixes')
+	let s:url_prefixes = organ#crystal#fetch('url/prefixes')
+	lockvar s:url_prefixes
+endif
+
 if ! exists('s:pandoc_formats')
 	let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
 	lockvar s:pandoc_formats
@@ -73,6 +78,16 @@ endfun
 fun! organ#complete#templates_lang (arglead, cmdline, cursorpos)
 	" Complete language for src bloc
 	let choices = s:src_langs
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+" ---- links
+
+fun! organ#complete#url (arglead, cmdline, cursorpos)
+	" Complete url for links
+	let store = g:organ_store.url
+	let choices = store + s:url_prefixes
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun

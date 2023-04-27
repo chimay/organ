@@ -4,6 +4,16 @@
 "
 " Initialization of variables
 
+fun! organ#void#store ()
+	" Initialize store
+	if ! exists('g:organ_store')
+		let g:organ_store = {}
+	endif
+	if ! has_key(g:organ_store, 'url')
+		let g:organ_store.url = []
+	endif
+endfun
+
 fun! organ#void#config ()
 	" Initialize config
 	if ! exists('g:organ_config')
@@ -78,4 +88,10 @@ fun! organ#void#config ()
 					\ ':s' : 'section',
 					\}
 	endif
+endfun
+
+fun! organ#void#foundation ()
+	" Initialize organ
+	call organ#void#store ()
+	call organ#void#config ()
 endfun

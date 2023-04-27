@@ -167,12 +167,12 @@ fun! organ#tree#move_subtree_backward ()
 	let goal = search(headline_pattern, flags)
 	let target = goal - 1
 	if goal == 0
-		let last_line = line('$')
-		if getline(last_line) != ''
-			call append(last_line, '')
-			let last_line += 1
+		let last_linum = line('$')
+		if getline(last_linum) != ''
+			call append(last_linum, '')
+			let last_linum += 1
 		endif
-		let target = last_line
+		let target = last_linum
 		let spread = tail_linum - head_linum
 		let goal = target - spread
 	endif
@@ -213,9 +213,9 @@ fun! organ#tree#move_subtree_forward ()
 			let target = line('$')
 		endif
 	else
-		let last_line = line('$')
-		if getline(last_line) != ''
-			call append(last_line, '')
+		let last_linum = line('$')
+		if getline(last_linum) != ''
+			call append(last_linum, '')
 			let tail_linum += 1
 		endif
 		let goal = 1
