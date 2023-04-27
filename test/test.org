@@ -150,8 +150,8 @@ content
 [[file:test.md::*chapter 3.3.2][desc]]
 [[file:test.md::*chapter 3.3.2]]
 
-[desc](ftp://toto.tutu)
-<file:test.md::*chapter 3.3.2>
+[[ftp://toto.tutu][desc]]
+[[file:test.md::*chapter 3.3.2]]
 
 *** chapter 3.3.1
 

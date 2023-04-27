@@ -335,14 +335,17 @@ autocmd FileType org,markdown nnoremap <buffer> <m-o> :Organ<space>
 
 # Autocommands
 
-If you copy some links back and forth from org to markdown, you can
-automatically convert the links at buffer write with the following
+If you copy some headings and links back and forth from org to markdown,
+you can automatically convert the links at buffer write with the following
 autocommands :
 
 ```vim
 augroup organ
   autocmd!
-  " convert links org <-> markdown
+  " ---- convert headings org <-> markdown
+  autocmd bufwritepost *.md call organ#tree#org2markdown ()
+  autocmd bufwritepost *.org call organ#tree#markdown2org ()
+  " ---- convert links org <-> markdown
   autocmd bufwritepost *.md call organ#vine#org2markdown ()
   autocmd bufwritepost *.org call organ#vine#markdown2org ()
 augroup END

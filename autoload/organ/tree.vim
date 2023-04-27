@@ -266,3 +266,29 @@ fun! organ#tree#moveto ()
 	endif
 	return target
 endfun
+
+" ---- convert org <-> markdown
+
+fun! organ#tree#org2markdown ()
+	" Convert org headlines to markdown
+	silent! %substitute/^\*\{7}\zs\*/#/g
+	silent! %substitute/^\*\{6}\zs\*/#/g
+	silent! %substitute/^\*\{5}\zs\*/#/g
+	silent! %substitute/^\*\{4}\zs\*/#/g
+	silent! %substitute/^\*\{3}\zs\*/#/g
+	silent! %substitute/^\*\{2}\zs\*/#/g
+	silent! %substitute/^\*\{1}\zs\*/#/g
+	silent! %substitute/^\*/#/g
+endfun
+
+fun! organ#tree#markdown2org ()
+	" Convert markdown headlines to org
+	silent! %substitute/^#\{7}\zs#/*/g
+	silent! %substitute/^#\{6}\zs#/*/g
+	silent! %substitute/^#\{5}\zs#/*/g
+	silent! %substitute/^#\{4}\zs#/*/g
+	silent! %substitute/^#\{3}\zs#/*/g
+	silent! %substitute/^#\{2}\zs#/*/g
+	silent! %substitute/^#\{1}\zs#/*/g
+	silent! %substitute/^#/*/g
+endfun

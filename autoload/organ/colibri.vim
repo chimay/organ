@@ -209,7 +209,7 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	let unordered = unordered->join('')
 	let ordered = g:organ_config.list.ordered[&filetype]
 	let ordered = ordered->join('')
-	let pattern = '\m^ \{' .. min .. ',' .. max .. '\}'
+	let pattern = '\m^ \{' .. min .. ',' .. max .. '}'
 	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
 	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype ==# 'org'

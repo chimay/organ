@@ -42,9 +42,9 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if &filetype == 'org'
-		return '\m^\*\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^*]'
+		return '\m^\*\{' .. minlevel .. ',' .. maxlevel .. '}' .. '[^*]'
 	elseif &filetype ==# 'markdown'
-		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '\}' .. '[^#]'
+		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '}' .. '[^#]'
 	else
 		echomsg 'organ bird headline pattern : filetype not supported'
 	endif
