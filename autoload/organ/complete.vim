@@ -15,6 +15,11 @@
 
 " ---- script constants
 
+if ! exists('s:src_langs')
+	let s:src_langs = organ#crystal#fetch('templates/languages')
+	lockvar s:src_langs
+endif
+
 if ! exists('s:pandoc_formats')
 	let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
 	lockvar s:pandoc_formats
@@ -61,6 +66,15 @@ fun! organ#complete#path_not_child (arglead, cmdline, cursorpos)
 	let Matches = function('organ#kyusu#not_child', [current])
 	eval headlines->filter(Matches)
 	return headlines
+endfun
+
+" ---- structure templates
+
+fun! organ#complete#templates_lang (arglead, cmdline, cursorpos)
+	" Complete language for src bloc
+	let choices = s:src_langs
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
 endfun
 
 " ---- export

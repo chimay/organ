@@ -23,7 +23,39 @@ if ! exists('s:separator_field_bar')
 	lockvar! s:separator_field_bar
 endif
 
-" --- export formats
+" ---- structure templates
+
+if ! exists('s:templates_languages')
+	let s:templates_languages = [
+				\ 'F90',
+				\ 'c',
+				\ 'cpp',
+				\ 'clojure',
+				\ 'css',
+				\ 'd',
+				\ 'emacs-lisp',
+				\ 'eshell',
+				\ 'java',
+				\ 'latex',
+				\ 'lisp',
+				\ 'lua',
+				\ 'ly',
+				\ 'makefile',
+				\ 'ocaml',
+				\ 'org',
+				\ 'perl',
+				\ 'python',
+				\ 'r',
+				\ 'ruby',
+				\ 'scheme',
+				\ 'sql',
+				\ 'sed',
+				\ 'shell',
+				\]
+	lockvar! s:templates_languages
+endif
+
+" ---- export formats
 
 if ! exists('s:export_formats_pandoc')
 	let s:export_formats_pandoc = [
