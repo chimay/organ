@@ -57,18 +57,18 @@ fun! organ#void#config ()
 	endif
 	" ---- structure templates
 	if ! has_key(g:organ_config, 'templates')
-		let g:organ_config.templates = #{
-					\ '<C' : 'comment'
-					\ '<E' : 'export'
-					\ '<c' : 'center'
-					\ '<e' : 'example'
-					\ '<q' : 'quote'
-					\ '<s' : 'src'
-					\ '<v' : 'verse'
-					\ '+I' : '+index'
-					\ '+i' : '+include'
-					\ '+h' : '+html'
-					\ '+l' : '+latex'
+		let g:organ_config.templates = {
+					\ '<C' : 'comment',
+					\ '<E' : 'export',
+					\ '<c' : 'center',
+					\ '<e' : 'example',
+					\ '<q' : 'quote',
+					\ '<s' : 'src',
+					\ '<v' : 'verse',
+					\ '+I' : '+index',
+					\ '+i' : '+include',
+					\ '+h' : '+html',
+					\ '+l' : '+latex',
 					\}
 	endif
 endfun
