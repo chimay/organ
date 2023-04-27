@@ -33,16 +33,18 @@ of the modules within them.
 | bird.vim          | Navigation in headings hierarchy                   |
 | bush.vim          | Operations on lists hierarchy                      |
 | centre.vim        | Commands & mappings                                |
+| colibri.vim       | Navigation in lists hierarchy                      |
 | complete.vim      | Completion functions                               |
 | crystal.vim       | Internal constants                                 |
 | diadem.vim        | Internal constants for meta command                |
 | geode.vim         | Internal constants for plugs & maps                |
-| nest.vim          | Navigation & operations on generic hierrachy       |
 | kyusu.vim         | Filters for prompt & dedicated buffers             |
-| colibri.vim       | Navigation in lists hierarchy                      |
+| nest.vim          | Navigation & operations on generic hierrachy       |
 | origami.vim       | Folding                                            |
 | perspective.vim   | content generators for prompt                      |
 | pipe.vim          | export using pandoc or emacs                       |
+| seed.vim          | structure templates (kind of lightweight snippets) |
+| table.vim         | tables                                             |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
 | void.vim          | Initiaze & reset variables                         |
