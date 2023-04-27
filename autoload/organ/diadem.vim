@@ -30,6 +30,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'move-subtree-up'       , "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'move-subtree-down'     , "organ#nest#oper('move_subtree_forward')"  ] ,
 		\ [ 'moveto'                , 'organ#tree#moveto'                        ] ,
+		\ [ 'expand-template'       , 'organ#seed#expand'                        ] ,
 		\ [ 'export-with-pandoc'    , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'     , 'organ#pipe#emacs_export'                  ] ,
 		\ ]

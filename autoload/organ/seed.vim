@@ -6,6 +6,8 @@
 "
 " Aka org structure templates
 
+" ---- generic
+
 fun! organ#seed#expand ()
 	" Expand template at current line
 	if &filetype != 'org'
@@ -14,17 +16,23 @@ fun! organ#seed#expand ()
 	let line = getline('.')
 	let trigger_pattern = '\m\s*\zs.*$'
 	let trigger = line->matchstr(trigger_pattern)
-	let angle_pat = '\m^\s*<'
-	let plus_pat = '\m^\s*+'
-	if line =~ angle_pat
+	let spaces = '\m^\s*'
+	if line =~ spaces .. '<'
 		return organ#seed#angle (trigger)
-	elseif line =~ plus_pat
+	elseif line =~ spaces .. '+'
 		return organ#seed#plus (trigger)
+	elseif line =~ spaces .. ':'
+		return organ#seed#colon (trigger)
 	endif
 endfun
 
+" ---- trigger class
+
 fun! organ#seed#angle (trigger)
 	" Expand angle shortcut at current line
+	" #+begin_something
+	"
+	" #+end_something
 	let trigger = a:trigger
 	let source_pat = '\m^\s*<s'
 	if trigger == '<s'
@@ -49,11 +57,12 @@ endfun
 
 fun! organ#seed#plus (trigger)
 	" Expand plus shortcut at current line
+	" #+something:
 	let trigger = a:trigger
 	let templates = g:organ_config.templates
 	if has_key(templates, trigger)
 		let suffix = templates[trigger]
-		let newline = '#' .. suffix .. ': '
+		let newline = '#+' .. suffix .. ': '
 		let linum = line('.')
 		call setline(linum, newline)
 		startinsert!
@@ -62,8 +71,24 @@ fun! organ#seed#plus (trigger)
 	return ''
 endfun
 
+fun! organ#seed#colon (trigger)
+	" Expand colon shortcut at current line
+	let trigger = a:trigger
+	let templates = g:organ_config.templates
+	if has_key(templates, trigger)
+		let keyword = templates[trigger]
+		return organ#seed#colon_{keyword} ()
+	endif
+	return ''
+endfun
+
+" ---- details
+
 fun! organ#seed#source (...)
 	" Expand source bloc shortcut at current line
+	" #+begin_src language
+	"
+	" #+end_src
 	if a:0 > 0
 		let line = a:1
 	else
@@ -85,4 +110,11 @@ fun! organ#seed#source (...)
 	call cursor(linum, 1)
 	startinsert
 	return open
+endfun
+
+fun! organ#seed#colon_section ()
+	" Properties bloc with section custom id
+    " :PROPERTIES:
+    " :CUSTOM_ID: section:principes
+    " :END:
 endfun

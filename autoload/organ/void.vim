@@ -65,10 +65,16 @@ fun! organ#void#config ()
 					\ '<q' : 'quote',
 					\ '<s' : 'src',
 					\ '<v' : 'verse',
-					\ '+I' : '+index',
-					\ '+i' : '+include',
-					\ '+h' : '+html',
-					\ '+l' : '+latex',
+					\ '+A' : 'author',
+					\ '+E' : 'email',
+					\ '+I' : 'index',
+					\ '+T' : 'toc',
+					\ '+i' : 'include',
+					\ '+h' : 'html',
+					\ '+l' : 'latex',
+					\ '+o' : 'options',
+					\ '+s' : 'startup',
+					\ '+t' : 'tags',
 					\}
 	endif
 endfun
