@@ -288,11 +288,12 @@ fun! organ#bush#move_subtree_backward ()
 	let level = subtree.level
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
-	let target = search(itemhead_pattern, flags) - 1
+	let goal = search(itemhead_pattern, flags)
+	let target = goal - 1
 	execute range .. 'move' target
-	call cursor(target + 1, 1)
+	call cursor(goal, 1)
 	call organ#bush#update_counters ()
-	return target
+	return goal
 endfun
 
 fun! organ#bush#move_subtree_forward ()
@@ -325,8 +326,8 @@ fun! organ#bush#move_subtree_forward ()
 	endif
 	execute range .. 'move' target
 	let spread = tail_linum - head_linum
-	let new_place = target - spread
-	call cursor(new_place, 1)
+	let goal = target - spread
+	call cursor(goal, 1)
 	call organ#bush#update_counters ()
-	return new_place
+	return goal
 endfun
