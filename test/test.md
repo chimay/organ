@@ -209,5 +209,5 @@ content
       text
       more
 
-- item 3
   + item 2.4
+- item 3

@@ -51,6 +51,9 @@ fun! organ#bush#update_counters ()
 	call cursor(first, 1)
 	let linum = first
 	while v:true
+		if linum == 0
+			break
+		endif
 		if linum > last
 			break
 		endif
