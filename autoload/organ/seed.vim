@@ -12,28 +12,24 @@ fun! organ#seed#expand ()
 		echomsg 'organ seed expand : filetype not supported'
 	endif
 	let line = getline('.')
+	let trigger_pattern = '\m\s*\zs.*$'
+	let trigger = line->matchstr(trigger_pattern)
 	let angle_pat = '\m^\s*<'
 	let plus_pat = '\m^\s*+'
 	if line =~ angle_pat
-		return organ#seed#angle (line)
+		return organ#seed#angle (trigger)
 	elseif line =~ plus_pat
-		return organ#seed#plus (line)
+		return organ#seed#plus (trigger)
 	endif
 endfun
 
-fun! organ#seed#angle (...)
+fun! organ#seed#angle (trigger)
 	" Expand angle shortcut at current line
-	if a:0 > 0
-		let line = a:1
-	else
-		let line = getline('.')
-	endif
+	let trigger = a:trigger
 	let source_pat = '\m^\s*<s'
-	if line =~ source_pat
-		return organ#seed#source (line)
+	if trigger == '<s'
+		return organ#seed#source ()
 	endif
-	let trigger_pattern = '\m\s*\zs.*$'
-	let trigger = line->matchstr(trigger_pattern)
 	let templates = g:organ_config.templates
 	if has_key(templates, trigger)
 		let suffix = templates[trigger]
@@ -47,6 +43,21 @@ fun! organ#seed#angle (...)
 		call cursor(linum, 1)
 		startinsert
 		return open
+	endif
+	return ''
+endfun
+
+fun! organ#seed#plus (trigger)
+	" Expand plus shortcut at current line
+	let trigger = a:trigger
+	let templates = g:organ_config.templates
+	if has_key(templates, trigger)
+		let suffix = templates[trigger]
+		let newline = '#' .. suffix .. ': '
+		let linum = line('.')
+		call setline(linum, newline)
+		startinsert!
+		return newline
 	endif
 	return ''
 endfun
@@ -74,25 +85,4 @@ fun! organ#seed#source (...)
 	call cursor(linum, 1)
 	startinsert
 	return open
-endfun
-
-fun! organ#seed#plus (...)
-	" Expand plus shortcut at current line
-	if a:0 > 0
-		let line = a:1
-	else
-		let line = getline('.')
-	endif
-	let trigger_pattern = '\m\s*\zs.*$'
-	let trigger = line->matchstr(trigger_pattern)
-	let templates = g:organ_config.templates
-	if has_key(templates, trigger)
-		let suffix = templates[trigger]
-		let newline = '#' .. suffix .. ': '
-		let linum = line('.')
-		call setline(linum, newline)
-		startinsert!
-		return newline
-	endif
-	return ''
 endfun

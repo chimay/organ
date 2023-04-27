@@ -209,7 +209,7 @@ item line :
 - `D`          : move subtree down
 - `M`          : move subtree in another one, with prompt completion
 - `e`          : export with pandoc
-- `E`          : export with emacs
+- `E`          : export with emacs (works only in org files)
 
 ## Prefixless
 
