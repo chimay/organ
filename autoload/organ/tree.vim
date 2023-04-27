@@ -158,18 +158,23 @@ fun! organ#tree#move_subtree_backward ()
 	let level = subtree.level
 	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
-	let target = search(headline_pattern, flags) - 1
-	let goal = target + 1
-	if target == -1
+	let goal = search(headline_pattern, flags)
+	let target = goal - 1
+	if goal == 0
 		let last_line = line('$')
-		call append(last_line, '')
-		let last_line += 1
+		if getline(last_line) != ''
+			call append(last_line, '')
+			let last_line += 1
+		endif
 		let target = last_line
 		let spread = tail_linum - head_linum
 		let goal = target - spread
 	endif
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
+	if getline('$') == ''
+		$delete
+	endif
 	call cursor(goal, 1)
 	return goal
 endfun
@@ -203,14 +208,18 @@ fun! organ#tree#move_subtree_forward ()
 		endif
 	else
 		let last_line = line('$')
-		call append(last_line, '')
-		let tail_linum += 1
-		let target = 0
+		if getline(last_line) != ''
+			call append(last_line, '')
+			let tail_linum += 1
+		endif
 		let goal = 1
+		let target = 0
 	endif
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	echomsg range .. 'move' target
+	if getline('$') == ''
+		$delete
+	endif
 	let spread = tail_linum - head_linum
 	if target > 1
 		let goal = target - spread

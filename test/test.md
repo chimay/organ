@@ -19,10 +19,6 @@
 
 content
 
-## part 1.1
-
-content
-
 ## part 1.2
 
 content
@@ -211,4 +207,6 @@ content
 
   + item 2.4
 - item 3
+## part 1.1
 
+content
