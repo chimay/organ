@@ -51,6 +51,8 @@ and agility.
   + move current subtree in another one (aka org-refile)
 - expand shortcut to template (aka org-structure-template)
   + currently only available in org files
+- create link with url completion
+  + store url at cursor
 - export in another format using pandoc or emacs
 
 ## Differences with standard orgmode
@@ -237,6 +239,8 @@ value in your init file, these bindings become available :
 - `<M-down>`    : move heading or list subtree down
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-t>`       : expand template
+- `<M-s>`       : store url at cursor
+- `<M-@>`       : create new link
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
 
