@@ -58,7 +58,7 @@ and agility.
 - speed keys are also available in first char of list item line
 - movements can
   + wrap around the end of the file
-  + cross over a parend headline
+  + cross over a parent headline
 
 ## Dependancies
 
@@ -238,7 +238,7 @@ value in your init file, these bindings become available :
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-t>`       : expand template
 - `<M-e>`       : export with pandoc
-- `<M-S-e>`     : export with emacs
+- `<M-S-e>`     : export with emacs (works only in org files)
 
 You can customize `g:organ_config.prefixless_modes` to create prefixless
 maps only in the modes you specify.
