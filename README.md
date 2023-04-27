@@ -4,8 +4,8 @@
 
 * [Introduction](#introduction)
 	* [What is it ?](#what-is-it-)
-	* [Differences with standard orgmode](#differences-with-standard-orgmode)
 	* [Features](#features)
+	* [Differences with standard orgmode](#differences-with-standard-orgmode)
 	* [Dependancies](#dependancies)
 	* [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
 * [Installation](#installation)
@@ -32,13 +32,6 @@ Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 It is primarily focused on editing orgmode and markdown files with ease
 and agility.
 
-## Differences with standard orgmode
-
-- speed keys are also available in first char of list item line
-- movements can
-  + wrap around the end of the file
-  + cross over a parend headline
-
 ## Features
 
 - folding based on headings
@@ -59,6 +52,13 @@ and agility.
 - expand shortcut to template (aka org-structure-template)
   + currently only available in org files
 - export in another format using pandoc or emacs
+
+## Differences with standard orgmode
+
+- speed keys are also available in first char of list item line
+- movements can
+  + wrap around the end of the file
+  + cross over a parend headline
 
 ## Dependancies
 
