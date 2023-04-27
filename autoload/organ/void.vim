@@ -75,6 +75,7 @@ fun! organ#void#config ()
 					\ '+o' : 'options',
 					\ '+s' : 'startup',
 					\ '+t' : 'tags',
+					\ ':s' : 'section',
 					\}
 	endif
 endfun

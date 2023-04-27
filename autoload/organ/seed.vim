@@ -31,7 +31,7 @@ endfun
 fun! organ#seed#angle (trigger)
 	" Expand angle shortcut at current line
 	" #+begin_something
-	"
+	" <cursor>
 	" #+end_something
 	let trigger = a:trigger
 	let source_pat = '\m^\s*<s'
@@ -57,7 +57,7 @@ endfun
 
 fun! organ#seed#plus (trigger)
 	" Expand plus shortcut at current line
-	" #+something:
+	" #+something: <cursor>
 	let trigger = a:trigger
 	let templates = g:organ_config.templates
 	if has_key(templates, trigger)
@@ -87,7 +87,7 @@ endfun
 fun! organ#seed#source (...)
 	" Expand source bloc shortcut at current line
 	" #+begin_src language
-	"
+	" <cursor>
 	" #+end_src
 	if a:0 > 0
 		let line = a:1
@@ -114,7 +114,18 @@ endfun
 
 fun! organ#seed#colon_section ()
 	" Properties bloc with section custom id
-    " :PROPERTIES:
-    " :CUSTOM_ID: section:principes
-    " :END:
+    " :properties:
+    " :custom_id: section: <cursor>
+    " :end:
+	let open = ':properties:'
+	let middle = ':custom_id: section:'
+	let close = ':end:'
+	let linum = line('.')
+	call setline(linum, open)
+	call append(linum, middle)
+	let linum += 1
+	call append(linum, close)
+	call cursor(linum, 1)
+	startinsert!
+	return open
 endfun
