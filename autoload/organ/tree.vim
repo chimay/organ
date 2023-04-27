@@ -155,14 +155,23 @@ fun! organ#tree#move_subtree_backward ()
 	let subtree = organ#bird#subtree ('move')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
 	let level = subtree.level
 	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
 	let target = search(headline_pattern, flags) - 1
+	let goal = target + 1
+	if target == -1
+		let last_line = line('$')
+		call append(last_line, '')
+		let last_line += 1
+		let target = last_line
+		let spread = tail_linum - head_linum
+		let goal = target - spread
+	endif
+	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	call cursor(target + 1, 1)
-	return target
+	call cursor(goal, 1)
+	return goal
 endfun
 
 fun! organ#tree#move_subtree_forward ()
@@ -170,7 +179,6 @@ fun! organ#tree#move_subtree_forward ()
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
 	let level = subtree.level
 	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
@@ -186,19 +194,29 @@ fun! organ#tree#move_subtree_forward ()
 		call cursor(same_linum, 1)
 		let same_subtree = organ#bird#subtree ()
 		let target = same_subtree.tail_linum
-	else
+	elseif upper_linum > 0
 		call cursor(upper_linum, 1)
 		let headline_pattern = organ#bird#generic_pattern ()
 		let target = search(headline_pattern, flags) - 1
 		if target == -1
 			let target = line('$')
 		endif
+	else
+		let last_line = line('$')
+		call append(last_line, '')
+		let tail_linum += 1
+		let target = 0
+		let goal = 1
 	endif
+	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
+	echomsg range .. 'move' target
 	let spread = tail_linum - head_linum
-	let new_place = target - spread
-	call cursor(new_place, 1)
-	return new_place
+	if target > 1
+		let goal = target - spread
+	endif
+	call cursor(goal, 1)
+	return goal
 endfun
 
 " ---- move to another subtree path, aka org-refile
