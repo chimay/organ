@@ -47,6 +47,7 @@ of the modules within them.
 | table.vim         | tables                                             |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |
+| vine.vim          | Link management                                    |
 | void.vim          | Initiaze & reset variables                         |
 
 Ftplugin~
