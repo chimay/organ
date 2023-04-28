@@ -21,10 +21,11 @@
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
+* [Fold markers](#fold-markers)
 * [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
 * [Autocommands](#autocommands)
-* [Fold markers](#fold-markers)
+* [Warning](#warning)
 * [Related](#related)
 
 <!-- vim-markdown-toc -->
