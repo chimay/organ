@@ -4,9 +4,10 @@
 
 * [Introduction](#introduction)
     * [What is it ?](#what-is-it-)
+    * [Compatibilty](#compatibilty)
     * [Features](#features)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
-    * [Dependancies](#dependancies)
+    * [Dependencies](#dependencies)
     * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
 * [Installation](#installation)
     * [Using vim-packager](#using-vim-packager)
@@ -41,7 +42,7 @@ Organ supports :
 
 - org files
 - markdown files
-- any file with folds
+- any folded file
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 
@@ -199,8 +200,9 @@ if ! exists("g:organ_loaded")
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
   " ---- custom maps
-  nnoremap <c-cr> <plug>(organ-new)
-  nnoremap <backspace> :Organ<space>
+  nmap <c-cr> <plug>(organ-new)
+  imap <c-cr> <plug>(organ-new)
+  nmap <backspace> :Organ<space>
 endif
 ```
 
