@@ -90,6 +90,11 @@ fun! organ#tree#promote ()
 	if ['org', 'markdown']->index(&filetype) >= 0
 		let headline = headline[1:]
 	else
+		let marker = split(&foldmarker, ',')[0]
+		let level = organ#bird#foldlevel ()
+		let old = marker .. level
+		let new = marker .. string(level - 1)
+		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
 	if mode() ==# 'i'
@@ -108,10 +113,15 @@ fun! organ#tree#demote ()
 	endif
 	let headline = properties.headline
 	let filetype = &filetype
-	if filetype ==# 'org'
-		let headline = '*' .. headline
-	elseif filetype ==# 'markdown'
-		let headline = '#' .. headline
+	if ['org', 'markdown']->index(&filetype) >= 0
+		let char = organ#bird#char ()
+		let headline = char .. headline
+	else
+		let marker = split(&foldmarker, ',')[0]
+		let level = organ#bird#foldlevel ()
+		let old = marker .. level
+		let new = marker .. string(level + 1)
+		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
 	normal! zv

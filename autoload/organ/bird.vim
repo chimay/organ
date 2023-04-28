@@ -85,6 +85,13 @@ fun! organ#bird#headline (move = 'dont-move')
 	return linum
 endfun
 
+fun! organ#bird#foldlevel (move = 'dont-move')
+	" Fold level
+	let move = a:move
+	let linum = organ#bird#headline (move)
+	return foldlevel(linum)
+endfun
+
 fun! organ#bird#properties (move = 'dont-move')
 	" Properties of current headline
 	let move = a:move
@@ -102,9 +109,7 @@ fun! organ#bird#properties (move = 'dont-move')
 		let title = headline[level + 1:]
 	else
 		let marker = split(&foldmarker, ',')[0]
-		let level_pattern = '\m' .. marker .. '\zs[0-9]\+'
-		let closing = headline->matchstr(level_pattern)
-		let level = str2nr(closing)
+		let level = organ#bird#foldlevel ()
 		let title_pattern = '\m ' .. marker .. '[0-9]\+'
 		let title = substitute(headline, title_pattern, '', '')
 	endif
