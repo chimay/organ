@@ -87,7 +87,10 @@ fun! organ#tree#promote ()
 		return 0
 	endif
 	let headline = properties.headline
-	let headline = headline[1:]
+	if ['org', 'markdown']->index(&filetype) >= 0
+		let headline = headline[1:]
+	else
+	endif
 	call setline(linum, headline)
 	if mode() ==# 'i'
 		startinsert!
