@@ -31,15 +31,14 @@
 # Introduction
 ## What is it ?
 
-Organ is an Orgmode, Markdown and folding environment plugin for Vim
-and Neovim.
+Organ generalizes the great concepts of Orgmode to Markdown and any
+folding structure.
 
-It is primarily focused on editing orgmode, markdown and other folded
-documents with ease and agility.
+Org, Markdown and any file with folds are supported.
 
-WIP When editing a folded file, this plugin expect folds delimited by
-markers with level included, like `{{{1`, `{{{2`, and so on. The closing
-markers `}}}` are useless.
+It is primarily focused to edit these documents with ease and agility.
+
+This plugin is written in vimscript and is compatible with Vim and Neovim.
 
 ## Features
 
@@ -389,6 +388,10 @@ autocmd filetype python call organ#void#init ()
 ```
 
 to your init file.
+
+When editing a folded file, this plugin expect folds delimited by markers
+with level included, like `{{{1`, `{{{2`, and so on. The closing markers
+`}}}` are useless and could have side effects.
 
 # Related
 
