@@ -32,13 +32,18 @@
 ## What is it ?
 
 Organ generalizes the great concepts of Orgmode to Markdown and any
-folding structure.
+folding structure. It is primarily focused on editing these documents
+with ease and agility.
 
-Org, Markdown and any file with folds are supported.
+## Compatibilty
 
-It is primarily focused to edit these documents with ease and agility.
+Organ supports :
 
-This plugin is written in vimscript and is compatible with Vim and Neovim.
+- org files
+- markdown files
+- any file with folds
+
+It is written in vimscript and is compatible with both Vim and Neovim.
 
 ## Features
 
