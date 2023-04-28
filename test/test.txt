@@ -1,5 +1,3 @@
-" vim: set filetype=text :
-
 intro {{{1
 
 - item 1
