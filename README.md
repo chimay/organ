@@ -387,18 +387,25 @@ augroup END
 
 # Fold markers
 
-Let's say you want to use the same maps in python files to navigate and
-operate on folds. Just add :
+Let's say you want to use this plugin in text, python and vim files.
+Just add :
 
 ```vim
-autocmd filetype python call organ#void#init ()
+autocmd filetype text,vim,python call organ#void#activate ()
 ```
 
 to your init file.
 
+If you want to activate it for all filetypes, just set the everywhere
+setting :
+
+```vim
+let g:organ_config.everywhere = 1
+```
+
 When editing a folded file, this plugin expect folds delimited by markers
 with level included, like `{{{1`, `{{{2`, and so on. The closing markers
-`}}}` are useless and could have side effects.
+`}}}` are useless and could in fact have side effects.
 
 # Related
 
