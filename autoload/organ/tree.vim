@@ -17,15 +17,24 @@ fun! organ#tree#new ()
 	" New heading
 	let properties = organ#bird#properties ()
 	let level = properties.level
-	let line = organ#bird#char()->repeat(level)
+	if ['org', 'markdown']->index(&filetype) >= 0
+		let line = organ#bird#char()->repeat(level)
+	else
+		let marker = split(&foldmarker, ',')[0]
+		let line = ' ' .. marker .. string(level)
+	endif
 	let line ..= ' '
 	let linelist = [line, '']
 	call append('.', linelist)
 	let linum = line('.') + 1
 	call cursor(linum, 1)
-	let colnum = col('$')
-	call cursor(linum, colnum)
-	startinsert!
+	if ['org', 'markdown']->index(&filetype) >= 0
+		"call cursor('.', col('$'))
+		startinsert!
+	else
+		"call cursor('.', 1)
+		startinsert
+	endif
 endfun
 
 " ---- select, yank, delete
