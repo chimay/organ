@@ -99,7 +99,7 @@ First of all, it is not intended as a clone, more of a loose adaptation.
 The current orgmode plugins for (neo)vim that I could find are either :
 
 - abandoned and not adapted for my usage
-- written in python
+- written in python (which is fine but still a dependency)
 - written in lua, which means they only work with neovim
 
 I wanted to write a lightweight plugin in plain simple vimscript, with
