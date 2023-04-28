@@ -77,7 +77,7 @@ fun! organ#centre#speedkeys ()
 	let close = "')<cr>"
 	let close_angle = "', '>')<cr>"
 	for key in keys(s:speedkeys)
-		if key[0] == '<' && key[-1:] == '>'
+		if key[0] ==# '<' && key[-1:] ==# '>'
 			let arg_key = key[1:-2]
 			execute map key command  .. arg_key .. close_angle
 		else

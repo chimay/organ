@@ -54,7 +54,7 @@ fun! organ#nest#speed (key, angle = 'no-angle')
 	endif
 	" ---- normal
 	" -- special key with angle, like <bs>
-	if angle == 'angle' || angle == '>'
+	if angle ==# 'angle' || angle ==# '>'
 		execute 'let key =' '"\<' .. key .. '>"'
 		echomsg key
 		execute 'normal!' key

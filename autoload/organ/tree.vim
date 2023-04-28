@@ -80,7 +80,7 @@ fun! organ#tree#promote ()
 	let headline = properties.headline
 	let headline = headline[1:]
 	call setline(linum, headline)
-	if mode() == 'i'
+	if mode() ==# 'i'
 		startinsert!
 	endif
 	return linum
@@ -103,7 +103,7 @@ fun! organ#tree#demote ()
 	endif
 	call setline(linum, headline)
 	normal! zv
-	if mode() == 'i'
+	if mode() ==# 'i'
 		startinsert!
 	endif
 	return linum
@@ -178,7 +178,7 @@ fun! organ#tree#move_subtree_backward ()
 	endif
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	if getline('$') == ''
+	if getline('$') ==# ''
 		$delete
 	endif
 	call cursor(goal, 1)
@@ -223,7 +223,7 @@ fun! organ#tree#move_subtree_forward ()
 	endif
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	if getline('$') == ''
+	if getline('$') ==# ''
 		$delete
 	endif
 	let spread = tail_linum - head_linum

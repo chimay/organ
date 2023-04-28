@@ -10,13 +10,13 @@ fun! organ#vine#template (url, desc = '')
 	" Link template
 	let url = a:url
 	let desc = a:desc
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		if empty(desc)
 			let link = '[[' .. url .. ']]'
 		else
 			let link = '[[' .. url .. '][' .. desc .. ']]'
 		endif
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		if empty(desc)
 			let link = '<' .. url .. '>'
 		else

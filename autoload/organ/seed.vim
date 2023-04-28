@@ -32,7 +32,7 @@ fun! organ#seed#angle (trigger)
 	" #+end_something
 	let trigger = a:trigger
 	let source_pat = '\m^\s*<s'
-	if trigger == '<s'
+	if trigger ==# '<s'
 		return organ#seed#source ()
 	endif
 	let templates = g:organ_config.templates
@@ -97,10 +97,10 @@ fun! organ#seed#source (...)
 	if empty(lang)
 		return ''
 	endif
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		let open = '#+begin_src ' .. lang
 		let close = '#+end_src'
-	elseif &filetype == 'markdown'
+	elseif &filetype ==# 'markdown'
 		let open = '```' .. lang
 		let close = '```'
 	endif

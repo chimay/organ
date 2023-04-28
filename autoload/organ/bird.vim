@@ -28,13 +28,13 @@ fun! organ#bird#char ()
 endfun
 
 fun! organ#bird#generic_pattern ()
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		return '\m^\*'
 	elseif &filetype ==# 'markdown'
 		return '\m^#'
 	else
-		let braces = split(&foldmarker, ',')[0]
-		return '\m{{{[0-9]\+'
+		let marker = split(&foldmarker, ',')[0]
+		return '\m' .. marker .. '[0-9]\+'
 	endif
 endfun
 
@@ -42,14 +42,22 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if &filetype == 'org'
+	if &filetype ==# 'org'
 		return '\m^\*\{' .. minlevel .. ',' .. maxlevel .. '}' .. '[^*]'
 	elseif &filetype ==# 'markdown'
 		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '}' .. '[^#]'
 	else
-		let braces = split(&foldmarker, ',')[0]
-		" TODO
-		"return '\m{{{[0-9]\+'
+		let marker = split(&foldmarker, ',')[0]
+		let pattern = '\m' .. marker .. '\%('
+		for level in range(minlevel, maxlevel)
+			if level < maxlevel
+				let pattern ..= level .. '\|'
+			else
+				let pattern ..= level
+			endif
+		endfor
+		let pattern ..= '\)'
+		return pattern
 	endif
 endfun
 
@@ -63,10 +71,17 @@ endfun
 fun! organ#bird#headline (move = 'dont-move')
 	" Headline of current subtree
 	let move = a:move
+	let position = getcurpos ()
+	let last_colnum = col('$')
+	call cursor('.', last_colnum)
 	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
 	let flags ..= 'c'
-	return search(headline_pattern, flags)
+	let linum = search(headline_pattern, flags)
+	if move != 'move'
+		call setpos('.', position)
+	endif
+	return linum
 endfun
 
 fun! organ#bird#properties (move = 'dont-move')
@@ -78,14 +93,21 @@ fun! organ#bird#properties (move = 'dont-move')
 		return #{ linum : 0, headline : '', level : 0, title : '' }
 	endif
 	let headline = getline(linum)
-	if &filetype ==# 'org'
-		let leading = headline->matchstr('\m^\*\+')
-	elseif &filetype ==# 'markdown'
-		let leading = headline->matchstr('\m^#\+')
+	if ['org', 'markdown']->index(&filetype) >= 0
+		let char = organ#bird#char ()
+		let leading_pattern = '\m^[' .. char .. ']\+'
+		let leading = headline->matchstr(leading_pattern)
+		let level = len(leading)
+		let title = headline[level + 1:]
+	else
+		let marker = split(&foldmarker, ',')[0]
+		let level_pattern = '\m' .. marker .. '\zs[0-9]\+'
+		let closing = headline->matchstr(level_pattern)
+		let level = str2nr(closing)
+		let title_pattern = '\m ' .. marker .. '[0-9]\+'
+		let title = substitute(headline, title_pattern, '', '')
 	endif
-	let level = len(leading)
 	" -- assume a space before the title
-	let title = headline[level + 1:]
 	let properties = #{
 				\ linum : linum,
 				\ headline : headline,
@@ -113,7 +135,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	else
 		let tail_linum = forward_linum - 1
 	endif
-	if move == 'move'
+	if move ==# 'move'
 		mark '
 		call cursor(head_linum, 1)
 	endif
