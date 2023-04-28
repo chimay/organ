@@ -127,6 +127,9 @@ fun! organ#bird#subtree (move = 'dont-move')
 		return #{ head_linum : 0, headline : '', level : 0, title : '', tail_linum : 0 }
 	endif
 	let level = properties.level
+	let position =  getcurpos ()
+	let last_colnum =  col('$')
+	call cursor('.', last_colnum)
 	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(headline_pattern, flags)
@@ -148,6 +151,9 @@ fun! organ#bird#subtree (move = 'dont-move')
 				\ title : title,
 				\ tail_linum : tail_linum,
 				\}
+	if move !=  'move'
+		call setpos('.',  position)
+	endif
 	return subtree
 endfun
 
