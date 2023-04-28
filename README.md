@@ -33,8 +33,9 @@
 
 Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 
-WIP It also works with folds delimited by markers, like `{{{1`. Note
-that the level is required after the braces.
+WIP This plugin also works with folds delimited by markers, like `{{{1`,
+`{{{2`, and so on. Note that the level is required after the braces. The
+closing markers `}}}` are useless.
 
 It is primarily focused on editing orgmode, markdown and other folded
 documents with ease and agility.
