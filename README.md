@@ -23,6 +23,7 @@
 * [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
 * [Autocommands](#autocommands)
+* [Fold markers](#fold-markers)
 * [Related](#related)
 
 <!-- vim-markdown-toc -->
@@ -32,7 +33,7 @@
 
 Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 
-TODO It also works with folds delimited by markers, like `{{{1`. Note
+WIP It also works with folds delimited by markers, like `{{{1`. Note
 that the level is required after the braces.
 
 It is primarily focused on editing orgmode, markdown and other folded
@@ -364,6 +365,20 @@ augroup organ
 augroup END
 
 ```
+
+# Fold markers
+
+Let's say you want to use the same maps in python files to navigate and
+operate on folds. Just add :
+
+```vim
+autocmd filetype python call organ#void#init ()
+```
+
+to your init file.
+
+Beware : this is not fully functional yet.
+
 
 # Related
 
