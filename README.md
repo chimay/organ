@@ -407,6 +407,10 @@ augroup END
 
 ```
 
+# Warning
+
+Despite abundant testing, some bugs might remain, so be careful.
+
 # Related
 
 - [vim-orgmode](https://github.com/jceb/vim-orgmode) (python)

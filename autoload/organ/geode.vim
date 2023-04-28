@@ -71,8 +71,7 @@ if ! exists('s:plugs_normal')
 endif
 
 if ! exists('s:plugs_visual')
-	let s:plugs_visual = [
-				\ ]
+	let s:plugs_visual = s:plugs_normal
 	lockvar! s:plugs_visual
 endif
 
@@ -117,8 +116,7 @@ if ! exists('s:maps_normal')
 endif
 
 if ! exists('s:maps_visual')
-	let s:maps_visual = [
-		\ ]
+	let s:maps_visual = s:maps_normal
 	lockvar! s:maps_visual
 endif
 
