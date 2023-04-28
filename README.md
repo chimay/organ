@@ -305,7 +305,13 @@ The prefix bindings are always available, regardless of the
 
 ## Custom
 
-You can trigger filetype autocommands to define your own maps :
+Plugs can be mapped as usual :
+
+```vim
+nmap <buffer> <c-n> <plug>(organ-next)
+```
+
+If you wish to enable it only for certain filetypes, you can use autocommands :
 
 ```vim
 autocmd FileType org,markdown nmap <buffer> <c-n> <plug>(organ-next)
@@ -383,9 +389,6 @@ autocmd filetype python call organ#void#init ()
 ```
 
 to your init file.
-
-Beware : this is not fully functional yet.
-
 
 # Related
 
