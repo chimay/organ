@@ -23,6 +23,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'speedkeys')
 		let g:organ_config.speedkeys = 0
 	endif
+	if ! has_key(g:organ_config, 'previous')
+		let g:organ_config.prefix = '<M-p>'
+	endif
 	if ! has_key(g:organ_config, 'prefix')
 		let g:organ_config.prefix = '<M-c>'
 	endif
@@ -46,6 +49,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list, 'unordered')
 		let g:organ_config.list.unordered = {}
 	endif
+	if ! has_key(g:organ_config.list.unordered, 'default')
+		let g:organ_config.list.unordered.default = ['-', '+', '*']
+	endif
 	if ! has_key(g:organ_config.list.unordered, 'org')
 		let g:organ_config.list.unordered.org = ['-', '+', '*']
 	endif
@@ -55,6 +61,9 @@ fun! organ#void#config ()
 	" -- ordered chars
 	if ! has_key(g:organ_config.list, 'ordered')
 		let g:organ_config.list.ordered = {}
+	endif
+	if ! has_key(g:organ_config.list.ordered, 'default')
+		let g:organ_config.list.ordered.default = ['.', ')']
 	endif
 	if ! has_key(g:organ_config.list.ordered, 'org')
 		let g:organ_config.list.ordered.org = ['.', ')']

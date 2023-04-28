@@ -33,7 +33,8 @@ fun! organ#bird#generic_pattern ()
 	elseif &filetype ==# 'markdown'
 		return '\m^#'
 	else
-		echomsg 'organ bird generic pattern : filetype not supported'
+		let braces = split(&foldmarker, ',')[0]
+		return '\m{{{[0-9]\+'
 	endif
 endfun
 
@@ -46,7 +47,9 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	elseif &filetype ==# 'markdown'
 		return '\m^#\{' .. minlevel .. ',' .. maxlevel .. '}' .. '[^#]'
 	else
-		echomsg 'organ bird headline pattern : filetype not supported'
+		let braces = split(&foldmarker, ',')[0]
+		" TODO
+		"return '\m{{{[0-9]\+'
 	endif
 endfun
 

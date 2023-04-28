@@ -157,6 +157,12 @@ fun! organ#centre#mappings (mode = 'normal')
 	endfor
 endfun
 
+fun! organ#centre#always ()
+	" Always defined maps
+	let previous = g:organ_config.previous
+	execute 'nmap <buffer>' previous '<plug>(organ-previous)'
+endfun
+
 fun! organ#centre#prefixless (mode = 'normal')
 	" Normal maps of level
 	let mode = a:mode
@@ -193,6 +199,7 @@ endfun
 
 fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
+	call organ#centre#always ()
 	call organ#centre#mappings ()
 	call organ#centre#mappings ('visual')
 	call organ#centre#mappings ('insert')

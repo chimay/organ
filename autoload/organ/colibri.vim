@@ -10,13 +10,18 @@
 
 fun! organ#colibri#generic_pattern ()
 	" Generic pattern of item head line
-	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		echomsg 'organ colibri generic pattern : filetype not supported'
+	if empty(&filetype)
+		echomsg 'organ colibri generic pattern : empty filetype'
 		return ''
 	endif
-	let unordered = g:organ_config.list.unordered[&filetype]
+	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
+		let unordered = g:organ_config.list.unordered[&filetype]
+		let ordered = g:organ_config.list.ordered[&filetype]
+	else
+		let unordered = g:organ_config.list.unordered.default
+		let ordered = g:organ_config.list.ordered.default
+	endif
 	let unordered = unordered->join('')
-	let ordered = g:organ_config.list.ordered[&filetype]
 	let ordered = ordered->join('')
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'

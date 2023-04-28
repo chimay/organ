@@ -16,6 +16,7 @@
 * [Configuration](#configuration)
 * [Bindings](#bindings)
     * [Speed keys](#speed-keys)
+    * [Always defined](#always-defined)
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
@@ -31,8 +32,11 @@
 
 Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
 
-It is primarily focused on editing orgmode and markdown documents with
-ease and agility.
+TODO It also works with folds delimited by markers, like `{{{1`. Note
+that the level is required after the braces.
+
+It is primarily focused on editing orgmode, markdown and other folded
+documents with ease and agility.
 
 ## Features
 
@@ -155,6 +159,10 @@ if ! exists("g:organ_loaded")
   let g:organ_config.list = {}
   " ---- enable speed keys on first char of headlines and list items lines
   let g:organ_config.speedkeys = 1
+  " ---- key to trigger <plug>(organ-previous)
+  " ---- and go where speedkeys are available
+  " ---- examples : <m-p> (default), [z
+  let g:organ_config.previous = '[z'
   " ---- choose your mappings prefix
   let g:organ_config.prefix = '<m-c>'
   " ---- enable prefixless maps
@@ -163,7 +171,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefixless_modes = ['normal', 'insert']
   " ---- enable only the prefixless maps you want
   " ---- see the output of :map <plug>(organ- to see available plugs
-  " let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
+  " let g:organ_config.prefixless_plugs = ['organ-next', 'organ-backward', 'organ-forward']
   " ---- number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
   " ---- items chars in unordered list (default)
@@ -216,6 +224,14 @@ item line :
 - `e`          : export with pandoc
 - `E`          : export with emacs (works only in org files)
 
+## Always defined
+
+Once you are on the first char of a headline, the speedkeys become
+available. The plug `<plug>(organ-previous)` brings you precisely there,
+and is therefore one of the most important maps. For this reason,
+it's always defined, regardless of the prefixless setting. You can use
+`g:organ_config.prefix` to choose the key that triggers it.
+
 ## Prefixless
 
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
@@ -260,10 +276,6 @@ let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
 
 You can list all available plugs with the command `:map <plug>(organ-`.
 
-Note that once you are on the first char of a headline, the speedkeys
-become available. The plug `organ-previous` brings you precisely there,
-and is therefore one of the most important maps.
-
 ## With prefix
 
 These are the same as the prefixless maps, but preceded by a prefix to
@@ -288,13 +300,13 @@ The prefix bindings are always available, regardless of the
 You can trigger filetype autocommands to define your own maps :
 
 ```vim
-autocmd FileType org,markdown nmap <buffer> <c-p> <plug>(organ-previous)
+autocmd FileType org,markdown nmap <buffer> <c-n> <plug>(organ-next)
 ```
 
 This should have the same effect as writing :
 
 ```vim
-nmap <buffer> <c-p> <plug>(organ-previous)
+nmap <buffer> <c-n> <plug>(organ-next)
 ```
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
@@ -331,7 +343,7 @@ Completion is available for subcommands.
 I suggest you map it to a convenient key. Example :
 
 ```vim
-autocmd FileType org,markdown nnoremap <buffer> <m-o> :Organ<space>
+nnoremap <backspace> :Organ<space>
 ```
 
 # Autocommands
@@ -344,11 +356,11 @@ autocommands :
 augroup organ
   autocmd!
   " ---- convert headings org <-> markdown
-  autocmd bufwritepost *.md call organ#tree#org2markdown ()
-  autocmd bufwritepost *.org call organ#tree#markdown2org ()
+  autocmd bufwritepre *.md call organ#tree#org2markdown ()
+  autocmd bufwritepre *.org call organ#tree#markdown2org ()
   " ---- convert links org <-> markdown
-  autocmd bufwritepost *.md call organ#vine#org2markdown ()
-  autocmd bufwritepost *.org call organ#vine#markdown2org ()
+  autocmd bufwritepre *.md call organ#vine#org2markdown ()
+  autocmd bufwritepre *.org call organ#vine#markdown2org ()
 augroup END
 
 ```
