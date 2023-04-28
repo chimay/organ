@@ -66,7 +66,8 @@ fun! organ#tree#delete_subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
-	execute range .. 'delete "'
+	execute range .. 'yank "'
+	call organ#utils#delete (head_linum, tail_linum)
 	return subtree
 endfun
 
@@ -201,7 +202,7 @@ fun! organ#tree#move_subtree_backward ()
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
 	if getline('$') ==# ''
-		$delete
+		call organ#utils#delete ('$')
 	endif
 	call cursor(goal, 1)
 	return goal
@@ -246,7 +247,7 @@ fun! organ#tree#move_subtree_forward ()
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
 	if getline('$') ==# ''
-		$delete
+		call organ#utils#delete ('$')
 	endif
 	let spread = tail_linum - head_linum
 	if target > 1

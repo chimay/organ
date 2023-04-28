@@ -135,7 +135,8 @@ fun! organ#bush#delete_subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
-	execute range .. 'delete "'
+	execute range .. 'yank "'
+	call organ#utils#delete (head_linum, tail_linum)
 	return subtree
 endfun
 

@@ -4,6 +4,20 @@
 "
 " Small tools
 
+fun! organ#utils#circular_plus (index, length)
+	" Rotate/increase index with modulo
+	return (a:index + 1) % a:length
+endfun
+
+fun! organ#utils#circular_minus (index, length)
+	" Rotate/decrease index with modulo
+	let index = (a:index - 1) % a:length
+	if index < 0
+		let index += a:length
+	endif
+	return index
+endfun
+
 fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
 	" Search flags
 	let course = a:course
@@ -26,18 +40,22 @@ fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
 	return flags
 endfun
 
-fun! organ#utils#circular_plus (index, length)
-	" Rotate/increase index with modulo
-	return (a:index + 1) % a:length
-endfun
-
-fun! organ#utils#circular_minus (index, length)
-	" Rotate/decrease index with modulo
-	let index = (a:index - 1) % a:length
-	if index < 0
-		let index += a:length
+fun! organ#utils#delete (first, ...)
+	" Delete lines to black hole register
+	let first = a:first
+	if a:0 > 0
+		let last = a:1
+	else
+		let last = first
 	endif
-	return index
+	if exists('*deletebufline')
+		return deletebufline('%', first, last)
+	else
+		" delete lines -> underscore _ = no storing register
+		let range = first .. ',' .. last
+		execute 'silent!' range .. 'delete _'
+		return 0
+	endif
 endfun
 
 fun! organ#utils#is_nested_list (argument)
