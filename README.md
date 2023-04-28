@@ -332,6 +332,28 @@ nmap <buffer> <c-n> <plug>(organ-next)
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
 
+# Fold markers
+
+Let's say you want to use this plugin in text, python and vim files.
+Just add :
+
+```vim
+autocmd filetype text,vim,python call organ#void#activate ()
+```
+
+to your init file.
+
+If you want to activate it for all filetypes, just set the everywhere
+setting :
+
+```vim
+let g:organ_config.everywhere = 1
+```
+
+When editing a folded file, this plugin expect folds delimited by markers
+with level included, like `{{{1`, `{{{2`, and so on. The closing markers
+`}}}` are useless and could in fact have side effects.
+
 # Prompt completion
 
 The prompt completion of headlines is intended to wark roughly as with
@@ -384,28 +406,6 @@ augroup organ
 augroup END
 
 ```
-
-# Fold markers
-
-Let's say you want to use this plugin in text, python and vim files.
-Just add :
-
-```vim
-autocmd filetype text,vim,python call organ#void#activate ()
-```
-
-to your init file.
-
-If you want to activate it for all filetypes, just set the everywhere
-setting :
-
-```vim
-let g:organ_config.everywhere = 1
-```
-
-When editing a folded file, this plugin expect folds delimited by markers
-with level included, like `{{{1`, `{{{2`, and so on. The closing markers
-`}}}` are useless and could in fact have side effects.
 
 # Related
 
