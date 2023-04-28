@@ -72,7 +72,12 @@ endfun
 
 fun! organ#centre#speedkeys ()
 	" Speed keys on headlines first char
-	let map = 'nnoremap <buffer>'
+	let everywhere = g:organ_config.everywhere
+	if everywhere > 0
+		let map = 'nnoremap'
+	else
+		let map = 'nnoremap <buffer>'
+	endif
 	let command = "<cmd>call organ#nest#speed('"
 	let close = "')<cr>"
 	let close_angle = "', '>')<cr>"
@@ -132,8 +137,13 @@ endfun
 
 fun! organ#centre#always ()
 	" Always defined maps
+	let everywhere = g:organ_config.everywhere
 	let previous = g:organ_config.previous
-	execute 'nmap <buffer>' previous '<plug>(organ-previous)'
+	if everywhere > 0
+		execute 'nmap' previous '<plug>(organ-previous)'
+	else
+		execute 'nmap <buffer>' previous '<plug>(organ-previous)'
+	endif
 endfun
 
 fun! organ#centre#mappings (mode = 'normal')
@@ -149,7 +159,10 @@ fun! organ#centre#mappings (mode = 'normal')
 		let mapcmd = 'imap'
 	endif
 	" -- buffer local maps only
-	let mapcmd ..= ' <buffer>'
+	let everywhere = g:organ_config.everywhere
+	if everywhere <= 0
+		let mapcmd ..= ' <buffer>'
+	endif
 	" ---- variables
 	let prefix = g:organ_config.prefix
 	let begin = mapcmd .. ' <silent> ' .. prefix
@@ -176,7 +189,10 @@ fun! organ#centre#prefixless (mode = 'normal')
 		let mapcmd = 'imap'
 	endif
 	" -- buffer local maps only
-	let mapcmd ..= ' <buffer>'
+	let everywhere = g:organ_config.everywhere
+	if everywhere <= 0
+		let mapcmd ..= ' <buffer>'
+	endif
 	" ---- variables
 	let prefix = g:organ_config.prefix
 	let begin = mapcmd .. ' <silent> '

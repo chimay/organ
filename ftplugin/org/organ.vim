@@ -4,6 +4,7 @@
 if exists("b:did_organ_org_ftplugin")
 	finish
 endif
+
 let b:did_organ_ftplugin = 1
 
-call organ#void#init ()
+call organ#void#activate ()

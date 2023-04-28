@@ -20,6 +20,9 @@ fun! organ#void#config ()
 		let g:organ_config = {}
 	endif
 	" ---- generic
+	if ! has_key(g:organ_config, 'everywhere')
+		let g:organ_config.everywhere = 0
+	endif
 	if ! has_key(g:organ_config, 'speedkeys')
 		let g:organ_config.speedkeys = 0
 	endif
@@ -105,10 +108,23 @@ fun! organ#void#foundation ()
 	call organ#void#config ()
 endfun
 
+fun! organ#void#activate ()
+	" Activate maps & folding
+	" To be used on filetype triggers
+	call organ#centre#cables ()
+	call organ#origami#folding ()
+endfun
+
 fun! organ#void#init ()
 	" Main init function
-	" ---- activate maps
-	call organ#centre#cables ()
-	" ---- enable folding
-	call organ#origami#folding ()
+	call organ#void#foundation ()
+	call organ#centre#commands ()
+	call organ#centre#plugs ()
+	let everywhere = g:organ_config.everywhere
+	if everywhere > 0
+		" ---- activate maps
+		call organ#centre#cables ()
+		" ---- enable folding
+		call organ#origami#folding ()
+	endif
 endfun

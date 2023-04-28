@@ -31,14 +31,15 @@
 # Introduction
 ## What is it ?
 
-Organ is an Orgmode and Markdown environment plugin for Vim and Neovim.
-
-WIP This plugin also works with folds delimited by markers, like `{{{1`,
-`{{{2`, and so on. Note that the level is required after the braces. The
-closing markers `}}}` are useless.
+Organ is an Orgmode, Markdown and folding environment plugin for Vim
+and Neovim.
 
 It is primarily focused on editing orgmode, markdown and other folded
 documents with ease and agility.
+
+WIP When editing a folded file, this plugin expect folds delimited by
+markers with level included, like `{{{1`, `{{{2`, and so on. The closing
+markers `}}}` are useless.
 
 ## Features
 
@@ -159,6 +160,8 @@ if ! exists("g:organ_loaded")
   " ---- initialize dicts
   let g:organ_config = {}
   let g:organ_config.list = {}
+  " ---- enable for every file if > 0
+  let g:organ_config.everywhere = 0
   " ---- enable speed keys on first char of headlines and list items lines
   let g:organ_config.speedkeys = 1
   " ---- key to trigger <plug>(organ-previous)
