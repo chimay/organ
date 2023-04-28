@@ -76,7 +76,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + wrap around the end of the file
   + cross over a parent headline
 
-## Dependancies
+## Dependencies
 
 This plugin should work out of the box, apart from a few advanced
 features.
