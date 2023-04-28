@@ -182,10 +182,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	" Next heading
 	let move = a:move
 	let wrap = a:wrap
-	let linum = line('.')
-	let colnum = col('$')
-	call cursor(linum, colnum)
-	let line = getline('.')
+	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
@@ -211,6 +208,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level
+	call cursor('.', 1)
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
@@ -230,6 +228,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level
+	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
