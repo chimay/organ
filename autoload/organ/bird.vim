@@ -173,6 +173,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird previous : not found'
 		return 0
 	endif
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -192,6 +193,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird next : not found'
 		return 0
 	endif
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -212,6 +214,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -230,6 +233,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -263,6 +267,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 		echomsg 'organ bird parent : no parent found'
 		return linum
 	endif
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -285,6 +290,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird loose child : no child found'
 		return linum
 	endif
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun
@@ -311,6 +317,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 		call setpos('.', position)
 		return 0
 	endif
+	call cursor('.', 1)
 	normal! zv
 	return linum
 endfun

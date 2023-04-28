@@ -97,3 +97,14 @@ fun! organ#origami#markdown_folding ()
 	setlocal foldexpr=organ#origami#markdown_folding_expr(v:lnum)
 	setlocal foldtext=organ#origami#markdown_folding_text()
 endfun
+
+" ---- generic
+
+fun! organ#origami#folding ()
+	" Generic folding
+	if &filetype ==# 'org'
+		call organ#origami#orgmode_folding ()
+	elseif &filetype ==# 'markdown'
+		call organ#origami#markdown_folding ()
+	endif
+endfun

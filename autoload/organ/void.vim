@@ -104,3 +104,11 @@ fun! organ#void#foundation ()
 	call organ#void#store ()
 	call organ#void#config ()
 endfun
+
+fun! organ#void#init ()
+	" Main init function
+	" ---- activate maps
+	call organ#centre#cables ()
+	" ---- enable folding
+	call organ#origami#folding ()
+endfun

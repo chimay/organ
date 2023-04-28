@@ -1,4 +1,4 @@
-" vim: set filetype=vim :
+" vim: set filetype=text :
 
 intro {{{1
 

@@ -200,8 +200,8 @@ endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	" Item head pattern of level between minlevel and maxlevel
-	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		echomsg 'organ colibri generic pattern : filetype not supported'
+	if empty(&filetype)
+		echomsg 'organ colibri level pattern : filetype not supported'
 		return ''
 	endif
 	let indent_length = g:organ_config.list.indent_length
@@ -210,9 +210,14 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
 	let shift = organ#colibri#common_indent ()
 	let min += shift
 	let max += shift
-	let unordered = g:organ_config.list.unordered[&filetype]
+	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
+		let unordered = g:organ_config.list.unordered[&filetype]
+		let ordered = g:organ_config.list.ordered[&filetype]
+	else
+		let unordered = g:organ_config.list.unordered.default
+		let ordered = g:organ_config.list.ordered.default
+	endif
 	let unordered = unordered->join('')
-	let ordered = g:organ_config.list.ordered[&filetype]
 	let ordered = ordered->join('')
 	let pattern = '\m^ \{' .. min .. ',' .. max .. '}'
 	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
