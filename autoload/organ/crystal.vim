@@ -4,6 +4,14 @@
 "
 " Internal Constants made crystal clear
 
+" ---- golden ratio
+
+if ! exists('s:golden_ratio')
+	let s:golden_ratio = 1.618034
+	"let s:golden_ratio = (1 + sqrt(5)) / 2
+	lockvar! s:golden_ratio
+endif
+
 " ---- separators
 
 if ! exists('s:separator_level')

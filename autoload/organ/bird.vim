@@ -65,8 +65,7 @@ endfun
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
 	let line = getline('.')
-	let headline_pattern = organ#bird#generic_pattern ()
-	return line =~ headline_pattern
+	return line =~ organ#bird#generic_pattern ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
@@ -386,6 +385,7 @@ fun! organ#bird#goto_path ()
 	let fields = split(record, s:field_separ)
 	let linum = str2nr(fields[0])
 	call cursor(linum, 1)
+	call organ#spiral#cursor ()
 	normal! zv
 	return linum
 endfun
