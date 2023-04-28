@@ -73,8 +73,7 @@ fun! organ#bird#headline (move = 'dont-move')
 	" Headline of current subtree
 	let move = a:move
 	let position = getcurpos ()
-	let last_colnum = col('$')
-	call cursor('.', last_colnum)
+	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
 	let flags ..= 'c'
@@ -134,8 +133,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	endif
 	let level = properties.level
 	let position =  getcurpos ()
-	let last_colnum =  col('$')
-	call cursor('.', last_colnum)
+	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(headline_pattern, flags)

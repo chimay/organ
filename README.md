@@ -194,6 +194,9 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['<c'] = 'center'
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
+  " ---- custom maps
+  nnoremap <c-cr> <plug>(organ-new)
+  nnoremap <backspace> :Organ<space>
 endif
 ```
 

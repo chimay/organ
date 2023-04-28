@@ -185,6 +185,7 @@ fun! organ#tree#move_subtree_backward ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let level = subtree.level
+	"call cursor('.', col('$'))
 	let headline_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
 	let goal = search(headline_pattern, flags)
@@ -214,6 +215,7 @@ fun! organ#tree#move_subtree_forward ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let level = subtree.level
+	call cursor('.', 1)
 	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let same_linum = search(same_pattern, flags)
