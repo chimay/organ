@@ -220,14 +220,14 @@ or a list item line. Here is a complete list :
 - `<pagedown>` : next heading
 - `<home>`     : backward heading of same level
 - `<end>`      : forward heading of same level
-- `^`          : upper, parent heading
-- `$`          : lower, child heading, loosely speaking
-- `-`          : lower, child heading, strictly speaking
+- `+`          : upper, parent heading
+- `-`          : lower, child heading, loosely speaking
+- `_`          : lower, child heading, strictly speaking
 - `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
-- `~`          : go to headline, with prompt completion of full headings path
+- `^`          : go to headline, with prompt completion of full headings path
 - `*`          : cycle current fold visibility
 - `#`          : cycle all folds visibility
-- `&`          : select subtree
+- `$`          : select subtree
 - `yy`         : yank subtree
 - `dd`         : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)
