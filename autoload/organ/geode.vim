@@ -8,15 +8,16 @@
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
+		\ [ 'h',          'organ#nest#speed_help()'                  ] ,
 		\ [ '<pageup>',   "organ#nest#navig('previous')"             ] ,
 		\ [ '<pagedown>', "organ#nest#navig('next')"                 ] ,
 		\ [ '<home>',     "organ#nest#navig('backward')"             ] ,
 		\ [ '<end>',      "organ#nest#navig('forward')"              ] ,
-		\ [ '^',          "organ#nest#navig('parent')"               ] ,
-		\ [ '~',          "organ#nest#navig('loose_child')"          ] ,
-		\ [ '-',          "organ#nest#navig('strict_child')"         ] ,
+		\ [ '+',          "organ#nest#navig('parent')"               ] ,
+		\ [ '-',          "organ#nest#navig('loose_child')"          ] ,
+		\ [ '_',          "organ#nest#navig('strict_child')"         ] ,
 		\ [ 'w',          'organ#bird#whereami'                      ] ,
-		\ [ 'h',          'organ#bird#goto_path'                     ] ,
+		\ [ '^',          'organ#bird#goto_path'                     ] ,
 		\ [ '*',          'organ#bird#cycle_current_fold'            ] ,
 		\ [ '#',          'organ#bird#cycle_all_folds'               ] ,
 		\ [ '&',          "organ#nest#oper('select_subtree')"        ] ,

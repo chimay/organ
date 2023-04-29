@@ -108,8 +108,8 @@ fun! organ#void#foundation ()
 	call organ#void#config ()
 endfun
 
-fun! organ#void#activate ()
-	" Activate maps & folding
+fun! organ#void#enable ()
+	" Enable maps & folding
 	" To be used on filetype triggers
 	call organ#centre#cables ()
 	call organ#origami#folding ()

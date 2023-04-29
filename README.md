@@ -49,7 +49,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 
 ## Features
 
-- folding based on headings
+- folding based on headings in org and markdown files
 - navigate in headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
@@ -211,9 +211,9 @@ endif
 ## Speed keys
 
 If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
-value in your init file, the speed keys become available. They are
-active only when the cursor is on the first char of a headline or a list
-item line :
+value in your init file, the speed keys become available. They are active
+only in normal mode, when the cursor is on the first char of a headline
+or a list item line. Press `h` for help. Here is a complete list :
 
 - `<pageup>`   : previous heading
 - `<pagedown>` : next heading
@@ -333,18 +333,18 @@ nmap <buffer> <c-n> <plug>(organ-next)
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
 
-# Fold markers
+# Folding
 
-Let's say you want to use this plugin in text, python and vim files.
+Let's say you want to enable this plugin in text, python and vim files.
 Just add :
 
 ```vim
-autocmd filetype text,vim,python call organ#void#activate ()
+autocmd filetype text,vim,python call organ#void#enable ()
 ```
 
 to your init file.
 
-If you want to activate it for all filetypes, just set the everywhere
+If you want to enable it for all filetypes, just set the everywhere
 setting :
 
 ```vim

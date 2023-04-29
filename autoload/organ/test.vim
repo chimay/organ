@@ -14,6 +14,7 @@ endfun
 call Locals ()
 echo 'box from outside : ' box
 
+
 " book 1 {{{1
 
 " content
