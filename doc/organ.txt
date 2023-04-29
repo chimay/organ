@@ -300,27 +300,25 @@ in your runtimepath.
 ==============================================================================
 FOLDING							*organ-folding*
 
-Enable				|organ-introduction-enable|
-Markers				|organ-introduction-markers|
+Enable				|organ-folding-enable|
+Markers				|organ-folding-markers|
 
 ------------------------------------------------------------------------------
 ENABLE						*organ-folding-enable*
 
 Let's say you want to use this plugin in text, python and vim files.
-Just add :
+Just add : >
 
-```vim
-autocmd filetype text,vim,python call organ#void#enable ()
-```
+ autocmd filetype text,vim,python call organ#void#enable ()
+<
 
 to your init file.
 
 If you want to enable it for all filetypes, just set the everywhere
-setting :
+setting : >
 
-```vim
-let g:organ_config.everywhere = 1
-```
+ let g:organ_config.everywhere = 1
+<
 
 ------------------------------------------------------------------------------
 MARKERS						*organ-folding-markers*
