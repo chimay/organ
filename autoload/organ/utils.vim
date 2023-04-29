@@ -43,6 +43,10 @@ endfun
 fun! organ#utils#delete (first, ...)
 	" Delete lines to black hole register
 	let first = a:first
+	if &modifiable == 0
+		echomsg 'organ utils delete : modifiable is off'
+		return 0
+	endif
 	if a:0 > 0
 		let last = a:1
 	else

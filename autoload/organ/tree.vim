@@ -11,6 +11,8 @@ if ! exists('s:field_separ')
 	lockvar s:field_separ
 endif
 
+" ---- helpers
+
 " ---- new heading
 
 fun! organ#tree#new ()
@@ -181,61 +183,105 @@ endfun
 
 fun! organ#tree#move_subtree_backward ()
 	" Move subtree backward
+	call cursor('.', 1)
+	let cursor_linum = line('.')
 	let subtree = organ#bird#subtree ('move')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
+	let spread = tail_linum - head_linum
 	let level = subtree.level
-	call cursor('.', 1)
+	" ---- find target
 	let headline_pattern = organ#bird#level_pattern (1, level)
-	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
-	let goal = search(headline_pattern, flags)
-	let target = goal - 1
-	if goal == 0
+	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
+	let cursor_target = search(headline_pattern, flags)
+	if cursor_target == 0
+		echomsg 'organ tree move subtree backward : not found'
+	endif
+	" ---- plain backward of wrapped forward ?
+	let backward = cursor_target < cursor_linum
+	if backward
+		let target = cursor_target - 1
+	else
 		let last_linum = line('$')
 		if getline(last_linum) != ''
 			call append(last_linum, '')
 			let last_linum += 1
 		endif
 		let target = last_linum
-		let spread = tail_linum - head_linum
-		let goal = target - spread
+		let cursor_target = target - spread
 	endif
+	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
+	" ---- check blank lines
+	let before_head = cursor_target - 1
+	if getline(before_head) =~ '\m\S'
+		call append(before_head, '')
+		let cursor_target += 1
+	endif
+	let new_tail = cursor_target + spread
+	if getline(new_tail) =~ '\m\S'
+		call append(new_tail, '')
+	endif
 	if getline('$') ==# ''
 		call organ#utils#delete ('$')
 	endif
-	call cursor(goal, 1)
-	return goal
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
+	return cursor_target
 endfun
 
 fun! organ#tree#move_subtree_forward ()
 	" Move subtree forward
+	call cursor('.', col('$'))
+	let cursor_linum = line('.')
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
+	let spread = tail_linum - head_linum
 	let level = subtree.level
-	call cursor('.', col('$'))
+	" ---- find same level and upper level targets candidates
 	let same_pattern = organ#bird#level_pattern (level, level)
-	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'wrap')
 	let same_linum = search(same_pattern, flags)
 	if level >= 2
-		let level -= 1
-		let upper_pattern = organ#bird#level_pattern (level, level)
+		let upper_level = level - 1
+		let upper_pattern = organ#bird#level_pattern (upper_level, upper_level)
 		let upper_linum = search(upper_pattern, flags)
 	else
 		let upper_linum = 0
 	endif
-	if same_linum > 0 && (same_linum < upper_linum || upper_linum == 0)
-		call cursor(same_linum, 1)
-		let same_subtree = organ#bird#subtree ()
-		let target = same_subtree.tail_linum
-	elseif upper_linum > 0
-		call cursor(upper_linum, 1)
-		let headline_pattern = organ#bird#generic_pattern ()
-		let target = search(headline_pattern, flags) - 1
-		if target == -1
-			let target = line('$')
+	" ---- nearest candidate
+	let nearest = organ#bird#nearest (same_linum, upper_linum, 1)
+	if nearest == 0
+		" both linum == 0
+		echomsg 'organ tree move subtree forward : not found'
+		return 0
+	endif
+	if nearest == cursor_linum
+		echomsg 'organ tree move subtree forward : nothing to do'
+		return 0
+	endif
+	" ---- plain forward of wrapped backward ?
+	" ---- if forward, same or upper level ?
+	let forward = nearest > cursor_linum
+	if forward
+		if same_linum == nearest
+			call cursor(same_linum, 1)
+			let same_subtree = organ#bird#subtree ()
+			let target = same_subtree.tail_linum
+			let cursor_target = target - spread
+		else
+			" upper_linum == nearest
+			call cursor(upper_linum, 1)
+			let headline_pattern = organ#bird#generic_pattern ()
+			let anyhead = search(headline_pattern, flags)
+			if anyhead > 0
+				let target = anyhead - 1
+			else
+				let target = line('$')
+			endif
+			let cursor_target = target - spread
 		endif
 	else
 		let last_linum = line('$')
@@ -243,20 +289,30 @@ fun! organ#tree#move_subtree_forward ()
 			call append(last_linum, '')
 			let tail_linum += 1
 		endif
-		let goal = 1
-		let target = 0
+		call cursor(1, 1)
+		let headline_pattern = organ#bird#generic_pattern ()
+		let cursor_target = search(headline_pattern, flags)
+		let target = cursor_target - 1
 	endif
+	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
+	" ---- check blank lines
+	let before_head = cursor_target - 1
+	if getline(before_head) =~ '\m\S'
+		call append(before_head, '')
+		let cursor_target += 1
+	endif
+	let new_tail = cursor_target + spread
+	if getline(new_tail) =~ '\m\S'
+		call append(new_tail, '')
+	endif
 	if getline('$') ==# ''
 		call organ#utils#delete ('$')
 	endif
-	let spread = tail_linum - head_linum
-	if target > 1
-		let goal = target - spread
-	endif
-	call cursor(goal, 1)
-	return goal
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
+	return cursor_target
 endfun
 
 " ---- move to another subtree path, aka org-refile
