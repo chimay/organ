@@ -21,7 +21,7 @@
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
-* [Fold markers](#fold-markers)
+* [Folding](#folding)
 * [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
 * [Autocommands](#autocommands)
@@ -213,17 +213,18 @@ endif
 If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
 value in your init file, the speed keys become available. They are active
 only in normal mode, when the cursor is on the first char of a headline
-or a list item line. Press `h` for help. Here is a complete list :
+or a list item line. Here is a complete list :
 
+- `h`          : help
 - `<pageup>`   : previous heading
 - `<pagedown>` : next heading
 - `<home>`     : backward heading of same level
 - `<end>`      : forward heading of same level
 - `^`          : upper, parent heading
-- `~`          : lower, child heading, loosely speaking
+- `$`          : lower, child heading, loosely speaking
 - `-`          : lower, child heading, strictly speaking
 - `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
-- `h`          : go to headline, with prompt completion of full headings path
+- `~`          : go to headline, with prompt completion of full headings path
 - `*`          : cycle current fold visibility
 - `#`          : cycle all folds visibility
 - `&`          : select subtree
