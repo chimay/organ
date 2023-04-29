@@ -9,6 +9,7 @@ Bindings			|organ-bindings|
 Folding				|organ-folding|
 Prompt completion		|organ-prompt-completion|
 Meta-command			|organ-meta-command|
+Autocommands			|organ-autocommands|
 Files				|organ-files|
 
 ==============================================================================
@@ -362,7 +363,7 @@ I suggest you map it to a convenient key. Example : >
 <
 
 ==============================================================================
-AUTOCOMMANDS	 					*organ-meta-command*
+AUTOCOMMANDS	 					*organ-autocommands*
 
 If you copy some headings and links back and forth from org to markdown,
 you can automatically convert the links at buffer write with the following
