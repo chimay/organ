@@ -72,6 +72,9 @@ fun! organ#vine#new ()
 	if colnum <= 1
 		let before = ''
 		let after = line
+	elseif colnum == col('$')
+		let before = line
+		let after = ''
 	else
 		let before = line[:colnum - 2]
 		let after = line[colnum - 1:]

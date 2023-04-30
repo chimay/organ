@@ -65,8 +65,8 @@ endfun
 fun! organ#table#outside_pattern ()
 	" Pattern for non table lines
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m^\s*[^' .. delimiter .. '].*'
-	let pattern ..= '\|.*[^' .. delimiter .. ']\s*$'
+	let pattern = '\m^\s*[^' .. delimiter .. ' \t].*'
+	let pattern ..= '\|.*[^' .. delimiter .. ' \t]\s*$'
 	let pattern ..= '\|^$'
 	return pattern
 endfun
@@ -166,15 +166,20 @@ fun! organ#table#align ()
 				if col == 1
 					let before = ''
 					let after = line
-				elseif col ==
+				elseif col == col('$')
+					let before = line
+					let after = ''
 				else
-					let before = line[:colnum - 2]
-					let after = line[colnum - 1:]
+					let before = line[:col - 2]
+					let after = line[col - 1:]
 				endif
-				let newline = before .. spaces .. after
-				call setline(linum, newline)
+				let line = before .. spaces .. after
+				for rightcol in range(colnum, lencol - 1)
+					let grid_index[rightcol] += add
+				endfor
 			endif
 		endfor
+		call setline(linum, line)
 		let index += 1
 	endfor
 endfun
