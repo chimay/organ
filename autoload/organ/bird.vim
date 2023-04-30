@@ -73,7 +73,7 @@ endfun
 
 fun! organ#bird#generic_pattern ()
 	" Generic headline pattern
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		return '\m^[' .. char .. ']\+'
 	elseif &foldmethod ==# 'marker'
@@ -90,7 +90,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
 		let pattern ..= minlevel .. ',' .. maxlevel .. '}'
@@ -151,7 +151,7 @@ fun! organ#bird#properties (move = 'dont-move')
 		return #{ linum : 0, headline : '', level : 0, title : '' }
 	endif
 	let headline = getline(linum)
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let leading_pattern = '\m^[' .. char .. ']\+'
 		let leading = headline->matchstr(leading_pattern)
