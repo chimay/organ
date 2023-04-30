@@ -256,6 +256,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 	endif
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -273,6 +274,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	endif
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -295,6 +297,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	let linum = search(headline_pattern, flags)
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -315,6 +318,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	let linum = search(headline_pattern, flags)
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -349,6 +353,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 	endif
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -372,6 +377,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 	endif
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -399,6 +405,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	endif
 	call cursor('.', 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -449,6 +456,7 @@ fun! organ#bird#goto_headline ()
 	let linum = str2nr(fields[0])
 	call cursor(linum, 1)
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
@@ -465,6 +473,7 @@ fun! organ#bird#goto_path ()
 	call cursor(linum, 1)
 	call organ#spiral#cursor ()
 	normal! zv
+	call organ#spiral#cursor ()
 	return linum
 endfun
 
