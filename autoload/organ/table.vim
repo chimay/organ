@@ -180,6 +180,9 @@ fun! organ#table#align ()
 			endif
 		endfor
 		call setline(linum, line)
+		let dual = organ#utils#dual(grid)
+		let maxima = map(deepcopy(dual), { _, v -> max(v)})
 		let index += 1
 	endfor
+	return grid
 endfun
