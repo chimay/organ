@@ -57,15 +57,18 @@ endfun
 fun! organ#table#generic_pattern ()
 	" Generic table line pattern
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m^\s*' .. delimiter
-	let pattern ..= '\%([^' .. delimiter .. ']* ' .. delimiter .. '\)\+'
+	let pattern = '\m^\s*' .. delimiter .. '.*'
+	let pattern ..= '\&.*' .. delimiter .. '\s*$'
 	return pattern
 endfun
 
 fun! organ#table#outside_pattern ()
 	" Pattern for non table lines
 	let delimiter = organ#table#delimiter ()
-	return '\m^[^' .. delimiter .. ']*$'
+	let pattern = '\m^\s*[^' .. delimiter .. '].*'
+	let pattern ..= '\|.*[^' .. delimiter .. ']\s*$'
+	let pattern ..= '\|^$'
+	return pattern
 endfun
 
 fun! organ#table#is_in_table ()
@@ -114,7 +117,29 @@ fun! organ#table#properties ()
 				\}
 endfun
 
-" ---- align
+" ---- format
+
+fun! organ#table#add_missing_columns ()
+	" Add missing columns delimiters
+	let delimiter = organ#table#delimiter ()
+	let properties = organ#table#properties ()
+	let head_linum = properties.head_linum
+	let tail_linum = properties.tail_linum
+	let grid = deepcopy(properties.grid)
+	let widthlist = map(grid, { _, v -> len(v)})
+	let maxim = max(widthlist)
+	let index = 0
+	for linum in range(head_linum, tail_linum)
+		let width = widthlist[index]
+		let add = maxim - width
+		if add > 0
+			let line = getline(linum)
+			let line ..= delimiter->repeat(add)
+			eval grid[index]->add
+		endif
+		let index += 1
+	endfor
+endfun
 
 fun! organ#table#align ()
 	" Align char in all table lines
@@ -123,8 +148,6 @@ fun! organ#table#align ()
 	let tail_linum = properties.tail_linum
 	let grid = properties.grid
 	let dual = organ#utils#dual(grid)
-	echomsg dual
-	for line in range(head_linum, tail_linum)
+	for linum in range(head_linum, tail_linum)
 	endfor
 endfun
-
