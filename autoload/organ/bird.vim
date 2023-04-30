@@ -35,7 +35,7 @@ fun! organ#bird#tabspaces (...)
 	let indent_pattern = '\m^[ \t]*'
 	let leading = line->matchstr(indent_pattern)
 	" ---- \t doesnt work here
-	let tabs = leading->count('	')
+	let tabs = leading->count("\t")
 	let spaces = leading->count(' ')
 	return [tabs, spaces]
 endfun
@@ -51,6 +51,36 @@ endfun
 
 fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 10)
 	" Pattern of level between minlevel and maxlevel, for headline defined by indent
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	if &tabstop == &shiftwidth
+		" -- assume the user wants only tabs
+		let char = "\t"
+		let min = minlevel
+		let max = maxlevel
+	elseif &expandtab == 1
+		" -- assume the user wants only spaces
+		let char = ' '
+		let min = shift * minlevel
+		let max = shift * maxlevel
+	endif
+	" ---- uniform indent
+	if &tabstop == &shiftwidth || &expandtab == 1
+		let shift = shiftwidth ()
+		let pattern = '\m^\%('
+		for level in range(minlevel, maxlevel)
+			let prev_level = level - 1
+			let pattern ..= char .. '\{' .. prev_level .. '}'
+			let pattern ..= '\S.*\n\zs'
+			let pattern ..= char .. '\{' .. level .. '}'
+			let pattern ..= '\S'
+			if level < maxlevel
+				let pattern ..= '\|'
+			endif
+		endfor
+		let pattern ..= '\)'
+		return pattern
+	endif
 endfun
 
 fun! organ#bird#is_on_indent_headline ()
@@ -86,7 +116,7 @@ fun! organ#bird#generic_pattern ()
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
 	elseif &foldmethod ==# 'indent'
-		return '\m^\([ \t]*\)\S\+.*\n\zs\1[ \t]'
+		return '\m^\([ \t]*\)\S.*\n\zs\1[ \t]'
 	else
 		"throw 'organ bird generic pattern : not supported'
 	endif
@@ -96,6 +126,9 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
+	if ! s:rep_one_char->index(&filetype) >= 0 && &foldmethod ==# 'indent'
+		return organ#bird#level_indent_pattern (minlevel, maxlevel)
+	endif
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
