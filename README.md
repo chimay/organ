@@ -45,7 +45,7 @@ Organ supports :
 - markdown
 - asciidoc : headings only
 - any folded file with markers
-- any indent folded file : navigation only
+- any indent folded file : basic navigation only
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 
@@ -362,7 +362,7 @@ with level included, like `{{{1`, `{{{2`, and so on. The closing markers
 
 ## Indent
 
-On files where `foldmethod=indent`, a limited support for navigation only
+On files where `foldmethod=indent`, a limited support for basic navigation
 is available.
 
 # Prompt completion
