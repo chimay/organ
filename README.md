@@ -42,8 +42,10 @@ with ease and agility.
 Organ supports :
 
 - org files
-- markdown files
-- any folded file
+- markdown
+- asciidoc : headings only
+- any folded file with markers
+- any indent folded file : navigation only
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 
