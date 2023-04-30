@@ -335,7 +335,7 @@ fun! organ#bush#move_subtree_backward ()
 		let target = cursor_target - 1
 	else
 		call cursor(nearest, 1)
-		let same_subtree = organ#bird#subtree ()
+		let same_subtree = organ#colibri#subtree ()
 		let target = same_subtree.tail_linum
 		let cursor_target = target - spread
 	endif
