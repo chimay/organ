@@ -54,35 +54,43 @@ endfun
 
 " ---- patterns
 
-fun! organ#table#generic_pattern ()
+fun! organ#table#generic_pattern (...)
 	" Generic table line pattern
-	let delimiter = organ#table#delimiter ()
+	if a:0 > 0
+		let delimiter = a:1
+	else
+		let delimiter = organ#table#delimiter ()
+	endif
 	let pattern = '\m^\s*' .. delimiter .. '.*'
 	let pattern ..= '\&.*' .. delimiter .. '\s*$'
 	return pattern
 endfun
 
-fun! organ#table#outside_pattern ()
+fun! organ#table#outside_pattern (...)
 	" Pattern for non table lines
-	let delimiter = organ#table#delimiter ()
+	if a:0 > 0
+		let delimiter = a:1
+	else
+		let delimiter = organ#table#delimiter ()
+	endif
 	let pattern = '\m^\s*[^' .. delimiter .. ' \t].*'
 	let pattern ..= '\|.*[^' .. delimiter .. ' \t]\s*$'
 	let pattern ..= '\|^$'
 	return pattern
 endfun
 
-fun! organ#table#is_in_table ()
+fun! organ#table#is_in_table (...)
 	" Whether current line is in a table
 	let line = getline('.')
-	return line =~ organ#table#generic_pattern ()
+	let pattern = call('organ#table#generic_pattern', a:000)
+	return line =~ pattern
 endfun
 
 fun! organ#table#head (move = 'dont-move')
 	" First line of table
 	let move = a:move
-	let outside_pattern = organ#table#outside_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
-	let linum = search(outside_pattern, flags)
+	let linum = search('\m^\s*$', flags)
 	if linum == 0
 		echomsg 'organ table head : not found'
 		return 1
@@ -93,9 +101,8 @@ endfun
 fun! organ#table#tail (move = 'dont-move')
 	" Last line of table
 	let move = a:move
-	let outside_pattern = organ#table#outside_pattern ()
 	let flags = organ#utils#search_flags ('forward', move, 'dont-wrap')
-	let linum = search(outside_pattern, flags)
+	let linum = search('\m^\s*$', flags)
 	if linum == 0
 		echomsg 'organ table tail : not found'
 		return line('$')
