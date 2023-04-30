@@ -176,12 +176,13 @@ fun! organ#table#align ()
 				let line = before .. spaces .. after
 				for rightcol in range(colnum, lencol - 1)
 					let grid_index[rightcol] += add
+					if grid_index[rightcol] > maxima[rightcol]
+						let maxima[rightcol] = grid_index[rightcol]
+					endif
 				endfor
 			endif
 		endfor
 		call setline(linum, line)
-		let dual = organ#utils#dual(grid)
-		let maxima = map(deepcopy(dual), { _, v -> max(v)})
 		let index += 1
 	endfor
 	return grid
