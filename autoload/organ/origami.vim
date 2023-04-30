@@ -30,7 +30,7 @@ endfun
 
 " ---- orgmode
 
-fun! organ#origami#orgmode_folding_expr (linum)
+fun! organ#origami#orgmode (linum)
 	" Orgmode folding expression
 	let content = getline(a:linum)
 	let begin = '\m^\*\{'
@@ -44,16 +44,9 @@ fun! organ#origami#orgmode_folding_expr (linum)
 	return '='
 endfun
 
-fun! organ#origami#orgmode_folding ()
-	" Orgmode folding
-	setlocal foldmethod=expr
-	setlocal foldexpr=organ#origami#orgmode_folding_expr(v:lnum)
-	setlocal foldtext=organ#origami#folding_text()
-endfun
-
 " ---- markdown
 
-fun! organ#origami#markdown_folding_expr (linum)
+fun! organ#origami#markdown (linum)
 	" Markdown folding expression
 	let content = getline(a:linum)
 	let begin = '\m^#\{'
@@ -67,16 +60,9 @@ fun! organ#origami#markdown_folding_expr (linum)
 	return '='
 endfun
 
-fun! organ#origami#markdown_folding ()
-	" Orgmode folding
-	setlocal foldmethod=expr
-	setlocal foldexpr=organ#origami#markdown_folding_expr(v:lnum)
-	setlocal foldtext=organ#origami#folding_text()
-endfun
+" ---- asciidoc
 
-" ---- markdown
-
-fun! organ#origami#asciidoc_folding_expr (linum)
+fun! organ#origami#asciidoc (linum)
 	" Asciidoc folding expression
 	let content = getline(a:linum)
 	let begin = '\m^=\{'
@@ -90,21 +76,17 @@ fun! organ#origami#asciidoc_folding_expr (linum)
 	return '='
 endfun
 
-fun! organ#origami#asciidoc_folding ()
-	" Orgmode folding
-	setlocal foldmethod=expr
-	setlocal foldexpr=organ#origami#asciidoc_folding_expr(v:lnum)
-	setlocal foldtext=organ#origami#folding_text()
-endfun
 " ---- generic
 
 fun! organ#origami#folding ()
 	" Generic folding
+	setlocal foldmethod=expr
+	setlocal foldtext=organ#origami#folding_text()
 	if &filetype ==# 'org'
-		call organ#origami#orgmode_folding ()
+		setlocal foldexpr=organ#origami#orgmode(v:lnum)
 	elseif &filetype ==# 'markdown'
-		call organ#origami#markdown_folding ()
+		setlocal foldexpr=organ#origami#markdown(v:lnum)
 	elseif &filetype ==# 'asciidoc'
-		call organ#origami#asciidoc_folding ()
+		setlocal foldexpr=organ#origami#asciidoc(v:lnum)
 	endif
 endfun
