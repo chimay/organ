@@ -280,7 +280,7 @@ fun! organ#bush#demote_subtree ()
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
-		echomsg 'organ tree demote subtree : itemhead not found'
+		echomsg 'organ bush demote subtree : itemhead not found'
 		return 0
 	endif
 	let tail_linum = subtree.tail_linum
@@ -320,11 +320,11 @@ fun! organ#bush#move_subtree_backward ()
 	let nearest = organ#bird#nearest (same_linum, upper_linum, -1)
 	if nearest == 0
 		" both linum == 0
-		echomsg 'organ tree move subtree backward : not found'
+		echomsg 'organ bush move subtree backward : not found'
 		return 0
 	endif
 	if nearest == cursor_linum
-		echomsg 'organ tree move subtree backward : nothing to do'
+		echomsg 'organ bush move subtree backward : nothing to do'
 		return 0
 	endif
 	" ---- plain backward or wrapped backward ?
@@ -381,11 +381,11 @@ fun! organ#bush#move_subtree_forward ()
 	let nearest = organ#bird#nearest (same_linum, upper_linum, 1)
 	if nearest == 0
 		" both linum == 0
-		echomsg 'organ tree move subtree forward : not found'
+		echomsg 'organ bush move subtree forward : not found'
 		return 0
 	endif
 	if nearest == cursor_linum
-		echomsg 'organ tree move subtree forward : nothing to do'
+		echomsg 'organ bush move subtree forward : nothing to do'
 		return 0
 	endif
 	" ---- plain forward or wrapped forward ?
