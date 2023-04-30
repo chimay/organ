@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:rep_one_char')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 if ! exists('s:level_separ')
 	let s:level_separ = organ#crystal#fetch('separator/level')
 	lockvar s:level_separ
@@ -15,6 +20,45 @@ if ! exists('s:field_separ')
 	let s:field_separ = organ#crystal#fetch('separator/field')
 	lockvar s:field_separ
 endif
+
+" ---- indent helpers
+
+fun! organ#bird#tabspaces (...)
+	" Number of tabs and spaces
+	" Optional argument : line number
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let line = getline(linum)
+	let indent_pattern = '\m^[ \t]*'
+	let leading = line->matchstr(indent_pattern)
+	" ---- \t doesnt work here
+	let tabs = leading->count('	')
+	let spaces = leading->count(' ')
+	return [tabs, spaces]
+endfun
+
+fun! organ#bird#equiv_numspaces (...)
+	" Equivalent in number of spaces from spaces and tabs
+	" Optional argument : line number
+	let [tabs, spaces] = call ('organ#bird#tabspaces', a:000)
+	let shift = shiftwidth ()
+	let equiv = shift * tabs + spaces
+	return equiv
+endfun
+
+fun! organ#bird#is_on_indent_headline ()
+	" Whether current line is an indent headline
+	let linum = line('.')
+	if linum == 1
+		return v:true
+	endif
+	let previous = organ#bird#equiv_numspaces (linum - 1)
+	let current = organ#bird#equiv_numspaces ()
+	return previous < current
+endfun
 
 " ---- helpers
 
@@ -68,8 +112,12 @@ endfun
 
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
-	let line = getline('.')
-	return line =~ organ#bird#generic_pattern ()
+	if s:rep_one_char->index(&filetype) >= 0 || &foldmethod ==# 'marker'
+		let line = getline('.')
+		return line =~ organ#bird#generic_pattern ()
+	elseif &foldmethod ==# 'indent'
+		return organ#bird#is_on_indent_headline ()
+	endif
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
