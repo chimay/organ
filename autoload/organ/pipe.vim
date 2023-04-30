@@ -22,6 +22,11 @@ if ! exists('s:emacs_formats')
 	lockvar s:emacs_formats
 endif
 
+if ! exists('s:asciidoc_formats')
+	let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
+	lockvar s:asciidoc_formats
+endif
+
 " ---- helpers
 
 fun! organ#pipe#extensions (output_format)
@@ -85,6 +90,28 @@ fun! organ#pipe#emacs_export (...)
 	let emacs_fun = s:emacs_functions[output_format]
 	let command = 'emacs ' .. input .. ' '
 	let command ..= '--batch -f ' .. emacs_fun .. ' --kill'
+	call system(command)
+	return command
+endfun
+
+fun! organ#pipe#asciidoc_export (...)
+	" Export current file to output_format, using asciidoc
+	if ! executable('asciidoc')
+		echomsg 'organ pipe asciidoc export : executable not found'
+	endif
+	if a:0 > 0
+		let output_format = a:1
+	else
+		let prompt = 'Export format (asciidoc) : '
+		let complete = 'customlist,organ#complete#asciidoc_formats'
+		let output_format = input(prompt, '', complete)
+	endif
+	if s:asciidoc_formats->index(output_format) < 0
+		echomsg 'organ pipe asciidoc export : format not supported'
+		return v:false
+	endif
+	let input = bufname('%')
+	let command = 'asciidoc -b ' .. output_format .. ' ' .. input
 	call system(command)
 	return command
 endfun

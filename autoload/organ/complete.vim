@@ -40,6 +40,11 @@ if ! exists('s:emacs_formats')
 	lockvar s:emacs_formats
 endif
 
+if ! exists('s:asciidoc_formats')
+	let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
+	lockvar s:asciidoc_formats
+endif
+
 if ! exists('s:subcommands_actions')
 	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
 	lockvar s:subcommands_actions
@@ -105,6 +110,13 @@ fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
 	" Complete supported emacs/orgmode output formats
 	let choices = s:emacs_formats
 	echomsg s:emacs_formats
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#asciidoc_formats (arglead, cmdline, cursorpos)
+	" Complete supported asciidoc output formats
+	let choices = s:asciidoc_formats
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun

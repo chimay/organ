@@ -167,6 +167,20 @@ if ! exists('s:export_functions_emacs')
 	lockvar! s:export_functions_emacs
 endif
 
+if ! exists('s:export_formats_asciidoc')
+	let s:export_formats_asciidoc = [
+				\ 'docbook45',
+				\ 'docbook5',
+				\ 'xhtml11',
+				\ 'html4',
+				\ 'html5',
+				\ 'slidy',
+				\ 'wordpress',
+				\ 'latex',
+				\]
+	lockvar! s:export_formats_asciidoc
+endif
+
 " ---- public interface
 
 fun! organ#crystal#fetch (varname, conversion = 'no-conversion')
