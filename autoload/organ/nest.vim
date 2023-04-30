@@ -7,6 +7,11 @@
 
 " ---- script constants
 
+if ! exists('s:rep_one_char')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 if ! exists('s:speedkeys')
 	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
 	lockvar s:speedkeys
@@ -22,16 +27,22 @@ fun! organ#nest#navig (function)
 	else
 		call organ#bird#{function} ()
 	endif
+	return v:true
 endfun
 
 fun! organ#nest#oper (function)
 	" Choose to apply headline or list operation function
+	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
+		echomsg 'organ nest oper : not supported for indent folds'
+		return v:false
+	endif
 	let function = a:function
 	if organ#colibri#is_in_list ()
 		call organ#bush#{function} ()
 	else
 		call organ#tree#{function} ()
 	endif
+	return v:true
 endfun
 
 " -- speed keys

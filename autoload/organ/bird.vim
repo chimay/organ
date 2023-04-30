@@ -126,7 +126,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if ! s:rep_one_char->index(&filetype) >= 0 && &foldmethod ==# 'indent'
+	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
 		return organ#bird#level_indent_pattern (minlevel, maxlevel)
 	endif
 	if s:rep_one_char->index(&filetype) >= 0
