@@ -196,17 +196,40 @@ fun! organ#tree#move_subtree_backward ()
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
 	let level = subtree.level
-	" ---- find target
-	let headline_pattern = organ#bird#level_pattern (1, level)
+	" ---- find same level and upper level targets candidates
+	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
-	let cursor_target = search(headline_pattern, flags)
-	if cursor_target == 0
-		echomsg 'organ tree move subtree backward : not found'
+	let same_linum = search(same_pattern, flags)
+	if level >= 2
+		let upper_level = level - 1
+		let upper_pattern = organ#bird#level_pattern (upper_level, upper_level)
+		let upper_linum = search(upper_pattern, flags)
+	else
+		let upper_linum = 0
 	endif
-	" ---- plain backward of wrapped forward ?
-	let backward = cursor_target < cursor_linum
+	" ---- nearest candidate
+	let nearest = organ#bird#nearest (same_linum, upper_linum, -1)
+	if nearest == 0
+		" both linum == 0
+		echomsg 'organ tree move subtree backward : not found'
+		return 0
+	endif
+	if nearest == cursor_linum
+		echomsg 'organ tree move subtree backward : nothing to do'
+		return 0
+	endif
+	" ---- plain backward or wrapped backward ?
+	" ---- if plain backward, same or upper level ?
+	let backward = nearest < cursor_linum
 	if backward
-		let target = cursor_target - 1
+		if same_linum == nearest
+			let cursor_target = same_linum
+			let target = cursor_target - 1
+		else
+			" upper_linum == nearest
+			let cursor_target = upper_linum
+			let target = cursor_target - 1
+		endif
 	else
 		let last_linum = line('$')
 		if getline(last_linum) != ''
@@ -268,8 +291,8 @@ fun! organ#tree#move_subtree_forward ()
 		echomsg 'organ tree move subtree forward : nothing to do'
 		return 0
 	endif
-	" ---- plain forward of wrapped backward ?
-	" ---- if forward, same or upper level ?
+	" ---- plain forward or wrapped forward ?
+	" ---- if plain forward, same or upper level ?
 	let forward = nearest > cursor_linum
 	if forward
 		if same_linum == nearest
@@ -281,9 +304,9 @@ fun! organ#tree#move_subtree_forward ()
 			" upper_linum == nearest
 			call cursor(upper_linum, 1)
 			let headline_pattern = organ#bird#generic_pattern ()
-			let anyhead = search(headline_pattern, flags)
-			if anyhead > 0
-				let target = anyhead - 1
+			let anyhead_forward = search(headline_pattern, flags)
+			if anyhead_forward > 0
+				let target = anyhead_forward - 1
 			else
 				let target = line('$')
 			endif
