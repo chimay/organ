@@ -40,7 +40,7 @@ fun! organ#nest#speed_help ()
 	" Speed key on headlines first char
 	echomsg 'h : help            | <pageup> : previous  | <home> : backward (= level)'
 	echomsg 'w : where ?         | <pagedown> : next    | <end> : forward (= level)'
-	echomsg '+ : parent          | - : loose child      | _ : strict child'
+	echomsg '( : parent          | ) : loose child      | } : strict child'
 	echomsg '^ : goto heading    | * : cycle fold vis   | # : cycle all folds vis'
 	echomsg '$ : select subtree  | yy : yank subtree    | dd : cycle all folds vis'
 	echomsg '<del> : promote     | <ins> : demote       | e : pandoc export'

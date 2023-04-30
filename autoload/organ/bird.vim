@@ -27,14 +27,47 @@ fun! organ#bird#char ()
 	endif
 endfun
 
+fun! organ#bird#equiv_numspaces (...)
+	" Equivalent in number of spaces from spaces and tabs
+	" Optional argument : line number
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let shift = shiftwidth ()
+	let line = getline(linum)
+	let indent_pattern = '\m^\s*'
+	let leading = line->matchstr(indent_pattern)
+	let spaces = leading->count(' ')
+	let spaces += shift * leading->count('	')
+	return spaces
+endfun
+
+fun! organ#bird#indent_level (...)
+	" Indent level
+	" Optional argument : line number
+	let spaces = call ('organ#bird#equiv_numspaces', a:000)
+	let shift = shiftwidth ()
+	let indent = spaces / shift
+	return indent
+endfun
+
 fun! organ#bird#generic_pattern ()
 	" Generic headline pattern
 	if ['org', 'markdown']->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		return '\m^[' .. char .. ']\+'
-	else
+	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
+	elseif &foldmethod ==# 'indent'
+		let numspaces = organ#bird#equiv_numspaces ()
+		let numspaces -= shiftwidth ()
+		let pattern = '\m^'
+		return '^\S\+.*\n\zs\s\+'
+	else
+		"throw 'organ bird generic pattern : not supported'
 	endif
 endfun
 
