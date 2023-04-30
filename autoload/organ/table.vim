@@ -136,9 +136,10 @@ fun! organ#table#add_missing_columns ()
 			let line = getline(linum)
 			let line ..= delimiter->repeat(add)
 			call setline(linum, line)
-			let last_pos = grid[index][-1]
+			let grid_index = grid[index]
+			let last_pos = grid_index[-1]
 			let addedpos = range(last_pos + 1, last_pos + add)
-			eval grid[index]->extend(addedpos)
+			eval grid_index->extend(addedpos)
 		endif
 		let index += 1
 	endfor
@@ -150,8 +151,22 @@ fun! organ#table#align ()
 	let grid = organ#table#add_missing_columns ()
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
+	let lencol = len(grid[0])
 	let dual = organ#utils#dual(grid)
 	let maxima = map(deepcopy(dual), { _, v -> max(v)})
+	let index = 0
 	for linum in range(head_linum, tail_linum)
+		let line = getline(linum)
+		let grid_index = grid[index]
+		for colnum in range(lencol)
+			let col = grid_index[colnum]
+			let add = maxima[colnum] - col
+			if add > 0
+				let spaces = repeat(' ', add)
+				let line = line[:col - 2] .. spaces .. line[col - 1:]
+				call setline(linum, line)
+			endif
+		endfor
+		let index += 1
 	endfor
 endfun
