@@ -4,6 +4,16 @@
 "
 " Internal Constants made crystal clear
 
+" ---- filetypes with repeated one char heading
+
+if ! exists('s:filetypes_repeated_one_char_heading')
+	let s:filetypes_repeated_one_char_heading = [
+		\ 'org',
+		\ 'markdown',
+		\]
+	lockvar! s:filetypes_repeated_one_char_heading
+endif
+
 " ---- golden ratio
 
 if ! exists('s:golden_ratio')

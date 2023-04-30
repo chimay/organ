@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:filetypes_repeated_one_char_heading')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 if ! exists('s:field_separ')
 	let s:field_separ = organ#crystal#fetch('separator/field')
 	lockvar s:field_separ
@@ -19,7 +24,7 @@ fun! organ#tree#new ()
 	" New heading
 	let properties = organ#bird#properties ()
 	let level = properties.level
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let line = organ#bird#char()->repeat(level)
 	else
 		let marker = split(&foldmarker, ',')[0]
@@ -30,7 +35,7 @@ fun! organ#tree#new ()
 	call append('.', linelist)
 	let linum = line('.') + 1
 	call cursor(linum, 1)
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		"call cursor('.', col('$'))
 		startinsert!
 	else
@@ -90,7 +95,7 @@ fun! organ#tree#promote ()
 		return 0
 	endif
 	let headline = properties.headline
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let headline = headline[1:]
 	else
 		let marker = split(&foldmarker, ',')[0]
@@ -116,7 +121,7 @@ fun! organ#tree#demote ()
 	endif
 	let headline = properties.headline
 	let filetype = &filetype
-	if ['org', 'markdown']->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let headline = char .. headline
 	else
