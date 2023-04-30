@@ -401,14 +401,7 @@ fun! organ#bush#move_subtree_forward ()
 			let cursor_target = target - spread
 		endif
 	else
-		let last_linum = line('$')
-		if getline(last_linum) != ''
-			call append(last_linum, '')
-			let tail_linum += 1
-		endif
-		call cursor(1, 1)
-		let itemhead_pattern = organ#colibri#generic_pattern ()
-		let cursor_target = search(itemhead_pattern, flags)
+		let cursor_target = nearest
 		let target = cursor_target - 1
 	endif
 	" ---- move subtree
