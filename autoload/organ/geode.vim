@@ -65,8 +65,11 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-expand-template'               , 'organ#seed#expand'                        ] ,
 		\ [ 'organ-store-url'                     , 'organ#vine#store'                         ] ,
 		\ [ 'organ-new-link'                      , 'organ#vine#new'                           ] ,
+		\ [ 'organ-format-table'                  , 'organ#table#format'                       ] ,
 		\ [ 'organ-export-pandoc'                 , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'                  , 'organ#pipe#emacs_export'                  ] ,
+		\ [ 'organ-export-asciidoc'               , 'organ#pipe#asciidoc_export'               ] ,
+		\ [ 'organ-export-asciidoctor'            , 'organ#pipe#asciidoctor_export'            ] ,
 		\ ]
 	lockvar! s:plugs_normal
 endif
@@ -110,6 +113,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-t>'       , 'organ-expand-template'                ] ,
 		\ [ '<m-s>'       , 'organ-store-url'                      ] ,
 		\ [ '<m-@>'       , 'organ-new-link'                       ] ,
+		\ [ '<m-a>'       , 'organ-format-table'                   ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'                  ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'                   ] ,
 		\ ]

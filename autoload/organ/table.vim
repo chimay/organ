@@ -153,9 +153,13 @@ fun! organ#table#add_missing_columns ()
 	return grid
 endfun
 
-fun! organ#table#align ()
+fun! organ#table#align (...)
 	" Align char in all table lines
-	let grid = organ#table#add_missing_columns ()
+	if a:0 > 0
+		let grid =  a:1
+	else
+		let grid =  organ#table#grid ()
+	endif
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
 	let lencol = len(grid[0])
@@ -192,5 +196,13 @@ fun! organ#table#align ()
 		call setline(linum, line)
 		let index += 1
 	endfor
+	return grid
+endfun
+
+fun! organ#table#format ()
+	" Format table
+	let grid = organ#table#add_missing_columns ()
+	let grid = organ#table#align ()
+	let grid = organ#table#align ()
 	return grid
 endfun

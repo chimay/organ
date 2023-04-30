@@ -70,7 +70,12 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + markdown support limited to code blocks
 - create link with url completion
   + store url at cursor
-- export in another format using pandoc or emacs
+- format tables
+  + align and add missing columns
+- export in another format using
+  + pandoc
+  + emacs
+  + asciidoc or asciidoctor
 - convert headings and links org <-> markdown
 
 ## Differences with standard orgmode
@@ -278,6 +283,7 @@ value in your init file, these bindings become available :
 - `<M-t>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-@>`       : create new link
+- `<M-a>`       : format (align) table
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
 

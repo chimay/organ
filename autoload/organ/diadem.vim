@@ -33,6 +33,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'expand-template'               , 'organ#seed#expand'                        ] ,
 		\ [ 'store-url'                     , 'organ#vine#store'                         ] ,
 		\ [ 'new-link'                      , 'organ#vine#new'                           ] ,
+		\ [ 'format-table'                  , 'organ#table#format'                       ] ,
 		\ [ 'export-with-pandoc'            , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'             , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'export-with-asciidoc'          , 'organ#pipe#asciidoc_export'               ] ,
