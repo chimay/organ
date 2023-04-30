@@ -109,7 +109,6 @@ content
 content
 
 - item 1
-- item 3
 - item 2
   + item 2.1
   + item 2.2
@@ -121,15 +120,16 @@ content
       more
 
   + item 2.4
+- item 3
 
 === chapter 3.3.1
 
    1. item 1
    2. item 2
       text
-
    3. item 3
        1. item 3.1
+
 
 content
 
@@ -218,3 +218,4 @@ content text
 
   + item 2.4
 - item 3
+

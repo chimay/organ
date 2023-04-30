@@ -298,53 +298,133 @@ endfun
 
 fun! organ#bush#move_subtree_backward ()
 	" Move subtree backward
+	call cursor('.', 1)
+	let cursor_linum = line('.')
 	let subtree = organ#colibri#subtree ('move')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
+	let spread = tail_linum - head_linum
 	let level = subtree.level
-	let itemhead_pattern = organ#colibri#level_pattern (1, level)
-	let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
-	let goal = search(itemhead_pattern, flags)
-	let target = goal - 1
-	execute range .. 'move' target
-	call cursor(goal, 1)
-	call organ#bush#update_counters ()
-	return goal
-endfun
-
-fun! organ#bush#move_subtree_forward ()
-	" Move_subtree_forward
-	let subtree = organ#colibri#subtree ()
-	let head_linum = subtree.head_linum
-	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
-	let level = subtree.level
+	" ---- find same level and upper level targets candidates
 	let same_pattern = organ#colibri#level_pattern (level, level)
-	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
 	let same_linum = search(same_pattern, flags)
 	if level >= 2
-		let level -= 1
-		let upper_pattern = organ#colibri#level_pattern (level, level)
+		let upper_level = level - 1
+		let upper_pattern = organ#colibri#level_pattern (upper_level, upper_level)
 		let upper_linum = search(upper_pattern, flags)
 	else
 		let upper_linum = 0
 	endif
-	if same_linum > 0 && (same_linum < upper_linum || upper_linum == 0)
-		call cursor(same_linum, 1)
-		let same_subtree = organ#colibri#subtree ()
-		let target = same_subtree.tail_linum
-	else
-		call cursor(upper_linum, 1)
-		let target = organ#colibri#itemtail ()
-		if target == -1
-			let target = line('$')
-		endif
+	" ---- nearest candidate
+	let nearest = organ#bird#nearest (same_linum, upper_linum, -1)
+	if nearest == 0
+		" both linum == 0
+		echomsg 'organ tree move subtree backward : not found'
+		return 0
 	endif
+	if nearest == cursor_linum
+		echomsg 'organ tree move subtree backward : nothing to do'
+		return 0
+	endif
+	" ---- plain backward or wrapped backward ?
+	" ---- if plain backward, same or upper level ?
+	let backward = nearest < cursor_linum
+	if backward
+		if same_linum == nearest
+			let cursor_target = same_linum
+			let target = cursor_target - 1
+		else
+			" upper_linum == nearest
+			let cursor_target = upper_linum
+			let target = cursor_target - 1
+		endif
+	else
+		let last_linum = line('$')
+		if getline(last_linum) != ''
+			call append(last_linum, '')
+			let last_linum += 1
+		endif
+		let target = last_linum
+		let cursor_target = target - spread
+	endif
+	" ---- move subtree
+	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	let spread = tail_linum - head_linum
-	let goal = target - spread
-	call cursor(goal, 1)
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
 	call organ#bush#update_counters ()
-	return goal
+	return cursor_target
+endfun
+
+fun! organ#bush#move_subtree_forward ()
+	" Move subtree forward
+	call cursor('.', col('$'))
+	let cursor_linum = line('.')
+	let subtree = organ#colibri#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let spread = tail_linum - head_linum
+	let level = subtree.level
+	" ---- find same level and upper level targets candidates
+	let same_pattern = organ#colibri#level_pattern (level, level)
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'wrap')
+	let same_linum = search(same_pattern, flags)
+	if level >= 2
+		let upper_level = level - 1
+		let upper_pattern = organ#colibri#level_pattern (upper_level, upper_level)
+		let upper_linum = search(upper_pattern, flags)
+	else
+		let upper_linum = 0
+	endif
+	" ---- nearest candidate
+	let nearest = organ#bird#nearest (same_linum, upper_linum, 1)
+	if nearest == 0
+		" both linum == 0
+		echomsg 'organ tree move subtree forward : not found'
+		return 0
+	endif
+	if nearest == cursor_linum
+		echomsg 'organ tree move subtree forward : nothing to do'
+		return 0
+	endif
+	" ---- plain forward or wrapped forward ?
+	" ---- if plain forward, same or upper level ?
+	let forward = nearest > cursor_linum
+	if forward
+		if same_linum == nearest
+			call cursor(same_linum, 1)
+			let same_subtree = organ#colibri#subtree ()
+			let target = same_subtree.tail_linum
+			let cursor_target = target - spread
+		else
+			" upper_linum == nearest
+			call cursor(upper_linum, 1)
+			let itemhead_pattern = organ#colibri#generic_pattern ()
+			let anyhead_forward = search(itemhead_pattern, flags)
+			if anyhead_forward > 0
+				let target = anyhead_forward - 1
+			else
+				let target = line('$')
+			endif
+			let cursor_target = target - spread
+		endif
+	else
+		let last_linum = line('$')
+		if getline(last_linum) != ''
+			call append(last_linum, '')
+			let tail_linum += 1
+		endif
+		call cursor(1, 1)
+		let itemhead_pattern = organ#colibri#generic_pattern ()
+		let cursor_target = search(itemhead_pattern, flags)
+		let target = cursor_target - 1
+	endif
+	" ---- move subtree
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'move' target
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
+	call organ#bush#update_counters ()
+	return cursor_target
 endfun
