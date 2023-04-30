@@ -42,7 +42,7 @@ fun! organ#nest#speed_help ()
 	echomsg 'w : where ?         | <pagedown> : next    | <end> : forward (= level)'
 	echomsg '( : parent          | ) : loose child      | } : strict child'
 	echomsg '^ : goto heading    | * : cycle fold vis   | # : cycle all folds vis'
-	echomsg '$ : select subtree  | yy : yank subtree    | dd : cycle all folds vis'
+	echomsg '% : select subtree  | yy : yank subtree    | dd : cycle all folds vis'
 	echomsg '<del> : promote     | <ins> : demote       | e : pandoc export'
 	echomsg 'H : promote subtree | L : demote subtree   | E : emacs export'
 	echomsg 'U : move sub back   | D : move sub for     | M : move subtree to heading'

@@ -20,7 +20,7 @@ if ! exists('s:speedkeys')
 		\ [ '^',          'organ#bird#goto_path'                     ] ,
 		\ [ '*',          'organ#bird#cycle_current_fold'            ] ,
 		\ [ '#',          'organ#bird#cycle_all_folds'               ] ,
-		\ [ '$',          "organ#nest#oper('select_subtree')"        ] ,
+		\ [ '%',          "organ#nest#oper('select_subtree')"        ] ,
 		\ [ 'yy',         "organ#nest#oper('yank_subtree')"          ] ,
 		\ [ 'dd',         "organ#nest#oper('delete_subtree')"        ] ,
 		\ [ '<del>',      "organ#nest#oper('promote')"               ] ,

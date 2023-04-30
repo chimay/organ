@@ -16,71 +16,6 @@ if ! exists('s:field_separ')
 	lockvar s:field_separ
 endif
 
-" ---- indent helpers
-
-fun! organ#bird#tabspaces (...)
-	" Number of tabs and spaces
-	" Optional argument : line number
-	if a:0 > 0
-		let linum = a:1
-	else
-		let linum = line('.')
-	endif
-	let line = getline(linum)
-	let indent_pattern = '\m^\s*'
-	let leading = line->matchstr(indent_pattern)
-	" ---- \t doesnt work here
-	let tabs = leading->count('	')
-	let spaces = leading->count(' ')
-	return [tabs, spaces]
-endfun
-
-fun! organ#bird#equiv_numspaces (...)
-	" Equivalent in number of spaces from spaces and tabs
-	" Optional argument : line number
-	let [tabs, spaces] = call ('organ#bird#tabspaces', a:000)
-	let shift = shiftwidth ()
-	let equiv = shift * tabs + spaces
-	return equiv
-endfun
-
-fun! organ#bird#indent_level (...)
-	" Indent level
-	" Optional argument : line number
-	let spaces = call ('organ#bird#equiv_numspaces', a:000)
-	let shift = shiftwidth ()
-	let indent = spaces / shift
-	return indent
-endfun
-
-fun! organ#bird#generic_indent_pattern ()
-	" Generic headline indent pattern
-	" A headline is the first line after less indent
-	let shift = shiftwidth ()
-	let [tabs, spaces] = organ#bird#tabspaces ()
-	" ---- only tabs
-	if spaces == 0
-		let parent_tabs = tabs - 1
-		let pattern = '\m^\t\{' .. parent_tabs .. '}' .. '[^ \t].*\n'
-		let pattern ..= '\zs\t\{' .. tabs .. '}' .. '[^ \t]'
-		return pattern
-	endif
-	" ---- only spaces
-	if tabs == 0
-		let parent_spaces = spaces - shift
-		let pattern = '\m^\t\{' .. parent_spaces .. '}' .. '[^ \t].*\n'
-		let pattern ..= '\zs \{' .. spaces .. '}' .. '[^ \t]'
-		return pattern
-	endif
-	" ---- mix of tabs and spaces
-	let parent_spaces = spaces - shift
-	let spaces = max([spaces, 0])
-	let pattern = '\m^\t\{' .. tabs .. '}'
-	let pattern ..= ' \{' .. parent_spaces .. '}' .. '[^ \t].*\n'
-	let pattern ..= '\zs\t \{' .. tabs .. '} \{' .. spaces .. '}' .. '[^ \t]'
-	return pattern
-endfun
-
 " ---- helpers
 
 fun! organ#bird#char ()
@@ -101,7 +36,7 @@ fun! organ#bird#generic_pattern ()
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
 	elseif &foldmethod ==# 'indent'
-		return organ#bird#generic_indent_pattern ()
+		return '\m^\([ \t]*\)\S\+.*\n\zs\1[ \t]'
 	else
 		"throw 'organ bird generic pattern : not supported'
 	endif

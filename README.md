@@ -227,7 +227,7 @@ or a list item line. Here is a complete list :
 - `^`          : go to headline, with prompt completion of full headings path
 - `*`          : cycle current fold visibility
 - `#`          : cycle all folds visibility
-- `$`          : select subtree
+- `%`          : select subtree
 - `yy`         : yank subtree
 - `dd`         : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)

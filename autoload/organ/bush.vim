@@ -116,6 +116,7 @@ fun! organ#bush#select_subtree ()
 	call cursor(head_linum, 1)
 	normal! V
 	call cursor(tail_linum, 1)
+	normal! o
 	return subtree
 endfun
 

@@ -6,7 +6,7 @@
 
 " ---- script constants
 
-if ! exists('s:filetypes_repeated_one_char_heading')
+if ! exists('s:rep_one_char')
 	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
 	lockvar s:rep_one_char
 endif
@@ -54,6 +54,7 @@ fun! organ#tree#select_subtree ()
 	call cursor(head_linum, 1)
 	normal! V
 	call cursor(tail_linum, 1)
+	normal! o
 	return subtree
 endfun
 
