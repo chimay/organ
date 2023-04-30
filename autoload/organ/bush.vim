@@ -155,7 +155,7 @@ fun! organ#bush#promote ()
 	let itemhead = properties.itemhead
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '	', spaces, 'g')
+	let itemhead = substitute(itemhead, '\t', spaces, 'g')
 	let level = properties.level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
@@ -209,7 +209,7 @@ fun! organ#bush#demote ()
 	let itemhead = properties.itemhead
 	" --- indent
 	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '	', spaces, 'g')
+	let itemhead = substitute(itemhead, '\t', spaces, 'g')
 	let level = properties.level
 	let itemhead = organ#bush#indent_item (level + 1)
 	" ---- unordered item

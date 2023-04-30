@@ -16,32 +16,32 @@ if ! exists('s:field_separ')
 	lockvar s:field_separ
 endif
 
-" ---- helpers
+" ---- indent helpers
 
-fun! organ#bird#char ()
-	" Headline char
-	if &filetype ==# 'org'
-		return '*'
-	elseif &filetype ==# 'markdown'
-		return '#'
-	endif
-endfun
-
-fun! organ#bird#equiv_numspaces (...)
-	" Equivalent in number of spaces from spaces and tabs
+fun! organ#bird#tabspaces (...)
+	" Number of tabs and spaces
 	" Optional argument : line number
 	if a:0 > 0
 		let linum = a:1
 	else
 		let linum = line('.')
 	endif
-	let shift = shiftwidth ()
 	let line = getline(linum)
 	let indent_pattern = '\m^\s*'
 	let leading = line->matchstr(indent_pattern)
+	" ---- \t doesnt work here
+	let tabs = leading->count('	')
 	let spaces = leading->count(' ')
-	let spaces += shift * leading->count('	')
-	return spaces
+	return [tabs, spaces]
+endfun
+
+fun! organ#bird#equiv_numspaces (...)
+	" Equivalent in number of spaces from spaces and tabs
+	" Optional argument : line number
+	let [tabs, spaces] = call ('organ#bird#tabspaces', a:000)
+	let shift = shiftwidth ()
+	let equiv = shift * tabs + spaces
+	return equiv
 endfun
 
 fun! organ#bird#indent_level (...)
@@ -53,6 +53,42 @@ fun! organ#bird#indent_level (...)
 	return indent
 endfun
 
+fun! organ#bird#generic_indent_pattern ()
+	" Generic headline indent pattern
+	" A headline is the first line after less indent
+	let shift = shiftwidth ()
+	let [tabs, spaces] = organ#bird#tabspaces ()
+	" ---- only tabs
+	if spaces == 0
+		let tabs -= 1
+		let pattern = '\m^\t\{' .. tabs .. '}' .. '[^ \t].*\n\zs.'
+		return pattern
+	endif
+	" ---- only spaces
+	if tabs == 0
+		let spaces -= shift
+		let pattern = '\m^\t\{' .. spaces .. '}' .. '[^ \t].*\n\zs.'
+		return pattern
+	endif
+	" ---- mix of tabs and spaces
+	let spaces -= shift
+	let spaces = max([spaces, 0])
+	let pattern = '\m^\t\{' .. tabs .. '}'
+	let pattern ..= ' \{' .. spaces .. '}' .. '[^ \t].*\n\zs.'
+	return pattern
+endfun
+
+" ---- helpers
+
+fun! organ#bird#char ()
+	" Headline char
+	if &filetype ==# 'org'
+		return '*'
+	elseif &filetype ==# 'markdown'
+		return '#'
+	endif
+endfun
+
 fun! organ#bird#generic_pattern ()
 	" Generic headline pattern
 	if ['org', 'markdown']->index(&filetype) >= 0
@@ -62,10 +98,7 @@ fun! organ#bird#generic_pattern ()
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
 	elseif &foldmethod ==# 'indent'
-		let numspaces = organ#bird#equiv_numspaces ()
-		let numspaces -= shiftwidth ()
-		let pattern = '\m^'
-		return '^\S\+.*\n\zs\s\+'
+		return organ#bird#generic_indent_pattern ()
 	else
 		"throw 'organ bird generic pattern : not supported'
 	endif

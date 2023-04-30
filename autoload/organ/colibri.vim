@@ -244,7 +244,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let itemhead = getline(linum)
 	" ---- tab -> spaces
 	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '	', spaces, 'g')
+	let itemhead = substitute(itemhead, '\t', spaces, 'g')
 	" ---- computing level
 	let indent = itemhead->matchstr('\m^\s*')
 	let numspaces = len(indent)
