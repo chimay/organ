@@ -109,10 +109,9 @@ fun! organ#void#foundation ()
 endfun
 
 fun! organ#void#enable ()
-	" Enable maps & folding
+	" Enable maps
 	" To be used on filetype triggers
 	call organ#centre#cables ()
-	call organ#origami#folding ()
 endfun
 
 fun! organ#void#init ()
@@ -122,9 +121,7 @@ fun! organ#void#init ()
 	call organ#centre#plugs ()
 	let everywhere = g:organ_config.everywhere
 	if everywhere > 0
-		" ---- activate maps
+		" ---- enable maps
 		call organ#centre#cables ()
-		" ---- enable folding
-		call organ#origami#folding ()
 	endif
 endfun

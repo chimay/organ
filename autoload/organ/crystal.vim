@@ -10,6 +10,7 @@ if ! exists('s:filetypes_repeated_one_char_heading')
 	let s:filetypes_repeated_one_char_heading = [
 		\ 'org',
 		\ 'markdown',
+		\ 'asciidoc',
 		\]
 	lockvar! s:filetypes_repeated_one_char_heading
 endif

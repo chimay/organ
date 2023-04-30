@@ -72,6 +72,8 @@ fun! organ#bird#char ()
 		return '*'
 	elseif &filetype ==# 'markdown'
 		return '#'
+	elseif &filetype ==# 'asciidoc'
+		return '='
 	endif
 endfun
 
