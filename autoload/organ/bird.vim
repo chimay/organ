@@ -479,6 +479,7 @@ fun! organ#bird#whereami (move = 'dont-move')
 	" Echo full subtree path
 	let dashboard = 'organ: ' .. organ#bird#path (a:move)
 	echomsg dashboard
+	call organ#spiral#cursor ()
 endfun
 
 " ---- goto

@@ -358,7 +358,7 @@ When editing a folded file, this plugin expect folds delimited by markers
 with level included, like `{{{1`, `{{{2`, and so on. The closing markers
 `}}}` are useless, and could in fact have undesired side effects.
 
-## Indent folds
+## Indent
 
 On files where `foldmethod=indent`, a limited support for navigation only
 is available.
