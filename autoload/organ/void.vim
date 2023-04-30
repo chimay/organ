@@ -61,7 +61,13 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list.unordered, 'markdown')
 		let g:organ_config.list.unordered.markdown = ['-', '+']
 	endif
+	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
+		let g:organ_config.list.unordered.default = ['*']
+	endif
 	" -- ordered chars
+	if ! has_key(g:organ_config.list, 'counter_start')
+		let g:organ_config.list.counter_start = 1
+	endif
 	if ! has_key(g:organ_config.list, 'ordered')
 		let g:organ_config.list.ordered = {}
 	endif
@@ -74,8 +80,8 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list.ordered, 'markdown')
 		let g:organ_config.list.ordered.markdown = ['.']
 	endif
-	if ! has_key(g:organ_config.list, 'counter_start')
-		let g:organ_config.list.counter_start = 1
+	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
+		let g:organ_config.list.ordered.default = ['.']
 	endif
 	" ---- structure templates
 	if ! has_key(g:organ_config, 'templates')

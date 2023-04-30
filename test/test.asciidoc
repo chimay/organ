@@ -13,7 +13,33 @@
 
 = book 1
 
+. one
+* item 1
+* item 2
+** item 2.1
+** item 2.2
+** item 2.3
+*** item 2.3.1
+*** item 2.3.2 text more
+** item 2.4
+. two
+* item 3
+** item 3.1
+
 content
+
+. one
+* item 1
+* item 2
+** item 2.1
+** item 2.2
+** item 2.3
+*** item 2.3.1
+*** item 2.3.2 text more
+** item 2.4
+. two
+* item 3
+** item 3.1
 
 == part 1.1
 
@@ -124,33 +150,11 @@ content
 
 content
 
-....
- - item 1
- - item 2
-   + item 2.1
-   + item 2.2
-
-   + item 2.3
-     + item 2.3.1
-     + item 2.3.2
-       text
-       more
-
-   + item 2.4
- - item 3
-....
-
 content
 
 [arabic]
 . item 1
 . item 2 1. item 2.1 2. item 2.2
-
-....
- 3. item 2.3
-   1. item 2.3.1
-   2. item 2.3.2
-....
 
 text
 

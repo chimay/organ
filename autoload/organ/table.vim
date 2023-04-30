@@ -4,18 +4,68 @@
 "
 " Table operations
 
-" ---- helpers
+" ---- delimiter
 
-fun! organ#table#char ()
+fun! organ#table#delimiter ()
 	" Tables column char
 	return '|'
 endfun
 
+" -- positions
+
+fun! organ#table#positions (...)
+	" Positions of the delimiter char
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let delimiter = organ#table#delimiter ()
+	let line = getline(linum)
+	let positions = []
+	let index = 0
+	while v:true
+		call cursor('.', 1)
+		let index = line->matchstrpos(delimiter, index)[2]
+		if index < 0
+			break
+		endif
+		eval positions->add(index)
+	endwhile
+	return positions
+endfun
+
+fun! organ#table#grid (...)
+	" Align char in all table lines
+	if a:0 == 2
+		let head_linum = a:1
+		let tail_linum = a:2
+	else
+		let head_linum = organ#table#head ()
+		let tail_linum = organ#table#tail ()
+	endif
+	let grid = []
+	for linum in range(head_linum, tail_linum)
+		let positions = organ#table#positions (linum)
+		eval grid->add(positions)
+	endfor
+	return grid
+endfun
+
+" ---- patterns
+
 fun! organ#table#generic_pattern ()
 	" Generic table line pattern
-	let pattern = '\m^\s*|'
-	let pattern ..= '\%([^|]*|\)\+'
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m^\s*' .. delimiter
+	let pattern ..= '\%([^' .. delimiter .. ']* ' .. delimiter .. '\)\+'
 	return pattern
+endfun
+
+fun! organ#table#outside_pattern ()
+	" Pattern for non table lines
+	let delimiter = organ#table#delimiter ()
+	return '\m^[^' .. delimiter .. ']*$'
 endfun
 
 fun! organ#table#is_in_table ()
@@ -27,9 +77,9 @@ endfun
 fun! organ#table#head (move = 'dont-move')
 	" First line of table
 	let move = a:move
-	let not_table_pattern = '\m^[^|]*$'
+	let outside_pattern = organ#table#outside_pattern ()
 	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
-	let linum = search(not_table_pattern, flags)
+	let linum = search(outside_pattern, flags)
 	if linum == 0
 		echomsg 'organ table head : not found'
 		return 1
@@ -40,9 +90,9 @@ endfun
 fun! organ#table#tail (move = 'dont-move')
 	" Last line of table
 	let move = a:move
-	let not_table_pattern = '\m^[^|]*$'
+	let outside_pattern = organ#table#outside_pattern ()
 	let flags = organ#utils#search_flags ('forward', move, 'dont-wrap')
-	let linum = search(not_table_pattern, flags)
+	let linum = search(outside_pattern, flags)
 	if linum == 0
 		echomsg 'organ table tail : not found'
 		return line('$')
@@ -50,8 +100,31 @@ fun! organ#table#tail (move = 'dont-move')
 	return linum - 1
 endfun
 
-" ---- alignment
+" ---- properties
 
-fun! organ#table#align (char = '|')
-	" Align char in all table lines
+fun! organ#table#properties ()
+	" Table properties
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	let grid = organ#table#grid (head_linum, tail_linum)
+	return #{
+				\ head_linum : head_linum,
+				\ tail_linum : tail_linum,
+				\ grid : grid,
+				\}
 endfun
+
+" ---- align
+
+fun! organ#table#align ()
+	" Align char in all table lines
+	let properties = organ#table#properties ()
+	let head_linum = properties.head_linum
+	let tail_linum = properties.tail_linum
+	let grid = properties.grid
+	let dual = organ#utils#dual(grid)
+	echomsg dual
+	for line in range(head_linum, tail_linum)
+	endfor
+endfun
+
