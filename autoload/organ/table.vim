@@ -202,7 +202,7 @@ endfun
 fun! organ#table#format ()
 	" Format table
 	let grid = organ#table#add_missing_columns ()
-	let grid = organ#table#align ()
-	let grid = organ#table#align ()
+	let grid = organ#table#align (grid)
+	let grid = organ#table#align (grid)
 	return grid
 endfun
