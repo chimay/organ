@@ -331,21 +331,12 @@ fun! organ#bush#move_subtree_backward ()
 	" ---- if plain backward, same or upper level ?
 	let backward = nearest < cursor_linum
 	if backward
-		if same_linum == nearest
-			let cursor_target = same_linum
-			let target = cursor_target - 1
-		else
-			" upper_linum == nearest
-			let cursor_target = upper_linum
-			let target = cursor_target - 1
-		endif
+		let cursor_target = nearest
+		let target = cursor_target - 1
 	else
-		let last_linum = line('$')
-		if getline(last_linum) != ''
-			call append(last_linum, '')
-			let last_linum += 1
-		endif
-		let target = last_linum
+		call cursor(nearest, 1)
+		let same_subtree = organ#bird#subtree ()
+		let target = same_subtree.tail_linum
 		let cursor_target = target - spread
 	endif
 	" ---- move subtree
