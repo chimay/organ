@@ -49,8 +49,12 @@ fun! organ#bird#equiv_numspaces (...)
 	return equiv
 endfun
 
+fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 10)
+	" Pattern of level between minlevel and maxlevel, for headline defined by indent
+endfun
+
 fun! organ#bird#is_on_indent_headline ()
-	" Whether current line is an indent headline
+	" Whether current line is an headline defined by indent
 	let linum = line('.')
 	if linum == 1
 		return v:true

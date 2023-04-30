@@ -352,9 +352,11 @@ setting :
 let g:organ_config.everywhere = 1
 ```
 
+## Markers
+
 When editing a folded file, this plugin expect folds delimited by markers
 with level included, like `{{{1`, `{{{2`, and so on. The closing markers
-`}}}` are useless and could in fact have side effects.
+`}}}` are useless, and could in fact have undesired side effects.
 
 # Prompt completion
 
