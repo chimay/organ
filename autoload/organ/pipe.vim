@@ -27,6 +27,11 @@ if ! exists('s:asciidoc_formats')
 	lockvar s:asciidoc_formats
 endif
 
+if ! exists('s:asciidoctor_formats')
+	let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
+	lockvar s:asciidoctor_formats
+endif
+
 " ---- helpers
 
 fun! organ#pipe#extensions (output_format)
@@ -112,6 +117,28 @@ fun! organ#pipe#asciidoc_export (...)
 	endif
 	let input = bufname('%')
 	let command = 'asciidoc -b ' .. output_format .. ' ' .. input
+	call system(command)
+	return command
+endfun
+
+fun! organ#pipe#asciidoctor_export (...)
+	" Export current file to output_format, using asciidoctor
+	if ! executable('asciidoctor')
+		echomsg 'organ pipe asciidoctor export : executable not found'
+	endif
+	if a:0 > 0
+		let output_format = a:1
+	else
+		let prompt = 'Export format (asciidoctor) : '
+		let complete = 'customlist,organ#complete#asciidoctor_formats'
+		let output_format = input(prompt, '', complete)
+	endif
+	if s:asciidoctor_formats->index(output_format) < 0
+		echomsg 'organ pipe asciidoctor export : format not supported'
+		return v:false
+	endif
+	let input = bufname('%')
+	let command = 'asciidoctor -b ' .. output_format .. ' ' .. input
 	call system(command)
 	return command
 endfun

@@ -45,6 +45,11 @@ if ! exists('s:asciidoc_formats')
 	lockvar s:asciidoc_formats
 endif
 
+if ! exists('s:asciidoctor_formats')
+	let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
+	lockvar s:asciidoctor_formats
+endif
+
 if ! exists('s:subcommands_actions')
 	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
 	lockvar s:subcommands_actions
@@ -117,6 +122,13 @@ endfun
 fun! organ#complete#asciidoc_formats (arglead, cmdline, cursorpos)
 	" Complete supported asciidoc output formats
 	let choices = s:asciidoc_formats
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#asciidoctor_formats (arglead, cmdline, cursorpos)
+	" Complete supported asciidoctor output formats
+	let choices = s:asciidoctor_formats
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun

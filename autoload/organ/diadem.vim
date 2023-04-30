@@ -36,6 +36,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'export-with-pandoc'            , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'             , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'export-with-asciidoc'          , 'organ#pipe#asciidoc_export'               ] ,
+		\ [ 'export-with-asciidoctor'       , 'organ#pipe#asciidoctor_export'            ] ,
 		\ ]
 	lockvar! s:command_meta_actions
 endif
