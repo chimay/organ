@@ -126,7 +126,7 @@ fun! organ#table#add_missing_columns ()
 	let head_linum = properties.head_linum
 	let tail_linum = properties.tail_linum
 	let grid = deepcopy(properties.grid)
-	let widthlist = map(grid, { _, v -> len(v)})
+	let widthlist = map(deepcopy(grid), { _, v -> len(v)})
 	let maxim = max(widthlist)
 	let index = 0
 	for linum in range(head_linum, tail_linum)
@@ -135,19 +135,23 @@ fun! organ#table#add_missing_columns ()
 		if add > 0
 			let line = getline(linum)
 			let line ..= delimiter->repeat(add)
-			eval grid[index]->add
+			call setline(linum, line)
+			let last_pos = grid[index][-1]
+			let addedpos = range(last_pos + 1, last_pos + add)
+			eval grid[index]->extend(addedpos)
 		endif
 		let index += 1
 	endfor
+	return grid
 endfun
 
 fun! organ#table#align ()
 	" Align char in all table lines
-	let properties = organ#table#properties ()
-	let head_linum = properties.head_linum
-	let tail_linum = properties.tail_linum
-	let grid = properties.grid
+	let grid = organ#table#add_missing_columns ()
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
 	let dual = organ#utils#dual(grid)
+	let maxima = map(deepcopy(dual), { _, v -> max(v)})
 	for linum in range(head_linum, tail_linum)
 	endfor
 endfun
