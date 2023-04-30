@@ -26,8 +26,8 @@ fun! organ#table#positions (...)
 	let index = 0
 	while v:true
 		call cursor('.', 1)
-		let index = line->matchstrpos(delimiter, index)[2]
-		if index < 0
+		let index = line->match(delimiter, index) + 1
+		if index == 0
 			break
 		endif
 		eval positions->add(index)
@@ -163,8 +163,16 @@ fun! organ#table#align ()
 			let add = maxima[colnum] - col
 			if add > 0
 				let spaces = repeat(' ', add)
-				let line = line[:col - 2] .. spaces .. line[col - 1:]
-				call setline(linum, line)
+				if col == 1
+					let before = ''
+					let after = line
+				elseif col ==
+				else
+					let before = line[:colnum - 2]
+					let after = line[colnum - 1:]
+				endif
+				let newline = before .. spaces .. after
+				call setline(linum, newline)
 			endif
 		endfor
 		let index += 1

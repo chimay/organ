@@ -71,10 +71,11 @@ fun! organ#vine#new ()
 	let line = getline(linum)
 	if colnum <= 1
 		let before = ''
+		let after = line
 	else
 		let before = line[:colnum - 2]
+		let after = line[colnum - 1:]
 	endif
-	let after = line[colnum - 1:]
 	let prompt = 'Link url : '
 	let complete = 'customlist,organ#complete#url'
 	let url = input(prompt, '', complete)
