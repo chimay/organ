@@ -60,21 +60,24 @@ fun! organ#bird#generic_indent_pattern ()
 	let [tabs, spaces] = organ#bird#tabspaces ()
 	" ---- only tabs
 	if spaces == 0
-		let tabs -= 1
-		let pattern = '\m^\t\{' .. tabs .. '}' .. '[^ \t].*\n\zs.'
+		let parent_tabs = tabs - 1
+		let pattern = '\m^\t\{' .. parent_tabs .. '}' .. '[^ \t].*\n'
+		let pattern ..= '\zs\t\{' .. tabs .. '}' .. '[^ \t]'
 		return pattern
 	endif
 	" ---- only spaces
 	if tabs == 0
-		let spaces -= shift
-		let pattern = '\m^\t\{' .. spaces .. '}' .. '[^ \t].*\n\zs.'
+		let parent_spaces = spaces - shift
+		let pattern = '\m^\t\{' .. parent_spaces .. '}' .. '[^ \t].*\n'
+		let pattern ..= '\zs \{' .. spaces .. '}' .. '[^ \t]'
 		return pattern
 	endif
 	" ---- mix of tabs and spaces
-	let spaces -= shift
+	let parent_spaces = spaces - shift
 	let spaces = max([spaces, 0])
 	let pattern = '\m^\t\{' .. tabs .. '}'
-	let pattern ..= ' \{' .. spaces .. '}' .. '[^ \t].*\n\zs.'
+	let pattern ..= ' \{' .. parent_spaces .. '}' .. '[^ \t].*\n'
+	let pattern ..= '\zs\t \{' .. tabs .. '} \{' .. spaces .. '}' .. '[^ \t]'
 	return pattern
 endfun
 
