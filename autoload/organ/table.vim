@@ -11,10 +11,11 @@ fun! organ#table#delimiter ()
 	return '|'
 endfun
 
-fun! organ#table#generic_pattern (...)
+fun! organ#table#generic_pattern (argdict = {})
 	" Generic table line pattern
-	if a:0 > 0
-		let delimiter = a:1
+	let argdict = a:argdict
+	if has_key (argdict, 'delimiter')
+		let delimiter =  argdict.delimiter
 	else
 		let delimiter = organ#table#delimiter ()
 	endif
@@ -23,10 +24,11 @@ fun! organ#table#generic_pattern (...)
 	return pattern
 endfun
 
-fun! organ#table#outside_pattern (...)
+fun! organ#table#outside_pattern (argdict = {})
 	" Pattern for non table lines
-	if a:0 > 0
-		let delimiter = a:1
+	let argdict = a:argdict
+	if has_key (argdict, 'delimiter')
+		let delimiter =  argdict.delimiter
 	else
 		let delimiter = organ#table#delimiter ()
 	endif
@@ -36,10 +38,10 @@ fun! organ#table#outside_pattern (...)
 	return pattern
 endfun
 
-fun! organ#table#is_in_table (...)
+fun! organ#table#is_in_table (argdict = {})
 	" Whether current line is in a table
 	let line = getline('.')
-	let pattern = call('organ#table#generic_pattern', a:000)
+	let pattern = organ#table#generic_pattern (a:argdict)
 	return line =~ pattern
 endfun
 
@@ -69,14 +71,19 @@ endfun
 
 " -- positions
 
-fun! organ#table#positions (...)
+fun! organ#table#positions (argdict = {})
 	" Positions of the delimiter char
-	if a:0 > 0
-		let linum = a:1
+	let argdict = a:argdict
+	if has_key (argdict, 'delimiter')
+		let delimiter =  argdict.delimiter
+	else
+		let delimiter = organ#table#delimiter ()
+	endif
+	if has_key (argdict, 'linum')
+		let linum =  argdict.linum
 	else
 		let linum = line('.')
 	endif
-	let delimiter = organ#table#delimiter ()
 	let line = getline(linum)
 	let positions = []
 	let index = 0
@@ -91,18 +98,23 @@ fun! organ#table#positions (...)
 	return positions
 endfun
 
-fun! organ#table#grid (...)
+fun! organ#table#grid (argdict = {})
 	" Positions in all table lines
-	if a:0 == 2
-		let head_linum = a:1
-		let tail_linum = a:2
+	let argdict = a:argdict
+	if has_key (argdict, 'head_linum')
+		let head_linum =  argdict.head_linum
 	else
 		let head_linum = organ#table#head ()
+	endif
+	if has_key (argdict, 'tail_linum')
+		let tail_linum =  argdict.tail_linum
+	else
 		let tail_linum = organ#table#tail ()
 	endif
 	let grid = []
 	for linum in range(head_linum, tail_linum)
-		let positions = organ#table#positions (linum)
+		let argdict.linum = linum
+		let positions = organ#table#positions (argdict)
 		eval grid->add(positions)
 	endfor
 	return grid
@@ -171,7 +183,8 @@ fun! organ#table#properties ()
 	" Table properties
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
-	let grid = organ#table#grid (head_linum, tail_linum)
+	let argdict = #{ head_linum : head_linum, tail_linum : tail_linum }
+	let grid = organ#table#grid (argdict)
 	return #{
 				\ head_linum : head_linum,
 				\ tail_linum : tail_linum,
@@ -181,13 +194,22 @@ endfun
 
 " ---- format
 
-fun! organ#table#add_missing_columns ()
+fun! organ#table#add_missing_columns (argdict)
 	" Add missing columns delimiters
-	let delimiter = organ#table#delimiter ()
+	let argdict = a:argdict
+	if has_key (argdict, 'delimiter')
+		let delimiter =  argdict.delimiter
+	else
+		let delimiter = organ#table#delimiter ()
+	endif
+	if has_key (argdict, 'grid')
+		let grid =  argdict.grid
+	else
+		let grid =  organ#table#grid (argdict)
+	endif
 	let properties = organ#table#properties ()
 	let head_linum = properties.head_linum
 	let tail_linum = properties.tail_linum
-	let grid = deepcopy(properties.grid)
 	let lengthes = organ#table#lengthes (grid)
 	let maxim = max(lengthes)
 	let index = 0
@@ -208,12 +230,13 @@ fun! organ#table#add_missing_columns ()
 	return grid
 endfun
 
-fun! organ#table#align (...)
+fun! organ#table#align (argdict = {})
 	" Align char in all table lines
-	if a:0 > 0
-		let grid =  a:1
+	let argdict = a:argdict
+	if has_key (argdict, 'grid')
+		let grid =  argdict.grid
 	else
-		let grid =  organ#table#grid ()
+		let grid =  organ#table#grid (argdict)
 	endif
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
@@ -272,7 +295,15 @@ endfun
 
 fun! organ#table#format ()
 	" Format table
-	let grid = organ#table#add_missing_columns ()
-	let grid = organ#table#align (grid)
+	if organ#table#is_in_table ()
+		let argdict = #{
+			\ delimiter : organ#table#delimiter (),
+			\}
+		let argdict.grid = organ#table#add_missing_columns (argdict)
+	else
+		let prompt = 'Align following pattern : '
+		let argdict = #{ delimiter : input(prompt, '') }
+	endif
+	let grid = organ#table#align (argdict)
 	return grid
 endfun

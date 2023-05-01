@@ -71,7 +71,8 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - create link with url completion
   + store url at cursor
 - format tables
-  + align and add missing columns
+  + inside of table : align and add missing columns
+  + outside of table : align following a pattern
 - export in another format using
   + pandoc
   + emacs
@@ -283,7 +284,7 @@ value in your init file, these bindings become available :
 - `<M-t>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-@>`       : create new link
-- `<M-a>`       : format (align) table
+- `<M-a>`       : in table : format (align) table ; outside : align following a pattern
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
 
