@@ -92,7 +92,7 @@ fun! organ#table#positions (...)
 endfun
 
 fun! organ#table#grid (...)
-	" Align char in all table lines
+	" Positions in all table lines
 	if a:0 == 2
 		let head_linum = a:1
 		let tail_linum = a:2
@@ -106,6 +106,71 @@ fun! organ#table#grid (...)
 		eval grid->add(positions)
 	endfor
 	return grid
+endfun
+
+fun! organ#table#lengthes (grid)
+	" Lengthes of elements in grid
+	let grid = a:grid
+	let lengthes = []
+	for elem in grid
+		eval lengthes->add(len(elem))
+	endfor
+	return lengthes
+endfun
+
+fun! organ#table#complete (grid, absent = -1)
+	" Complete grid with elements equals to absent
+	let complete = deepcopy(a:grid)
+	let absent = a:absent
+	let absentcell = [absent]
+	let lengthes = organ#table#lengthes (complete)
+	let maxim = max(lengthes)
+	for index in range(len(complete))
+		let add = maxim - lengthes[index]
+		if add > 0
+			let added = absentcell->repeat(add)
+			eval complete[index]->extend(added)
+		endif
+	endfor
+	return complete
+endfun
+
+fun! organ#table#maxima (grid)
+	" Maxima of elements in grid
+	let grid = a:grid
+	let maxima = []
+	for elem in grid
+		eval maxima->add(max(elem))
+	endfor
+	return maxima
+endfun
+
+fun! organ#table#dual (grid)
+	" Dual of positions in all table lines
+	let grid = a:grid
+	" -- outer length
+	let outer_length = len(grid)
+	" -- inner max length
+	let lengthes = organ#table#lengthes (grid)
+	let inner_length = max(lengthes)
+	" -- span
+	let outer_span = range(outer_length)
+	let inner_span = range(inner_length)
+	" -- init dual
+	" can't use repeat() with nested list :
+	" it uses references to the same inner list
+	let dual = copy(inner_span)->map('[]')
+	" -- double loop
+	for inner in inner_span
+		let dualelem = dual[inner]
+		for outer in outer_span
+			if inner < lengthes[outer]
+				eval dualelem->add(grid[outer][inner])
+			endif
+		endfor
+	endfor
+	" -- coda
+	return dual
 endfun
 
 " ---- properties
@@ -160,39 +225,55 @@ fun! organ#table#align (...)
 	endif
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
-	let lencol = len(grid[0])
-	let dual = organ#utils#dual(grid)
-	let maxima = map(deepcopy(dual), { _, v -> max(v)})
+	" ---- grid derivates
+	let lengthes = organ#table#lengthes (grid)
+	let lencol = max(lengthes)
+	let dual = organ#table#dual(grid)
+	let maxima = organ#table#maxima(grid)
+	" ---- lines list
+	let linelist = getline(head_linum, tail_linum)
+	let lenlinelist = len(linelist)
+	" ---- double loop
 	let index = 0
-	for linum in range(head_linum, tail_linum)
-		let line = getline(linum)
-		let grid_index = grid[index]
-		for colnum in range(lencol)
-			let col = grid_index[colnum]
-			let add = maxima[colnum] - col
-			if add > 0
-				let spaces = repeat(' ', add)
-				if col == 1
-					let before = ''
-					let after = line
-				elseif col == col('$')
-					let before = line
-					let after = ''
-				else
-					let before = line[:col - 2]
-					let after = line[col - 1:]
-				endif
-				let line = before .. spaces .. after
-				for rightcol in range(colnum, lencol - 1)
-					let grid_index[rightcol] += add
-					if grid_index[rightcol] > maxima[rightcol]
-						let maxima[rightcol] = grid_index[rightcol]
-					endif
-				endfor
+	for colnum in range(lencol)
+		for rownum in range(lenlinelist)
+			if lengthes[rownum] <= colnum
+				continue
 			endif
+			let row = grid[rownum]
+			let position = row[colnum]
+			let add = maxima[colnum] - position
+			if add == 0
+				continue
+			endif
+			let shift = repeat(' ', add)
+			" -- adapt line
+			let line = linelist[rownum]
+			if position == 1
+				let before = ''
+				let after = line
+			elseif position == col('$')
+				let before = line
+				let after = ''
+			else
+				let before = line[:position - 2]
+				let after = line[position - 1:]
+			endif
+			let linelist[rownum] = before .. shift .. after
+			" -- adapt grid & maxima
+			for rightcol in range(colnum, lencol - 1)
+				let row[rightcol] += add
+				if row[rightcol] > maxima[rightcol]
+					let maxima[rightcol] = row[rightcol]
+				endif
+			endfor
 		endfor
-		call setline(linum, line)
-		let index += 1
+	endfor
+	" ---- commit changes to buffer
+	let linum = head_linum
+	for index in range(len(linelist))
+		call setline(linum, linelist[index])
+		let linum += 1
 	endfor
 	return grid
 endfun
@@ -200,7 +281,6 @@ endfun
 fun! organ#table#format ()
 	" Format table
 	let grid = organ#table#add_missing_columns ()
-	let grid = organ#table#align (grid)
 	let grid = organ#table#align (grid)
 	return grid
 endfun

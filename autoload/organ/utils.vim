@@ -62,39 +62,6 @@ fun! organ#utils#delete (first, ...)
 	endif
 endfun
 
-fun! organ#utils#dual (nested)
-	" Return transposed of nested list
-	let nested = a:nested
-	" -- outer length
-	let outer_length = len(nested)
-	" -- inner length
-	let lengthes = []
-	for elem in nested
-		eval lengthes->add(len(elem))
-	endfor
-	let inner_length = min(lengthes)
-	if inner_length < max(lengthes)
-		echomsg 'organ utils dual : inner lists are not of the same length'
-		return v:false
-	endif
-	" -- span
-	let outer_span = range(outer_length)
-	let inner_span = range(inner_length)
-	" -- init dual
-	" can't use repeat() with nested list :
-	" it uses references to the same inner list
-	let dual = copy(inner_span)->map('[]')
-	" -- double loop
-	for inner in inner_span
-		let dualelem = dual[inner]
-		for outer in outer_span
-			eval dualelem->add(nested[outer][inner])
-		endfor
-	endfor
-	" -- coda
-	return dual
-endfun
-
 fun! organ#utils#is_nested_list (argument)
 	" Whether argument is a nested list
 	" Empty list is not considered nested
