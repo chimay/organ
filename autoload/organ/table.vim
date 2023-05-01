@@ -110,12 +110,8 @@ endfun
 
 fun! organ#table#lengthes (grid)
 	" Lengthes of elements in grid
-	let grid = a:grid
-	let lengthes = []
-	for elem in grid
-		eval lengthes->add(len(elem))
-	endfor
-	return lengthes
+	let grid = deepcopy(a:grid)
+	return map(grid, { _, v -> len(v)})
 endfun
 
 fun! organ#table#complete (grid, absent = -1)
@@ -133,16 +129,6 @@ fun! organ#table#complete (grid, absent = -1)
 		endif
 	endfor
 	return complete
-endfun
-
-fun! organ#table#maxima (grid)
-	" Maxima of elements in grid
-	let grid = a:grid
-	let maxima = []
-	for elem in grid
-		eval maxima->add(max(elem))
-	endfor
-	return maxima
 endfun
 
 fun! organ#table#dual (grid)
@@ -173,6 +159,12 @@ fun! organ#table#dual (grid)
 	return dual
 endfun
 
+fun! organ#table#maxima (dual)
+	" Maxima of elements in dual
+	let dual = deepcopy(a:dual)
+	return map(dual, { _, v -> max(v)})
+endfun
+
 " ---- properties
 
 fun! organ#table#properties ()
@@ -196,11 +188,11 @@ fun! organ#table#add_missing_columns ()
 	let head_linum = properties.head_linum
 	let tail_linum = properties.tail_linum
 	let grid = deepcopy(properties.grid)
-	let widthlist = map(deepcopy(grid), { _, v -> len(v)})
-	let maxim = max(widthlist)
+	let lengthes = organ#table#lengthes (grid)
+	let maxim = max(lengthes)
 	let index = 0
 	for linum in range(head_linum, tail_linum)
-		let width = widthlist[index]
+		let width = lengthes[index]
 		let add = maxim - width
 		if add > 0
 			let line = getline(linum)
@@ -229,7 +221,7 @@ fun! organ#table#align (...)
 	let lengthes = organ#table#lengthes (grid)
 	let lencol = max(lengthes)
 	let dual = organ#table#dual(grid)
-	let maxima = organ#table#maxima(grid)
+	let maxima = organ#table#maxima(dual)
 	" ---- lines list
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
@@ -261,7 +253,7 @@ fun! organ#table#align (...)
 			endif
 			let linelist[rownum] = before .. shift .. after
 			" -- adapt grid & maxima
-			for rightcol in range(colnum, lencol - 1)
+			for rightcol in range(colnum, lengthes[rownum] - 1)
 				let row[rightcol] += add
 				if row[rightcol] > maxima[rightcol]
 					let maxima[rightcol] = row[rightcol]
