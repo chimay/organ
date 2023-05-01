@@ -4,55 +4,12 @@
 "
 " Table operations
 
-" ---- delimiter
+" ---- patterns
 
 fun! organ#table#delimiter ()
 	" Tables column char
 	return '|'
 endfun
-
-" -- positions
-
-fun! organ#table#positions (...)
-	" Positions of the delimiter char
-	if a:0 > 0
-		let linum = a:1
-	else
-		let linum = line('.')
-	endif
-	let delimiter = organ#table#delimiter ()
-	let line = getline(linum)
-	let positions = []
-	let index = 0
-	while v:true
-		call cursor('.', 1)
-		let index = line->match(delimiter, index) + 1
-		if index == 0
-			break
-		endif
-		eval positions->add(index)
-	endwhile
-	return positions
-endfun
-
-fun! organ#table#grid (...)
-	" Align char in all table lines
-	if a:0 == 2
-		let head_linum = a:1
-		let tail_linum = a:2
-	else
-		let head_linum = organ#table#head ()
-		let tail_linum = organ#table#tail ()
-	endif
-	let grid = []
-	for linum in range(head_linum, tail_linum)
-		let positions = organ#table#positions (linum)
-		eval grid->add(positions)
-	endfor
-	return grid
-endfun
-
-" ---- patterns
 
 fun! organ#table#generic_pattern (...)
 	" Generic table line pattern
@@ -108,6 +65,47 @@ fun! organ#table#tail (move = 'dont-move')
 		return line('$')
 	endif
 	return linum - 1
+endfun
+
+" -- positions
+
+fun! organ#table#positions (...)
+	" Positions of the delimiter char
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let delimiter = organ#table#delimiter ()
+	let line = getline(linum)
+	let positions = []
+	let index = 0
+	while v:true
+		call cursor('.', 1)
+		let index = line->match(delimiter, index) + 1
+		if index == 0
+			break
+		endif
+		eval positions->add(index)
+	endwhile
+	return positions
+endfun
+
+fun! organ#table#grid (...)
+	" Align char in all table lines
+	if a:0 == 2
+		let head_linum = a:1
+		let tail_linum = a:2
+	else
+		let head_linum = organ#table#head ()
+		let tail_linum = organ#table#tail ()
+	endif
+	let grid = []
+	for linum in range(head_linum, tail_linum)
+		let positions = organ#table#positions (linum)
+		eval grid->add(positions)
+	endfor
+	return grid
 endfun
 
 " ---- properties

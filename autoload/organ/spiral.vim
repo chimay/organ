@@ -7,7 +7,7 @@
 " ---- script constants
 
 if ! exists('s:golden')
-	let s:golden = wheel#crystal#fetch('golden-ratio')
+	let s:golden = organ#crystal#fetch('golden-ratio')
 	lockvar s:golden
 endif
 
