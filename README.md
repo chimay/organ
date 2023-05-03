@@ -211,7 +211,7 @@ if ! exists("g:organ_loaded")
   " ---- custom maps
   nmap <c-cr> <plug>(organ-new)
   imap <c-cr> <plug>(organ-new)
-  nmap <backspace> :Organ<space>
+  nmap <tab> :Organ<space>
 endif
 ```
 
@@ -254,7 +254,7 @@ Once you are on the first char of a headline, the speedkeys become
 available. The plug `<plug>(organ-previous)` brings you precisely there,
 and is therefore one of the most important maps. For this reason,
 it's always defined, regardless of the prefixless setting. You can use
-`g:organ_config.prefix` to choose the key that triggers it.
+`g:organ_config.previous` to choose the key that triggers it.
 
 ## Prefixless
 
@@ -268,10 +268,12 @@ value in your init file, these bindings become available :
 - `<M-u>`       : upper, parent heading
 - `<M-l>`       : lower, child heading, loosely speaking : first headline of level + 1, forward
 - `<M-S-l>`     : lower, child heading, strictly speaking
-- `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
+- `<M-h>`       : go to headline, with prompt completion of full headings path
+- `<M-z>`       : cycle current fold visibility
+- `<M-S-z>`     : cycle all folds visibility
 - `<M-CR>`      : new subtree or list item
-- `<M-&>`       : select subtree
+- `<M-v>`       : select subtree
 - `<M-y>`       : yank subtree
 - `<M-d>`       : delete subtree
 - `<M-left>`    : promote heading or list item
@@ -293,7 +295,6 @@ maps only in the modes you specify.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
-
 
 ```vim
 let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
@@ -403,7 +404,7 @@ Completion is available for subcommands.
 I suggest you map it to a convenient key. Example :
 
 ```vim
-nnoremap <backspace> :Organ<space>
+nnoremap <tab> :Organ<space>
 ```
 
 # Autocommands
