@@ -88,7 +88,6 @@ fun! organ#table#positions (argdict = {})
 	let positions = []
 	let index = 0
 	while v:true
-		call cursor('.', 1)
 		let index = line->match(delimiter, index) + 1
 		if index == 0
 			break
@@ -194,7 +193,7 @@ endfun
 
 " ---- format
 
-fun! organ#table#add_missing_columns (argdict)
+fun! organ#table#add_missing_columns (argdict = {})
 	" Add missing columns delimiters
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
