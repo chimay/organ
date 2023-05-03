@@ -266,7 +266,7 @@ fun! organ#table#align (argdict = {})
 			if position == 1
 				let before = ''
 				let after = line
-			elseif position == col('$')
+			elseif position == len(line) + 1
 				let before = line
 				let after = ''
 			else
