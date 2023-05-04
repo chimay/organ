@@ -29,7 +29,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'demote-subtree'                , "organ#nest#oper('demote_subtree')"        ] ,
 		\ [ 'move-subtree-up'               , "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'move-subtree-down'             , "organ#nest#oper('move_subtree_forward')"  ] ,
-		\ [ 'moveto'                        , 'organ#tree#moveto'                        ] ,
+		\ [ 'move-subtree-to'               , 'organ#tree#moveto'                        ] ,
 		\ [ 'expand-template'               , 'organ#seed#expand'                        ] ,
 		\ [ 'store-url'                     , 'organ#vine#store'                         ] ,
 		\ [ 'new-link'                      , 'organ#vine#new'                           ] ,

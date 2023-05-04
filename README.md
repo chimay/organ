@@ -101,19 +101,6 @@ you can install [wheel](https://github.com/chimay/wheel) : it has a prompt
 function with completion (launched with `<plug>(wheel-prompt-outline)`)
 that looks for headlines in all orgmode or markdown files of a group.
 
-## Why another orgmode clone for vim ?
-
-First of all, it is not intended as a clone, more of a loose adaptation.
-
-The current orgmode plugins for (neo)vim that I could find are either :
-
-- abandoned and not adapted for my usage
-- written in python (which is fine but still a dependency)
-- written in lua, which means they only work with neovim
-
-I wanted to write a lightweight plugin in plain simple vimscript, with
-minimal dependancies (most of it doesn't need anything else to work).
-
 # Installation
 ## Using vim-packager
 
@@ -283,7 +270,7 @@ value in your init file, these bindings become available :
 - `<M-up>`      : move heading or list subtree up
 - `<M-down>`    : move heading or list subtree down
 - `<M-m>`       : move subtree in another one, with prompt completion
-- `<M-t>`       : expand template
+- `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-@>`       : create new link
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
@@ -426,12 +413,33 @@ augroup END
 
 ```
 
-# Warning
-
-Despite abundant testing, some bugs might remain, so be careful.
-
 # Related
 
 - [vim-orgmode](https://github.com/jceb/vim-orgmode) (python)
 - [vimOrganizer](https://github.com/hsitz/VimOrganizer) (abandoned)
 - [nvim-orgmode](https://github.com/nvim-orgmode/orgmode) (lua, neovim only)
+
+# Misc
+
+## Why this name
+
+Besides being a short name for organizer, it's also a pun for
+pipe-organ. With all these keyboards, pedalboards and stop actions,
+an organist has to be organized, for sure.
+
+## Why another orgmode clone for vim ?
+
+First of all, it is not intended as a clone, more of a loose adaptation.
+
+The current orgmode plugins for (neo)vim that I could find are either :
+
+- abandoned and not adapted for my usage
+- written in python (which is fine but still a dependency)
+- written in lua, which means they only work with neovim
+
+I wanted to write a lightweight plugin in plain simple vimscript, with
+minimal dependancies (most of it doesn't need anything else to work).
+
+# Warning
+
+Despite abundant testing, some bugs might remain, so be careful.

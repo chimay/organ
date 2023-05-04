@@ -193,6 +193,30 @@ endfun
 
 " ---- format
 
+fun! organ#table#reduce_multi_spaces (argdict = {})
+	" Reduce multi-spaces before a delimiter to one
+	let argdict = a:argdict
+	if has_key (argdict, 'delimiter')
+		let delimiter =  argdict.delimiter
+	else
+		let delimiter = organ#table#delimiter ()
+	endif
+	if has_key (argdict, 'head_linum')
+		let head_linum =  argdict.head_linum
+	else
+		let head_linum = organ#table#head ()
+	endif
+	if has_key (argdict, 'tail_linum')
+		let tail_linum =  argdict.tail_linum
+	else
+		let tail_linum = organ#table#tail ()
+	endif
+	let range = head_linum .. ',' .. tail_linum
+	let pattern = '\m\s\+' .. delimiter
+	let substit = ' ' .. delimiter
+	execute range 'substitute /' .. pattern .. '/' .. substit .. '/g'
+endfun
+
 fun! organ#table#add_missing_columns (argdict = {})
 	" Add missing columns delimiters
 	let argdict = a:argdict
@@ -298,10 +322,12 @@ fun! organ#table#format ()
 		let argdict = #{
 			\ delimiter : organ#table#delimiter (),
 			\}
+		call organ#table#reduce_multi_spaces (argdict)
 		let argdict.grid = organ#table#add_missing_columns (argdict)
 	else
 		let prompt = 'Align following pattern : '
 		let argdict = #{ delimiter : input(prompt, '') }
+		call organ#table#reduce_multi_spaces (argdict)
 	endif
 	let grid = organ#table#align (argdict)
 	return grid

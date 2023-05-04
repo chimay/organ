@@ -31,7 +31,6 @@ fun! organ#seed#angle (trigger)
 	" <cursor>
 	" #+end_something
 	let trigger = a:trigger
-	let source_pat = '\m^\s*<s'
 	if trigger ==# '<s'
 		return organ#seed#source ()
 	endif
@@ -103,6 +102,9 @@ fun! organ#seed#source (...)
 	elseif &filetype ==# 'markdown'
 		let open = '```' .. lang
 		let close = '```'
+	else
+		echomsg 'organ seed source : filetype not supported'
+		return ''
 	endif
 	let linum = line('.')
 	call setline(linum, open)
