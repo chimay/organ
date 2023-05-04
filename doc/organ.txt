@@ -290,7 +290,7 @@ CUSTOM						*organ-bindings-custom*
 
 Plugs can be mapped as usual : >
 
- nmap <buffer> <c-n> <plug>(organ-next)
+ nmap <c-n> <plug>(organ-next)
 <
 
 If you wish to enable it only for certain filetypes, you can use autocommands : >
@@ -305,7 +305,6 @@ This should have the same effect as writing : >
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
 in your runtimepath.
-
 
 ==============================================================================
 FOLDING							*organ-folding*
@@ -340,13 +339,20 @@ with level included, like `{{{1`, `{{{2`, and so on. The closing markers
 ==============================================================================
 PROMPT COMPLETION				*organ-prompt-completion*
 
-The prompt completion of headlines is intended to wark roughly as with
-the combo org-goto and helm in Emacs. A space is interpreted as
-a logical and, a `|` as a logical or. In fact, it works exactly as in
-[wheel](https://github.com/chimay/wheel). For further details, please
-refer to the
-[completion page](https://github.com/chimay/wheel/wiki/completion)
-on the wheel wiki.
+# Prompt completion
+
+Completion is available for :
+
+- meta-command subcommands
+- full path of headlines (goto, move to)
+- stored links and links protocols (adding new link)
+- language of source code block (template expansion)
+
+It is intended to work roughly as with the combo org-goto and helm in
+Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
+fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
+further details, please refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion) on the wheel wiki.
 
 ==============================================================================
 META COMMAND	 					*organ-meta-command*
