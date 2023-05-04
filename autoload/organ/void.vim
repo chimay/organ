@@ -12,6 +12,9 @@ fun! organ#void#store ()
 	if ! has_key(g:organ_store, 'url')
 		let g:organ_store.url = []
 	endif
+	if ! has_key(g:organ_store, 'mapstore')
+		let g:organ_store.mapstore = {}
+	endif
 endfun
 
 fun! organ#void#config ()

@@ -70,6 +70,16 @@ endfun
 
 " ---- speed keys
 
+fun! organ#centre#mapstore ()
+	" Store prexisting maps on speed keys
+	let mapstore = {}
+	for key in keys(s:speedkeys)
+		let mapstore[key] = maparg(key, 'n', v:false, v:true)
+	endfor
+	let g:organ_store.mapstore = mapstore
+	return mapstore
+endfun
+
 fun! organ#centre#speedkeys ()
 	" Speed keys on headlines first char
 	let everywhere = g:organ_config.everywhere
@@ -216,6 +226,7 @@ endfun
 fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
 	if g:organ_config.speedkeys > 0
+		call organ#centre#mapstore ()
 		call organ#centre#speedkeys ()
 	endif
 	call organ#centre#always ()
