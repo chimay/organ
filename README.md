@@ -364,16 +364,6 @@ with level included, like `{{{1`, `{{{2`, and so on. The closing markers
 On files where `foldmethod=indent`, a limited support for basic navigation
 is available.
 
-# Prompt completion
-
-The prompt completion of headlines is intended to wark roughly as with
-the combo org-goto and helm in Emacs. A space is interpreted as
-a logical and, a `|` as a logical or. In fact, it works exactly as in
-[wheel](https://github.com/chimay/wheel). For further details, please
-refer to the
-[completion page](https://github.com/chimay/wheel/wiki/completion)
-on the wheel wiki.
-
 # Meta-command
 
 The `:Organ` meta-command gives you access to almost all the plugin
@@ -397,6 +387,20 @@ I suggest you map it to a convenient key. Example :
 ```vim
 nnoremap <tab> :Organ<space>
 ```
+
+# Prompt completion
+
+Completion is available for :
+
+- meta-command subcommands
+- stored links and links protocols
+- language of source code block template expansion
+
+It is intended to wark roughly as with the combo org-goto and helm in
+Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
+fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
+further details, please refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion) on the wheel wiki.
 
 # Autocommands
 
