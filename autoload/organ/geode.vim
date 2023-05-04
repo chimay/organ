@@ -102,7 +102,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-cr>'      , 'organ-new'                           ] ,
 		\ [ '<m-v>'       , 'organ-select-subtree'                ] ,
 		\ [ '<m-y>'       , 'organ-yank-subtree'                  ] ,
-		\ [ '<m-d>'       , 'organ-delete-subtree'                ] ,
+		\ [ '<m-s-d>'     , 'organ-delete-subtree'                ] ,
 		\ [ '<m-left>'    , 'organ-promote'                       ] ,
 		\ [ '<m-right>'   , 'organ-demote'                        ] ,
 		\ [ '<m-s-left>'  , 'organ-promote-subtree'               ] ,

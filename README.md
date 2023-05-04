@@ -23,8 +23,8 @@
 * [Folding](#folding)
     * [Markers](#markers)
     * [Indent](#indent)
-* [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
+* [Prompt completion](#prompt-completion)
 * [Autocommands](#autocommands)
 * [Related](#related)
 * [Misc](#misc)
@@ -261,12 +261,12 @@ value in your init file, these bindings become available :
 - `<M-S-l>`     : lower, child heading, strictly speaking
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-h>`       : go to headline, with prompt completion of full headings path
-- `<M-z>`       : cycle current fold visibility
+- `<M-z>`       : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`     : cycle all folds visibility
 - `<M-CR>`      : new subtree or list item
 - `<M-v>`       : select subtree
 - `<M-y>`       : yank subtree
-- `<M-d>`       : delete subtree
+- `<M-s-d>`     : delete subtree
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote heading or list subtree

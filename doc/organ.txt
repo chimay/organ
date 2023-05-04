@@ -234,7 +234,7 @@ value in your init file, these bindings become available :
 - `<M-S-l>`     : lower, child heading, strictly speaking
 - `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
 - `<M-h>`       : go to headline, with prompt completion of full headings path
-- `<M-z>`       : cycle current fold visibility
+- `<M-z>`       : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`     : cycle all folds visibility
 - `<M-CR>`      : new subtree or list item
 - `<M-v>`       : select subtree
