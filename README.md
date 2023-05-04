@@ -393,8 +393,9 @@ nnoremap <tab> :Organ<space>
 Completion is available for :
 
 - meta-command subcommands
-- stored links and links protocols
-- language of source code block template expansion
+- full path of headlines (goto, move to)
+- stored links and links protocols (adding new link)
+- language of source code block (template expansion)
 
 It is intended to wark roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
