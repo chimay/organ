@@ -317,7 +317,7 @@ The prefix bindings are always available, regardless of the
 Plugs can be mapped as usual :
 
 ```vim
-nmap <buffer> <c-n> <plug>(organ-next)
+nmap <c-n> <plug>(organ-next)
 ```
 
 If you wish to enable it only for certain filetypes, you can use autocommands :
