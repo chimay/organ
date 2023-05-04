@@ -6,6 +6,13 @@
 "
 " Aka org structure templates
 
+" ---- script constants
+
+if ! exists('s:rep_one_char')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 " ---- generic
 
 fun! organ#seed#expand ()
@@ -85,6 +92,10 @@ fun! organ#seed#source (...)
 	" #+begin_src language
 	" <cursor>
 	" #+end_src
+	if s:rep_one_char->index(&filetype) < 0
+		echomsg 'organ seed source : filetype not supported'
+		return ''
+	endif
 	if a:0 > 0
 		let line = a:1
 	else
@@ -102,9 +113,6 @@ fun! organ#seed#source (...)
 	elseif &filetype ==# 'markdown'
 		let open = '```' .. lang
 		let close = '```'
-	else
-		echomsg 'organ seed source : filetype not supported'
-		return ''
 	endif
 	let linum = line('.')
 	call setline(linum, open)

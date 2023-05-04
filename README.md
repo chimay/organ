@@ -8,7 +8,6 @@
     * [Features](#features)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
     * [Dependencies](#dependencies)
-    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
 * [Installation](#installation)
     * [Using vim-packager](#using-vim-packager)
     * [Using minpac](#using-minpac)
@@ -22,11 +21,16 @@
     * [With prefix](#with-prefix)
     * [Custom](#custom)
 * [Folding](#folding)
+    * [Markers](#markers)
+    * [Indent](#indent)
 * [Prompt completion](#prompt-completion)
 * [Meta-command](#meta-command)
 * [Autocommands](#autocommands)
-* [Warning](#warning)
 * [Related](#related)
+* [Misc](#misc)
+    * [Why this name](#why-this-name)
+    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+* [Warning](#warning)
 
 <!-- vim-markdown-toc -->
 
