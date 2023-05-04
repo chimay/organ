@@ -7,8 +7,8 @@ Introduction			|organ-introduction|
 Configuration			|organ-configuration|
 Bindings			|organ-bindings|
 Folding				|organ-folding|
-Prompt completion		|organ-prompt-completion|
 Meta-command			|organ-meta-command|
+Prompt completion		|organ-prompt-completion|
 Autocommands			|organ-autocommands|
 Files				|organ-files|
 
@@ -311,6 +311,7 @@ FOLDING							*organ-folding*
 
 Enable				|organ-folding-enable|
 Markers				|organ-folding-markers|
+Indent				|organ-folding-indent|
 
 ------------------------------------------------------------------------------
 ENABLE						*organ-folding-enable*
@@ -336,23 +337,11 @@ When editing a folded file, this plugin expect folds delimited by markers
 with level included, like `{{{1`, `{{{2`, and so on. The closing markers
 `}}}` are useless and could in fact have side effects.
 
-==============================================================================
-PROMPT COMPLETION				*organ-prompt-completion*
+------------------------------------------------------------------------------
+INDENT						*organ-folding-indent*
 
-# Prompt completion
-
-Completion is available for :
-
-- meta-command subcommands
-- full path of headlines (goto, move to)
-- stored links and links protocols (adding new link)
-- language of source code block (template expansion)
-
-It is intended to work roughly as with the combo org-goto and helm in
-Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
-fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
-further details, please refer to the
-[completion page](https://github.com/chimay/wheel/wiki/completion) on the wheel wiki.
+On files where `foldmethod=indent`, a limited support for basic navigation
+is available.
 
 ==============================================================================
 META COMMAND	 					*organ-meta-command*
@@ -375,6 +364,24 @@ I suggest you map it to a convenient key. Example : >
 
  nnoremap <backspace> :Organ<space>
 <
+
+==============================================================================
+PROMPT COMPLETION				*organ-prompt-completion*
+
+# Prompt completion
+
+Completion is available for :
+
+- meta-command subcommands
+- full path of headlines (goto, move to)
+- stored links and links protocols (adding new link)
+- language of source code block (template expansion)
+
+It is intended to work roughly as with the combo org-goto and helm in
+Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
+fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
+further details, please refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion) on the wheel wiki.
 
 ==============================================================================
 AUTOCOMMANDS	 					*organ-autocommands*
