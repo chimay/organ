@@ -397,7 +397,7 @@ Completion is available for :
 - stored links and links protocols (adding new link)
 - language of source code block (template expansion)
 
-It is intended to wark roughly as with the combo org-goto and helm in
+It is intended to work roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
 fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
 further details, please refer to the
