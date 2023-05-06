@@ -181,6 +181,7 @@ if ! exists("g:organ_loaded")
   " ---- enable prefixless maps
   let g:organ_config.prefixless = 1
   " ---- prefixless maps in these modes (default)
+  " ---- possible values : normal, insert
   let g:organ_config.prefixless_modes = ['normal', 'insert']
   " ---- enable only the prefixless maps you want
   " ---- see the output of :map <plug>(organ- to see available plugs
@@ -207,6 +208,8 @@ if ! exists("g:organ_loaded")
   " ---- custom maps
   nmap <c-cr> <plug>(organ-new)
   imap <c-cr> <plug>(organ-new)
+  " -- to align visual selection
+  vmap <m-a> <plug>(organ-format-table)
   nmap <tab> :Organ<space>
 endif
 ```
@@ -228,7 +231,7 @@ value in your init file, the speed keys become available. They are active
 only in normal mode, when the cursor is on the first char of a headline
 or a list item line. Here is a complete list :
 
-- `h`          : help
+- `<f1>`       : help
 - `<pageup>`   : previous heading
 - `<pagedown>` : next heading
 - `<home>`     : backward heading of same level
@@ -241,8 +244,8 @@ or a list item line. Here is a complete list :
 - `*`          : cycle current fold visibility
 - `#`          : cycle all folds visibility
 - `%`          : select subtree
-- `yy`         : yank subtree
-- `dd`         : delete subtree
+- `Y`          : yank subtree
+- `D`          : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)
 - `<ins>`      : demote heading (and insert a level of indent)
 - `H`          : promote subtree

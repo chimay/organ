@@ -4,17 +4,6 @@
 
 " content
 
-let box = 2
-echo 'box from outside : ' box
-fun! Locals ()
-	let l:box = 4
-	echo 'l:box from inside : ' l:box
-	echo 'box from inside : ' box
-endfun
-call Locals ()
-echo 'box from outside : ' box
-
-
 " book 1 {{{1
 
 " content

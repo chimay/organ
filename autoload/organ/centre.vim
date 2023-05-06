@@ -82,18 +82,12 @@ fun! organ#centre#storemaps ()
 	if ! empty(s:mapstore)
 		return s:mapstore
 	endif
-	" ---- angle pattern
-	let angle_pattern = '\m<\([^>]\+\)>'
 	" ---- store
 	for key in keys(s:speedkeys)
 		let maparg = maparg(key, 'n', v:false, v:true)
 		if empty(maparg)
 			let s:mapstore[key] = {}
 			continue
-		endif
-		let rhs = maparg.rhs
-		if rhs =~ angle_pattern
-			let maparg.rhs = substitute(rhs, angle_pattern, "\1", '')
 		endif
 		let s:mapstore[key] = maparg
 	endfor

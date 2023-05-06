@@ -63,26 +63,38 @@ fun! organ#nest#speed (key, angle = 'no-angle')
 	" Speed key on headlines first char
 	let key = a:key
 	let angle = a:angle
-	" ---- headline or itemhead
+	if angle ==# 'angle' || angle ==# '>'
+		let fullkey = '<' .. key .. '>'
+	else
+		let fullkey = key
+	endif
+	" ------ headline or itemhead
 	let first_char = col('.') == 1
 	let tree = organ#bird#is_on_headline ()
 	let tree = tree || organ#colibri#is_on_itemhead ()
 	if first_char && tree
-		if angle ==# 'angle' || angle ==# '>'
-			let key = '<' .. key .. '>'
-		endif
-		let action = s:speedkeys[key]
-		call organ#utils#call(action)
-		return 'tree-' .. angle
+		let action = s:speedkeys[fullkey]
+		call organ#utils#call (action)
+		return 'speed-' .. angle
 	endif
-	" ---- normal
+	" ------ elsewhere
+	" ---- mapped key
+	let mapstore = organ#centre#mapstore()
+	let maparg = mapstore[fullkey]
+	if ! empty(maparg)
+		let rhs = mapstore[fullkey].rhs
+		let rhs = organ#utils#reverse_keytrans(rhs)
+		call feedkeys(rhs)
+		return 'normal-mapped-' .. angle
+	endif
+	" ---- non mapped key
 	" -- special key with angle, like <bs>
 	if angle ==# 'angle' || angle ==# '>'
 		execute 'let key =' '"\<' .. key .. '>"'
 		execute 'normal!' key
-		return 'normal-angle'
+		return 'normal-' .. angle
 	endif
 	" -- without angle
 	execute 'normal!' key
-	return 'normal'
+	return 'normal-' .. angle
 endfun

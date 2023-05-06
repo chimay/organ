@@ -8,23 +8,23 @@ fun! organ#origami#folding_text ()
 	" Orgmode folding text
 	let commentaire = substitute(&commentstring, '%s', '', '')
 	let text = getline(v:foldstart)
-	let text = substitute(text, '{{{[0-9]\?', '', '')				" }}}
+	let text = substitute(text, '\m{{{[0-9]\?', '', '')				" }}}
 	let text = substitute(text, commentaire, '', 'g')
 	let text = substitute(text, '\t', '', 'g')
 	let text = substitute(text, '’', "'", 'g')
-	let text = substitute(text, '\C[[=A=]]', 'A', 'g')
-	let text = substitute(text, '\C[[=E=]]', 'E', 'g')
-	let text = substitute(text, '\C[[=I=]]', 'I', 'g')
-	let text = substitute(text, '\C[[=O=]]', 'O', 'g')
-	let text = substitute(text, '\C[[=U=]]', 'U', 'g')
-	let text = substitute(text, '\C[[=a=]]', 'a', 'g')
-	let text = substitute(text, '\C[[=e=]]', 'e', 'g')
-	let text = substitute(text, '\C[[=i=]]', 'i', 'g')
-	let text = substitute(text, '\C[[=o=]]', 'o', 'g')
-	let text = substitute(text, '\C[[=u=]]', 'u', 'g')
+	let text = substitute(text, '\m\C[[=A=]]', 'A', 'g')
+	let text = substitute(text, '\m\C[[=E=]]', 'E', 'g')
+	let text = substitute(text, '\m\C[[=I=]]', 'I', 'g')
+	let text = substitute(text, '\m\C[[=O=]]', 'O', 'g')
+	let text = substitute(text, '\m\C[[=U=]]', 'U', 'g')
+	let text = substitute(text, '\m\C[[=a=]]', 'a', 'g')
+	let text = substitute(text, '\m\C[[=e=]]', 'e', 'g')
+	let text = substitute(text, '\m\C[[=i=]]', 'i', 'g')
+	let text = substitute(text, '\m\C[[=o=]]', 'o', 'g')
+	let text = substitute(text, '\m\C[[=u=]]', 'u', 'g')
 	let Nlignes = v:foldend - v:foldstart
 	let text = text .. ' :: ' .. Nlignes .. ' lines' .. v:folddashes
-	let text = substitute(text, ' \{2,}', ' ', 'g')
+	let text = substitute(text, '\m \{2,}', ' ', 'g')
 	return text
 endfun
 

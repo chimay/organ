@@ -8,7 +8,7 @@
 
 if ! exists('s:speedkeys')
 	let s:speedkeys = [
-		\ [ 'h',          'organ#nest#speed_help()'                  ] ,
+		\ [ '<f1>',       'organ#nest#speed_help()'                  ] ,
 		\ [ '<pageup>',   "organ#nest#navig('previous')"             ] ,
 		\ [ '<pagedown>', "organ#nest#navig('next')"                 ] ,
 		\ [ '<home>',     "organ#nest#navig('backward')"             ] ,
@@ -21,8 +21,8 @@ if ! exists('s:speedkeys')
 		\ [ '*',          'organ#bird#cycle_current_fold'            ] ,
 		\ [ '#',          'organ#bird#cycle_all_folds'               ] ,
 		\ [ '%',          "organ#nest#oper('select_subtree')"        ] ,
-		\ [ 'yy',         "organ#nest#oper('yank_subtree')"          ] ,
-		\ [ 'dd',         "organ#nest#oper('delete_subtree')"        ] ,
+		\ [ 'Y',          "organ#nest#oper('yank_subtree')"          ] ,
+		\ [ 'D',          "organ#nest#oper('delete_subtree')"        ] ,
 		\ [ '<del>',      "organ#nest#oper('promote')"               ] ,
 		\ [ '<ins>',      "organ#nest#oper('demote')"                ] ,
 		\ [ 'H',          "organ#nest#oper('promote_subtree')"       ] ,
@@ -75,7 +75,9 @@ if ! exists('s:plugs_normal')
 endif
 
 if ! exists('s:plugs_visual')
-	let s:plugs_visual = s:plugs_normal
+	let s:plugs_visual = [
+		\ [ 'organ-format-table' , "organ#table#format('visual')" ] ,
+		\ ]
 	lockvar! s:plugs_visual
 endif
 

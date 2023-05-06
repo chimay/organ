@@ -30,7 +30,7 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	" Pipe | in word means logical or
 	" unused argument is for compatibility with filter()
 	let wordlist = copy(a:wordlist)
-	eval wordlist->map({ _, val -> substitute(val, '|', '\\|', 'g') })
+	eval wordlist->map({ _, val -> substitute(val, '\m|', '\\|', 'g') })
 	let match = v:true
 	for word in wordlist
 		if word !~ '\m^!'
