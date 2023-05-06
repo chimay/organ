@@ -46,6 +46,12 @@ if ! exists('s:insert_maps')
 	lockvar s:level_2_insert_maps
 endif
 
+" ---- script variables
+
+if ! exists('s:mapstore')
+	let s:mapstore = {}
+endif
+
 " ---- commands
 
 fun! organ#centre#meta (subcommand)
@@ -68,17 +74,34 @@ fun! organ#centre#commands ()
 				\ Organ call organ#centre#meta(<f-args>)
 endfun
 
-" ---- speed keys
+" ---- pre-existing maps
 
-fun! organ#centre#mapstore ()
+fun! organ#centre#storemaps ()
 	" Store prexisting maps on speed keys
-	let mapstore = {}
+	" ---- run it only once
+	if ! empty(s:mapstore)
+		return s:mapstore
+	endif
+	" ---- store
 	for key in keys(s:speedkeys)
-		let mapstore[key] = maparg(key, 'n', v:false, v:true)
+		let s:mapstore[key] = maparg(key, 'n', v:false, v:true)
 	endfor
-	let g:organ_store.mapstore = mapstore
-	return mapstore
+	" ---- make sure it is not modified
+	lockvar s:mapstore
+	" ---- coda
+	return s:mapstore
 endfun
+
+fun! organ#centre#mapstore (key = '')
+	" Front-end to s:mapstore
+	let key = a:key
+	if empty(key)
+		return s:mapstore
+	endif
+	return s:mapstore[key]
+endfun
+
+" ---- speed keys
 
 fun! organ#centre#speedkeys ()
 	" Speed keys on headlines first char
@@ -225,14 +248,18 @@ endfun
 
 fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
+	" ---- speed keys
 	if g:organ_config.speedkeys > 0
-		call organ#centre#mapstore ()
+		call organ#centre#storemaps ()
 		call organ#centre#speedkeys ()
 	endif
+	" ---- always defined maps
 	call organ#centre#always ()
+	" ---- prefix maps
 	call organ#centre#mappings ()
 	call organ#centre#mappings ('visual')
 	call organ#centre#mappings ('insert')
+	" ---- prefixless maps
 	if g:organ_config.prefixless > 0
 		for mode in g:organ_config.prefixless_modes
 			call organ#centre#prefixless (mode)

@@ -53,7 +53,7 @@ fun! organ#vine#store ()
 	else
 		let url ..= '#' .. iden
 	endif
-	let store = g:organ_store.url
+	let store = g:organ_store.urls
 	if store->index(url) < 0
 		eval store->add(url)
 		let store = store[:12]

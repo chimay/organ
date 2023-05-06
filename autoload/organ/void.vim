@@ -9,11 +9,8 @@ fun! organ#void#store ()
 	if ! exists('g:organ_store')
 		let g:organ_store = {}
 	endif
-	if ! has_key(g:organ_store, 'url')
-		let g:organ_store.url = []
-	endif
-	if ! has_key(g:organ_store, 'mapstore')
-		let g:organ_store.mapstore = {}
+	if ! has_key(g:organ_store, 'urls')
+		let g:organ_store.urls = []
 	endif
 endfun
 
@@ -117,6 +114,12 @@ fun! organ#void#foundation ()
 	call organ#void#config ()
 endfun
 
+fun! organ#void#enable ()
+	" Enable maps
+	" To be used on filetype triggers
+	call organ#centre#cables ()
+endfun
+
 fun! organ#void#init ()
 	" Main init function
 	call organ#void#foundation ()
@@ -124,13 +127,6 @@ fun! organ#void#init ()
 	call organ#centre#plugs ()
 	let everywhere = g:organ_config.everywhere
 	if everywhere > 0
-		" ---- enable maps
-		call organ#centre#cables ()
+		call organ#void#enable ()
 	endif
-endfun
-
-fun! organ#void#enable ()
-	" Enable maps
-	" To be used on filetype triggers
-	call organ#centre#cables ()
 endfun

@@ -1,4 +1,5 @@
 " vim: set filetype=vim:
+" Organ - Generalize org-mode principles to markdown and folded files
 
 scriptencoding utf-8
 
