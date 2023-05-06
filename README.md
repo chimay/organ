@@ -241,9 +241,9 @@ or a list item line. Here is a complete list :
 - `}`          : lower, child heading, strictly speaking
 - `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
 - `^`          : go to headline, with prompt completion of full headings path
-- `*`          : cycle current fold visibility
-- `#`          : cycle all folds visibility
-- `%`          : select subtree
+- `<tab>`      : cycle current fold visibility
+- `<s-tab>`    : cycle all folds visibility
+- `S`          : select subtree
 - `Y`          : yank subtree
 - `D`          : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)
