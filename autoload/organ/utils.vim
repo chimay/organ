@@ -168,5 +168,6 @@ fun! organ#utils#reverse_keytrans(keystring)
 	let keystring = substitute(keystring, '\m\c<space>', ' ', '')
 	let keystring = substitute(keystring, '\m\c<plug>', "\<plug>", '')
 	let keystring = substitute(keystring, '\m\c<cmd>', "\<cmd>", '')
+	let keystring = substitute(keystring, '\m\c<cr>', "\<cr>", '')
 	return keystring
 endfun
