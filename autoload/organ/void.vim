@@ -6,11 +6,11 @@
 
 fun! organ#void#store ()
 	" Initialize store
-	if ! exists('g:organ_store')
-		let g:organ_store = {}
+	if ! exists('g:ORGAN_STOPS')
+		let g:ORGAN_STOPS = {}
 	endif
-	if ! has_key(g:organ_store, 'urls')
-		let g:organ_store.urls = []
+	if ! has_key(g:ORGAN_STOPS, 'urls')
+		let g:ORGAN_STOPS.urls = []
 	endif
 endfun
 
@@ -82,6 +82,13 @@ fun! organ#void#config ()
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
 		let g:organ_config.list.ordered.default = ['.']
+	endif
+	" ---- links
+	if ! has_key(g:organ_config, 'links')
+		let g:organ_config.links = {}
+	endif
+	if ! has_key(g:organ_config.links, 'keep')
+		let g:organ_config.links.keep = 5
 	endif
 	" ---- structure templates
 	if ! has_key(g:organ_config, 'templates')

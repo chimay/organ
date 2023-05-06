@@ -96,7 +96,7 @@ endfun
 
 fun! organ#complete#url (arglead, cmdline, cursorpos)
 	" Complete url for links
-	let store = g:organ_store.url
+	let store = g:ORGAN_STOPS.urls
 	let choices = store + s:url_prefixes
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)

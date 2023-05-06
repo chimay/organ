@@ -14,6 +14,7 @@
     * [Using vim-plug](#using-vim-plug)
     * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
 * [Configuration](#configuration)
+    * [Persistent data](#persistent-data)
 * [Bindings](#bindings)
     * [Speed keys](#speed-keys)
     * [Always defined](#always-defined)
@@ -70,10 +71,10 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
-- expand shortcut to template (aka org-structure-template)
-  + markdown support limited to code blocks
 - create link with url completion
   + store url at cursor
+- expand shortcut to template (aka org-structure-template)
+  + markdown support limited to code blocks
 - format tables
   + inside of table : align and add missing columns
   + outside of table : align following a pattern
@@ -165,6 +166,8 @@ if ! exists("g:organ_loaded")
   " ---- initialize dicts
   let g:organ_config = {}
   let g:organ_config.list = {}
+  let g:organ_config.links = {}
+  let g:organ_config.templates = {}
   " ---- enable for every file if > 0
   let g:organ_config.everywhere = 0
   " ---- enable speed keys on first char of headlines and list items lines
@@ -192,6 +195,8 @@ if ! exists("g:organ_loaded")
   " ---- must be >= 0
   " ---- default 1
   let g:organ_config.list.counter_start = 1
+	" ---- number of stored links to keep (default)
+  let g:organ_config.links.keep = 5
   " ---- shortcuts to expand templates
   " ---- examples from default settings
   " ---- run :echo g:organ_config.templates to see all
@@ -205,6 +210,15 @@ if ! exists("g:organ_loaded")
   nmap <tab> :Organ<space>
 endif
 ```
+
+## Persistent data
+
+The following data :
+
+- stored urls
+
+are kept in the `g:ORGAN_STOPS` global variable. It is persistent across
+(neo)vim sessions if you have `!` in your 'shada' option.
 
 # Bindings
 ## Speed keys

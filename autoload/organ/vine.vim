@@ -4,6 +4,13 @@
 "
 " Link management
 
+" ---- script constants
+
+if ! exists('s:rep_one_char')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 " ---- helpers
 
 fun! organ#vine#template (url, desc = '')
@@ -53,11 +60,18 @@ fun! organ#vine#store ()
 	else
 		let url ..= '#' .. iden
 	endif
-	let store = g:organ_store.urls
+	let store = g:ORGAN_STOPS.urls
 	if store->index(url) < 0
-		eval store->add(url)
-		let store = store[:12]
+		eval store->insert(url)
+		let keep = g:organ_config.links.keep
+		if keep > 0
+			let store = store[:keep - 1]
+		endif
+		echomsg 'organ: stored' url
+	else
+		echomsg 'organ: url already stored'
 	endif
+	let g:ORGAN_STOPS.urls = store
 	return url
 endfun
 
@@ -65,6 +79,10 @@ endfun
 
 fun! organ#vine#new ()
 	" Create new link
+	if s:rep_one_char->index(&filetype) < 0
+		echomsg 'organ vine template : filetype not supported'
+		return ''
+	endif
 	let position = getcurpos ()
 	let linum = position[1]
 	let colnum = position[2]
