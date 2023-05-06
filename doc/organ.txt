@@ -449,6 +449,7 @@ of the modules within them.
 | perspective.vim   | content generators for prompt                      |
 | pipe.vim          | export using pandoc or emacs                       |
 | seed.vim          | structure templates (kind of lightweight snippets) |
+| spiral.vim        | Golden ratio                                       |
 | table.vim         | tables                                             |
 | tree.vim          | Operations on headings hierarchy                   |
 | utils.vim         | Small utils                                        |

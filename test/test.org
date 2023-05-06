@@ -157,6 +157,8 @@ content
 [[ftp://toto.tutu][desc]]
 [[file:test.md::*chapter 3.3.2]]
 
+[[file:test.txt::*part 2.4][stored url]]
+
 *** chapter 3.3.1
 
 content
