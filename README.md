@@ -446,9 +446,9 @@ augroup END
 
 ## Why this name
 
-Besides being a short name for organizer, it's also a pun for
-pipe-organ. With all these keyboards, pedalboards and stop actions,
-an organist has to be organized, for sure.
+Besides being a short name for organizer, it's also a pun for pipe-organ,
+especially the big ones. With all these keyboards, pedalboards and stop
+actions, an organist has to be organized, for sure.
 
 ## Why another orgmode clone for vim ?
 
@@ -461,7 +461,7 @@ The current orgmode plugins for (neo)vim that I could find are either :
 - written in lua, which means they only work with neovim
 
 I wanted to write a lightweight plugin in plain simple vimscript, with
-minimal dependancies (most of it doesn't need anything else to work).
+minimal dependencies (most of it doesn't need anything else to work).
 
 # Warning
 
