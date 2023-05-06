@@ -117,12 +117,6 @@ fun! organ#void#foundation ()
 	call organ#void#config ()
 endfun
 
-fun! organ#void#enable ()
-	" Enable maps
-	" To be used on filetype triggers
-	call organ#centre#cables ()
-endfun
-
 fun! organ#void#init ()
 	" Main init function
 	call organ#void#foundation ()
@@ -133,4 +127,10 @@ fun! organ#void#init ()
 		" ---- enable maps
 		call organ#centre#cables ()
 	endif
+endfun
+
+fun! organ#void#enable ()
+	" Enable maps
+	" To be used on filetype triggers
+	call organ#centre#cables ()
 endfun
