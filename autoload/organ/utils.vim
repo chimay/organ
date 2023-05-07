@@ -186,13 +186,14 @@ endfun
 fun! organ#utils#reverse_keytrans(keystring)
 	" Convert char representation like <c-a> -> 
 	let keystring = a:keystring
-	if keystring[0] ==# '<' && keystring[-1:] ==# '>'
-		let keystring = keystring[1:-2]
-		execute 'let keystring =' '"\<' .. keystring .. '>"'
-	endif
-	let keystring = substitute(keystring, '\m\c<space>', ' ', '')
-	let keystring = substitute(keystring, '\m\c<plug>', "\<plug>", '')
-	let keystring = substitute(keystring, '\m\c<cmd>', "\<cmd>", '')
-	let keystring = substitute(keystring, '\m\c<cr>', "\<cr>", '')
+	let angle_pattern = '\m<[^>]\+>'
+	while v:true
+		let match = keystring->matchstr(angle_pattern)
+		if empty(match)
+			break
+		endif
+		execute 'let subst =' '"\<' .. match[1:-2] .. '>"'
+		let keystring = substitute(keystring, match, subst, '')
+	endwhile
 	return keystring
 endfun

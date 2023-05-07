@@ -172,6 +172,8 @@ to be able to use the inline help.
 
 # Configuration
 
+Here is a complete example, cherrypick what you need :
+
 ```vim
 if ! exists("g:organ_loaded")
   " ---- initialize dicts
@@ -224,9 +226,6 @@ if ! exists("g:organ_loaded")
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
   nmap <c-cr> <plug>(organ-new)
-  imap <c-cr> <plug>(organ-new)
-  " -- to align visual selection
-  vmap <m-a> <plug>(organ-format-table)
   nmap <tab> :Organ<space>
 endif
 ```

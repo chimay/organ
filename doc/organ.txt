@@ -138,6 +138,7 @@ Persistent data				|organ-configuration-persistent-data|
 ------------------------------------------------------------------------------
 COMMENTED EXAMPLE : >		*organ-configuration-commented-example*
 
+Here is a complete example, cherrypick what you need : >
 
   if ! exists("g:organ_loaded")
     " ---- initialize dicts
@@ -190,9 +191,6 @@ COMMENTED EXAMPLE : >		*organ-configuration-commented-example*
     let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
     " ---- custom maps
     nmap <c-cr> <plug>(organ-new)
-    imap <c-cr> <plug>(organ-new)
-    " -- to align visual selection
-    vmap <m-a> <plug>(organ-format-table)
     nmap <tab> :Organ<space>
   endif
 <
