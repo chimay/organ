@@ -240,6 +240,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ text : '',
+			\ todo : '',
 			\}
 	endif
 	let linum = organ#colibri#itemhead (move)
@@ -251,6 +252,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ text : '',
+			\ todo : '',
 			\}
 	endif
 	let itemhead = getline(linum)
@@ -265,18 +267,33 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
 	" ---- prefix
-	let prefix_pattern = '\S\+\s\+'
+	let prefix_pattern = '\S\+\ze\s\+'
 	let prefix = itemhead->matchstr(prefix_pattern)
 	let prefix = substitute(prefix, '\m^\s*', '', '')
 	" ---- text without prefix
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let text = substitute(itemhead, itemhead_pattern, '', '')
+	let text = substitute(itemhead, prefix_pattern, '', '')
+	" ---- todo status
+	let found = v:false
+	for todo in g:organ_config.todo_cycle
+		if text =~ todo
+			let text = substitute(text, todo, '', '')
+			let found = v:true
+			break
+		endif
+	endfor
+	if ! found
+		let todo = ''
+	endif
+	" ---- coda
+	let text = trim(text)
 	let properties = #{
 				\ linum : linum,
 				\ itemhead : itemhead,
 				\ level : level,
 				\ prefix : prefix,
 				\ text : text,
+				\ todo : todo,
 				\}
 	return properties
 endfun
@@ -288,7 +305,16 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ colibri subtree : itemhead not found'
-		return #{ head_linum : 0, itemhead : '', level : 0, text : '', tail_linum : 0 }
+		return #{
+			\ linum : 0,
+			\ head_linum : 0,
+			\ itemhead : '',
+			\ level : 1,
+			\ prefix : '',
+			\ text : '',
+			\ todo : '',
+			\ tail_linum : 0,
+			\}
 	endif
 	let level = properties.level
 	let itemhead_pattern = organ#colibri#level_pattern (1, level)

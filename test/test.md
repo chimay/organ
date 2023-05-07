@@ -128,7 +128,7 @@ content
       text
 
    3. item 3
-       1. item 3.1
+     1. item 3.1
    4. item 4
 
 content

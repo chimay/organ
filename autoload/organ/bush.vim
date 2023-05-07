@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:rep_one_char')
+	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+	lockvar s:rep_one_char
+endif
+
 " ---- helpers
 
 fun! organ#bush#indent_item (level)
@@ -93,7 +98,7 @@ fun! organ#bush#new ()
 	let indent = repeat(' ', numspaces)
 	" ---- prefix
 	let prefix = properties.prefix
-	let line = indent .. prefix
+	let line = indent .. prefix .. ' '
 	" ---- append to buffer
 	call append('.', line)
 	" ---- update counters
@@ -412,3 +417,40 @@ fun! organ#bush#move_subtree_forward ()
 	call organ#bush#update_counters ()
 	return cursor_target
 endfun
+
+" ---- todo
+
+fun! organ#bush#todo ()
+	" Cycle todo - done - none headline marker
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let prefix = properties.prefix
+	let text = properties.text
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let next_todo = todo_cycle[0]
+	elseif cycle_index == lencycle - 1
+		let next_todo = ''
+	else
+		let next_todo = todo_cycle[cycle_index + 1]
+	endif
+	if s:rep_one_char->index(&filetype) >= 0
+		if empty(next_todo)
+			let newline = prefix .. ' ' .. text
+		else
+			let newline = prefix .. ' ' .. next_todo .. ' ' .. text
+		endif
+	else
+		if empty(next_todo)
+			let newline = text .. ' ' .. prefix
+		else
+			let newline = next_todo .. ' ' .. text .. ' ' .. prefix
+		endif
+	endif
+	call setline(linum, newline)
+	return newline
+endfun
+
