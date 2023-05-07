@@ -205,8 +205,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['<c'] = 'center'
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
-  " ---- todo
-  let g:organ_config.todo_cycle = ['TODO', 'DONE', 'NONE']
+  " ---- todo : TODO - DONE - none
+  let g:organ_config.todo_cycle = ['TODO', 'DONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
@@ -298,6 +298,7 @@ value in your init file, these bindings become available :
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-@>`       : create new link
+- `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
 - `<M-e>`       : export with pandoc

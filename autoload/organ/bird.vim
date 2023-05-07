@@ -201,22 +201,25 @@ fun! organ#bird#properties (move = 'dont-move')
 	else
 		let marker = split(&foldmarker, ',')[0]
 		let level = organ#bird#foldlevel ()
-		let levelstring_pattern = '\m ' .. marker .. '[0-9]\+'
+		let levelstring_pattern = '\m' .. marker .. '[0-9]\+'
 		let levelstring = headline->matchstr(levelstring_pattern)
 		let title = substitute(headline, levelstring_pattern, '', '')
 	endif
+	echomsg 'begin' .. title .. 'end'
 	" ---- todo status
-	let todo_cyle = g:organ_config.todo_cycle
-	if title =~ 'TODO'
-		let todo = 'TODO'
-		let title = substitute(title, 'TODO', '', '')
-	elseif title =~ 'DONE'
-		let todo = 'DONE'
-		let title = substitute(title, 'DONE', '', '')
-	else
-		let todo = 'NONE'
+	let found = v:false
+	for todo in g:organ_config.todo_cycle
+		if title =~ todo
+			let title = substitute(title, todo, '', '')
+			let found = v:true
+			break
+		endif
+	endfor
+	if ! found
+		let todo = ''
 	endif
 	" ---- coda
+	let title = trim(title)
 	let properties = #{
 				\ linum : linum,
 				\ headline : headline,

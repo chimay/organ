@@ -388,19 +388,28 @@ fun! organ#tree#todo ()
 	let levelstring = properties.levelstring
 	let title = properties.title
 	let todo = properties.todo
-	if s:rep_one_char->index(&filetype) >= 0
-		let title = 'TODO ' .. title
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let next_todo = todo_cycle[0]
+	elseif cycle_index == lencycle - 1
+		let next_todo = ''
 	else
-		if title[-1:] ==# ' '
-			let title = title .. 'TODO'
-		else
-			let title = title .. ' TODO'
-		endif
+		let next_todo = todo_cycle[cycle_index + 1]
 	endif
 	if s:rep_one_char->index(&filetype) >= 0
-		let newline = levelstring .. ' ' .. title
+		if empty(next_todo)
+			let newline = levelstring .. ' ' .. title
+		else
+			let newline = levelstring .. ' ' .. next_todo .. ' ' .. title
+		endif
 	else
-		let newline = title .. ' ' .. levelstring
+		if empty(next_todo)
+			let newline = title .. ' ' .. levelstring
+		else
+			let newline = next_todo .. ' ' .. title .. ' ' .. levelstring
+		endif
 	endif
 	call setline(linum, newline)
 	return newline
