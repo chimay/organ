@@ -65,6 +65,8 @@ FEATURES		    			*organ-introduction-features*
 - format tables
   + inside of table : align and add missing columns
   + outside of table : align following a pattern
+- cycle todo status
+- insert timestamp
 - export in another format using
   + pandoc
   + emacs
@@ -226,7 +228,7 @@ or a list item line. Here is a complete list :
 - `h`          : go to headline, with prompt completion of full headings path
 - `<tab>`      : cycle current fold visibility
 - `<s-tab>`    : cycle all folds visibility
-- `S`          : select subtree
+- `s`          : select subtree
 - `Y`          : yank subtree
 - `D`          : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)
