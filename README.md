@@ -95,18 +95,27 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 
 ## Dependencies
 
-This plugin should work out of the box, apart from a few advanced
-features.
+The core part runs on its own.
+
+Some extra-features need external tools, see below.
+
+## Export
 
 If you want to export your file to another format, you just need to have
 pandoc installed, and the plugin takes care of the rest.  For org files,
 it can also be done with emacs installed, at least for the formats
 supported by orgmode.
 
-If you want to navigate to an headline in another org or markdown file,
-you can install [wheel](https://github.com/chimay/wheel) : it has a prompt
-function with completion (launched with `<plug>(wheel-prompt-outline)`)
-that looks for headlines in all orgmode or markdown files of a group.
+For asciidoc files, you need to install asciidoc or asciidoctor.
+
+### Across files
+
+If you want to add interactions between org or markdown files, you can
+install [wheel](https://github.com/chimay/wheel). With it, you can :
+
+- quickly jump to another org/markdown/whatever file
+- look for headlines in all orgmode or markdown files of a group
+- grep all your group files for special keywords, like TODO
 
 # Installation
 ## Using vim-packager
