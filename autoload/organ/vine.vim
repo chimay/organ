@@ -34,7 +34,7 @@ fun! organ#vine#template (url, desc = '')
 	return link
 endfun
 
-" ---- store url
+" ---- store url dict
 
 fun! organ#vine#store ()
 	" Store org url at current position

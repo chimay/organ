@@ -39,8 +39,8 @@
 ## What is it ?
 
 Organ generalizes the great concepts of Orgmode to Markdown and any
-folding structure. It is primarily focused on editing these documents
-with ease and agility.
+folded file. It is primarily focused on editing these documents with
+ease and agility.
 
 ## Compatibilty
 
@@ -49,8 +49,8 @@ Organ supports :
 - org files
 - markdown
 - asciidoc : headings only
-- any folded file with markers
-- any indent folded file : basic navigation only
+- folded files with markers
+- indent folded files : basic navigation only
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 

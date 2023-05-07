@@ -26,8 +26,8 @@ Why another org mode clone ?		|organ-introduction-why|
 WHAT IS IT					*organ-introduction-what*
 
 Organ generalizes the great concepts of Orgmode to Markdown and any
-folding structure. It is primarily focused on editing these documents
-with ease and agility.
+folded file. It is primarily focused on editing these documents with
+ease and agility.
 
 ------------------------------------------------------------------------------
 COMPATIBILITY				*organ-introduction-compatibility*
@@ -35,8 +35,10 @@ COMPATIBILITY				*organ-introduction-compatibility*
 Organ supports :
 
 - org files
-- markdown files
-- any folded file
+- markdown
+- asciidoc : headings only
+- folded files with markers
+- indent folded files : basic navigation only
 
 It is written in vimscript (VimL) and compatible with both Vim and Neovim.
 
