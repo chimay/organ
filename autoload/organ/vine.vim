@@ -88,8 +88,48 @@ fun! organ#vine#relative (target)
 	let current = expand('%')
 	let current = fnamemodify(current, ':p')
 	" ---- find common dir base
-	let comtarget = target
-	let comcurrent = current
+	let target_list = split(target, '/')
+	let current_list = split(current, '/')
+	let length = len(target_list)
+	let index = -1
+	while v:true
+		if index >= length - 2
+			break
+		endif
+		if target_list[:index + 1] != current_list[:index + 1]
+			break
+		endif
+		let index += 1
+	endwhile
+	if index < 0
+		let common = []
+	elseif index == length
+		let common = target_list
+	else
+		let common = target_list[:index]
+	endif
+	let target_list = target_list[index + 1:]
+	let target = join(target_list, '/')
+	let current_list = current_list[index + 1:]
+	let numparents = len(current_list) - 1
+	let parents = repeat('../', numparents)
+	let target = parents .. target
+	return target
+endfun
+
+" ---- url list, for completion
+
+fun! organ#vine#urlist ()
+	" List of urls with absolute & relative path, for completion
+	let urls = g:ORGAN_STOPS.urls
+	let urlist = []
+	for elem in urls
+		eval urlist->add(elem.url)
+		let file = organ#vine#relative (elem.file)
+		let relative_url = 'file:' .. file .. '::' .. elem.section
+		eval urlist->add(relative_url)
+	endfor
+	return urlist
 endfun
 
 " ---- new
