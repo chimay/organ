@@ -29,13 +29,15 @@ fun! organ#tree#new ()
 	else
 		let marker = split(&foldmarker, ',')[0]
 		let comstr = split(&commentstring, '%s')
-		if len(comstr) == 1
-			let line = comstr[0] .. '  ' .. marker .. string(level)
+		let lencomstr = len(comstr)
+		if lencomstr == 0
+			let line = ' ' .. marker .. string(level)
+		elseif lencomstr == 1
+			let line = comstr[0] .. '  ' .. marker .. string(level) .. ' '
 		else
 			let line = comstr[0] .. '  ' .. marker .. string(level) .. ' ' .. comstr[1]
 		endif
 	endif
-	let line ..= ' '
 	let linelist = [line, '']
 	call append('.', linelist)
 	let linum = line('.') + 1
@@ -44,8 +46,13 @@ fun! organ#tree#new ()
 		"call cursor('.', col('$'))
 		startinsert!
 	else
-		let lencomstr = len(comstr[0])
-		call cursor('.', lencomstr + 2)
+		if lencomstr == 0
+			let lencomstr = 0
+			call cursor('.', 1)
+		else
+			let lencomstr = len(comstr[0])
+			call cursor('.', lencomstr + 2)
+		endif
 		startinsert
 	endif
 endfun

@@ -234,12 +234,24 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let move = a:move
 	if ! organ#colibri#is_in_list ()
 		echomsg 'organ colibri properties : not in a list'
-		return #{ linum : 0, itemhead : '', level : 0, text : '' }
+		return #{
+			\ linum : 0,
+			\ itemhead : '',
+			\ level : 1,
+			\ prefix : '',
+			\ text : '',
+			\}
 	endif
 	let linum = organ#colibri#itemhead (move)
 	if linum == 0
 		echomsg 'organ colibri properties : itemhead not found'
-		return #{ linum : 0, itemhead : '', level : 0, text : '' }
+		return #{
+			\ linum : 0,
+			\ itemhead : '',
+			\ level : 1,
+			\ prefix : '',
+			\ text : '',
+			\}
 	endif
 	let itemhead = getline(linum)
 	" ---- tab -> spaces
@@ -288,14 +300,9 @@ fun! organ#colibri#subtree (move = 'dont-move')
 	else
 		let tail_linum = forward_linum - 1
 	endif
-	let subtree = #{
-				\ head_linum : properties.linum,
-				\ itemhead : properties.itemhead,
-				\ level : properties.level,
-				\ prefix : properties.prefix,
-				\ text : properties.text,
-				\ tail_linum : tail_linum,
-				\}
+	let subtree = properties
+	let subtree.head_linum = properties.linum
+	let subtree.tail_linum = tail_linum
 	return subtree
 endfun
 

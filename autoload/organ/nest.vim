@@ -81,10 +81,16 @@ fun! organ#nest#speed (key)
 	if ! empty(maparg)
 		let rhs = maparg.rhs
 		let rhs = organ#utils#reverse_keytrans(rhs)
+		if v:count > 0
+			let rhs = rhs->repeat(v:count)
+		endif
 		call feedkeys(rhs)
 		return 'normal-mapped-' .. keytrans
 	endif
 	" ---- non mapped key
+	if v:count > 0
+		let rhs = rhs->repeat(v:count)
+	endif
 	call feedkeys(key, 'n')
 	return 'normal-' .. keytrans
 endfun

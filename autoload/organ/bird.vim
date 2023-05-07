@@ -188,7 +188,14 @@ fun! organ#bird#properties (move = 'dont-move')
 	let linum = organ#bird#headline (move)
 	if linum == 0
 		echomsg 'organ bird properties : headline not found'
-		return #{ linum : 0, headline : '', level : 0, title : '' }
+		return #{
+			\ linum : 0,
+			\ headline : '',
+			\ level : 1,
+			\ levelstring : '',
+			\ title : '',
+			\ todo : '',
+			\}
 	endif
 	let headline = getline(linum)
 	" ---- level & title
@@ -255,15 +262,9 @@ fun! organ#bird#subtree (move = 'dont-move')
 		mark '
 		call cursor(head_linum, 1)
 	endif
-	let subtree = #{
-				\ head_linum : head_linum,
-				\ headline : properties.headline,
-				\ level : level,
-				\ levelstring : properties.levelstring,
-				\ title : properties.title,
-				\ todo : properties.todo,
-				\ tail_linum : tail_linum,
-				\}
+	let subtree = properties
+	let subtree.head_linum = properties.linum
+	let subtree.tail_linum = tail_linum
 	if move !=  'move'
 		call setpos('.',  position)
 	endif
