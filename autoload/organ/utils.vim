@@ -183,7 +183,7 @@ fun! organ#utils#call (function, ...)
 	endif
 endfun
 
-fun! organ#utils#reverse_keytrans(keystring)
+fun! organ#utils#reverse_keytrans (keystring)
 	" Convert char representation like <c-a> -> 
 	let keystring = a:keystring
 	let angle_pattern = '\m<[^>]\+>'
