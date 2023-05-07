@@ -205,6 +205,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['<c'] = 'center'
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
+  " ---- timestamp format
+  let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
   nmap <c-cr> <plug>(organ-new)
   imap <c-cr> <plug>(organ-new)
@@ -294,6 +296,7 @@ value in your init file, these bindings become available :
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-@>`       : create new link
+- `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)

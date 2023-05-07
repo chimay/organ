@@ -62,6 +62,31 @@ fun! organ#utils#delete (first, ...)
 	endif
 endfun
 
+fun! organ#utils#timestamp ()
+	" Insert date & time stamp at cursor
+	let position = getcurpos ()
+	let linum = position[1]
+	let colnum = position[2]
+	let line = getline(linum)
+	if colnum <= 1
+		let before = ''
+		let after = line
+	elseif colnum == col('$')
+		let before = line
+		let after = ''
+	else
+		let before = line[:colnum - 2]
+		let after = line[colnum - 1:]
+	endif
+	let format = g:organ_config.timestamp_format
+	let stamp = strftime(format)
+	let lenstamp = len(stamp)
+	let newline = before .. stamp .. after
+	call setline(linum, newline)
+	let colnum += lenstamp
+	call cursor(linum, colnum)
+endfun
+
 fun! organ#utils#is_nested_list (argument)
 	" Whether argument is a nested list
 	" Empty list is not considered nested

@@ -4,8 +4,8 @@
 "
 " Initialization of variables
 
-fun! organ#void#store ()
-	" Initialize store
+fun! organ#void#stops ()
+	" Initialize persistent data global var
 	if ! exists('g:ORGAN_STOPS')
 		let g:ORGAN_STOPS = {}
 	endif
@@ -36,10 +36,13 @@ fun! organ#void#config ()
 		let g:organ_config.prefixless = 0
 	endif
 	if ! has_key(g:organ_config, 'prefixless_modes')
-		let g:organ_config.prefixless_modes = ['normal', 'insert']
+		let g:organ_config.prefixless_modes = ['normal', 'visual', 'insert']
 	endif
 	if ! has_key(g:organ_config, 'prefixless_plugs')
 		let g:organ_config.prefixless_plugs = []
+	endif
+	if ! has_key(g:organ_config, 'timestamp_format')
+		let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
 	endif
 	" ---- list
 	if ! has_key(g:organ_config, 'list')
@@ -117,7 +120,7 @@ endfun
 
 fun! organ#void#foundation ()
 	" Initialize organ
-	call organ#void#store ()
+	call organ#void#stops ()
 	call organ#void#config ()
 endfun
 

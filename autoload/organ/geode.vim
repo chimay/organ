@@ -67,6 +67,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-expand-template'               , 'organ#seed#expand'                        ] ,
 		\ [ 'organ-store-url'                     , 'organ#vine#store'                         ] ,
 		\ [ 'organ-new-link'                      , 'organ#vine#new'                           ] ,
+		\ [ 'organ-timestamp'                     , 'organ#utils#timestamp'                    ] ,
 		\ [ 'organ-format-table'                  , 'organ#table#format'                       ] ,
 		\ [ 'organ-export-pandoc'                 , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'                  , 'organ#pipe#emacs_export'                  ] ,
@@ -117,15 +118,18 @@ if ! exists('s:maps_normal')
 		\ [ '<m-x>'       , 'organ-expand-template'               ] ,
 		\ [ '<m-s>'       , 'organ-store-url'                     ] ,
 		\ [ '<m-@>'       , 'organ-new-link'                      ] ,
+		\ [ '<m-d>'       , 'organ-timestamp'                     ] ,
 		\ [ '<m-a>'       , 'organ-format-table'                  ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'                 ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'                  ] ,
-		\                                                         ]
+		\ ]
 	lockvar! s:maps_normal
 endif
 
 if ! exists('s:maps_visual')
-	let s:maps_visual = s:maps_normal
+	let s:maps_visual = [
+		\ [ '<m-a>' , 'organ-format-table' ] ,
+		\]
 	lockvar! s:maps_visual
 endif
 
