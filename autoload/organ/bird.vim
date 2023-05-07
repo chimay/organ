@@ -212,7 +212,6 @@ fun! organ#bird#properties (move = 'dont-move')
 		let levelstring = headline->matchstr(levelstring_pattern)
 		let title = substitute(headline, levelstring_pattern, '', '')
 	endif
-	echomsg 'begin' .. title .. 'end'
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle

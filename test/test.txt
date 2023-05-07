@@ -72,8 +72,6 @@ content
 
 part 2.1 {{{2
 
- {{{2
-
 content
 
 part 2.2 {{{2

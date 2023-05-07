@@ -85,9 +85,11 @@ fun! organ#vine#relative (target)
 	" Relative path to file target
 	let target = a:target
 	" ---- current file
-	let bufname = expand('%')
-	let current = fnamemodify(bufname, ':p')
-	" ---- compare
+	let current = expand('%')
+	let current = fnamemodify(current, ':p')
+	" ---- find common dir base
+	let comtarget = target
+	let comcurrent = current
 endfun
 
 " ---- new
