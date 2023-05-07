@@ -205,8 +205,10 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['<c'] = 'center'
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
-  " ---- todo : TODO - DONE - none
-  let g:organ_config.todo_cycle = ['TODO', 'DONE']
+  " ---- todo keywoard cycle
+  " ---- default : todo : TODO - DONE - none
+  " ---- please don't add none to the list
+  let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
