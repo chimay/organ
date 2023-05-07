@@ -225,30 +225,30 @@ value in your init file, the speed keys become available. They are active
 only in normal mode, when the cursor is on the first char of a headline
 or a list item line. Here is a complete list :
 
-- `<f1>`       : help
-- `<pageup>`   : previous heading
-- `<pagedown>` : next heading
-- `<home>`     : backward heading of same level
-- `<end>`      : forward heading of same level
-- `+`          : upper, parent heading
-- `-`          : lower, child heading, loosely speaking
-- `_`          : lower, child heading, strictly speaking
-- `i`          : info : full headings path (part, chapter, section, subsection, ...)
-- `h`          : go to headline, with prompt completion of full headings path
-- `<tab>`      : cycle current fold visibility
-- `<s-tab>`    : cycle all folds visibility
-- `s`          : select subtree
-- `Y`          : yank subtree
-- `D`          : delete subtree
-- `<del>`      : promote heading (and delete a level of indent)
-- `<ins>`      : demote heading (and insert a level of indent)
-- `H`          : promote subtree
-- `L`          : demote subtree
-- `U`          : move subtree up
-- `D`          : move subtree down
-- `M`          : move subtree in another one, with prompt completion
-- `e`          : export with pandoc
-- `E`          : export with emacs (works only in org files)
+- `<f1>`              : help
+- `<pageup>` or `(`   : previous heading
+- `<pagedown>` or `)` : next heading
+- `<home>` or `{`     : backward heading of same level
+- `<end>` or `}`      : forward heading of same level
+- `+`                 : upper, parent heading
+- `-`                 : lower, child heading, loosely speaking
+- `_`                 : lower, child heading, strictly speaking
+- `i`                 : info : full headings path (part, chapter, section, subsection, ...)
+- `h`                 : go to headline, with prompt completion of full headings path
+- `<tab>`             : cycle current fold visibility
+- `<s-tab>`           : cycle all folds visibility
+- `s`                 : select subtree
+- `Y`                 : yank subtree
+- `D`                 : delete subtree
+- `<del>`             : promote heading (and delete a level of indent)
+- `<ins>`             : demote heading (and insert a level of indent)
+- `H`                 : promote subtree
+- `L`                 : demote subtree
+- `U`                 : move subtree up
+- `D`                 : move subtree down
+- `M`                 : move subtree in another one, with prompt completion
+- `e`                 : export with pandoc
+- `E`                 : export with emacs (works only in org files)
 
 ------------------------------------------------------------------------------
 ALWAYS DEFINED					*organ-bindings-always*
