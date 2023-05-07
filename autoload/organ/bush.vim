@@ -33,7 +33,8 @@ fun! organ#bush#indent_item (level)
 	if head >= tail
 		return itemhead
 	endif
-	let numspaces += len_prefix
+	" -- length prefix + one space
+	let numspaces += len_prefix + 1
 	let indent = repeat(' ', numspaces)
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
