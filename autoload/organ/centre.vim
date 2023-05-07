@@ -127,6 +127,7 @@ fun! organ#centre#speedkeys ()
 	let command = "<cmd>call organ#nest#speed('"
 	let close = "')<cr>"
 	for key in keys(s:speedkeys)
+		" -- to avoid vim complain about <...> key in <cmd> map
 		let rawkey = organ#utils#reverse_keytrans (key)
 		execute map key command  .. rawkey .. close
 	endfor
