@@ -425,8 +425,10 @@ fun! organ#bush#todo ()
 	" Cycle todo - done - none headline marker
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
+	let level = properties.level
 	let prefix = properties.prefix
 	let text = properties.text
+	" ---- next in cycle
 	let todo = properties.todo
 	let todo_cycle = g:organ_config.todo_cycle
 	let lencycle = len(todo_cycle)
@@ -438,6 +440,7 @@ fun! organ#bush#todo ()
 	else
 		let next_todo = todo_cycle[cycle_index + 1]
 	endif
+	" ---- new line
 	if s:rep_one_char->index(&filetype) >= 0
 		if empty(next_todo)
 			let newline = prefix .. ' ' .. text
@@ -451,6 +454,13 @@ fun! organ#bush#todo ()
 			let newline = next_todo .. ' ' .. text .. ' ' .. prefix
 		endif
 	endif
+	" ---- indent
+	let shift = organ#colibri#common_indent ()
+	let step = g:organ_config.list.indent_length
+	let numspaces = shift + step * (level - 1)
+	let indent = repeat(' ', numspaces)
+	let newline = indent .. newline
+	" ---- coda
 	call setline(linum, newline)
 	return newline
 endfun
