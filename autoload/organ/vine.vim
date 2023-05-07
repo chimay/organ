@@ -50,29 +50,44 @@ fun! organ#vine#store ()
 			let iden = substitute(iden_line, prefix, '', '')
 		endif
 	endif
-	let bufname = bufname(bufnr('%'))
-	let file = fnamemodify(bufname, ':t')
-	let url = 'file:'
-	let url ..= file
-	let url ..= '::'
+	let bufname = expand('%')
+	let file = fnamemodify(bufname, ':p')
 	if empty(iden)
-		let url ..= '*' .. properties.title
+		let section = '*' .. properties.title
 	else
-		let url ..= '#' .. iden
+		let section = '#' .. iden
 	endif
+	let url = 'file:' .. file .. '::' .. section
+	let urldict = #{
+				\ file : file,
+				\ section : section,
+				\ url : url,
+				\}
 	let store = g:ORGAN_STOPS.urls
-	if store->index(url) < 0
-		eval store->insert(url)
-		let keep = g:organ_config.links.keep
-		if keep > 0
-			let store = store[:keep - 1]
-		endif
-		echomsg 'organ: stored' url
-	else
+	let listurl = map(deepcopy(store), { _, v -> v.url })
+	if listurl->index(url) >= 0
 		echomsg 'organ: url already stored'
+		return urldict
 	endif
+	eval store->insert(urldict)
+	let keep = g:organ_config.links.keep
+	if keep > 0
+		let store = store[:keep - 1]
+	endif
+	echomsg 'organ: stored' url
 	let g:ORGAN_STOPS.urls = store
 	return url
+endfun
+
+" --- relative url path
+
+fun! organ#vine#relative (target)
+	" Relative path to file target
+	let target = a:target
+	" ---- current file
+	let bufname = expand('%')
+	let current = fnamemodify(bufname, ':p')
+	" ---- compare
 endfun
 
 " ---- new

@@ -37,7 +37,7 @@ endif
 fun! organ#pipe#extensions (output_format)
 	" Input and output file extensions
 	let output_format = a:output_format
-	let input_extension = '\.' .. bufname('%')->fnamemodify(':e')
+	let input_extension = '\.' .. expand('%:e')
 	let output_extension = '\.' .. output_format
 	if output_format ==# 'markdown'
 		let output_extension = '\.md'
@@ -63,7 +63,7 @@ fun! organ#pipe#pandoc_export (...)
 		echomsg 'organ pipe pandoc export : format not supported'
 		return v:false
 	endif
-	let input = bufname('%')
+	let input = expand('%')
 	let [input_ext, output_ext] = organ#pipe#extensions (output_format)
 	let output = substitute(input, input_ext, output_ext, '')
 	let command = 'pandoc -f '
@@ -90,7 +90,7 @@ fun! organ#pipe#emacs_export (...)
 		echomsg 'organ pipe emacs export : format not supported'
 		return v:false
 	endif
-	let input = bufname('%')
+	let input = expand('%')
 	let [input_ext, output_ext] = organ#pipe#extensions (output_format)
 	let emacs_fun = s:emacs_functions[output_format]
 	let command = 'emacs ' .. input .. ' '
@@ -115,7 +115,7 @@ fun! organ#pipe#asciidoc_export (...)
 		echomsg 'organ pipe asciidoc export : format not supported'
 		return v:false
 	endif
-	let input = bufname('%')
+	let input = expand('%')
 	let command = 'asciidoc -b ' .. output_format .. ' ' .. input
 	call system(command)
 	return command
@@ -137,7 +137,7 @@ fun! organ#pipe#asciidoctor_export (...)
 		echomsg 'organ pipe asciidoctor export : format not supported'
 		return v:false
 	endif
-	let input = bufname('%')
+	let input = expand('%')
 	let command = 'asciidoctor -b ' .. output_format .. ' ' .. input
 	call system(command)
 	return command
