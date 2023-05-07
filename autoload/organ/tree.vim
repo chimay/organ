@@ -28,8 +28,12 @@ fun! organ#tree#new ()
 		let line = organ#bird#char()->repeat(level)
 	else
 		let marker = split(&foldmarker, ',')[0]
-		let comstr = substitute(&commentstring, '%s', '', '')
-		let line = comstr .. ' ' .. marker .. string(level)
+		let comstr = split(&commentstring, '%s')
+		if len(comstr) == 1
+			let line = comstr[0] .. '  ' .. marker .. string(level)
+		else
+			let line = comstr[0] .. '  ' .. marker .. string(level) .. ' ' .. comstr[1]
+		endif
 	endif
 	let line ..= ' '
 	let linelist = [line, '']
@@ -40,8 +44,8 @@ fun! organ#tree#new ()
 		"call cursor('.', col('$'))
 		startinsert!
 	else
-		let lencomstr = len(comstr)
-		call cursor('.', lencomstr + 1)
+		let lencomstr = len(comstr[0])
+		call cursor('.', lencomstr + 2)
 		startinsert
 	endif
 endfun
