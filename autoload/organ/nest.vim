@@ -79,17 +79,16 @@ fun! organ#nest#speed (key, angle = 'no-angle')
 	endif
 	" ------ elsewhere
 	" ---- mapped key
-	let mapstore = organ#centre#mapstore()
-	let maparg = mapstore[fullkey]
+	let maparg = organ#centre#mapstore(fullkey)
 	if ! empty(maparg)
-		let rhs = mapstore[fullkey].rhs
+		let rhs = maparg.rhs
 		let rhs = organ#utils#reverse_keytrans(rhs)
 		call feedkeys(rhs)
 		return 'normal-mapped-' .. angle
 	endif
 	" ---- non mapped key
 	" -- special key with angle, like <bs>
-	if angle ==# 'angle' || angle ==# '>'
+	if angle ==# 'with-angle' || angle ==# '>'
 		execute 'let key =' '"\<' .. key .. '>"'
 		execute 'normal!' key
 		return 'normal-' .. angle

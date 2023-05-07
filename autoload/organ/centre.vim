@@ -86,7 +86,6 @@ fun! organ#centre#storemaps ()
 	for key in keys(s:speedkeys)
 		let maparg = maparg(key, 'n', v:false, v:true)
 		if empty(maparg)
-			let s:mapstore[key] = {}
 			continue
 		endif
 		let s:mapstore[key] = maparg
@@ -97,11 +96,14 @@ fun! organ#centre#storemaps ()
 	return s:mapstore
 endfun
 
-fun! organ#centre#mapstore (key = '')
+fun! organ#centre#mapstore (...)
 	" Front-end to s:mapstore
-	let key = a:key
-	if empty(key)
+	if a:0 == 0
 		return s:mapstore
+	endif
+	let key = a:1
+	if empty(key) || ! has_key(s:mapstore, key)
+		return {}
 	endif
 	return s:mapstore[key]
 endfun
