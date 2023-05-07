@@ -379,6 +379,33 @@ fun! organ#tree#moveto ()
 	return target
 endfun
 
+" ---- todo
+
+fun! organ#tree#todo ()
+	" Cycle todo - done - none headline marker
+	let properties = organ#bird#properties ()
+	let linum = properties.linum
+	let levelstring = properties.levelstring
+	let title = properties.title
+	let todo = properties.todo
+	if s:rep_one_char->index(&filetype) >= 0
+		let title = 'TODO ' .. title
+	else
+		if title[-1:] ==# ' '
+			let title = title .. 'TODO'
+		else
+			let title = title .. ' TODO'
+		endif
+	endif
+	if s:rep_one_char->index(&filetype) >= 0
+		let newline = levelstring .. ' ' .. title
+	else
+		let newline = title .. ' ' .. levelstring
+	endif
+	call setline(linum, newline)
+	return newline
+endfun
+
 " ---- convert org <-> markdown
 
 fun! organ#tree#org2markdown ()

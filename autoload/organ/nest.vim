@@ -59,41 +59,32 @@ fun! organ#nest#speed_help ()
 	echomsg 'U : move sub back   | D : move sub for     | M : move subtree to heading'
 endfun
 
-fun! organ#nest#speed (key, angle = 'no-angle')
+fun! organ#nest#speed (key)
 	" Speed key on headlines first char
 	let key = a:key
-	let angle = a:angle
-	if angle ==# 'angle' || angle ==# '>'
-		let fullkey = '<' .. key .. '>'
-	else
-		let fullkey = key
+	let keytrans = key->keytrans()
+	if keytrans =~ '\m^<[^>]\+>$'
+		let keytrans = tolower(keytrans)
 	endif
 	" ------ headline or itemhead
 	let first_char = col('.') == 1
 	let tree = organ#bird#is_on_headline ()
 	let tree = tree || organ#colibri#is_on_itemhead ()
 	if first_char && tree
-		let action = s:speedkeys[fullkey]
+		let action = s:speedkeys[keytrans]
 		call organ#utils#call (action)
-		return 'speed-' .. angle
+		return 'speed-' .. keytrans
 	endif
 	" ------ elsewhere
 	" ---- mapped key
-	let maparg = organ#centre#mapstore(fullkey)
+	let maparg = organ#centre#mapstore(keytrans)
 	if ! empty(maparg)
 		let rhs = maparg.rhs
 		let rhs = organ#utils#reverse_keytrans(rhs)
 		call feedkeys(rhs)
-		return 'normal-mapped-' .. angle
+		return 'normal-mapped-' .. keytrans
 	endif
 	" ---- non mapped key
-	" -- special key with angle, like <bs>
-	if angle ==# 'with-angle' || angle ==# '>'
-		execute 'let key =' '"\<' .. key .. '>"'
-		execute 'normal!' key
-		return 'normal-' .. angle
-	endif
-	" -- without angle
-	execute 'normal!' key
-	return 'normal-' .. angle
+	call feedkeys(key, 'n')
+	return 'normal-' .. keytrans
 endfun

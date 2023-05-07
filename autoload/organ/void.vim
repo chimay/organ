@@ -41,6 +41,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config, 'prefixless_plugs')
 		let g:organ_config.prefixless_plugs = []
 	endif
+	if ! has_key(g:organ_config, 'todo_cycle')
+		let g:organ_config.todo_cycle = ['TODO', 'DONE', 'NONE']
+	endif
 	if ! has_key(g:organ_config, 'timestamp_format')
 		let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
 	endif

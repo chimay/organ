@@ -88,6 +88,9 @@ fun! organ#centre#storemaps ()
 		if empty(maparg)
 			continue
 		endif
+		if key =~ '\m^<[^>]\+>$'
+			let key = tolower(key)
+		endif
 		let s:mapstore[key] = maparg
 	endfor
 	" ---- make sure it is not modified
@@ -102,6 +105,9 @@ fun! organ#centre#mapstore (...)
 		return s:mapstore
 	endif
 	let key = a:1
+	if key =~ '\m^<[^>]\+>$'
+		let key = tolower(key)
+	endif
 	if empty(key) || ! has_key(s:mapstore, key)
 		return {}
 	endif
@@ -120,14 +126,8 @@ fun! organ#centre#speedkeys ()
 	endif
 	let command = "<cmd>call organ#nest#speed('"
 	let close = "')<cr>"
-	let close_angle = "', '>')<cr>"
 	for key in keys(s:speedkeys)
-		if key[0] ==# '<' && key[-1:] ==# '>'
-			let arg_key = key[1:-2]
-			execute map key command  .. arg_key .. close_angle
-		else
-			execute map key command  .. key .. close
-		endif
+		execute map key command  .. key .. close
 	endfor
 endfun
 

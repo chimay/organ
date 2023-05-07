@@ -205,6 +205,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['<c'] = 'center'
   " -- #+include: line
   let g:organ_config.templates['+i'] = 'include'
+  " ---- todo
+  let g:organ_config.todo_cycle = ['TODO', 'DONE', 'NONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
@@ -241,8 +243,8 @@ or a list item line. Here is a complete list :
 - `+`          : upper, parent heading
 - `-`          : lower, child heading, loosely speaking
 - `_`          : lower, child heading, strictly speaking
-- `w`          : where am I ? full headings path (part, chapter, section, subsection, ...)
-- `^`          : go to headline, with prompt completion of full headings path
+- `i`          : info : full headings path (part, chapter, section, subsection, ...)
+- `h`          : go to headline, with prompt completion of full headings path
 - `<tab>`      : cycle current fold visibility
 - `<s-tab>`    : cycle all folds visibility
 - `S`          : select subtree

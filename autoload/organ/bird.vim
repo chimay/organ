@@ -191,24 +191,39 @@ fun! organ#bird#properties (move = 'dont-move')
 		return #{ linum : 0, headline : '', level : 0, title : '' }
 	endif
 	let headline = getline(linum)
+	" ---- level & title
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
-		let leading_pattern = '\m^[' .. char .. ']\+'
-		let leading = headline->matchstr(leading_pattern)
-		let level = len(leading)
+		let levelstring_pattern = '\m^[' .. char .. ']\+'
+		let levelstring = headline->matchstr(levelstring_pattern)
+		let level = len(levelstring)
 		let title = headline[level + 1:]
 	else
 		let marker = split(&foldmarker, ',')[0]
 		let level = organ#bird#foldlevel ()
-		let title_pattern = '\m ' .. marker .. '[0-9]\+'
-		let title = substitute(headline, title_pattern, '', '')
+		let levelstring_pattern = '\m ' .. marker .. '[0-9]\+'
+		let levelstring = headline->matchstr(levelstring_pattern)
+		let title = substitute(headline, levelstring_pattern, '', '')
 	endif
-	" -- assume a space before the title
+	" ---- todo status
+	let todo_cyle = g:organ_config.todo_cycle
+	if title =~ 'TODO'
+		let todo = 'TODO'
+		let title = substitute(title, 'TODO', '', '')
+	elseif title =~ 'DONE'
+		let todo = 'DONE'
+		let title = substitute(title, 'DONE', '', '')
+	else
+		let todo = 'NONE'
+	endif
+	" ---- coda
 	let properties = #{
 				\ linum : linum,
 				\ headline : headline,
 				\ level : level,
+				\ levelstring : levelstring,
 				\ title : title,
+				\ todo : todo,
 				\}
 	return properties
 endfun
@@ -237,13 +252,13 @@ fun! organ#bird#subtree (move = 'dont-move')
 		mark '
 		call cursor(head_linum, 1)
 	endif
-	let headline = properties.headline
-	let title = properties.title
 	let subtree = #{
 				\ head_linum : head_linum,
-				\ headline : headline,
+				\ headline : properties.headline,
 				\ level : level,
-				\ title : title,
+				\ levelstring : properties.levelstring,
+				\ title : properties.title,
+				\ todo : properties.todo,
 				\ tail_linum : tail_linum,
 				\}
 	if move !=  'move'
@@ -476,7 +491,7 @@ fun! organ#bird#path (move = 'dont-move')
 	endwhile
 endfun
 
-fun! organ#bird#whereami (move = 'dont-move')
+fun! organ#bird#info (move = 'dont-move')
 	" Echo full subtree path
 	let dashboard = 'organ: ' .. organ#bird#path (a:move)
 	echomsg dashboard
