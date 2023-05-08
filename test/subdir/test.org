@@ -167,6 +167,7 @@ content
 *** chapter 3.3.1
 
 content
+abc | def
 
 a = b = c
 ab = cd = ef

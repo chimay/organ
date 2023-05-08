@@ -24,6 +24,16 @@ fun! organ#table#generic_pattern (argdict = {})
 	return pattern
 endfun
 
+fun! organ#table#separator_pattern ()
+	" Row separator pattern
+	if &filetype ==# 'org'
+		return '\m^\s*|\%(-\++\)\+-\+|'
+	elseif &filetype ==# 'markdown'
+		return '\m^\s*|\%([-:]\+|\)\+[-:]\+|'
+	endif
+	return ''
+endfun
+
 fun! organ#table#outside_pattern (argdict = {})
 	" Pattern for non table lines
 	let argdict = a:argdict
@@ -32,9 +42,9 @@ fun! organ#table#outside_pattern (argdict = {})
 	else
 		let delimiter = organ#table#delimiter ()
 	endif
-	let pattern = '\m^\s*[^' .. delimiter .. ' \t].*'
-	let pattern ..= '\|.*[^' .. delimiter .. ' \t]\s*$'
-	let pattern ..= '\|^$'
+	let pattern = '\m^$\|'
+	let pattern ..= '^\s*[^' .. delimiter .. ' ].*'
+	let pattern ..= '\|.*[^' .. delimiter .. ' ]\s*$'
 	return pattern
 endfun
 
