@@ -11,6 +11,26 @@ fun! organ#table#delimiter ()
 	return '|'
 endfun
 
+fun! organ#table#separator_delimiter ()
+	" Tables column delimiter in separator line
+	if &filetype ==# 'org'
+		return '+'
+	elseif &filetype ==# 'markdown'
+		return '|'
+	endif
+	return '|'
+endfun
+
+fun! organ#table#separator_delimiter_pattern ()
+	" Tables column pattern in separator line
+	if &filetype ==# 'org'
+		return '[|+]'
+	elseif &filetype ==# 'markdown'
+		return '|'
+	endif
+	return '|'
+endfun
+
 fun! organ#table#generic_pattern (argdict = {})
 	" Generic table line pattern
 	let argdict = a:argdict
@@ -25,11 +45,11 @@ fun! organ#table#generic_pattern (argdict = {})
 endfun
 
 fun! organ#table#separator_pattern ()
-	" Row separator pattern
+	" Separator line pattern
 	if &filetype ==# 'org'
-		return '\m^\s*|\%(-\++\)\+-\+|'
+		return '\m^\s*|\%(-\++\)*-\+|\s*$'
 	elseif &filetype ==# 'markdown'
-		return '\m^\s*|\%([-:]\+|\)\+[-:]\+|'
+		return '\m^\s*|\%([-:]\+|\)*[-:]\+|\s*$'
 	endif
 	return ''
 endfun
@@ -48,10 +68,27 @@ fun! organ#table#outside_pattern (argdict = {})
 	return pattern
 endfun
 
-fun! organ#table#is_in_table (argdict = {})
+fun! organ#table#is_in_table (...)
 	" Whether current line is in a table
-	let line = getline('.')
-	let pattern = organ#table#generic_pattern (a:argdict)
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let line = getline(linum)
+	let pattern = organ#table#generic_pattern ()
+	return line =~ pattern
+endfun
+
+fun! organ#table#is_separator_line (...)
+	" Whether current line is a separator line
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let line = getline(linum)
+	let pattern = organ#table#separator_pattern ()
 	return line =~ pattern
 endfun
 
@@ -98,7 +135,12 @@ fun! organ#table#positions (argdict = {})
 	let positions = []
 	let index = 0
 	while v:true
-		let index = line->match(delimiter, index) + 1
+		if organ#table#is_separator_line (linum)
+			let pattern = organ#table#separator_delimiter_pattern ()
+		else
+			let pattern = delimiter
+		endif
+		let index = line->match(pattern, index) + 1
 		if index == 0
 			break
 		endif
@@ -218,12 +260,12 @@ fun! organ#table#add_missing_columns (argdict = {})
 	" Add missing columns delimiters
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
-		let delimiter =  argdict.delimiter
+		let delimiter = argdict.delimiter
 	else
 		let delimiter = organ#table#delimiter ()
 	endif
 	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
+		let head_linum = argdict.head_linum
 	else
 		let head_linum = organ#table#head ()
 	endif
@@ -245,7 +287,13 @@ fun! organ#table#add_missing_columns (argdict = {})
 		let add = maxim - width
 		if add > 0
 			let line = getline(linum)
-			let line ..= delimiter->repeat(add)
+			if organ#table#is_separator_line (linum)
+				let addme = organ#table#separator_delimiter ()
+				let line ..= addme->repeat(add - 1) .. delimiter
+			else
+				let addme = delimiter
+				let line ..= addme->repeat(add)
+			endif
 			call setline(linum, line)
 			let grid_index = grid[index]
 			let last_pos = grid_index[-1]
@@ -296,9 +344,13 @@ fun! organ#table#align (argdict = {})
 			if add == 0
 				continue
 			endif
-			let shift = repeat(' ', add)
-			" -- adapt line
 			let line = linelist[rownum]
+			if line =~ organ#table#separator_pattern ()
+				let shift = repeat('-', add)
+			else
+				let shift = repeat(' ', add)
+			endif
+			" -- adapt line
 			if position == 1
 				let before = ''
 				let after = line
