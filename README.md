@@ -8,7 +8,7 @@
     * [Features](#features)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
     * [Dependencies](#dependencies)
-    * [Export](#export)
+        * [Export](#export)
         * [Across files](#across-files)
 * [Installation](#installation)
     * [Using vim-packager](#using-vim-packager)
@@ -103,7 +103,7 @@ The core part runs on its own.
 
 Some extra-features need external tools, see below.
 
-## Export
+### Export
 
 If you want to export your file to another format, you just need to have
 pandoc installed, and the plugin takes care of the rest.  For org files,
