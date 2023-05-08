@@ -484,7 +484,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	let tail_linum = subtree.tail_linum
 	if head_linum == 0 || tail_linum == 0
 		echomsg 'organ bird strict child : headline not found'
-		return linum
+		return -1
 	endif
 	let level = subtree.level + 1
 	let headline_pattern = organ#bird#level_pattern (level, level)

@@ -13,18 +13,6 @@ endif
 
 " ---- helpers
 
-fun! organ#vine#generic_pattern ()
-	" Generic link pattern
-	if &filetype ==# 'org'
-		let pattern = '\[\[[^\]]\+\]\]\|'
-		let pattern ..= '\[\[[^\]]\+\]\[[^\]]\+\]\]'
-	elseif &filetype ==# 'markdown'
-		let pattern = '<[^>]\+>\|'
-		let pattern ..= '\[[^\]]\+\]([^)]\+)'
-	endif
-	return pattern
-endfun
-
 fun! organ#vine#template (url, desc = '')
 	" Link template
 	let url = a:url
@@ -50,8 +38,7 @@ fun! organ#vine#relative (target)
 	" Relative path to file target
 	let target = a:target
 	" ---- current file
-	let current = expand('%')
-	let current = fnamemodify(current, ':p')
+	let current = expand('%:p')
 	" ---- find common dir base
 	let target_list = split(target, '/')
 	let current_list = split(current, '/')
@@ -80,6 +67,18 @@ fun! organ#vine#relative (target)
 	let parents = repeat('../', numparents)
 	let target = parents .. target
 	return target
+endfun
+
+fun! organ#vine#generic_pattern ()
+	" Generic link pattern
+	if &filetype ==# 'org'
+		let pattern = '\m\[\[[^\]]\+\]\]\|'
+		let pattern ..= '\[\[[^\]]\+\]\[[^\]]\+\]\]'
+	elseif &filetype ==# 'markdown'
+		let pattern = '\m<[^>]\+>\|'
+		let pattern ..= '\[[^\]]\+\]([^)]\+)'
+	endif
+	return pattern
 endfun
 
 fun! organ#vine#find ()
@@ -121,13 +120,24 @@ endfun
 
 fun! organ#vine#url (link)
 	" Url part of a link
+	let link = a:link
+	let url = ''
 	if &filetype ==# 'org'
-		let pattern = '\[\[[^\]]\+\]\]\|'
-		let pattern = '\[\[[^\]]\+\]\[[^\]]\+\]\]'
+		let pattern = '\m\[\[\zs[^\]]\+\ze\]\]'
+		let url = link->matchstr(pattern)
+		if empty(url)
+			let pattern = '\m\[\[\zs[^\]]\+\ze\]\[[^\]]\+\]\]'
+			let url = link->matchstr(pattern)
+		endif
 	elseif &filetype ==# 'markdown'
-		let pattern = '<[^>]\+>\|'
-		let pattern = '\[[^\]]\+\]([^)]\+)'
+		let pattern = '\m<\zs[^>]\+\ze>'
+		let url = link->matchstr(pattern)
+		if empty(url)
+			let pattern = '\m\[[^\]]\+\](\zs[^)]\+\ze)'
+			let url = link->matchstr(pattern)
+		endif
 	endif
+	return url
 endfun
 
 " ---- store url dict
@@ -230,6 +240,40 @@ endfun
 fun! organ#vine#goto ()
 	" Go to link target
 	let link = organ#vine#find ()
+	let url = organ#vine#url (link)
+	" ---- file & dir
+	let file = substitute(url, '\m^file:', '', '')
+	let file = substitute(file, '\m::[^:]\+$', '', '')
+	let file = substitute(file, '\m::#.\+$', '', '')
+	let folder = expand('%:p:h')
+	" ---- section & iden
+	let section = url->matchstr('\m::\zs[^:]\+$')[1:]
+	let iden = ''
+	if empty(section)
+		let file = substitute(file, '\m::#.\+$', '', '')
+		let iden = url->matchstr('\m::#\zs.\+$')
+	endif
+	" ---- go there
+	execute 'lcd' folder
+	execute 'edit' file
+	if ! empty(section)
+		call cursor(1, 1)
+		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+		let linum = search(section, flags)
+	else
+		call cursor(1, 1)
+		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+		let searchme = ':custom_id: ' .. iden
+		let linum = search(searchme, flags)
+	endif
+	" ---- coda
+	let dict = #{
+			\ url : url,
+			\ file : file,
+			\ section : section,
+			\ iden : iden,
+			\}
+	return dict
 endfun
 
 " ---- convert org <-> markdown

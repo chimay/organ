@@ -151,6 +151,11 @@ content
 
 content
 
+[[file:../folder/test.org::*part 3.1]]
+[[file:../folder/test.org::*part 3.1][d]]
+[[file:../folder/test.org::#section:part_three_two]]
+[[file:../folder/test.org::#section:part_three_two][d]]
+
 [[file:test.md::*chapter 3.3.2][desc]]
 [[file:test.md::*chapter 3.3.2]]
 
