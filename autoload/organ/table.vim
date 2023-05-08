@@ -348,7 +348,8 @@ fun! organ#table#align (argdict = {})
 				continue
 			endif
 			let line = linelist[rownum]
-			if line =~ organ#table#separator_pattern ()
+			" -- shift
+			if colnum > 0 && line =~ organ#table#separator_pattern ()
 				let shift = repeat('-', add)
 			else
 				let shift = repeat(' ', add)
