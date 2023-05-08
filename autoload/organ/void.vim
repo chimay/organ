@@ -30,7 +30,7 @@ fun! organ#void#config ()
 		let g:organ_config.prefix = '<M-p>'
 	endif
 	if ! has_key(g:organ_config, 'prefix')
-		let g:organ_config.prefix = '<M-c>'
+		let g:organ_config.prefix = '<M-o>'
 	endif
 	if ! has_key(g:organ_config, 'prefixless')
 		let g:organ_config.prefixless = 0

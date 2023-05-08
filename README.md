@@ -173,7 +173,7 @@ if ! exists("g:organ_loaded")
   " ---- examples : <m-p> (default), [z
   let g:organ_config.previous = '[z'
   " ---- choose your mappings prefix
-  let g:organ_config.prefix = '<m-c>'
+  let g:organ_config.prefix = '<m-o>'
   " ---- enable prefixless maps
   let g:organ_config.prefixless = 1
   " ---- prefixless maps in these modes (default)
@@ -316,12 +316,12 @@ You can list all available plugs with the command `:map <plug>(organ-`.
 
 These are the same as the prefixless maps, but preceded by a prefix to
 avoid conflicts with other plugins. Examples with the default prefix
-`<M-c>` :
+`<M-o>` :
 
-- `<M-c><M-p>`       : previous heading
-- `<M-c><M-n>`       : next heading
-- `<M-c><M-b>`       : previous heading of same level
-- `<M-c><M-f>`       : next heading of same level
+- `<M-o><M-p>`       : previous heading
+- `<M-o><M-n>`       : next heading
+- `<M-o><M-b>`       : previous heading of same level
+- `<M-o><M-f>`       : next heading of same level
 
 Some of them are inspired by orgmode, with `<C-...>` replaced by `<M-...>`.
 
