@@ -46,6 +46,90 @@ fun! organ#vine#template (url, desc = '')
 	return link
 endfun
 
+fun! organ#vine#relative (target)
+	" Relative path to file target
+	let target = a:target
+	" ---- current file
+	let current = expand('%')
+	let current = fnamemodify(current, ':p')
+	" ---- find common dir base
+	let target_list = split(target, '/')
+	let current_list = split(current, '/')
+	let length = len(target_list)
+	let index = -1
+	while v:true
+		if index >= length - 2
+			break
+		endif
+		if target_list[:index + 1] != current_list[:index + 1]
+			break
+		endif
+		let index += 1
+	endwhile
+	if index < 0
+		let common = []
+	elseif index == length
+		let common = target_list
+	else
+		let common = target_list[:index]
+	endif
+	let target_list = target_list[index + 1:]
+	let target = join(target_list, '/')
+	let current_list = current_list[index + 1:]
+	let numparents = len(current_list) - 1
+	let parents = repeat('../', numparents)
+	let target = parents .. target
+	return target
+endfun
+
+fun! organ#vine#find ()
+	" Find link under or near cursor
+	let colindex = col('.') - 1
+	let line = getline('.')
+	let link_pattern = organ#vine#generic_pattern ()
+	" ---- link under cursor ?
+	let counter = 1
+	while v:true
+		let [link, begin, end] = line->matchstrpos(link_pattern, 0, counter)
+		if begin == -1
+			break
+		endif
+		if begin <= colindex && colindex <= end
+			return link
+		endif
+		let counter += 1
+	endwhile
+	" ---- if no link under cursor, just find the closest match on line
+	let counter = 1
+	let mindist = col('$')
+	let closest = ''
+	while v:true
+		let [link, begin, end] = line->matchstrpos(link_pattern, 0, counter)
+		if begin == -1
+			break
+		endif
+		let deltas = [abs(colindex - begin), abs(colindex - end)]
+		let dist = min(deltas)
+		if dist < mindist
+			let closest = link
+			let mindist = dist
+		endif
+		let counter += 1
+	endwhile
+	return closest
+endfun
+
+fun! organ#vine#url (link)
+	" Url part of a link
+	if &filetype ==# 'org'
+		let pattern = '\[\[[^\]]\+\]\]\|'
+		let pattern = '\[\[[^\]]\+\]\[[^\]]\+\]\]'
+	elseif &filetype ==# 'markdown'
+		let pattern = '<[^>]\+>\|'
+		let pattern = '\[[^\]]\+\]([^)]\+)'
+	endif
+endfun
+
 " ---- store url dict
 
 fun! organ#vine#store ()
@@ -89,44 +173,6 @@ fun! organ#vine#store ()
 	echomsg 'organ: stored' url
 	let g:ORGAN_STOPS.urls = store
 	return url
-endfun
-
-" --- relative url path
-
-fun! organ#vine#relative (target)
-	" Relative path to file target
-	let target = a:target
-	" ---- current file
-	let current = expand('%')
-	let current = fnamemodify(current, ':p')
-	" ---- find common dir base
-	let target_list = split(target, '/')
-	let current_list = split(current, '/')
-	let length = len(target_list)
-	let index = -1
-	while v:true
-		if index >= length - 2
-			break
-		endif
-		if target_list[:index + 1] != current_list[:index + 1]
-			break
-		endif
-		let index += 1
-	endwhile
-	if index < 0
-		let common = []
-	elseif index == length
-		let common = target_list
-	else
-		let common = target_list[:index]
-	endif
-	let target_list = target_list[index + 1:]
-	let target = join(target_list, '/')
-	let current_list = current_list[index + 1:]
-	let numparents = len(current_list) - 1
-	let parents = repeat('../', numparents)
-	let target = parents .. target
-	return target
 endfun
 
 " ---- url list, for completion
@@ -183,9 +229,7 @@ endfun
 
 fun! organ#vine#goto ()
 	" Go to link target
-	let colnum = col('.')
-	while v:true
-	endwhile
+	let link = organ#vine#find ()
 endfun
 
 " ---- convert org <-> markdown

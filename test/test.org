@@ -151,7 +151,7 @@ content
 
 content
 
-[[file:test.md::*chapter 3.3.2][desc]]
+[[file:test.md::*chapter 3.3.2][desc]]     [[file:test.md::*chapter 3.3.2]]
 [[file:test.md::*chapter 3.3.2]]
 
 [[ftp://toto.tutu][desc]]
