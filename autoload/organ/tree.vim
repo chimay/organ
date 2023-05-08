@@ -25,17 +25,17 @@ fun! organ#tree#new ()
 	let properties = organ#bird#properties ()
 	let level = properties.level
 	if s:rep_one_char->index(&filetype) >= 0
-		let line = organ#bird#char()->repeat(level)
+		let line = organ#bird#char()->repeat(level) .. ' '
 	else
 		let marker = split(&foldmarker, ',')[0]
-		let comstr = split(&commentstring, '%s')
-		let lencomstr = len(comstr)
-		if lencomstr == 0
+		let comlist = split(&commentstring, '%s')
+		let lencomlist = len(comlist)
+		if lencomlist == 0
 			let line = ' ' .. marker .. string(level)
-		elseif lencomstr == 1
-			let line = comstr[0] .. '  ' .. marker .. string(level) .. ' '
+		elseif lencomlist == 1
+			let line = comlist[0] .. '  ' .. marker .. string(level) .. ' '
 		else
-			let line = comstr[0] .. '  ' .. marker .. string(level) .. ' ' .. comstr[1]
+			let line = comlist[0] .. '  ' .. marker .. string(level) .. ' ' .. comlist[1]
 		endif
 	endif
 	let linelist = [line, '']
@@ -46,11 +46,10 @@ fun! organ#tree#new ()
 		"call cursor('.', col('$'))
 		startinsert!
 	else
-		if lencomstr == 0
-			let lencomstr = 0
+		if lencomlist == 0
 			call cursor('.', 1)
 		else
-			let lencomstr = len(comstr[0])
+			let lencomstr = len(comlist[0])
 			call cursor('.', lencomstr + 2)
 		endif
 		startinsert
