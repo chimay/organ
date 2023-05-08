@@ -74,7 +74,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - links
   + store url at cursor
   + create link with url completion
-  + goto link under cursor, or close to it
+  + goto link under or close to cursor
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
 - format tables
@@ -293,7 +293,7 @@ value in your init file, these bindings become available :
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-->`       : create new link (alt and -)
-- `<M-o>`       : go to link under cursor, or close to it
+- `<M-o>`       : go to link under or close to cursor
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern

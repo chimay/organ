@@ -65,7 +65,7 @@ FEATURES		    			*organ-introduction-features*
 - links
   + store url at cursor
   + create link with url completion
-  + goto link under cursor, or close to it
+  + goto link under or close to cursor
 - format tables
   + inside of table : align and add missing columns
   + outside of table : align following a pattern
@@ -292,7 +292,7 @@ value in your init file, these bindings become available :
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-->`       : create new link (alt and -)
-- `<M-o>`       : go to link under cursor, or close to it
+- `<M-o>`       : go to link under or close to cursor
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
