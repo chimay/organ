@@ -47,9 +47,12 @@ endfun
 fun! organ#table#separator_pattern ()
 	" Separator line pattern
 	if &filetype ==# 'org'
-		return '\m^\s*|\%(-\++\)*-\+|\s*$'
+		let pattern = '\m^\s*|-\+|\s*$\|'
+		let pattern ..= '^\s*|\%(-*+\)\+-*|\s*$'
+		return pattern
 	elseif &filetype ==# 'markdown'
-		return '\m^\s*|\%([-:]\+|\)*[-:]\+|\s*$'
+		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
+		return pattern
 	endif
 	return ''
 endfun
@@ -289,7 +292,7 @@ fun! organ#table#add_missing_columns (argdict = {})
 			let line = getline(linum)
 			if organ#table#is_separator_line (linum)
 				let addme = organ#table#separator_delimiter ()
-				let line ..= addme->repeat(add - 1) .. delimiter
+				let line = line[:-2] .. addme->repeat(add) .. line[-1:]
 			else
 				let addme = delimiter
 				let line ..= addme->repeat(add)
