@@ -118,7 +118,7 @@ If you want to add interactions between org or markdown files, you can
 install [wheel](https://github.com/chimay/wheel). With it, you can :
 
 - quickly jump to another org/markdown/whatever file
-- look for headlines in all orgmode or markdown files of a group
+- look for headlines in all orgmode or markdown files of a group (aka outline)
 - grep all your group files for special keywords, like TODO
 
 # Installation
