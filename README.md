@@ -12,8 +12,6 @@
         * [Across files](#across-files)
 * [Installation](#installation)
     * [Using vim-packager](#using-vim-packager)
-    * [Using minpac](#using-minpac)
-    * [Using vim-plug](#using-vim-plug)
     * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
 * [Configuration](#configuration)
     * [Persistent data](#persistent-data)
@@ -133,26 +131,7 @@ call packager#add('chimay/organ', { 'type' : 'start' })
 and run `:PackagerInstall` (see the
 [vim-packager readme](https://github.com/kristijanhusak/vim-packager)).
 
-## Using minpac
-
-Simply add this line after `minpac#init()` to your initialisation file :
-
-~~~vim
-call minpac#add('chimay/organ', { 'type' : 'start' })
-~~~
-
-and run `:PackUpdate` (see the
-[minpac readme](https://github.com/k-takata/minpac)).
-
-## Using vim-plug
-
-The syntax should be similar with other git oriented plugin managers :
-
-~~~vim
-Plug 'chimay/organ'
-~~~
-
-and run `:PlugInstall` to install.
+The syntax should be similar with other git oriented plugin managers.
 
 ## Cloning the repo in a pack-start directory
 
