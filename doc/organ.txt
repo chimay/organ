@@ -291,8 +291,8 @@ value in your init file, these bindings become available :
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
-- `<M-,>`       : create new link
-- `<M-;>`       : go to link under cursor, or close to it
+- `<M-->`       : create new link (alt and -)
+- `<M-o>`       : go to link under cursor, or close to it
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
