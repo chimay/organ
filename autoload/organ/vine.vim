@@ -13,6 +13,18 @@ endif
 
 " ---- helpers
 
+fun! organ#vine#generic_pattern ()
+	" Generic link pattern
+	if &filetype ==# 'org'
+		let pattern = '\[\[[^\]]\+\]\]\|'
+		let pattern ..= '\[\[[^\]]\+\]\[[^\]]\+\]\]'
+	elseif &filetype ==# 'markdown'
+		let pattern = '<[^>]\+>\|'
+		let pattern ..= '\[[^\]]\+\]([^)]\+)'
+	endif
+	return pattern
+endfun
+
 fun! organ#vine#template (url, desc = '')
 	" Link template
 	let url = a:url
@@ -165,6 +177,15 @@ fun! organ#vine#new ()
 	call setline(linum, newline)
 	let colnum += lenlink
 	call cursor(linum, colnum)
+endfun
+
+" ---- go to link target
+
+fun! organ#vine#goto ()
+	" Go to link target
+	let colnum = col('.')
+	while v:true
+	endwhile
 endfun
 
 " ---- convert org <-> markdown
