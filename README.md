@@ -8,6 +8,8 @@
     * [Features](#features)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
     * [Dependencies](#dependencies)
+    * [Export](#export)
+        * [Across files](#across-files)
 * [Installation](#installation)
     * [Using vim-packager](#using-vim-packager)
     * [Using minpac](#using-minpac)
@@ -71,8 +73,10 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
-- create link with url completion
+- links
   + store url at cursor
+  + create link with url completion
+  + goto link under cursor, or close to it
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
 - format tables
@@ -309,7 +313,8 @@ value in your init file, these bindings become available :
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
-- `<M-@>`       : create new link
+- `<M-,>`       : create new link
+- `<M-;>`       : go to link under cursor, or close to it
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern

@@ -181,6 +181,9 @@ content
 
 ## part 3.4
 
+[d](file:folder/test.org::*part 3.1)
+[d](file:test.org::#section:part_three_two)
+
 [desc](ftp://toto.tutu)
 <file:test.md::*chapter 3.3.2>
 

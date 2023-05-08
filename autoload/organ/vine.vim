@@ -266,6 +266,7 @@ fun! organ#vine#goto ()
 		let searchme = ':custom_id: ' .. iden
 		let linum = search(searchme, flags)
 	endif
+	normal! zv
 	" ---- coda
 	let dict = #{
 			\ url : url,

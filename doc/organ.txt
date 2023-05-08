@@ -62,8 +62,10 @@ FEATURES		    			*organ-introduction-features*
   + move current subtree in another one (aka org-refile)
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
-- create link with url completion
+- links
   + store url at cursor
+  + create link with url completion
+  + goto link under cursor, or close to it
 - format tables
   + inside of table : align and add missing columns
   + outside of table : align following a pattern
@@ -289,7 +291,8 @@ value in your init file, these bindings become available :
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
-- `<M-@>`       : create new link
+- `<M-,>`       : create new link
+- `<M-;>`       : go to link under cursor, or close to it
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table : format (align) table ; outside : align following a pattern
