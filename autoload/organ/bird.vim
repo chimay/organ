@@ -194,6 +194,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			\ level : 1,
 			\ levelstring : '',
 			\ title : '',
+			\ commentstrings : [],
 			\ todo : '',
 			\}
 	endif
@@ -212,6 +213,28 @@ fun! organ#bird#properties (move = 'dont-move')
 		let levelstring = headline->matchstr(levelstring_pattern)
 		let title = substitute(headline, levelstring_pattern, '', '')
 	endif
+	" ---- commentstring
+	if ! empty(&commentstring)
+		let commentstrings = []
+		let comlist = split(&commentstring, '%s')
+		let lencomlist = len(comlist)
+		if lencomlist >= 1
+			let comstr_pattern = '\m^' .. comlist[0]
+			let comstr_pattern = comstr_pattern->escape('.*')
+			let comstr = title->matchstr(comstr_pattern)
+			eval commentstrings->add(comstr)
+			let title = substitute(title, comstr_pattern, '', '')
+		endif
+		if lencomlist >= 2
+			let comstr_pattern = '\m' .. comlist[1]
+			let comstr_pattern = comstr_pattern->escape('.*')
+			let comstr = title->matchstr(comstr_pattern)
+			eval commentstrings->add(comstr)
+			let title = substitute(title, comstr_pattern, '', '')
+		endif
+	else
+		let commentstrings = []
+	endif
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle
@@ -227,13 +250,14 @@ fun! organ#bird#properties (move = 'dont-move')
 	" ---- coda
 	let title = trim(title)
 	let properties = #{
-				\ linum : linum,
-				\ headline : headline,
-				\ level : level,
-				\ levelstring : levelstring,
-				\ title : title,
-				\ todo : todo,
-				\}
+			\ linum : linum,
+			\ headline : headline,
+			\ level : level,
+			\ levelstring : levelstring,
+			\ title : title,
+			\ commentstrings : commentstrings,
+			\ todo : todo,
+			\}
 	return properties
 endfun
 
@@ -244,7 +268,17 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ bird subtree : headline not found'
-		return #{ head_linum : 0, headline : '', level : 0, title : '', tail_linum : 0 }
+		return #{
+			\ linum : 0,
+			\ head_linum : 0,
+			\ tail_linum : 0,
+			\ headline : '',
+			\ level : 1,
+			\ levelstring : '',
+			\ title : '',
+			\ commentstrings : [],
+			\ todo : '',
+			\}
 	endif
 	let level = properties.level
 	let position =  getcurpos ()

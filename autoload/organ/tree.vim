@@ -398,6 +398,8 @@ fun! organ#tree#todo ()
 	let linum = properties.linum
 	let levelstring = properties.levelstring
 	let title = properties.title
+	let commentstrings = properties.commentstrings
+	let lencomlist = len(commentstrings)
 	let todo = properties.todo
 	" ---- cycle
 	let todo_cycle = g:organ_config.todo_cycle
@@ -412,7 +414,6 @@ fun! organ#tree#todo ()
 	endif
 	" ---- commentstring
 	let comstr = split(&commentstring, '%s')
-	let lencomstr = len(comstr)
 	" ---- new line
 	if s:rep_one_char->index(&filetype) >= 0
 		if empty(next_todo)
@@ -421,24 +422,14 @@ fun! organ#tree#todo ()
 			let newline = levelstring .. ' ' .. next_todo .. ' ' .. title
 		endif
 	else
-		if lencomstr >= 1
-			let comstrpat = '\m^' .. comstr[0] .. '\s\+'
-			let comstrpat = comstrpat->escape('*')
-			let title = substitute(title, comstrpat, '', '')
-		endif
-		if lencomstr >= 2
-			let comstrpat = '\m\s\+' .. comstr[1]
-			let comstrpat = comstrpat->escape('*')
-			let title = substitute(title, comstrpat, '', '')
-		endif
 		if empty(next_todo)
 			let newline = title .. ' ' .. levelstring
 		else
 			let newline = next_todo .. ' ' .. title .. ' ' .. levelstring
 		endif
-		if lencomstr == 1
+		if lencomlist == 1
 			let newline = comstr[0] .. ' ' .. newline
-		elseif lencomstr >= 2
+		elseif lencomlist >= 2
 			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
 		endif
 	endif
