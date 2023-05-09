@@ -4,7 +4,9 @@
 "
 " Table operations
 
-" ---- patterns
+" ---- helpers
+
+" -- patterns
 
 fun! organ#table#delimiter ()
 	" Tables column char
@@ -231,7 +233,7 @@ fun! organ#table#maxima (dual)
 	return map(dual, { _, v -> max(v)})
 endfun
 
-" ---- format
+" ---- align
 
 fun! organ#table#reduce_multi_spaces (argdict = {})
 	" Reduce multi-spaces before a delimiter to one
@@ -440,7 +442,28 @@ fun! organ#table#move_down ()
 endfun
 
 fun! organ#table#move_left ()
+	" Move table column left
 endfun
 
 fun! organ#table#move_right ()
+	" Move table column right
+endfun
+
+" ---- new rows & cols
+
+fun! organ#table#new_row ()
+	" Add new row below cursor line
+	let linum = line('.')
+	let newrow = '|-|'
+	call append('.', newrow)
+	let argdict = #{
+		\ head_linum : linum,
+		\ tail_linum : linum + 1,
+		\}
+	call organ#table#add_missing_columns (argdict)
+	call organ#table#align_columns (argdict)
+endfun
+
+fun! organ#table#new_col ()
+	" Add new column at the right of the cursor
 endfun
