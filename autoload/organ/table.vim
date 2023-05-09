@@ -308,8 +308,9 @@ fun! organ#table#add_missing_columns (argdict = {})
 	return grid
 endfun
 
-fun! organ#table#align (argdict = {})
-	" Align char in all table lines
+fun! organ#table#align_columns (argdict = {})
+	" Align following a delimiter
+	" For tables : align columns in all table rows
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -384,7 +385,7 @@ fun! organ#table#align (argdict = {})
 	return grid
 endfun
 
-fun! organ#table#format (mode = 'normal') range
+fun! organ#table#align (mode = 'normal') range
 	" Format table
 	let mode = a:mode
 	let argdict = {}
@@ -404,6 +405,6 @@ fun! organ#table#format (mode = 'normal') range
 		let argdict.delimiter = input(prompt, '')
 		call organ#table#reduce_multi_spaces (argdict)
 	endif
-	let grid = organ#table#align (argdict)
+	let grid = organ#table#align_columns (argdict)
 	return grid
 endfun

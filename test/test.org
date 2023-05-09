@@ -1,6 +1,4 @@
-| row 1 col 1 | row 1 col 2 |
-| row 2 col 1 | row 2 col 2 |
-| row 3 col 1 | row 3 col 2 |
+#+STARTUP: showall
 
 * intro
 
@@ -145,7 +143,7 @@ content text
 :custom_id: section:part_three_two
 :end:
 
-content
+contentlines
 
 ** part 3.3
 
@@ -173,12 +171,12 @@ c = d
 
 | row 1 col 1 | row 1 col 2 | coucou | beu |
 |-+-|
-|-|
 |
 | row 2 col 1  | row 2 col 2   |
  | row 3 col 1 max    | row 3 col 2   |
 | row 1 col 1 | row 1 col 2 |
 | toto |
+|-|
 | row 1 col 1 | row 1 col 2 |
 |
 | row 2 col 1  | row 2 col 2   |

@@ -19,7 +19,7 @@ if ! exists('s:speedkeys')
 		\ [ '<kplus>',    "organ#nest#navig('parent')"               ] ,
 		\ [ '<kminus>',   "organ#nest#navig('loose_child')"          ] ,
 		\ [ 'i',          'organ#bird#info'                          ] ,
-		\ [ 'h',          'organ#bird#goto'                     ] ,
+		\ [ 'h',          'organ#bird#goto'                          ] ,
 		\ [ '<tab>',      'organ#bird#cycle_current_fold'            ] ,
 		\ [ '<s-tab>',    'organ#bird#cycle_all_folds'               ] ,
 		\ [ 's',          "organ#nest#oper('select_subtree')"        ] ,
@@ -51,7 +51,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-loose-child'                   , "organ#nest#navig('loose_child')"          ] ,
 		\ [ 'organ-strict-child'                  , "organ#nest#navig('strict_child')"         ] ,
 		\ [ 'organ-info'                          , 'organ#bird#info'                          ] ,
-		\ [ 'organ-goto-headline'                 , 'organ#bird#goto'                     ] ,
+		\ [ 'organ-goto-headline'                 , 'organ#bird#goto'                          ] ,
 		\ [ 'organ-cycle-current-fold-visibility' , 'organ#bird#cycle_current_fold'            ] ,
 		\ [ 'organ-cycle-all-folds-visibility'    , 'organ#bird#cycle_all_folds'               ] ,
 		\ [ 'organ-new'                           , "organ#nest#oper('new')"                   ] ,
@@ -68,10 +68,12 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-expand-template'               , 'organ#seed#expand'                        ] ,
 		\ [ 'organ-store-url'                     , 'organ#vine#store'                         ] ,
 		\ [ 'organ-new-link'                      , 'organ#vine#new'                           ] ,
-		\ [ 'organ-goto-link'                     , 'organ#vine#goto'                          ] ,
+		\ [ 'organ-previous-link'                 , 'organ#vine#previous'                      ] ,
+		\ [ 'organ-next-link'                     , 'organ#vine#next'                          ] ,
+		\ [ 'organ-goto-link-target'              , 'organ#vine#goto'                          ] ,
 		\ [ 'organ-cycle-todo'                    , "organ#nest#oper('todo')"                  ] ,
 		\ [ 'organ-timestamp'                     , 'organ#utils#timestamp'                    ] ,
-		\ [ 'organ-format-table'                  , 'organ#table#format'                       ] ,
+		\ [ 'organ-align'                         , 'organ#table#align'                        ] ,
 		\ [ 'organ-export-pandoc'                 , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'                  , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'organ-export-asciidoc'               , 'organ#pipe#asciidoc_export'               ] ,
@@ -82,7 +84,7 @@ endif
 
 if ! exists('s:plugs_visual')
 	let s:plugs_visual = [
-		\ [ 'organ-format-table' , "organ#table#format('visual')" ] ,
+		\ [ 'organ-align' , "organ#table#align('visual')" ] ,
 		\ ]
 	lockvar! s:plugs_visual
 endif
@@ -121,10 +123,12 @@ if ! exists('s:maps_normal')
 		\ [ '<m-x>'       , 'organ-expand-template'               ] ,
 		\ [ '<m-s>'       , 'organ-store-url'                     ] ,
 		\ [ '<m-->'       , 'organ-new-link'                      ] ,
-		\ [ '<m-o>'       , 'organ-goto-link'                     ] ,
+		\ [ '<m-@>'       , 'organ-previous-link'                 ] ,
+		\ [ '<m-&>'       , 'organ-next-link'                     ] ,
+		\ [ '<m-o>'       , 'organ-goto-link-target'              ] ,
 		\ [ '<m-t>'       , 'organ-cycle-todo'                    ] ,
 		\ [ '<m-d>'       , 'organ-timestamp'                     ] ,
-		\ [ '<m-a>'       , 'organ-format-table'                  ] ,
+		\ [ '<m-a>'       , 'organ-align'                         ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'                 ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'                  ] ,
 		\ ]
@@ -133,7 +137,7 @@ endif
 
 if ! exists('s:maps_visual')
 	let s:maps_visual = [
-		\ [ '<m-a>' , 'organ-format-table' ] ,
+		\ [ '<m-a>' , 'organ-align' ] ,
 		\]
 	lockvar! s:maps_visual
 endif

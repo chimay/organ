@@ -163,8 +163,9 @@ Here is a complete example, cherrypick what you need : >
     " ---- enable prefixless maps
     let g:organ_config.prefixless = 1
     " ---- prefixless maps in these modes (default)
-    " ---- possible values : normal, insert
-    let g:organ_config.prefixless_modes = ['normal', 'insert']
+    " ---- possible values : normal, visual, insert
+    " ---- visual maps are defined only when significant
+    let g:organ_config.prefixless_modes = ['normal', 'visual', 'insert']
     " ---- enable only the prefixless maps you want
     " ---- see the output of :map <plug>(organ- to see available plugs
     " let g:organ_config.prefixless_plugs = ['organ-next', 'organ-backward', 'organ-forward']
@@ -292,10 +293,14 @@ value in your init file, these bindings become available :
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
 - `<M-->`       : create new link (alt and -)
+- `<M-@>`       : go to previous link
+- `<M-&>`       : go to next link
 - `<M-o>`       : go to link under or close to cursor
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
-- `<M-a>`       : in table : format (align) table ; outside : align following a pattern
+- `<M-a>`       : in table       : align table
+              : outside        : align following a pattern
+              : in visual mode : align selected lines
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
 
