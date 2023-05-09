@@ -418,6 +418,7 @@ fun! organ#table#move_up ()
 	let previous = getline(linum - 1)
 	call setline(linum - 1, current)
 	call setline(linum, previous)
+	call cursor(linum - 1, col('.'))
 endfun
 
 fun! organ#table#move_down ()
@@ -427,6 +428,7 @@ fun! organ#table#move_down ()
 	let next = getline(linum + 1)
 	call setline(linum + 1, current)
 	call setline(linum, next)
+	call cursor(linum + 1, col('.'))
 endfun
 
 fun! organ#table#move_left ()
