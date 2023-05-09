@@ -539,7 +539,7 @@ fun! organ#table#move_right (argdict = {})
 		endif
 	endfor
 	" ---- can't move further right
-	if colnum >= colmax - 1
+	if colnum >= colmax - 2
 		return
 	endif
 	" ---- lines list
