@@ -56,7 +56,8 @@ fun! organ#table#separator_pattern ()
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
 	endif
-	return ''
+	" ---- most unlikely
+	return '\m most unlikely : ezheifj iefjiz fbreyrbeyr byaz'
 endfun
 
 fun! organ#table#outside_pattern (argdict = {})
@@ -254,8 +255,10 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 		let tail_linum = organ#table#tail ()
 	endif
 	let range = head_linum .. ',' .. tail_linum
-	let pattern = '\m\s\+' .. delimiter
-	let substit = ' ' .. delimiter
+	let pattern = '\m\s\+\(' .. delimiter .. '\)'
+	let substit = ' \1'
+	let pattern = pattern->escape('/')
+	let substit = substit->escape('/')
 	let position = getcurpos ()
 	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
 	call setpos('.',  position)
@@ -357,6 +360,7 @@ fun! organ#table#align_columns (argdict = {})
 			else
 				let shift = repeat(' ', add)
 			endif
+			echomsg shift
 			" -- adapt line
 			if position == 1
 				let before = ''
@@ -462,6 +466,7 @@ fun! organ#table#new_row ()
 		\}
 	call organ#table#add_missing_columns (argdict)
 	call organ#table#align_columns (argdict)
+	call cursor(linum + 1, col('.'))
 endfun
 
 fun! organ#table#new_separator_line ()
@@ -475,6 +480,7 @@ fun! organ#table#new_separator_line ()
 		\}
 	call organ#table#add_missing_columns (argdict)
 	call organ#table#align_columns (argdict)
+	call cursor(linum + 1, col('.'))
 endfun
 
 fun! organ#table#new_col ()

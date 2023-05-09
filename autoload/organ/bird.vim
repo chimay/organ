@@ -119,7 +119,8 @@ fun! organ#bird#generic_pattern ()
 		return '\m^\([ \t]*\)\S.*\n\zs\1[ \t]'
 	else
 		"throw 'organ bird generic pattern : not supported'
-		return '\m ezheifj iefjiz fbreyrbeyr byaz'
+		" -- most unlikely
+		return '\m most unlikely : ezheifj iefjiz fbreyrbeyr byaz'
 	endif
 endfun
 

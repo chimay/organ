@@ -129,7 +129,7 @@ endfun
 fun! organ#nest#shift_meta_down ()
 	" For <m-s-down> map
 	if organ#table#is_in_table ()
-		call organ#table#move_down ()
+		call organ#table#new_row ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#move_subtree_forward ()
 	else
