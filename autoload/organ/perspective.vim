@@ -53,14 +53,16 @@ fun! organ#perspective#headlines ()
 	return returnlist
 endfun
 
-fun! organ#perspective#paths ()
+fun! organ#perspective#paths (minlevel = 1, maxlevel = 100)
 	" List of paths
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
 	let position = getcurpos()
 	let headnumlist = organ#perspective#headlines_numbers ()
 	let returnlist = []
 	for linum in headnumlist
 		call cursor(linum, 1)
-		let path = organ#bird#path ()
+		let path = organ#bird#path_string ()
 		let entry = [linum, path]
 		let record = join(entry, s:field_separ)
 		eval returnlist->add(record)

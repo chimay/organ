@@ -58,13 +58,6 @@ endif
 " ---- headlines
 
 fun! organ#complete#headline (arglead, cmdline, cursorpos)
-	" Complete headline
-	let choices = organ#perspective#headlines ()
-	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
-endfun
-
-fun! organ#complete#path (arglead, cmdline, cursorpos)
 	" Complete full headline path
 	let choices = organ#perspective#paths ()
 	let wordlist = split(a:cmdline)
@@ -77,7 +70,7 @@ fun! organ#complete#path_not_child (arglead, cmdline, cursorpos)
 	let choices = organ#perspective#paths ()
 	let wordlist = split(a:cmdline)
 	let headlines = organ#kyusu#pour(wordlist, choices)
-	let current = organ#bird#path ()
+	let current = organ#bird#path_string ()
 	let Matches = function('organ#kyusu#not_child', [current])
 	eval headlines->filter(Matches)
 	return headlines

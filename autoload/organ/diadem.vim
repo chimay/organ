@@ -16,7 +16,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'child-loose'                   , "organ#nest#navig('loose_child')"          ] ,
 		\ [ 'child-strict'                  , "organ#nest#navig('strict_child')"         ] ,
 		\ [ 'info'                          , 'organ#bird#info'                          ] ,
-		\ [ 'goto-headline'                 , 'organ#bird#goto_path'                     ] ,
+		\ [ 'goto-headline'                 , 'organ#bird#goto'                     ] ,
 		\ [ 'cycle-current-fold-visibility' , 'organ#bird#cycle_current_fold'            ] ,
 		\ [ 'cycle-all-folds-visibililty'   , 'organ#bird#cycle_all_folds'               ] ,
 		\ [ 'new'                           , "organ#nest#oper('new')"                   ] ,

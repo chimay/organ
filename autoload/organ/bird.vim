@@ -493,6 +493,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	if linum == 0 || linum > tail_linum
 		"echomsg 'organ bird strict child : no child found'
 		call setpos('.', position)
+		call organ#spiral#cursor ()
 		return 0
 	endif
 	call cursor('.', 1)
@@ -508,7 +509,7 @@ fun! organ#bird#path (move = 'dont-move')
 	let move = a:move
 	let position = getcurpos ()
 	let properties = organ#bird#properties ('move')
-	let path = properties.title
+	let path = [properties.title]
 	while v:true
 		if properties.linum == 0
 			if move != 'move'
@@ -524,39 +525,30 @@ fun! organ#bird#path (move = 'dont-move')
 		endif
 		call organ#bird#parent ('move', 'wrap', properties)
 		let properties = organ#bird#properties ('move')
-		let path = properties.title .. s:level_separ .. path
+		eval path->insert(properties.title)
 	endwhile
+endfun
+
+fun! organ#bird#path_string (move = 'dont-move')
+	" Full headings path of current subtree : part, chapter, ...
+	let move = a:move
+	let path = organ#bird#path (move)
+	return path->join(s:level_separ)
 endfun
 
 fun! organ#bird#info (move = 'dont-move')
 	" Echo full subtree path
-	let dashboard = 'organ: ' .. organ#bird#path (a:move)
+	let dashboard = 'organ: ' .. organ#bird#path_string (a:move)
 	echomsg dashboard
 	call organ#spiral#cursor ()
 endfun
 
 " ---- goto
 
-fun! organ#bird#goto_headline ()
-	" Goto heading with completion
+fun! organ#bird#goto ()
+	" Goto heading path with completion
 	let prompt = 'Goto headline : '
 	let complete = 'customlist,organ#complete#headline'
-	let record = input(prompt, '', complete)
-	if empty(record)
-		return -1
-	endif
-	let fields = split(record, s:field_separ)
-	let linum = str2nr(fields[0])
-	call cursor(linum, 1)
-	normal! zv
-	call organ#spiral#cursor ()
-	return linum
-endfun
-
-fun! organ#bird#goto_path ()
-	" Goto heading with completion
-	let prompt = 'Goto headline : '
-	let complete = 'customlist,organ#complete#path'
 	let record = input(prompt, '', complete)
 	if empty(record)
 		return -1

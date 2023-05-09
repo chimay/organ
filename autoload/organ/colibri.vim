@@ -484,6 +484,7 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 	if linum == 0 || linum > tail_linum
 		"echomsg 'organ bird strict child : no child found'
 		call setpos('.', position)
+		call organ#spiral#cursor ()
 		return 0
 	endif
 	normal! zv
