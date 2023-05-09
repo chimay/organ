@@ -45,6 +45,98 @@ fun! organ#nest#oper (function)
 	return v:true
 endfun
 
+" ---- <m-arrow>
+
+fun! organ#nest#meta_left ()
+	" For <m-left> map
+	if organ#table#is_in_table ()
+		call organ#table#move_left ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#promote ()
+	else
+		call organ#tree#promote ()
+	endif
+endfun
+
+fun! organ#nest#meta_right ()
+	" For <m-right> map
+	if organ#table#is_in_table ()
+		call organ#table#move_right ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#demote ()
+	else
+		call organ#tree#demote ()
+	endif
+endfun
+
+fun! organ#nest#meta_up ()
+	" For <m-up> map
+	if organ#table#is_in_table ()
+		call organ#table#move_up ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#move_subtree_backward ()
+	else
+		call organ#tree#move_subtree_backward ()
+	endif
+endfun
+
+fun! organ#nest#meta_down ()
+	" For <m-down> map
+	if organ#table#is_in_table ()
+		call organ#table#move_down ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#move_subtree_forward ()
+	else
+		call organ#tree#move_subtree_forward ()
+	endif
+endfun
+
+" ---- <m-s-arrow>
+
+fun! organ#nest#shift_meta_left ()
+	" For <m-s-left> map
+	if organ#table#is_in_table ()
+		call organ#table#move_left ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#promote_subtree ()
+	else
+		call organ#tree#promote_subtree ()
+	endif
+endfun
+
+fun! organ#nest#shift_meta_right ()
+	" For <m-s-right> map
+	if organ#table#is_in_table ()
+		call organ#table#move_right ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#demote_subtree ()
+	else
+		call organ#tree#demote_subtree ()
+	endif
+endfun
+
+fun! organ#nest#shift_meta_up ()
+	" For <m-s-up> map
+	if organ#table#is_in_table ()
+		call organ#table#move_up ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#move_subtree_backward ()
+	else
+		call organ#tree#move_subtree_backward ()
+	endif
+endfun
+
+fun! organ#nest#shift_meta_down ()
+	" For <m-s-down> map
+	if organ#table#is_in_table ()
+		call organ#table#move_down ()
+	elseif organ#colibri#is_in_list ()
+		call organ#bush#move_subtree_forward ()
+	else
+		call organ#tree#move_subtree_forward ()
+	endif
+endfun
+
 " -- speed keys
 
 fun! organ#nest#speed_help ()

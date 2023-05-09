@@ -408,3 +408,29 @@ fun! organ#table#align (mode = 'normal') range
 	let grid = organ#table#align_columns (argdict)
 	return grid
 endfun
+
+" ---- move rows & cols
+
+fun! organ#table#move_up ()
+	" Move table row up
+	let linum = line('.')
+	let current = getline(linum)
+	let previous = getline(linum - 1)
+	call setline(linum - 1, current)
+	call setline(linum, previous)
+endfun
+
+fun! organ#table#move_down ()
+	" Move table row down
+	let linum = line('.')
+	let current = getline(linum)
+	let next = getline(linum + 1)
+	call setline(linum + 1, current)
+	call setline(linum, next)
+endfun
+
+fun! organ#table#move_left ()
+endfun
+
+fun! organ#table#move_right ()
+endfun
