@@ -277,14 +277,14 @@ value in your init file, these bindings become available :
 - `<M-u>`       : upper, parent heading
 - `<M-l>`       : lower, child heading, loosely speaking : first headline of level + 1, forward
 - `<M-S-l>`     : lower, child heading, strictly speaking
-- `<M-w>`       : where am I ? full headings path (chapter, section, subsection, ...)
+- `<M-i>`       : info : full headings path (chapter, section, subsection, ...)
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-z>`       : cycle current fold visibility (like an improved |za|)
 - `<M-S-z>`     : cycle all folds visibility
 - `<M-CR>`      : new subtree or list item
 - `<M-v>`       : select subtree
 - `<M-y>`       : yank subtree
-- `<M-d>`       : delete subtree
+- `<M-S-x>`     : delete subtree
 - `<M-left>`    : promote heading or list item
 - `<M-right>`   : demote heading or list item
 - `<M-S-left>`  : promote heading or list subtree
