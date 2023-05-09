@@ -271,27 +271,11 @@ it's always defined, regardless of the prefixless setting. You can use
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
 value in your init file, these bindings become available :
 
-- `<M-p>`       : previous heading
-- `<M-n>`       : next heading
-- `<M-b>`       : previous heading of same level
-- `<M-f>`       : next heading of same level
-- `<M-u>`       : upper, parent heading
-- `<M-l>`       : lower, child heading, loosely speaking : first headline of level + 1, forward
-- `<M-S-l>`     : lower, child heading, strictly speaking
 - `<M-i>`       : info : full headings path (chapter, section, subsection, ...)
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-z>`       : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`     : cycle all folds visibility
 - `<M-CR>`      : new subtree or list item
-- `<M-v>`       : select subtree
-- `<M-y>`       : yank subtree
-- `<M-s-x>`     : delete subtree
-- `<M-left>`    : promote heading or list item
-- `<M-right>`   : demote heading or list item
-- `<M-S-left>`  : promote heading or list subtree
-- `<M-S-right>` : demote heading or list subtree
-- `<M-up>`      : move heading or list subtree up
-- `<M-down>`    : move heading or list subtree down
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
@@ -307,6 +291,30 @@ value in your init file, these bindings become available :
 - `<M-_>`       : table : add a separator line
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
+
+Some of them are context sensitive :
+
+| Map           | Heading               | List               | Table               |
+|---------------|-----------------------|--------------------|---------------------|
+| `<M-p>`       | previous heading      | previous item      |                     |
+| `<M-n>`       | next heading          | next item          |                     |
+| `<M-b>`       | prev head, same level | prev item, = level |                     |
+| `<M-f>`       | next head, same level | next item, = level |                     |
+| `<M-u>`       | parent heading        | parent item        |                     |
+| `<M-l>`       | child heading, loose  | child item, loose  |                     |
+| `<M-S-l>`     | child heading, strict | child item, strict |                     |
+| `<M-v>`       | select subtree        | select subtree     |                     |
+| `<M-y>`       | yank subtree          | yank subtree       |                     |
+| `<M-S-x>`     | delete subtree        | delete subtree     |                     |
+| `<M-a>`       |                       |                    | align               |
+| `<M-left>`    | promote               | promote            | move column left    |
+| `<M-right>`   | demote                | demote             | move column right   |
+| `<M-up>`      | move subtree up       | move subtree up    | move row up         |
+| `<M-down>`    | move subtree down     | move subtree down  | move row down       |
+| `<M-S-left>`  | promote subtree       | promote subtree    | new column          |
+| `<M-S-right>` | demote subtree        | demote subtree     | delete column       |
+| `<M-S-up>`    | move subtree up       | move subtree up    | delete row          |
+| `<M-S-down>`  | move subtree down     | move subtree down  | new row             |
 
 You can customize `g:organ_config.prefixless_modes` to create prefixless
 maps only in the modes you specify.
