@@ -107,7 +107,7 @@ endfun
 fun! organ#nest#shift_meta_right ()
 	" For <m-s-right> map
 	if organ#table#is_in_table ()
-		call organ#table#move_right ()
+		call organ#table#new_col ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#demote_subtree ()
 	else

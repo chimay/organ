@@ -447,6 +447,7 @@ endfun
 
 fun! organ#table#move_left (argdict = {})
 	" Move table column left
+	" Assume the table is aligned
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -462,7 +463,7 @@ fun! organ#table#move_left (argdict = {})
 	let colmax = len(positions)
 	" ---- two delimiters or less = only one column
 	if colmax <= 2
-		return
+		return positions
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
@@ -474,7 +475,7 @@ fun! organ#table#move_left (argdict = {})
 	endfor
 	" ---- can't move further left
 	if colnum == 0
-		return
+		return positions
 	endif
 	" ---- lines list
 	let linelist = getline(head_linum, tail_linum)
@@ -508,11 +509,12 @@ fun! organ#table#move_left (argdict = {})
 	endfor
 	" ---- coda
 	call cursor('.', cursor - (second - first))
-	return
+	return positions
 endfun
 
 fun! organ#table#move_right (argdict = {})
 	" Move table column right
+	" Assume the table is aligned
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -528,7 +530,7 @@ fun! organ#table#move_right (argdict = {})
 	let colmax = len(positions)
 	" ---- two delimiters or less = only one column
 	if colmax <= 2
-		return
+		return positions
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
@@ -540,7 +542,7 @@ fun! organ#table#move_right (argdict = {})
 	endfor
 	" ---- can't move further right
 	if colnum >= colmax - 2
-		return
+		return positions
 	endif
 	" ---- lines list
 	let linelist = getline(head_linum, tail_linum)
@@ -574,7 +576,7 @@ fun! organ#table#move_right (argdict = {})
 	endfor
 	" ---- coda
 	call cursor('.', cursor + (third - second))
-	return
+	return positions
 endfun
 
 " ---- new rows & cols
@@ -609,4 +611,53 @@ endfun
 
 fun! organ#table#new_col ()
 	" Add new column at the right of the cursor
+	" Assume the table is aligned
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	let delimiter = organ#table#delimiter ()
+	let sepdelim  = organ#table#separator_delimiter ()
+	let positions = organ#table#positions ()
+	let colmax = len(positions)
+	" ---- not enough column delimiters
+	if colmax <= 1
+		return positions
+	endif
+	" ---- current column
+	" ---- between delimiters colnum & colnum + 1
+	let cursor = col('.')
+	for colnum in range(colmax - 1)
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+			break
+		endif
+	endfor
+	" ---- lines list
+	let linelist = getline(head_linum, tail_linum)
+	let lenlinelist = len(linelist)
+	" ---- one column, two delimiters
+	let first = positions[colnum]
+	let second = positions[colnum + 1]
+	" ---- add new column in all table lines
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		if second == len(line)
+			let before = line
+			let after = ''
+		else
+			let before = line[:second - 1]
+			let after = line[second:]
+		endif
+		if line =~ organ#table#separator_pattern ()
+			let linelist[rownum] = before .. '-' .. sepdelim .. after
+		else
+			let linelist[rownum] = before .. ' ' .. delimiter .. after
+		endif
+	endfor
+	" ---- commit changes to buffer
+	let linum = head_linum
+	for index in range(len(linelist))
+		call setline(linum, linelist[index])
+		let linum += 1
+	endfor
+	" ---- coda
+	call cursor('.', second + 1)
 endfun
