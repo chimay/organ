@@ -235,6 +235,24 @@ fun! organ#vine#new ()
 	call cursor(linum, colnum)
 endfun
 
+" ---- find next or previous link
+
+fun! organ#vine#next ()
+	" Go to next link
+	let link_pattern = organ#vine#generic_pattern ()
+	let flags = organ#utils#search_flags ('forward', 'move', 'wrap')
+	let linum = search(link_pattern, flags)
+	return linum
+endfun
+
+fun! organ#vine#previous ()
+	" Go to previous link
+	let link_pattern = organ#vine#generic_pattern ()
+	let flags = organ#utils#search_flags ('backward', 'move', 'wrap')
+	let linum = search(link_pattern, flags)
+	return linum
+endfun
+
 " ---- go to link target
 
 fun! organ#vine#goto ()
