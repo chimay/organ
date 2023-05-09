@@ -57,6 +57,8 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 ## Features
 
 - folding based on headings in org and markdown files
+- headings base on folding in folded files
+  + you can handle your folds like in orgmode
 - navigate in headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
@@ -209,7 +211,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates['+i'] = 'include'
   " ---- todo keywoard cycle
   " ---- default : todo : TODO - DONE - none
-  " ---- please don't add none to the list
+  " ---- no need to add none to the list
   let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
