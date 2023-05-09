@@ -78,6 +78,7 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-cycle-todo'                    , "organ#nest#oper('todo')"                  ] ,
 		\ [ 'organ-timestamp'                     , 'organ#utils#timestamp'                    ] ,
 		\ [ 'organ-align'                         , 'organ#table#align'                        ] ,
+		\ [ 'organ-new-separator-line'            , 'organ#table#new_separator_line'           ] ,
 		\ [ 'organ-export-pandoc'                 , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'organ-export-emacs'                  , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'organ-export-asciidoc'               , 'organ#pipe#asciidoc_export'               ] ,
@@ -135,6 +136,7 @@ if ! exists('s:maps_normal')
 		\ [ '<m-t>'       , 'organ-cycle-todo'                    ] ,
 		\ [ '<m-d>'       , 'organ-timestamp'                     ] ,
 		\ [ '<m-a>'       , 'organ-align'                         ] ,
+		\ [ '<m-_>'       , 'organ-new-separator-line'            ] ,
 		\ [ '<m-e>'       , 'organ-export-pandoc'                 ] ,
 		\ [ '<m-s-e>'     , 'organ-export-emacs'                  ] ,
 		\ ]

@@ -303,6 +303,7 @@ value in your init file, these bindings become available :
 - `<M-a>`       : in table       : align table
                 : outside        : align paragraph following a pattern
                 : in visual mode : align selected lines
+- `<M-_>`       : table : add a separator line
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
 
