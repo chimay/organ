@@ -414,21 +414,29 @@ endfun
 fun! organ#table#move_up ()
 	" Move table row up
 	let linum = line('.')
+	if linum == 1
+		return 0
+	endif
 	let current = getline(linum)
 	let previous = getline(linum - 1)
 	call setline(linum - 1, current)
 	call setline(linum, previous)
 	call cursor(linum - 1, col('.'))
+	return linum
 endfun
 
 fun! organ#table#move_down ()
 	" Move table row down
 	let linum = line('.')
+	if linum == line('$')
+		return 0
+	endif
 	let current = getline(linum)
 	let next = getline(linum + 1)
 	call setline(linum + 1, current)
 	call setline(linum, next)
 	call cursor(linum + 1, col('.'))
+	return linum
 endfun
 
 fun! organ#table#move_left ()
