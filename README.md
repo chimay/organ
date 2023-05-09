@@ -255,6 +255,8 @@ or a list item line. Here is a complete list :
 - `M`          : move subtree in another one, with prompt completion
 - `e`          : export with pandoc
 - `E`          : export with emacs (works only in org files)
+- `a`          : export with asciidoc
+- `A`          : export with asciidoctor
 
 ## Always defined
 

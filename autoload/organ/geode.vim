@@ -35,6 +35,8 @@ if ! exists('s:speedkeys')
 		\ [ 't',          "organ#nest#oper('todo')"                  ] ,
 		\ [ 'e',          'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'E',          'organ#pipe#emacs_export'                  ] ,
+		\ [ 'a',          'organ#pipe#asciidoc_export'               ] ,
+		\ [ 'A',          'organ#pipe#asciidoctor_export'            ] ,
 		\ ]
 	lockvar! s:speedkeys
 endif
