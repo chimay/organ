@@ -245,7 +245,7 @@ or a list item line. Here is a complete list :
 - `<s-tab>`    : cycle all folds visibility
 - `s`          : select subtree
 - `Y`          : yank subtree
-- `D`          : delete subtree
+- `X`          : delete subtree
 - `<del>`      : promote heading (and delete a level of indent)
 - `<ins>`      : demote heading (and insert a level of indent)
 - `H`          : promote subtree
@@ -300,7 +300,7 @@ value in your init file, these bindings become available :
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
 - `<M-a>`       : in table       : align table
-                : outside        : align following a pattern
+                : outside        : align paragraph following a pattern
                 : in visual mode : align selected lines
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
