@@ -66,9 +66,14 @@ FEATURES		    			*organ-introduction-features*
   + store url at cursor
   + create link with url completion
   + goto link under or close to cursor
-- format tables
+  + goto next/previous link
+- tables
   + inside of table : align and add missing columns
   + outside of table : align following a pattern
+  + add new row, colum
+  + delete row, colum
+  + move row up or down
+  + move column left or right
 - cycle todo status
 - insert timestamp
 - export in another format using

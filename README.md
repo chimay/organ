@@ -71,15 +71,20 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
+- expand shortcut to template (aka org-structure-template)
+  + markdown support limited to code blocks
 - links
   + store url at cursor
   + create link with url completion
   + goto link under or close to cursor
-- expand shortcut to template (aka org-structure-template)
-  + markdown support limited to code blocks
-- format tables
-  + inside of table : align and add missing columns
+  + goto next/previous link
+- tables
+  + inside of table : align columns
   + outside of table : align following a pattern
+  + add new row, colum
+  + delete row, colum
+  + move row up or down
+  + move column left or right
 - cycle todo status
 - insert timestamp
 - export in another format using
