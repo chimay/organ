@@ -6,6 +6,11 @@
 
 " ---- script constants
 
+if ! exists('s:level_separ')
+	let s:level_separ = organ#crystal#fetch('separator/level')
+	lockvar s:level_separ
+endif
+
 if ! exists('s:field_separ')
 	let s:field_separ = organ#crystal#fetch('separator/field')
 	lockvar s:field_separ
@@ -32,28 +37,7 @@ endfun
 
 " ---- headlines
 
-fun! organ#perspective#headlines ()
-	" List of headlines
-	let headline_pattern = organ#bird#generic_pattern ()
-	let position = getcurpos()
-	let runme = 'global /' .. headline_pattern .. '/number'
-	let returnlist = execute(runme)
-	let returnlist = split(returnlist, "\n")
-	for index in range(len(returnlist))
-		let elem = returnlist[index]
-		let fields = split(elem, ' ')
-		let linum = fields[0]
-		let content = join(fields[1:])
-		let linum = printf('%5d', linum)
-		let entry = [linum, content]
-		let elem = join(entry, s:field_separ)
-		let returnlist[index] = elem
-	endfor
-	call setpos('.', position)
-	return returnlist
-endfun
-
-fun! organ#perspective#paths (minlevel = 1, maxlevel = 100)
+fun! organ#perspective#headlines (minlevel = 1, maxlevel = 100)
 	" List of paths
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
@@ -62,8 +46,13 @@ fun! organ#perspective#paths (minlevel = 1, maxlevel = 100)
 	let returnlist = []
 	for linum in headnumlist
 		call cursor(linum, 1)
-		let path = organ#bird#path_string ()
-		let entry = [linum, path]
+		let path = organ#bird#path ()
+		let level = len(path)
+		if level < minlevel || level > maxlevel
+			continue
+		endif
+		let pathstring = path->join(s:level_separ)
+		let entry = [linum, pathstring]
 		let record = join(entry, s:field_separ)
 		eval returnlist->add(record)
 	endfor

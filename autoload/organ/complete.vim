@@ -59,19 +59,21 @@ endif
 
 fun! organ#complete#headline (arglead, cmdline, cursorpos)
 	" Complete full headline path
-	let choices = organ#perspective#paths ()
+	let choices = organ#perspective#headlines ()
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
-fun! organ#complete#path_not_child (arglead, cmdline, cursorpos)
-	" Complete full headline path, but not children of current subtree
+fun! organ#complete#headline_same_level_or_parent (arglead, cmdline, cursorpos)
+	" Complete full headline path of current or parent level
 	" Used by tree moveto
-	let choices = organ#perspective#paths ()
+	let properties = organ#bird#properties ()
+	let level = properties.level
+	let choices = organ#perspective#headlines (level - 1, level)
 	let wordlist = split(a:cmdline)
 	let headlines = organ#kyusu#pour(wordlist, choices)
-	let current = organ#bird#path_string ()
-	let Matches = function('organ#kyusu#not_child', [current])
+	let current = organ#bird#path ()
+	let Matches = function('organ#kyusu#not_current_path', [current])
 	eval headlines->filter(Matches)
 	return headlines
 endfun

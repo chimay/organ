@@ -367,7 +367,7 @@ fun! organ#tree#moveto ()
 	let range = head_linum .. ',' .. tail_linum
 	" ---- find target subtree
 	let prompt = 'Move current subtree to : '
-	let complete = 'customlist,organ#complete#path_not_child'
+	let complete = 'customlist,organ#complete#headline_same_level_or_parent'
 	let record = input(prompt, '', complete)
 	if empty(record)
 		return -1

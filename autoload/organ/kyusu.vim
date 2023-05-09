@@ -48,19 +48,16 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	return match
 endfun
 
-" ---- children subtree, for tree moveto
+" ---- not current headline path, for tree moveto
 
-fun! organ#kyusu#not_child (path, unused_key, value)
-	" True if value is not a children of path
-	let path = a:path
+fun! organ#kyusu#not_current_path (current, unused_key, value)
+	" True if value is not the current heading path
+	let current = a:current
 	let value = a:value
 	let value = split(value, s:field_separ)[1]
-	let path = split(path, s:level_separ)
 	let value = split(value, s:level_separ)
-	let index = min([len(path), len(value)]) - 1
-	let not_child = path[:index] != value[:index]
-	echomsg path value path[:index] value[:index] index not_child
-	return not_child
+	let notme = current != value
+	return notme
 endfun
 
 " ---- prompt completion
