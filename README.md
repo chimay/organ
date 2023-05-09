@@ -4,6 +4,7 @@
 
 * [Introduction](#introduction)
     * [What is it ?](#what-is-it-)
+    * [Screenshots](#screenshots)
     * [Compatibilty](#compatibilty)
     * [Features](#features)
     * [Differences with standard orgmode](#differences-with-standard-orgmode)
@@ -41,6 +42,16 @@
 Organ generalizes the great concepts of Orgmode to Markdown and any
 folded file. It is primarily focused on editing these documents with
 ease and agility.
+
+## Screenshots
+
+Folding, list & table :
+
+![Folding, list & table](https://github.com/chimay/organ-multimedia/folding-list-table.jpg)
+
+Completion of heading, todo :
+
+![Heading completion & todo](https://github.com/chimay/organ-multimedia/heading-complete-todo.jpg)
 
 ## Compatibilty
 
