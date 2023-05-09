@@ -77,6 +77,9 @@ fun! organ#vine#generic_pattern ()
 	elseif &filetype ==# 'markdown'
 		let pattern = '\m<[^>]\+>\|'
 		let pattern ..= '\[[^\]]\+\]([^)]\+)'
+	else
+		let pattern = '\m\[\[[^\]]\+\]\]\|'
+		let pattern ..= '\[\[[^\]]\+\]\[[^\]]\+\]\]'
 	endif
 	return pattern
 endfun
@@ -258,6 +261,10 @@ endfun
 fun! organ#vine#goto ()
 	" Go to link target
 	let link = organ#vine#find ()
+	if empty(link)
+		echomsg 'organ vine goto : no link under or near cursor'
+		return {}
+	endif
 	let url = organ#vine#url (link)
 	" ---- file & dir
 	let file = substitute(url, '\m^file:', '', '')

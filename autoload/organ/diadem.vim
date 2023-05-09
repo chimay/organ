@@ -37,7 +37,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'next-link'                     , 'organ#vine#next'                          ] ,
 		\ [ 'goto-link-target'              , 'organ#vine#goto'                          ] ,
 		\ [ 'cycle-todo'                    , "organ#nest#oper('todo')"                  ] ,
-		\ [ 'align'                         , 'organ#table#align'                       ] ,
+		\ [ 'align'                         , 'organ#table#align'                        ] ,
 		\ [ 'export-with-pandoc'            , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'             , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'export-with-asciidoc'          , 'organ#pipe#asciidoc_export'               ] ,
