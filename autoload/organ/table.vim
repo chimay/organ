@@ -334,7 +334,7 @@ fun! organ#table#align_columns (argdict = {})
 	endif
 	" ---- grid derivates
 	let lengthes = organ#table#lengthes (grid)
-	let lencol = max(lengthes)
+	let colmax = max(lengthes)
 	let dual = organ#table#dual(grid)
 	let maxima = organ#table#maxima(dual)
 	" ---- lines list
@@ -342,7 +342,7 @@ fun! organ#table#align_columns (argdict = {})
 	let lenlinelist = len(linelist)
 	" ---- double loop
 	let index = 0
-	for colnum in range(lencol)
+	for colnum in range(colmax)
 		for rownum in range(lenlinelist)
 			if lengthes[rownum] <= colnum
 				continue
@@ -355,7 +355,8 @@ fun! organ#table#align_columns (argdict = {})
 			endif
 			let line = linelist[rownum]
 			" -- shift
-			if colnum > 0 && line =~ organ#table#separator_pattern ()
+			let is_sep_line = line =~ organ#table#separator_pattern ()
+			if colnum > 0 && is_sep_line
 				let shift = repeat('-', add)
 			else
 				let shift = repeat(' ', add)
@@ -444,12 +445,136 @@ fun! organ#table#move_down ()
 	return linum
 endfun
 
-fun! organ#table#move_left ()
+fun! organ#table#move_left (argdict = {})
 	" Move table column left
+	let argdict = a:argdict
+	if has_key (argdict, 'head_linum')
+		let head_linum =  argdict.head_linum
+	else
+		let head_linum = organ#table#head ()
+	endif
+	if has_key (argdict, 'tail_linum')
+		let tail_linum =  argdict.tail_linum
+	else
+		let tail_linum = organ#table#tail ()
+	endif
+	let positions = organ#table#positions (argdict)
+	let colmax = len(positions)
+	" ---- two delimiters or less = only one column
+	if colmax <= 2
+		return
+	endif
+	" ---- current column
+	" ---- between delimiters colnum & colnum + 1
+	let cursor = col('.')
+	for colnum in range(colmax - 1)
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+			break
+		endif
+	endfor
+	" ---- can't move further left
+	if colnum == 0
+		return
+	endif
+	" ---- lines list
+	let linelist = getline(head_linum, tail_linum)
+	let lenlinelist = len(linelist)
+	" ---- two columns to exchange, three delimiters
+	let first = positions[colnum - 1]
+	let second = positions[colnum]
+	let third = positions[colnum + 1]
+	" ---- move column in all table lines
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		if first == 1
+			let before = ''
+			let after = line
+		elseif third == len(line) + 1
+			let before = line
+			let after = ''
+		else
+			let before = line[:first - 2]
+			let after = line[third - 1:]
+		endif
+		let previous = line[first - 1:second - 2]
+		let current = line[second - 1:third - 2]
+		let linelist[rownum] = before .. current .. previous .. after
+	endfor
+	" ---- commit changes to buffer
+	let linum = head_linum
+	for index in range(len(linelist))
+		call setline(linum, linelist[index])
+		let linum += 1
+	endfor
+	" ---- coda
+	call cursor('.', cursor - (second - first))
+	return
 endfun
 
-fun! organ#table#move_right ()
+fun! organ#table#move_right (argdict = {})
 	" Move table column right
+	let argdict = a:argdict
+	if has_key (argdict, 'head_linum')
+		let head_linum =  argdict.head_linum
+	else
+		let head_linum = organ#table#head ()
+	endif
+	if has_key (argdict, 'tail_linum')
+		let tail_linum =  argdict.tail_linum
+	else
+		let tail_linum = organ#table#tail ()
+	endif
+	let positions = organ#table#positions (argdict)
+	let colmax = len(positions)
+	" ---- two delimiters or less = only one column
+	if colmax <= 2
+		return
+	endif
+	" ---- current column
+	" ---- between delimiters colnum & colnum + 1
+	let cursor = col('.')
+	for colnum in range(colmax - 1)
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+			break
+		endif
+	endfor
+	" ---- can't move further right
+	if colnum >= colmax - 1
+		return
+	endif
+	" ---- lines list
+	let linelist = getline(head_linum, tail_linum)
+	let lenlinelist = len(linelist)
+	" ---- two columns to exchange, three delimiters
+	let first = positions[colnum]
+	let second = positions[colnum + 1]
+	let third = positions[colnum + 2]
+	" ---- move column in all table lines
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		if first == 1
+			let before = ''
+			let after = line
+		elseif third == len(line) + 1
+			let before = line
+			let after = ''
+		else
+			let before = line[:first - 2]
+			let after = line[third - 1:]
+		endif
+		let current = line[first - 1:second - 2]
+		let next = line[second - 1:third - 2]
+		let linelist[rownum] = before .. next .. current .. after
+	endfor
+	" ---- commit changes to buffer
+	let linum = head_linum
+	for index in range(len(linelist))
+		call setline(linum, linelist[index])
+		let linum += 1
+	endfor
+	" ---- coda
+	call cursor('.', cursor + (third - second))
+	return
 endfun
 
 " ---- new rows & cols
