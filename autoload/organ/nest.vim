@@ -93,10 +93,10 @@ endfun
 
 " ---- <m-s-arrow>
 
-fun! organ#nest#shift_meta_left ()
+fun! organ#nest#meta_shift_left ()
 	" For <m-s-left> map
 	if organ#table#is_in_table ()
-		call organ#table#move_left ()
+		call organ#table#delete_col ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#promote_subtree ()
 	else
@@ -104,7 +104,7 @@ fun! organ#nest#shift_meta_left ()
 	endif
 endfun
 
-fun! organ#nest#shift_meta_right ()
+fun! organ#nest#meta_shift_right ()
 	" For <m-s-right> map
 	if organ#table#is_in_table ()
 		call organ#table#new_col ()
@@ -115,16 +115,16 @@ fun! organ#nest#shift_meta_right ()
 	endif
 endfun
 
-fun! organ#nest#shift_meta_up ()
+fun! organ#nest#meta_shift_up ()
 	" For <m-s-up> map
 	if organ#table#is_in_table ()
-		call organ#table#move_up ()
+		call organ#table#delete_row ()
 	elseif organ#colibri#is_in_list ()
 	else
 	endif
 endfun
 
-fun! organ#nest#shift_meta_down ()
+fun! organ#nest#meta_shift_down ()
 	" For <m-s-down> map
 	if organ#table#is_in_table ()
 		call organ#table#new_row ()

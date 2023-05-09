@@ -661,3 +661,63 @@ fun! organ#table#new_col ()
 	" ---- coda
 	call cursor('.', second + 1)
 endfun
+
+" ---- delete rows & cols
+
+fun! organ#table#delete_row ()
+	" Delete row
+	call organ#utils#delete(line('.'))
+endfun
+
+fun! organ#table#delete_col ()
+	" Delete column
+	" Assume the table is aligned
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	let delimiter = organ#table#delimiter ()
+	let sepdelim  = organ#table#separator_delimiter ()
+	let positions = organ#table#positions ()
+	let colmax = len(positions)
+	" ---- not enough column delimiters
+	if colmax <= 1
+		return positions
+	endif
+	" ---- current column
+	" ---- between delimiters colnum & colnum + 1
+	let cursor = col('.')
+	for colnum in range(colmax - 1)
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+			break
+		endif
+	endfor
+	" ---- lines list
+	let linelist = getline(head_linum, tail_linum)
+	let lenlinelist = len(linelist)
+	" ---- one column, two delimiters
+	let first = positions[colnum]
+	let second = positions[colnum + 1]
+	" ---- add new column in all table lines
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		if first == 1
+			let before = ''
+			let after = line
+		elseif second == len(line) + 1
+			let before = line
+			let after = ''
+		else
+			let before = line[:first - 2]
+			let after = line[second - 1:]
+		endif
+		let linelist[rownum] = before .. after
+	endfor
+	" ---- commit changes to buffer
+	let linum = head_linum
+	for index in range(len(linelist))
+		call setline(linum, linelist[index])
+		let linum += 1
+	endfor
+	" ---- coda
+	call cursor('.', first)
+	return positions
+endfun
