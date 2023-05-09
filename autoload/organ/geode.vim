@@ -24,7 +24,7 @@ if ! exists('s:speedkeys')
 		\ [ '<s-tab>',    'organ#bird#cycle_all_folds'               ] ,
 		\ [ 's',          "organ#nest#oper('select_subtree')"        ] ,
 		\ [ 'Y',          "organ#nest#oper('yank_subtree')"          ] ,
-		\ [ 'D',          "organ#nest#oper('delete_subtree')"        ] ,
+		\ [ 'X',          "organ#nest#oper('delete_subtree')"        ] ,
 		\ [ '<del>',      "organ#nest#oper('promote')"               ] ,
 		\ [ '<ins>',      "organ#nest#oper('demote')"                ] ,
 		\ [ 'H',          "organ#nest#oper('promote_subtree')"       ] ,

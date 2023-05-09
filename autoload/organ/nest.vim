@@ -120,9 +120,7 @@ fun! organ#nest#shift_meta_up ()
 	if organ#table#is_in_table ()
 		call organ#table#move_up ()
 	elseif organ#colibri#is_in_list ()
-		call organ#bush#move_subtree_backward ()
 	else
-		call organ#tree#move_subtree_backward ()
 	endif
 endfun
 
@@ -131,9 +129,7 @@ fun! organ#nest#shift_meta_down ()
 	if organ#table#is_in_table ()
 		call organ#table#new_row ()
 	elseif organ#colibri#is_in_list ()
-		call organ#bush#move_subtree_forward ()
 	else
-		call organ#tree#move_subtree_forward ()
 	endif
 endfun
 
@@ -141,14 +137,14 @@ endfun
 
 fun! organ#nest#speed_help ()
 	" Speed key on headlines first char
-	echomsg 'h : help            | <pageup> : previous  | <home> : backward (= level)'
-	echomsg 'w : where ?         | <pagedown> : next    | <end> : forward (= level)'
-	echomsg '( : parent          | ) : loose child      | } : strict child'
-	echomsg '^ : goto heading    | * : cycle fold vis   | # : cycle all folds vis'
-	echomsg '% : select subtree  | yy : yank subtree    | dd : cycle all folds vis'
-	echomsg '<del> : promote     | <ins> : demote       | e : pandoc export'
-	echomsg 'H : promote subtree | L : demote subtree   | E : emacs export'
-	echomsg 'U : move sub back   | D : move sub for     | M : move subtree to heading'
+	echomsg 'h : help            | <pageup> : previous    | <home> : backward (= level)'
+	echomsg 'w : where ?         | <pagedown> : next      | <end> : forward (= level)'
+	echomsg '+ : parent          | - : loose child        | _ : strict child'
+	echomsg 'h : goto heading    | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
+	echomsg 's : select subtree  | Y : yank subtree       | D : delete subtree'
+	echomsg '<del> : promote     | <ins> : demote         | e : pandoc export'
+	echomsg 'H : promote subtree | L : demote subtree     | E : emacs export'
+	echomsg 'U : move sub back   | D : move sub forward   | M : move subtree to heading'
 endfun
 
 fun! organ#nest#speed (key)
