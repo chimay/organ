@@ -47,11 +47,11 @@ ease and agility.
 
 Folding, list & table :
 
-![Folding, list & table](https://github.com/chimay/organ-multimedia/folding-list-table.jpg)
+![Folding, list & table](https://github.com/chimay/organ-multimedia/blob/main/folding-list-table.jpg)
 
 Completion of heading, todo :
 
-![Heading completion & todo](https://github.com/chimay/organ-multimedia/heading-complete-todo.jpg)
+![Heading completion & todo](https://github.com/chimay/organ-multimedia/blob/main/heading-complete-todo.jpg)
 
 ## Compatibilty
 
