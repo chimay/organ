@@ -360,7 +360,6 @@ fun! organ#table#align_columns (argdict = {})
 			else
 				let shift = repeat(' ', add)
 			endif
-			echomsg shift
 			" -- adapt line
 			if position == 1
 				let before = ''
