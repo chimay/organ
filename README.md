@@ -53,6 +53,8 @@ Completion of heading, todo :
 
 ![Heading completion & todo](https://github.com/chimay/organ-multimedia/blob/main/heading-complete-todo.jpg)
 
+See also the [organ-multimedia repository](https://github.com/chimay/organ-multimedia).
+
 ## Compatibilty
 
 Organ supports :
