@@ -45,6 +45,33 @@ fun! organ#pipe#extensions (output_format)
 	return [input_extension, output_extension]
 endfun
 
+" ---- open exported document
+
+fun! organ#pipe#open (document)
+	" Open exported document
+	let document = a:document
+	" ---- needs unix
+	if ! has('unix')
+		return -1
+	endif
+	" ---- already opened ?
+	let psgrep = 'ps auxww | grep -v grep | grep ' .. document
+	let grep = system(psgrep)
+	if v:shell_error == 0
+		return v:shell_error
+	endif
+	" ---- ask
+	let prompt = 'Open exported document ?'
+	let confirm = confirm(prompt, "&Yes\n&No", 2)
+	if confirm != 1
+		return -1
+	endif
+	" ---- open
+	let open = 'xdg-open ' .. document .. '&'
+	let output = system(open)
+	return v:shell_error
+endfun
+
 " ---- export
 
 fun! organ#pipe#pandoc_export (...)
@@ -71,6 +98,7 @@ fun! organ#pipe#pandoc_export (...)
 	let command ..= '-t ' .. output_format .. ' '
 	let command ..= input .. ' >' .. output
 	call system(command)
+	let code = organ#pipe#open (output)
 	return command
 endfun
 
@@ -96,6 +124,7 @@ fun! organ#pipe#emacs_export (...)
 	let command = 'emacs ' .. input .. ' '
 	let command ..= '--batch -f ' .. emacs_fun .. ' --kill'
 	call system(command)
+	call organ#pipe#open (output)
 	return command
 endfun
 
@@ -118,6 +147,7 @@ fun! organ#pipe#asciidoc_export (...)
 	let input = expand('%')
 	let command = 'asciidoc -b ' .. output_format .. ' ' .. input
 	call system(command)
+	call organ#pipe#open (output)
 	return command
 endfun
 
@@ -140,5 +170,6 @@ fun! organ#pipe#asciidoctor_export (...)
 	let input = expand('%')
 	let command = 'asciidoctor -b ' .. output_format .. ' ' .. input
 	call system(command)
+	call organ#pipe#open (output)
 	return command
 endfun

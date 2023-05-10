@@ -161,119 +161,119 @@ content
 
 content
 
-a = b = c
+a  = b  = c
 ab = cd = ef
-c = d
+c  = d
 
-| row 1 col 1 | row 1 col 2 | coucou |
-|-+-|
-|-|
+| row 1 col 1 | row 1 col 2 | hello |
+|-------------+-------------+--------|
+|-------------+-------------+--------|
 
-| row 1 col 1 | row 1 col 2 | coucou | beu |
-|-+-|
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1 max    | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-|-|
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1  max   | row 3 col 2     |
-| row 1 col 1 | row 1 col 2 |
-   | toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-| abc | def |
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 | coucou |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1 max    | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
+ | row 1 col 1      | row 1 col 2 | hello  | there |
+ |------------------+-------------+--------+-------|
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1 max  | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ |------------------+-------------+--------+-------|
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1  max | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | abc              | def         |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 | hello  |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1 max  | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
 
 text
 
- | row 1 col 1      | row 1 col 2 | coucou | beu |
- |------------------+-------------+--------+-----|
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1 max  | row 3 col 2 | cou    |     |
- | row 1 col 1      | row 1 col 2 |        | beu |
- |------------------+-------------+--------+-----|
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1  max | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1      | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1      | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | abc              | def         |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1      | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1      | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1      | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 | coucou |     |
- |                  |             |        |     |
- | row 2 col 1      | row 2 col 2 |        |     |
- | row 3 col 1 max  | row 3 col 2 |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
- | toto             |             |        |     |
- | row 1 col 1      | row 1 col 2 |        |     |
+ | row 1 col 1      | row 1 col 2 | hello  | there |
+ |------------------+-------------+--------+-------|
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1 max  | row 3 col 2 | cou    |       |
+ | row 1 col 1      | row 1 col 2 |        | there |
+ |------------------+-------------+--------+-------|
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1  max | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | abc              | def         |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1      | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 | hello  |       |
+ |                  |             |        |       |
+ | row 2 col 1      | row 2 col 2 |        |       |
+ | row 3 col 1 max  | row 3 col 2 |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
+ | toto             |             |        |       |
+ | row 1 col 1      | row 1 col 2 |        |       |
 
 
 **** section 3.3.1.1

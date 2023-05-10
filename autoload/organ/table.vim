@@ -647,9 +647,9 @@ fun! organ#table#new_col ()
 			let after = line[second:]
 		endif
 		if line =~ organ#table#separator_pattern ()
-			let linelist[rownum] = before .. '-' .. sepdelim .. after
+			let linelist[rownum] = before .. '--' .. sepdelim .. after
 		else
-			let linelist[rownum] = before .. ' ' .. delimiter .. after
+			let linelist[rownum] = before .. '  ' .. delimiter .. after
 		endif
 	endfor
 	" ---- commit changes to buffer
