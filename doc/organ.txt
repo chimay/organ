@@ -20,7 +20,6 @@ Compatibility				|organ-introduction-compatibility|
 Features				|organ-introduction-features|
 Differences with standard orgmode	|organ-introduction-differences|
 Dependencies				|organ-introduction-dependencies|
-Why another org mode clone ?		|organ-introduction-why|
 
 ------------------------------------------------------------------------------
 WHAT IS IT					*organ-introduction-what*
@@ -85,17 +84,8 @@ FEATURES		    			*organ-introduction-features*
   + view exported document
 - convert headings and links org <-> markdown
 
-Differences with standard orgmode~
-
-- speed keys are also available in first char of list item line
-- movements can
-  + wrap around the end of the file
-  + cross over a parent headline
-
 ------------------------------------------------------------------------------
 DIFFERENCES WITH STANDARD ORG MODE	    *organ-introduction-differences*
-
-## Differences with standard orgmode
 
 - speed keys are also available in first char of list item line
 - movements can
@@ -126,20 +116,6 @@ install [wheel](https://github.com/chimay/wheel). With it, you can :
 - quickly jump to another org/markdown/whatever file
 - look for headlines in all orgmode or markdown files of a group (aka outline)
 - grep all your group files for special keywords, like TODO
-
-------------------------------------------------------------------------------
-WHY ANOTHER ORGMODE CLONE			*organ-introduction-why*
-
-First of all, it is not intended as a clone, more of a loose adaptation.
-
-The current orgmode plugins for (neo)vim that I could find are either :
-
-- abandoned and not adapted for my usage
-- written in python (which is fine but still a dependency)
-- written in lua, which means they only work with neovim
-
-I wanted to write a lightweight plugin in plain simple vimscript, with
-minimal dependancies (most of it doesn't need anything else to work).
 
 ==============================================================================
 CONFIGURATION						*organ-configuration*
@@ -473,6 +449,33 @@ autocommands : >
    autocmd bufwritepre *.org call organ#vine#markdown2org ()
  augroup END
 <
+
+==============================================================================
+MISC							*organ-misc*
+
+Why this mane ?				|organ-misc-why-this-name|
+Why another org mode clone ?		|organ-misc-why-another-org-clone|
+
+------------------------------------------------------------------------------
+WHY THIS NAME					*organ-misc-why-this-name*
+
+Besides being a short name for organizer, it's a pun for pipe-organ,
+especially the big ones. With all these keyboards, pedalboards and stop
+actions, an organist has to be organized, for sure.
+
+------------------------------------------------------------------------------
+WHY ANOTHER ORGMODE CLONE		*organ-misc-why-another-org-clone*
+
+First of all, it is not intended as a clone, more of a loose adaptation.
+
+The current orgmode plugins for (neo)vim that I could find are either :
+
+- abandoned and not adapted for my usage
+- written in python (which is fine but still a dependency)
+- written in lua, which means they only work with neovim
+
+I wanted to write a lightweight plugin in plain simple vimscript, with
+minimal dependancies (most of it doesn't need anything else to work).
 
 ==============================================================================
 FILES							*organ-files*

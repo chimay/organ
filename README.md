@@ -492,7 +492,7 @@ augroup END
 
 ## Why this name
 
-Besides being a short name for organizer, it's also a pun for pipe-organ,
+Besides being a short name for organizer, it's a pun for pipe-organ,
 especially the big ones. With all these keyboards, pedalboards and stop
 actions, an organist has to be organized, for sure.
 
