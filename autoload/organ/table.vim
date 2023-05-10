@@ -392,7 +392,7 @@ fun! organ#table#align_columns (argdict = {})
 endfun
 
 fun! organ#table#is_aligned (argdict = {})
-	" Whether table or paragraph is aligned
+	" Whether table is aligned
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -436,7 +436,7 @@ fun! organ#table#is_aligned (argdict = {})
 endfun
 
 fun! organ#table#align (mode = 'normal') range
-	" Format table
+	" Align table or paragraph
 	let mode = a:mode
 	let argdict = {}
 	if mode ==# 'visual'

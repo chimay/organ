@@ -45,13 +45,9 @@ ease and agility.
 
 ## Screenshots
 
-Folding, list & table :
+Headline completion, todo, links, list, table :
 
-![Folding, list & table](https://github.com/chimay/organ-multimedia/blob/main/folding-list-table.jpg)
-
-Completion of heading, todo :
-
-![Heading completion & todo](https://github.com/chimay/organ-multimedia/blob/main/heading-complete-todo.jpg)
+![all](https://github.com/chimay/organ-multimedia/blob/main/all.jpg)
 
 See also the [organ-multimedia repository](https://github.com/chimay/organ-multimedia).
 
