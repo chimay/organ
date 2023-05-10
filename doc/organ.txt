@@ -222,8 +222,6 @@ or a list item line. Here is a complete list :
 - `_`          : lower, child heading, strictly speaking
 - `i`          : info : full headings path (part, chapter, section, subsection, ...)
 - `h`          : go to headline, with prompt completion of full headings path
-- `<tab>`      : cycle current fold visibility
-- `<s-tab>`    : cycle all folds visibility
 - `s`          : select subtree
 - `Y`          : yank subtree
 - `X`          : delete subtree
@@ -238,6 +236,13 @@ or a list item line. Here is a complete list :
 - `E`          : export with emacs (works only in org files)
 - `a`          : export with asciidoc
 - `A`          : export with asciidoctor
+
+Some of them are context sensitive :
+
+| Map       | First char in heading line    | Table                |
+|-----------|-------------------------------|----------------------|
+| `<tab>`   | cycle current fold visibility | go to next cell      |
+| `<s-tab>` | cycle all folds visibility    |  go to previous cell |
 
 ------------------------------------------------------------------------------
 ALWAYS DEFINED					*organ-bindings-always*
@@ -297,10 +302,6 @@ Some of them are context sensitive :
 | `<M-S-right>` | demote subtree        | demote subtree     | delete column     |
 | `<M-S-up>`    | move subtree up       | move subtree up    | delete row        |
 | `<M-S-down>`  | move subtree down     | move subtree down  | new row           |
-
-| Map       | First char in heading line    | Table                |
-| `<tab>`   | cycle current fold visibility | go to next cell      |
-| `<s-tab>` | cycle all folds visibility    |  go to previous cell |
 
 Note that most table operations expect an aligned table. So, if it's
 not, you have to use `<m-a>` before juggling with rows & cols.
