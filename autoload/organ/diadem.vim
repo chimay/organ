@@ -43,7 +43,7 @@ if ! exists('s:command_meta_actions')
 		\ [ 'move-row-up'                   , 'organ#table#move_row_up'                  ] ,
 		\ [ 'move-row-down'                 , 'organ#table#move_row_down'                ] ,
 		\ [ 'move-col-left'                 , 'organ#table#move_col_left'                ] ,
-		\ [ 'move-col-right'                , 'organ#table#move_rigt'                    ] ,
+		\ [ 'move-col-right'                , 'organ#table#move_col_right'               ] ,
 		\ [ 'new-row'                       , 'organ#table#new_row'                      ] ,
 		\ [ 'new-col'                       , 'organ#table#new_col'                      ] ,
 		\ [ 'delete-row'                    , 'organ#table#delete_row'                   ] ,
