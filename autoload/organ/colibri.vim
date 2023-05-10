@@ -12,8 +12,8 @@ fun! organ#colibri#generic_pattern ()
 	" Generic pattern of item head line
 	if empty(&filetype)
 		echomsg 'organ colibri generic pattern : empty filetype'
-		" -- most unlikely
-		return '\m most unlikely : ezheifj iefjiz fbreyrbeyr byaz'
+		" -- never match
+		return '\m^$\&^.$'
 	endif
 	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
 		let unordered = g:organ_config.list.unordered[&filetype]

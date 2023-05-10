@@ -275,10 +275,10 @@ or a list item line. Here is a complete list :
 
 Some of them are context sensitive :
 
-| Map       | First char in heading line    | Table                |
-|-----------|-------------------------------|----------------------|
-| `<tab>`   | cycle current fold visibility | go to next cell      |
-| `<s-tab>` | cycle all folds visibility    |  go to previous cell |
+| Map       | First char in heading line    | Table               |
+|-----------|-------------------------------|---------------------|
+| `<tab>`   | cycle current fold visibility | go to next cell     |
+| `<s-tab>` | cycle all folds visibility    | go to previous cell |
 
 ## Always defined
 

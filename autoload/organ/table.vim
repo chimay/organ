@@ -56,8 +56,8 @@ fun! organ#table#separator_pattern ()
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
 	endif
-	" ---- most unlikely
-	return '\m most unlikely : ezheifj iefjiz fbreyrbeyr byaz'
+	" -- never match
+	return '\m^$\&^.$'
 endfun
 
 fun! organ#table#outside_pattern (argdict = {})
