@@ -321,14 +321,22 @@ Some of them are context sensitive :
 | `<M-S-up>`    | move subtree up       | move subtree up    | delete row        |
 | `<M-S-down>`  | move subtree down     | move subtree down  | new row           |
 
-You can customize `g:organ_config.prefixless_modes` to create prefixless
-maps only in the modes you specify.
+| Map       | First char in heading line    | Table                |
+|-----------|-------------------------------|----------------------|
+| `<tab>`   | cycle current fold visibility | go to next cell      |
+| `<s-tab>` | cycle all folds visibility    |  go to previous cell |
+
+Note that most table operations expect an aligned table. So, if it's
+not, you have to use `<m-a>` before juggling with rows & cols.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example : >
 
  let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
 <
+
+You can also customize `g:organ_config.prefixless_modes` to create
+prefixless maps only in the modes you specify.
 
 You can list all available plugs with the command `:map <plug>(organ-`.
 

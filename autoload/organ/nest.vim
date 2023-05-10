@@ -17,7 +17,7 @@ if ! exists('s:speedkeys')
 	lockvar s:speedkeys
 endif
 
-" --- context sensitive
+" --- generic
 
 fun! organ#nest#navig (function)
 	" Choose to apply headline or list navigation function
@@ -133,7 +133,27 @@ fun! organ#nest#meta_shift_down ()
 	endif
 endfun
 
-" -- speed keys
+" ---- tab
+
+fun! organ#nest#tab ()
+	" For <tab> map
+	if organ#table#is_in_table ()
+		return organ#table#next_cell ()
+	else
+		return organ#nest#speed ("\<tab>")
+	endif
+endfun
+
+fun! organ#nest#shift_tab ()
+	" For <s-tab> map
+	if organ#table#is_in_table ()
+		return organ#table#previous_cell ()
+	else
+		return organ#nest#speed ("\<s-tab>")
+	endif
+endfun
+
+" ---- speed keys
 
 fun! organ#nest#speed_help ()
 	" Speed key on headlines first char

@@ -234,6 +234,24 @@ fun! organ#table#maxima (dual)
 	return map(dual, { _, v -> max(v)})
 endfun
 
+" ---- navigation
+
+fun! organ#table#next_cell ()
+	" Go to next cell
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m' .. delimiter .. '\zs \ze\s*\S'
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	let linum = search(pattern, flags)
+endfun
+
+fun! organ#table#previous_cell ()
+	" Go to previous cell
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m' .. delimiter .. '\zs \ze\s*\S'
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
+	let linum = search(pattern, flags)
+endfun
+
 " ---- align
 
 fun! organ#table#reduce_multi_spaces (argdict = {})
