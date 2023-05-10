@@ -102,6 +102,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + pandoc
   + emacs
   + asciidoc or asciidoctor
+  + view exported document
 - convert headings and links org <-> markdown
 
 ## Differences with standard orgmode

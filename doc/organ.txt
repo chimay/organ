@@ -82,6 +82,7 @@ FEATURES		    			*organ-introduction-features*
   + pandoc
   + emacs
   + asciidoc or asciidoctor
+  + view exported document
 - convert headings and links org <-> markdown
 
 Differences with standard orgmode~
