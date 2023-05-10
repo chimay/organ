@@ -119,7 +119,10 @@ fun! organ#bird#generic_pattern ()
 		return '\m^\([ \t]*\)\S.*\n\zs\1[ \t]'
 	else
 		"throw 'organ bird generic pattern : not supported'
-		" -- never match
+		" -- never matches
+		" -- other solutions :
+		" -- \m^a\&^[^a]
+		" -- \m^a\&^a\@!
 		return '\m^$\&^.$'
 	endif
 endfun

@@ -56,7 +56,7 @@ fun! organ#table#separator_pattern ()
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
 	endif
-	" -- never match
+	" -- never matches
 	return '\m^$\&^.$'
 endfun
 

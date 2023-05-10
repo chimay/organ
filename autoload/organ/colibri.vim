@@ -12,7 +12,7 @@ fun! organ#colibri#generic_pattern ()
 	" Generic pattern of item head line
 	if empty(&filetype)
 		echomsg 'organ colibri generic pattern : empty filetype'
-		" -- never match
+		" -- never matches
 		return '\m^$\&^.$'
 	endif
 	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
