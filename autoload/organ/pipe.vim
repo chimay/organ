@@ -37,6 +37,9 @@ endif
 fun! organ#pipe#extensions (output_format)
 	" Input and output file extensions
 	let output_format = a:output_format
+	if output_format =~ 'html[0-9]'
+		let output_format = 'html'
+	endif
 	let input_extension = '\.' .. expand('%:e')
 	let output_extension = '\.' .. output_format
 	if output_format ==# 'markdown'
@@ -124,6 +127,7 @@ fun! organ#pipe#emacs_export (...)
 	let command = 'emacs ' .. input .. ' '
 	let command ..= '--batch -f ' .. emacs_fun .. ' --kill'
 	call system(command)
+	let output = substitute(input, input_ext, output_ext, '')
 	call organ#pipe#open (output)
 	return command
 endfun
@@ -147,6 +151,8 @@ fun! organ#pipe#asciidoc_export (...)
 	let input = expand('%')
 	let command = 'asciidoc -b ' .. output_format .. ' ' .. input
 	call system(command)
+	let [input_ext, output_ext] = organ#pipe#extensions (output_format)
+	let output = substitute(input, input_ext, output_ext, '')
 	call organ#pipe#open (output)
 	return command
 endfun
@@ -170,6 +176,8 @@ fun! organ#pipe#asciidoctor_export (...)
 	let input = expand('%')
 	let command = 'asciidoctor -b ' .. output_format .. ' ' .. input
 	call system(command)
+	let [input_ext, output_ext] = organ#pipe#extensions (output_format)
+	let output = substitute(input, input_ext, output_ext, '')
 	call organ#pipe#open (output)
 	return command
 endfun
