@@ -471,7 +471,11 @@ fun! organ#table#align (mode = 'normal') range
 	else
 		let prompt = 'Align following pattern : '
 		let argdict.delimiter = input(prompt, '')
-		call organ#table#reduce_multi_spaces (argdict)
+		let prompt = 'Minimize spaces ? '
+		let confirm = confirm(prompt, "&Yes\n&No", 2)
+		if confirm == 1
+			call organ#table#reduce_multi_spaces (argdict)
+		endif
 	endif
 	let grid = organ#table#align_columns (argdict)
 	return grid
@@ -479,7 +483,7 @@ endfun
 
 " ---- move rows & cols
 
-fun! organ#table#move_up ()
+fun! organ#table#move_row_up ()
 	" Move table row up
 	let linum = line('.')
 	if linum == 1
@@ -493,7 +497,7 @@ fun! organ#table#move_up ()
 	return linum
 endfun
 
-fun! organ#table#move_down ()
+fun! organ#table#move_row_down ()
 	" Move table row down
 	let linum = line('.')
 	if linum == line('$')
@@ -507,7 +511,7 @@ fun! organ#table#move_down ()
 	return linum
 endfun
 
-fun! organ#table#move_left (argdict = {})
+fun! organ#table#move_col_left (argdict = {})
 	" Move table column left
 	" Assume the table is aligned
 	let argdict = a:argdict
@@ -574,7 +578,7 @@ fun! organ#table#move_left (argdict = {})
 	return positions
 endfun
 
-fun! organ#table#move_right (argdict = {})
+fun! organ#table#move_col_right (argdict = {})
 	" Move table column right
 	" Assume the table is aligned
 	let argdict = a:argdict

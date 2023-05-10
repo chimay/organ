@@ -37,11 +37,23 @@ if ! exists('s:command_meta_actions')
 		\ [ 'next-link'                     , 'organ#vine#next'                          ] ,
 		\ [ 'goto-link-target'              , 'organ#vine#goto'                          ] ,
 		\ [ 'cycle-todo'                    , "organ#nest#oper('todo')"                  ] ,
+		\ [ 'next-cell'                     , 'organ#table#next_cell'                    ] ,
+		\ [ 'previous-cell'                 , 'organ#table#previous_cell'                ] ,
 		\ [ 'align'                         , 'organ#table#align'                        ] ,
+		\ [ 'move-row-up'                   , 'organ#table#move_row_up'                  ] ,
+		\ [ 'move-row-down'                 , 'organ#table#move_row_down'                ] ,
+		\ [ 'move-col-left'                 , 'organ#table#move_col_left'                ] ,
+		\ [ 'move-col-right'                , 'organ#table#move_rigt'                    ] ,
+		\ [ 'new-row'                       , 'organ#table#new_row'                      ] ,
+		\ [ 'new-col'                       , 'organ#table#new_col'                      ] ,
+		\ [ 'delete-row'                    , 'organ#table#delete_row'                   ] ,
+		\ [ 'delete-col'                    , 'organ#table#delete_col'                   ] ,
 		\ [ 'export-with-pandoc'            , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'             , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'export-with-asciidoc'          , 'organ#pipe#asciidoc_export'               ] ,
 		\ [ 'export-with-asciidoctor'       , 'organ#pipe#asciidoctor_export'            ] ,
+		\ [ 'org-to-markdown'               , 'organ#nest#org2markdown'                  ] ,
+		\ [ 'markdown-to-org'               , 'organ#nest#markdown2org'                  ] ,
 		\ ]
 	lockvar! s:command_meta_actions
 endif

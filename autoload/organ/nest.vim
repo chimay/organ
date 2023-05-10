@@ -50,7 +50,7 @@ endfun
 fun! organ#nest#meta_left ()
 	" For <m-left> map
 	if organ#table#is_in_table ()
-		call organ#table#move_left ()
+		call organ#table#move_col_left ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#promote ()
 	else
@@ -61,7 +61,7 @@ endfun
 fun! organ#nest#meta_right ()
 	" For <m-right> map
 	if organ#table#is_in_table ()
-		call organ#table#move_right ()
+		call organ#table#move_col_right ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#demote ()
 	else
@@ -72,7 +72,7 @@ endfun
 fun! organ#nest#meta_up ()
 	" For <m-up> map
 	if organ#table#is_in_table ()
-		call organ#table#move_up ()
+		call organ#table#move_row_up ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#move_subtree_backward ()
 	else
@@ -83,7 +83,7 @@ endfun
 fun! organ#nest#meta_down ()
 	" For <m-down> map
 	if organ#table#is_in_table ()
-		call organ#table#move_down ()
+		call organ#table#move_row_down ()
 	elseif organ#colibri#is_in_list ()
 		call organ#bush#move_subtree_forward ()
 	else
@@ -201,4 +201,18 @@ fun! organ#nest#speed (key)
 	endif
 	call feedkeys(key, 'n')
 	return 'normal-' .. keytrans
+endfun
+
+" ---- conversion org <-> markdown
+
+fun! organ#nest#org2markdown ()
+	" Convert headlines & links org -> markdown
+	call organ#tree#org2markdown ()
+	call organ#vine#org2markdown ()
+endfun
+
+fun! organ#nest#markdown2org ()
+	" Convert headlines & links markdown -> org
+	call organ#tree#markdown2org ()
+	call organ#vine#markdown2org ()
 endfun
