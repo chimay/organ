@@ -19,65 +19,6 @@
 
 content
 
-| row 1 col 1 | row 1 col 2 | coucou |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1 max    | row 3 col 2   |
-|-|-|
-|-:|:-:|
-|-|
-
-| row 1 col 1 | row 1 col 2 | coucou |
-|-|-|
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1 max    | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1  max   | row 3 col 2     |
-| row 1 col 1 | row 1 col 2 |
-   | toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-| abc | def |
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1     | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 | coucou |
-|
-| row 2 col 1  | row 2 col 2   |
- | row 3 col 1 max    | row 3 col 2   |
-| row 1 col 1 | row 1 col 2 |
-| toto |
-| row 1 col 1 | row 1 col 2 |
-
 ## part 1.1
 
 content
