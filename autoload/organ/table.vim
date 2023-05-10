@@ -239,7 +239,7 @@ endfun
 fun! organ#table#next_cell ()
 	" Go to next cell
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs \ze\s*\S'
+	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	let linum = search(pattern, flags)
 endfun
@@ -247,7 +247,7 @@ endfun
 fun! organ#table#previous_cell ()
 	" Go to previous cell
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs \ze\s*\S'
+	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	let linum = search(pattern, flags)
 endfun
