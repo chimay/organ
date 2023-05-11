@@ -162,6 +162,8 @@ fun! organ#bush#cycle_prefix_right (...)
 	let indent = properties.indent
 	let prefix = properties.prefix
 	let text = properties.text
+	" ---- standardize prefix
+	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
 	" ---- prefix list
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		let filekey = 'default'
@@ -207,6 +209,8 @@ fun! organ#bush#cycle_prefix_left (...)
 	let indent = properties.indent
 	let prefix = properties.prefix
 	let text = properties.text
+	" ---- standardize prefix
+	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
 	" ---- prefix list
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		let filekey = 'default'
