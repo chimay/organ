@@ -305,7 +305,7 @@ value in your init file, these bindings become available :
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
-- `<M-->`       : create new link (alt and -)
+- `<M-->`       : (press alt and dash/minus) create new link
 - `<M-@>`       : go to previous link
 - `<M-&>`       : go to next link
 - `<M-o>`       : go to link under or close to cursor
