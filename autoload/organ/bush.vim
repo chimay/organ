@@ -147,6 +147,136 @@ fun! organ#bush#delete_subtree ()
 	return subtree
 endfun
 
+" ---- cycle prefix
+
+fun! organ#bush#cycle_prefix_right (...)
+	" Cycle item prefix
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	let linum = properties.linum
+	let indent = properties.indent
+	let prefix = properties.prefix
+	let text = properties.text
+	" ---- prefix list
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
+	else
+		let filekey = &filetype
+	endif
+	let unordered = copy(g:organ_config.list.unordered[filekey])
+	let ordered = copy(g:organ_config.list.ordered[filekey])
+	let ordered = ordered->map({ _, v -> '1' .. v })
+	let prefixlist = unordered + ordered
+	let index = prefixlist->index(prefix)
+	let length = len(prefixlist)
+	let next = organ#utils#circular_plus (index, length)
+	let next_prefix = prefixlist[next]
+	let line = indent .. next_prefix .. ' ' .. text
+	call setline(linum, line)
+	return properties
+endfun
+
+fun! organ#bush#cycle_prefix_left (...)
+	" Cycle item prefix
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	let linum = properties.linum
+	let indent = properties.indent
+	let prefix = properties.prefix
+	let text = properties.text
+	" ---- prefix list
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
+	else
+		let filekey = &filetype
+	endif
+	let unordered = copy(g:organ_config.list.unordered[filekey])
+	let ordered = copy(g:organ_config.list.ordered[filekey])
+	let ordered = ordered->map({ _, v -> '1' .. v })
+	let prefixlist = unordered + ordered
+	let index = prefixlist->index(prefix)
+	let length = len(prefixlist)
+	let next = organ#utils#circular_minus (index, length)
+	let next_prefix = prefixlist[next]
+	let line = indent .. next_prefix .. ' ' .. text
+	call setline(linum, line)
+	return properties
+endfun
+
+fun! organ#bush#cycle_all_prefixes_right ()
+	" Cycle prefix of all items in parent subtree
+	let position = getcurpos ()
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	if level > 1
+		let linum = organ#colibri#parent ()
+		let subtree = organ#colibri#subtree ()
+		let head_linum = subtree.head_linum
+		let tail_linum = subtree.tail_linum
+	else
+		let head_linum = organ#colibri#list_start ()
+		let tail_linum = organ#colibri#list_end ()
+	endif
+	if head_linum == 0
+		echomsg 'organ bush cycle parent subtree prefix : itemhead not found'
+		return 0
+	endif
+	call cursor(head_linum, 1)
+	while v:true
+		let properties = organ#colibri#properties ()
+		if level == properties.level
+			call organ#bush#cycle_prefix_right (properties)
+		endif
+		let linum = organ#colibri#next ('move', 'dont-wrap')
+		if linum > tail_linum || linum == 0
+			call setpos('.', position)
+			return linum
+		endif
+	endwhile
+endfun
+
+fun! organ#bush#cycle_all_prefixes_left ()
+	" Cycle prefix of all items in parent subtree
+	let position = getcurpos ()
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	if level > 1
+		let linum = organ#colibri#parent ()
+		let subtree = organ#colibri#subtree ()
+		let head_linum = subtree.head_linum
+		let tail_linum = subtree.tail_linum
+	else
+		let head_linum = organ#colibri#list_start ()
+		let tail_linum = organ#colibri#list_end ()
+	endif
+	if head_linum == 0
+		echomsg 'organ bush cycle parent subtree prefix : itemhead not found'
+		return 0
+	endif
+	call cursor(head_linum, 1)
+	while v:true
+		let properties = organ#colibri#properties ()
+		if level == properties.level
+			call organ#bush#cycle_prefix_left (properties)
+		endif
+		let linum = organ#colibri#next ('move', 'dont-wrap')
+		if linum > tail_linum || linum == 0
+			call setpos('.', position)
+			return linum
+		endif
+	endwhile
+endfun
+
 " ---- promote & demote
 
 " -- current only
@@ -154,8 +284,9 @@ endfun
 fun! organ#bush#promote ()
 	" Promote list item
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		echomsg 'organ colibri generic pattern : filetype not supported'
-		return ''
+		let filekey = 'default'
+	else
+		let filekey = &filetype
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
@@ -170,7 +301,7 @@ fun! organ#bush#promote ()
 	endif
 	let itemhead = organ#bush#indent_item (level - 1)
 	" ---- unordered item
-	let unordered = g:organ_config.list.unordered[&filetype]
+	let unordered = g:organ_config.list.unordered[filekey]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let second = '[' .. unordered[index] .. ']'
@@ -187,7 +318,7 @@ fun! organ#bush#promote ()
 		endif
 	endfor
 	" ---- ordered item
-	let ordered = g:organ_config.list.ordered[&filetype]
+	let ordered = g:organ_config.list.ordered[filekey]
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let second = '[' .. ordered[index] .. ']'
@@ -208,8 +339,9 @@ endfun
 fun! organ#bush#demote ()
 	" Demote list item
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		echomsg 'organ colibri generic pattern : filetype not supported'
-		return ''
+		let filekey = 'default'
+	else
+		let filekey = &filetype
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
@@ -220,7 +352,7 @@ fun! organ#bush#demote ()
 	let level = properties.level
 	let itemhead = organ#bush#indent_item (level + 1)
 	" ---- unordered item
-	let unordered = g:organ_config.list.unordered[&filetype]
+	let unordered = g:organ_config.list.unordered[filekey]
 	let len_unordered = len(unordered)
 	for index in range(len(unordered))
 		let first = '[' .. unordered[index] .. ']'
@@ -237,7 +369,7 @@ fun! organ#bush#demote ()
 		endif
 	endfor
 	" ---- ordered item
-	let ordered = g:organ_config.list.ordered[&filetype]
+	let ordered = g:organ_config.list.ordered[filekey]
 	let len_ordered = len(ordered)
 	for index in range(len(ordered))
 		let first = '[' .. ordered[index] .. ']'

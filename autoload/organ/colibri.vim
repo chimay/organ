@@ -10,18 +10,13 @@
 
 fun! organ#colibri#generic_pattern ()
 	" Generic pattern of item head line
-	if empty(&filetype)
-		echomsg 'organ colibri generic pattern : empty filetype'
-		" -- never matches
-		return '\m^$\&^.$'
-	endif
-	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
-		let unordered = g:organ_config.list.unordered[&filetype]
-		let ordered = g:organ_config.list.ordered[&filetype]
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
 	else
-		let unordered = g:organ_config.list.unordered.default
-		let ordered = g:organ_config.list.ordered.default
+		let filekey = &filetype
 	endif
+	let unordered = g:organ_config.list.unordered[filekey]
+	let ordered = g:organ_config.list.ordered[filekey]
 	let unordered = unordered->join('')
 	let ordered = ordered->join('')
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
@@ -239,6 +234,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ linum : 0,
 			\ itemhead : '',
 			\ level : 1,
+			\ indent : '',
 			\ prefix : '',
 			\ text : '',
 			\ todo : '',
@@ -251,6 +247,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ linum : 0,
 			\ itemhead : '',
 			\ level : 1,
+			\ indent : '',
 			\ prefix : '',
 			\ text : '',
 			\ todo : '',
@@ -289,13 +286,14 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" ---- coda
 	let text = trim(text)
 	let properties = #{
-				\ linum : linum,
-				\ itemhead : itemhead,
-				\ level : level,
-				\ prefix : prefix,
-				\ text : text,
-				\ todo : todo,
-				\}
+			\ linum : linum,
+			\ itemhead : itemhead,
+			\ level : level,
+			\ indent : indent,
+			\ prefix : prefix,
+			\ text : text,
+			\ todo : todo,
+			\}
 	return properties
 endfun
 

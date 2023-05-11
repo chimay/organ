@@ -194,6 +194,26 @@ fun! organ#nest#meta_shift_down ()
 	endif
 endfun
 
+" ---- <s-arrow>
+
+fun! organ#nest#shift_left ()
+	" For <m-left> map
+	if organ#table#is_in_table ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#cycle_all_prefixes_left ()
+	else
+	endif
+endfun
+
+fun! organ#nest#shift_right ()
+	" For <m-right> map
+	if organ#table#is_in_table ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#cycle_all_prefixes_right ()
+	else
+	endif
+endfun
+
 " ---- tab
 
 fun! organ#nest#tab ()

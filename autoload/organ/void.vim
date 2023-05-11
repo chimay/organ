@@ -68,7 +68,7 @@ fun! organ#void#config ()
 		let g:organ_config.list.unordered.markdown = ['-', '+']
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
-		let g:organ_config.list.unordered.default = ['*']
+		let g:organ_config.list.unordered.default = ['-', '+','*']
 	endif
 	" -- ordered chars
 	if ! has_key(g:organ_config.list, 'counter_start')
