@@ -305,6 +305,8 @@ Some of them are context sensitive :
 | <M-S-right>   | demote subtree        | demote subtree     | delete column     |
 | <M-S-up>      | move subtree up       | move subtree up    | delete row        |
 | <M-S-down>    | move subtree down     | move subtree down  | new row           |
+| <S-left>      |                       | cycle prefix left  |                   |
+| <S-right>     |                       | cycle prefix right |                   |
 
 The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
