@@ -551,7 +551,7 @@ endfun
 
 fun! organ#bird#goto ()
 	" Goto heading path with completion
-	let prompt = 'Goto headline : '
+	let prompt = 'Go to headline : '
 	let complete = 'customlist,organ#complete#headline'
 	let record = input(prompt, '', complete)
 	if empty(record)

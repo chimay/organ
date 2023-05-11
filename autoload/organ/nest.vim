@@ -50,7 +50,7 @@ fun! organ#nest#speed_help ()
 	echomsg 'h : help            | <pageup> : previous    | <home> : backward (= level)'
 	echomsg 'w : where ?         | <pagedown> : next      | <end> : forward (= level)'
 	echomsg '+ : parent          | - : loose child        | _ : strict child'
-	echomsg 'h : goto heading    | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
+	echomsg 'h : go to heading   | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
 	echomsg 's : select subtree  | Y : yank subtree       | D : delete subtree'
 	echomsg '<del> : promote     | <ins> : demote         | e : pandoc export'
 	echomsg 'H : promote subtree | L : demote subtree     | E : emacs export'
