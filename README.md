@@ -349,7 +349,7 @@ If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
 
 ```vim
-let g:organ_config.prefixless_plugs = ['organ-previous', 'organ-next']
+let g:organ_config.prefixless_plugs = ['organ-next', 'organ-backward', 'organ-forward']
 ```
 
 You can also customize `g:organ_config.prefixless_modes` to create
