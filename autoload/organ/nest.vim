@@ -23,11 +23,10 @@ fun! organ#nest#navig (function)
 	" Choose to apply headline or list navigation function
 	let function = a:function
 	if organ#colibri#is_in_list ()
-		call organ#colibri#{function} ()
+		return organ#colibri#{function} ()
 	else
-		call organ#bird#{function} ()
+		return organ#bird#{function} ()
 	endif
-	return v:true
 endfun
 
 fun! organ#nest#oper (function)
@@ -38,118 +37,9 @@ fun! organ#nest#oper (function)
 	endif
 	let function = a:function
 	if organ#colibri#is_in_list ()
-		call organ#bush#{function} ()
+		return organ#bush#{function} ()
 	else
-		call organ#tree#{function} ()
-	endif
-	return v:true
-endfun
-
-" ---- <m-arrow>
-
-fun! organ#nest#meta_left ()
-	" For <m-left> map
-	if organ#table#is_in_table ()
-		call organ#table#move_col_left ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#promote ()
-	else
-		call organ#tree#promote ()
-	endif
-endfun
-
-fun! organ#nest#meta_right ()
-	" For <m-right> map
-	if organ#table#is_in_table ()
-		call organ#table#move_col_right ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#demote ()
-	else
-		call organ#tree#demote ()
-	endif
-endfun
-
-fun! organ#nest#meta_up ()
-	" For <m-up> map
-	if organ#table#is_in_table ()
-		call organ#table#move_row_up ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#move_subtree_backward ()
-	else
-		call organ#tree#move_subtree_backward ()
-	endif
-endfun
-
-fun! organ#nest#meta_down ()
-	" For <m-down> map
-	if organ#table#is_in_table ()
-		call organ#table#move_row_down ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#move_subtree_forward ()
-	else
-		call organ#tree#move_subtree_forward ()
-	endif
-endfun
-
-" ---- <m-s-arrow>
-
-fun! organ#nest#meta_shift_left ()
-	" For <m-s-left> map
-	if organ#table#is_in_table ()
-		call organ#table#delete_col ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#promote_subtree ()
-	else
-		call organ#tree#promote_subtree ()
-	endif
-endfun
-
-fun! organ#nest#meta_shift_right ()
-	" For <m-s-right> map
-	if organ#table#is_in_table ()
-		call organ#table#new_col ()
-	elseif organ#colibri#is_in_list ()
-		call organ#bush#demote_subtree ()
-	else
-		call organ#tree#demote_subtree ()
-	endif
-endfun
-
-fun! organ#nest#meta_shift_up ()
-	" For <m-s-up> map
-	if organ#table#is_in_table ()
-		call organ#table#delete_row ()
-	elseif organ#colibri#is_in_list ()
-	else
-	endif
-endfun
-
-fun! organ#nest#meta_shift_down ()
-	" For <m-s-down> map
-	if organ#table#is_in_table ()
-		call organ#table#new_row ()
-	elseif organ#colibri#is_in_list ()
-	else
-	endif
-endfun
-
-" ---- tab
-
-fun! organ#nest#tab ()
-	" For <tab> map
-	if organ#table#is_in_table ()
-		return organ#table#next_cell ()
-	else
-		return organ#nest#speed ("\<tab>")
-	endif
-endfun
-
-fun! organ#nest#shift_tab ()
-	" For <s-tab> map
-	if organ#table#is_in_table ()
-		return organ#table#previous_cell ()
-	else
-		return organ#nest#speed ("\<s-tab>")
+		return organ#tree#{function} ()
 	endif
 endfun
 
@@ -201,6 +91,138 @@ fun! organ#nest#speed (key)
 	endif
 	call feedkeys(key, 'n')
 	return 'normal-' .. keytrans
+endfun
+
+" ---- <m-arrow>
+
+fun! organ#nest#meta_left ()
+	" For <m-left> map
+	if organ#table#is_in_table ()
+		return organ#table#move_col_left ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#promote ()
+	else
+		return organ#tree#promote ()
+	endif
+endfun
+
+fun! organ#nest#meta_right ()
+	" For <m-right> map
+	if organ#table#is_in_table ()
+		return organ#table#move_col_right ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#demote ()
+	else
+		return organ#tree#demote ()
+	endif
+endfun
+
+fun! organ#nest#meta_up ()
+	" For <m-up> map
+	if organ#table#is_in_table ()
+		return organ#table#move_row_up ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#move_subtree_backward ()
+	else
+		return organ#tree#move_subtree_backward ()
+	endif
+endfun
+
+fun! organ#nest#meta_down ()
+	" For <m-down> map
+	if organ#table#is_in_table ()
+		return organ#table#move_row_down ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#move_subtree_forward ()
+	else
+		return organ#tree#move_subtree_forward ()
+	endif
+endfun
+
+" ---- <m-s-arrow>
+
+fun! organ#nest#meta_shift_left ()
+	" For <m-s-left> map
+	if organ#table#is_in_table ()
+		return organ#table#delete_col ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#promote_subtree ()
+	else
+		return organ#tree#promote_subtree ()
+	endif
+endfun
+
+fun! organ#nest#meta_shift_right ()
+	" For <m-s-right> map
+	if organ#table#is_in_table ()
+		return organ#table#new_col ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#demote_subtree ()
+	else
+		return organ#tree#demote_subtree ()
+	endif
+endfun
+
+fun! organ#nest#meta_shift_up ()
+	" For <m-s-up> map
+	if organ#table#is_in_table ()
+		return organ#table#delete_row ()
+	elseif organ#colibri#is_in_list ()
+	else
+	endif
+endfun
+
+fun! organ#nest#meta_shift_down ()
+	" For <m-s-down> map
+	if organ#table#is_in_table ()
+		return organ#table#new_row ()
+	elseif organ#colibri#is_in_list ()
+	else
+	endif
+endfun
+
+" ---- tab
+
+fun! organ#nest#tab ()
+	" For <tab> map
+	if organ#table#is_in_table ()
+		return organ#table#next_cell ()
+	else
+		return organ#nest#speed ("\<tab>")
+	endif
+endfun
+
+fun! organ#nest#shift_tab ()
+	" For <s-tab> map
+	if organ#table#is_in_table ()
+		return organ#table#previous_cell ()
+	else
+		return organ#nest#speed ("\<s-tab>")
+	endif
+endfun
+
+" ---- export
+
+fun! organ#nest#export ()
+	" Export
+	if &filetype ==# 'org'
+		call organ#pipe#emacs_export ()
+	elseif &filetype ==# 'asciidoc'
+		call organ#pipe#asciidoc_export ()
+	else
+		call organ#pipe#pandoc_export ()
+	endif
+endfun
+
+fun! organ#nest#alter_export ()
+	" Export alternative
+	if &filetype ==# 'org'
+		call organ#pipe#pandoc_export ()
+	elseif &filetype ==# 'asciidoc'
+		call organ#pipe#asciidoctor_export ()
+	else
+		call organ#pipe#pandoc_export ()
+	endif
 endfun
 
 " ---- conversion org <-> markdown

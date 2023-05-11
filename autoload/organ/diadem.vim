@@ -48,6 +48,8 @@ if ! exists('s:command_meta_actions')
 		\ [ 'new-col'                       , 'organ#table#new_col'                      ] ,
 		\ [ 'delete-row'                    , 'organ#table#delete_row'                   ] ,
 		\ [ 'delete-col'                    , 'organ#table#delete_col'                   ] ,
+		\ [ 'export'                        , 'organ#nest#export'                        ] ,
+		\ [ 'alter-export'                  , 'organ#nest#alter_export'                  ] ,
 		\ [ 'export-with-pandoc'            , 'organ#pipe#pandoc_export'                 ] ,
 		\ [ 'export-with-emacs'             , 'organ#pipe#emacs_export'                  ] ,
 		\ [ 'export-with-asciidoc'          , 'organ#pipe#asciidoc_export'               ] ,

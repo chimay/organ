@@ -268,10 +268,6 @@ or a list item line. Here is a complete list :
 - `U`          : move subtree up
 - `D`          : move subtree down
 - `M`          : move subtree in another one, with prompt completion
-- `e`          : export with pandoc
-- `E`          : export with emacs (works only in org files)
-- `a`          : export with asciidoc
-- `A`          : export with asciidoctor
 
 Some of them are context sensitive :
 
@@ -279,6 +275,13 @@ Some of them are context sensitive :
 |-----------|-------------------------------|---------------------|
 | `<tab>`   | cycle current fold visibility | go to next cell     |
 | `<s-tab>` | cycle all folds visibility    | go to previous cell |
+
+Some of them are filetype dependent :
+
+| Map | Org                | Asciidoc                | Other              |
+|-----|--------------------|-------------------------|--------------------|
+| `e` | export with emacs  | export with asciidoc    | export with pandoc |
+| `E` | export with pandoc | export with asciidoctor | export with pandoc |
 
 ## Always defined
 

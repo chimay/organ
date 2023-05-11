@@ -37,9 +37,8 @@ endif
 fun! organ#pipe#extensions (output_format)
 	" Input and output file extensions
 	let output_format = a:output_format
-	if output_format =~ 'html[0-9]'
-		let output_format = 'html'
-	endif
+	let trailing = '\m[0-9]\+$'
+	let output_format = substitute(output_format, trailing, '', '')
 	let input_extension = '\.' .. expand('%:e')
 	let output_extension = '\.' .. output_format
 	if output_format ==# 'markdown'
