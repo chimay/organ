@@ -238,7 +238,8 @@ The following data :
 - stored urls
 
 are kept in the `g:ORGAN_STOPS` global variable. It is persistent across
-(neo)vim sessions if you have `!` in your 'shada' option.
+(neo)vim sessions if you have `!` in your 'shada' (neovim) or 'viminfo'
+(vim) option.
 
 # Bindings
 ## Speed keys
