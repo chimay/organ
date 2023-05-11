@@ -188,7 +188,7 @@ if ! exists("g:organ_loaded")
   " ---- key to trigger <plug>(organ-previous)
   " ---- and go where speedkeys are available
   " ---- examples : <m-p> (default), [z
-  let g:organ_config.previous = '[z'
+  let g:organ_config.previous = '<m-p>'
   " ---- choose your mappings prefix
   let g:organ_config.prefix = '<m-o>'
   " ---- enable prefixless maps
