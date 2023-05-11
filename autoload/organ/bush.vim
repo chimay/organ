@@ -172,12 +172,25 @@ fun! organ#bush#cycle_prefix_right (...)
 	let ordered = copy(g:organ_config.list.ordered[filekey])
 	let ordered = ordered->map({ _, v -> '1' .. v })
 	let prefixlist = unordered + ordered
+	" ---- no * if no indent
+	if indent == ''
+		let starindex = prefixlist->index('*')
+		if starindex > 0
+			eval prefixlist->remove(starindex)
+		endif
+	endif
+	" ---- cycle
 	let index = prefixlist->index(prefix)
 	let length = len(prefixlist)
 	let next = organ#utils#circular_plus (index, length)
 	let next_prefix = prefixlist[next]
 	let line = indent .. next_prefix .. ' ' .. text
 	call setline(linum, line)
+	" --- update counters
+	if next_prefix =~ '\m^1'
+		call organ#bush#update_counters ()
+	endif
+	" ---- coda
 	return properties
 endfun
 
@@ -204,12 +217,25 @@ fun! organ#bush#cycle_prefix_left (...)
 	let ordered = copy(g:organ_config.list.ordered[filekey])
 	let ordered = ordered->map({ _, v -> '1' .. v })
 	let prefixlist = unordered + ordered
+	" ---- no * if no indent
+	if indent == ''
+		let starindex = prefixlist->index('*')
+		if starindex > 0
+			eval prefixlist->remove(starindex)
+		endif
+	endif
+	" ---- cycle
 	let index = prefixlist->index(prefix)
 	let length = len(prefixlist)
 	let next = organ#utils#circular_minus (index, length)
 	let next_prefix = prefixlist[next]
 	let line = indent .. next_prefix .. ' ' .. text
 	call setline(linum, line)
+	" --- update counters
+	if next_prefix =~ '\m^1'
+		call organ#bush#update_counters ()
+	endif
+	" ---- coda
 	return properties
 endfun
 
