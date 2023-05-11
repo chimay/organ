@@ -61,6 +61,9 @@ FEATURES		    			*organ-introduction-features*
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
+- cycle todo status
+- cycle list item prefix
+- insert timestamp
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
 - links
@@ -75,8 +78,6 @@ FEATURES		    			*organ-introduction-features*
   + delete row, colum
   + move row up or down
   + move column left or right
-- cycle todo status
-- insert timestamp
 - export in another format using
   + pandoc
   + emacs
@@ -296,7 +297,7 @@ Some of them are context sensitive :
 | <M-v>         | select subtree        | select subtree     |                   |
 | <M-y>         | yank subtree          | yank subtree       |                   |
 | <M-S-x>       | delete subtree        | delete subtree     |                   |
-| <M-a>         |                       |                    | align             |
+| <M-a>         |                       |                    | align table       |
 | <M-CR>        | new subtree           | new subtree        | new row           |
 | <M-left>      | promote               | promote            | move column left  |
 | <M-right>     | demote                | demote             | move column right |
@@ -406,12 +407,12 @@ AVAILABLE PLUGS				*organ-bindings-available-plugs*
 
 | Plugs                          | Operation                         |
 | ------------------------------ | --------------------------------- |
-| <plug>(organ-expand template)  | expand template before cursor     |
-| <plug>(organ-store url)        | store url under or near cursor    |
-| <plug>(organ-new link)         | create new link                   |
-| <plug>(organ-previous link)    | go to previous link               |
-| <plug>(organ-next link)        | go to next link                   |
-| <plug>(organ-goto link-target) | go to link target                 |
+| <plug>(organ-expand-template)  | expand template before cursor     |
+| <plug>(organ-store-url)        | store url under or near cursor    |
+| <plug>(organ-new-link)         | create new link                   |
+| <plug>(organ-previous-link)    | go to previous link               |
+| <plug>(organ-next-link)        | go to next link                   |
+| <plug>(organ-goto-link-target) | go to link target                 |
 | <plug>(organ-timestamp)        | add timestamp at cursor           |
 | <plug>(organ-export)           | export document                   |
 | <plug>(organ-alter-export)     | export document, alternative tool |

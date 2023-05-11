@@ -83,6 +83,9 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
+- cycle todo status
+- cycle list item prefix
+- insert timestamp
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
 - links
@@ -97,8 +100,6 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + delete row, colum
   + move row up or down
   + move column left or right
-- cycle todo status
-- insert timestamp
 - export in another format using
   + pandoc
   + emacs
@@ -443,12 +444,12 @@ You can find below a list of all available plugs.
 
 | Plugs                            | Operation                         |
 |----------------------------------|-----------------------------------|
-| `<plug>`(organ-expand template)  | expand template before cursor     |
-| `<plug>`(organ-store url)        | store url under or near cursor    |
-| `<plug>`(organ-new link)         | create new link                   |
-| `<plug>`(organ-previous link)    | go to previous link               |
-| `<plug>`(organ-next link)        | go to next link                   |
-| `<plug>`(organ-goto link-target) | go to link target                 |
+| `<plug>`(organ-expand-template)  | expand template before cursor     |
+| `<plug>`(organ-store-url)        | store url under or near cursor    |
+| `<plug>`(organ-new-link)         | create new link                   |
+| `<plug>`(organ-previous-link)    | go to previous link               |
+| `<plug>`(organ-next-link)        | go to next link                   |
+| `<plug>`(organ-goto-link-target) | go to link target                 |
 | `<plug>`(organ-timestamp)        | add timestamp at cursor           |
 | `<plug>`(organ-export)           | export document                   |
 | `<plug>`(organ-alter-export)     | export document, alternative tool |

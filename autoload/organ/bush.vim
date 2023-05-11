@@ -670,4 +670,3 @@ fun! organ#bush#cycle_todo_right ()
 	call setline(linum, newline)
 	return newline
 endfun
-
