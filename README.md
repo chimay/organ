@@ -343,7 +343,7 @@ The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
 
 Note that most table operations expect an aligned table. So, if it's
-not, you have to use `<m-a>` before juggling with rows & cols.
+not, you have to align it before juggling with rows & cols.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
