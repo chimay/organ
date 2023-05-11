@@ -268,7 +268,6 @@ value in your init file, these bindings become available :
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-z>`       : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`     : cycle all folds visibility
-- `<M-CR>`      : new subtree or list item
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
@@ -297,6 +296,7 @@ Some of them are context sensitive :
 | <M-y>         | yank subtree          | yank subtree       |                   |
 | <M-S-x>       | delete subtree        | delete subtree     |                   |
 | <M-a>         |                       |                    | align             |
+| <M-CR>        | new subtree           | new subtree        | new row           |
 | <M-left>      | promote               | promote            | move column left  |
 | <M-right>     | demote                | demote             | move column right |
 | <M-up>        | move subtree up       | move subtree up    | move row up       |

@@ -303,7 +303,6 @@ value in your init file, these bindings become available :
 - `<M-h>`       : go to headline, with prompt completion of full headings path
 - `<M-z>`       : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`     : cycle all folds visibility
-- `<M-CR>`      : new subtree or list item
 - `<M-m>`       : move subtree in another one, with prompt completion
 - `<M-x>`       : expand template
 - `<M-s>`       : store url at cursor
@@ -319,27 +318,28 @@ value in your init file, these bindings become available :
 
 Some of them are context sensitive :
 
-| Map           | Heading               | List               | Table               |
-|---------------|-----------------------|--------------------|---------------------|
-| `<M-p>`       | previous heading      | previous item      |                     |
-| `<M-n>`       | next heading          | next item          |                     |
-| `<M-b>`       | prev head, same level | prev item, = level |                     |
-| `<M-f>`       | next head, same level | next item, = level |                     |
-| `<M-u>`       | parent heading        | parent item        |                     |
-| `<M-l>`       | child heading, loose  | child item, loose  |                     |
-| `<M-S-l>`     | child heading, strict | child item, strict |                     |
-| `<M-v>`       | select subtree        | select subtree     |                     |
-| `<M-y>`       | yank subtree          | yank subtree       |                     |
-| `<M-S-x>`     | delete subtree        | delete subtree     |                     |
-| `<M-a>`       |                       |                    | align table         |
-| `<M-left>`    | promote               | promote            | move column left    |
-| `<M-right>`   | demote                | demote             | move column right   |
-| `<M-up>`      | move subtree up       | move subtree up    | move row up         |
-| `<M-down>`    | move subtree down     | move subtree down  | move row down       |
-| `<M-S-left>`  | promote subtree       | promote subtree    | new column          |
-| `<M-S-right>` | demote subtree        | demote subtree     | delete column       |
-| `<M-S-up>`    | move subtree up       | move subtree up    | delete row          |
-| `<M-S-down>`  | move subtree down     | move subtree down  | new row             |
+| Map           | Heading                 | List               | Table               |
+|---------------|-------------------------|--------------------|---------------------|
+| `<M-p>`       | previous heading        | previous item      |                     |
+| `<M-n>`       | next heading            | next item          |                     |
+| `<M-b>`       | prev head, same level   | prev item, = level |                     |
+| `<M-f>`       | next head, same level   | next item, = level |                     |
+| `<M-u>`       | parent heading          | parent item        |                     |
+| `<M-l>`       | child heading, loose    | child item, loose  |                     |
+| `<M-S-l>`     | child heading, strict   | child item, strict |                     |
+| `<M-v>`       | select subtree          | select subtree     |                     |
+| `<M-y>`       | yank subtree            | yank subtree       |                     |
+| `<M-S-x>`     | delete subtree          | delete subtree     |                     |
+| `<M-a>`       |                         |                    | align table         |
+| `<M-CR>`      | new subtree             | new subtree        | new row             |
+| `<M-left>`    | promote                 | promote            | move column left    |
+| `<M-right>`   | demote                  | demote             | move column right   |
+| `<M-up>`      | move subtree up         | move subtree up    | move row up         |
+| `<M-down>`    | move subtree down       | move subtree down  | move row down       |
+| `<M-S-left>`  | promote subtree         | promote subtree    | new column          |
+| `<M-S-right>` | demote subtree          | demote subtree     | delete column       |
+| `<M-S-up>`    | move subtree up         | move subtree up    | delete row          |
+| `<M-S-down>`  | move subtree down       | move subtree down  | new row             |
 
 The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
