@@ -227,7 +227,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
   nmap <c-cr> <plug>(organ-new)
-  nmap <backspace> :Organ<space>
+  nnoremap <backspace> :Organ<space>
 endif
 ```
 
