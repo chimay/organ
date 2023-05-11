@@ -67,7 +67,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 
 - folding based on headings in org and markdown files
 - headings base on folding in folded files
-  + you can handle your folds like in orgmode
+  + you can handle your folds like orgmode headings
 - navigate in headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
