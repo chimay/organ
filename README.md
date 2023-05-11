@@ -339,11 +339,11 @@ Some of them are context sensitive :
 | `<M-S-up>`    | move subtree up       | move subtree up    | delete row          |
 | `<M-S-down>`  | move subtree down     | move subtree down  | new row             |
 
-Note that most table operations expect an aligned table. So, if it's
-not, you have to use `<m-a>` before juggling with rows & cols.
-
 The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
+
+Note that most table operations expect an aligned table. So, if it's
+not, you have to use `<m-a>` before juggling with rows & cols.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
