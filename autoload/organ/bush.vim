@@ -583,8 +583,52 @@ endfun
 
 " ---- todo
 
-fun! organ#bush#todo ()
-	" Cycle todo - done - none headline marker
+fun! organ#bush#cycle_todo_left ()
+	" Cycle todo keyword marker left
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let level = properties.level
+	let prefix = properties.prefix
+	let text = properties.text
+	" ---- next in cycle
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let next_todo = todo_cycle[-1]
+	elseif cycle_index == 0
+		let next_todo = ''
+	else
+		let next_todo = todo_cycle[cycle_index - 1]
+	endif
+	" ---- new line
+	if s:rep_one_char->index(&filetype) >= 0
+		if empty(next_todo)
+			let newline = prefix .. ' ' .. text
+		else
+			let newline = prefix .. ' ' .. next_todo .. ' ' .. text
+		endif
+	else
+		if empty(next_todo)
+			let newline = text .. ' ' .. prefix
+		else
+			let newline = next_todo .. ' ' .. text .. ' ' .. prefix
+		endif
+	endif
+	" ---- indent
+	let shift = organ#colibri#common_indent ()
+	let step = g:organ_config.list.indent_length
+	let numspaces = shift + step * (level - 1)
+	let indent = repeat(' ', numspaces)
+	let newline = indent .. newline
+	" ---- coda
+	call setline(linum, newline)
+	return newline
+endfun
+
+fun! organ#bush#cycle_todo_right ()
+	" Cycle todo keyword marker right
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level

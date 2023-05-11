@@ -181,7 +181,9 @@ fun! organ#nest#meta_shift_up ()
 	if organ#table#is_in_table ()
 		return organ#table#delete_row ()
 	elseif organ#colibri#is_in_list ()
+		return organ#bush#cycle_todo_left ()
 	else
+		return organ#tree#cycle_todo_left ()
 	endif
 endfun
 
@@ -190,14 +192,16 @@ fun! organ#nest#meta_shift_down ()
 	if organ#table#is_in_table ()
 		return organ#table#new_row ()
 	elseif organ#colibri#is_in_list ()
+		return organ#bush#cycle_todo_right ()
 	else
+		return organ#tree#cycle_todo_right ()
 	endif
 endfun
 
 " ---- <s-arrow>
 
 fun! organ#nest#shift_left ()
-	" For <m-left> map
+	" For <s-left> map
 	if organ#table#is_in_table ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_all_prefixes_left ()
@@ -206,7 +210,7 @@ fun! organ#nest#shift_left ()
 endfun
 
 fun! organ#nest#shift_right ()
-	" For <m-right> map
+	" For <s-right> map
 	if organ#table#is_in_table ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_all_prefixes_right ()

@@ -391,8 +391,53 @@ endfun
 
 " ---- todo
 
-fun! organ#tree#todo ()
-	" Cycle todo - done - none headline marker
+fun! organ#tree#cycle_todo_left ()
+	" Cycle todo keyword marker left
+	let properties = organ#bird#properties ()
+	let linum = properties.linum
+	let levelstring = properties.levelstring
+	let title = properties.title
+	let commentstrings = properties.commentstrings
+	let lencomlist = len(commentstrings)
+	let todo = properties.todo
+	" ---- cycle
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let next_todo = todo_cycle[-1]
+	elseif cycle_index == 0
+		let next_todo = ''
+	else
+		let next_todo = todo_cycle[cycle_index - 1]
+	endif
+	" ---- commentstring
+	let comstr = split(&commentstring, '%s')
+	" ---- new line
+	if s:rep_one_char->index(&filetype) >= 0
+		if empty(next_todo)
+			let newline = levelstring .. ' ' .. title
+		else
+			let newline = levelstring .. ' ' .. next_todo .. ' ' .. title
+		endif
+	else
+		if empty(next_todo)
+			let newline = title .. ' ' .. levelstring
+		else
+			let newline = next_todo .. ' ' .. title .. ' ' .. levelstring
+		endif
+		if lencomlist == 1
+			let newline = comstr[0] .. ' ' .. newline
+		elseif lencomlist >= 2
+			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
+		endif
+	endif
+	call setline(linum, newline)
+	return newline
+endfun
+
+fun! organ#tree#cycle_todo_right ()
+	" Cycle todo keyword marker right
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	let levelstring = properties.levelstring

@@ -299,22 +299,21 @@ it's always defined, regardless of the prefixless setting. You can use
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
 value in your init file, these bindings become available :
 
-- `<M-i>`       : info : full headings path (chapter, section, subsection, ...)
-- `<M-h>`       : go to headline, with prompt completion of full headings path
-- `<M-z>`       : cycle current fold visibility (like an improved `za`)
-- `<M-S-z>`     : cycle all folds visibility
-- `<M-m>`       : move subtree in another one, with prompt completion
-- `<M-x>`       : expand template
-- `<M-s>`       : store url at cursor
-- `<M-->`       : (press alt and dash) create new link
-- `<M-@>`       : go to previous link
-- `<M-&>`       : go to next link
-- `<M-o>`       : go to link under or close to cursor
-- `<M-t>`       : cycle TODO - DONE - none
-- `<M-d>`       : add date & time stamp
-- `<M-_>`       : table : add a separator line
-- `<M-e>`       : export with pandoc
-- `<M-S-e>`     : export with emacs (works only in org files)
+- `<M-i>`      : info  : full headings path (chapter, section, subsection, ...)
+- `<M-h>`      : go to headline, with prompt completion of full headings path
+- `<M-z>`      : cycle current fold visibility (like an improved `za`)
+- `<M-S-z>`    : cycle all folds visibility
+- `<M-m>`      : move subtree in another one, with prompt completion
+- `<M-x>`      : expand template
+- `<M-s>`      : store url at cursor
+- `<M-->`      : (press alt and dash) create new link
+- `<M-@>`      : go to previous link
+- `<M-&>`      : go to next link
+- `<M-o>`      : go to link under or close to cursor
+- `<M-d>`      : add date & time stamp
+- `<M-_>`      : table : add a separator line
+- `<M-e>`      : export with pandoc
+- `<M-S-e>`    : export with emacs (works only in org files)
 
 Some of them are context sensitive :
 
@@ -338,8 +337,8 @@ Some of them are context sensitive :
 | `<M-down>`    | move subtree down       | move subtree down  | move row down       |
 | `<M-S-left>`  | promote subtree         | promote subtree    | new column          |
 | `<M-S-right>` | demote subtree          | demote subtree     | delete column       |
-| `<M-S-up>`    | move subtree up         | move subtree up    | delete row          |
-| `<M-S-down>`  | move subtree down       | move subtree down  | new row             |
+| `<M-S-up>`    | cycle todo left         | cycle todo left    | delete row          |
+| `<M-S-down>`  | cycle todo right        | cycle todo right   | new row             |
 | `<S-left>`    |                         | cycle prefix left  |                     |
 | `<S-right>`   |                         | cycle prefix right |                     |
 
@@ -431,14 +430,16 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
 | `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
 | `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
-| `<plug>`(organ-meta-shift-up)      |                           | delete row         |
-| `<plug>`(organ-meta-shift-down)    |                           | add new row        |
+| `<plug>`(organ-meta-shift-up)      | cycle todo right          | delete row         |
+| `<plug>`(organ-meta-shift-down)    | cycle todo left           | add new row        |
 | `<plug>`(organ-tab)                |                           | go to next cell    |
 | `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
 | `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
 | `<plug>`(organ-cycle todo)         | cycle todo status         |                    |
 | `<plug>`(organ-align)              |                           | align table        |
 | `<plug>`(organ-new-separator-line) |                           | add separator line |
+| `<plug>`(organ-shift-left)         | cycle item prefix left    |                    |
+| `<plug>`(organ-shift-right)        | cycle item prefix right   |                    |
 
 | Plugs                            | Operation                         |
 |----------------------------------|-----------------------------------|
