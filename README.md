@@ -311,9 +311,6 @@ value in your init file, these bindings become available :
 - `<M-o>`       : go to link under or close to cursor
 - `<M-t>`       : cycle TODO - DONE - none
 - `<M-d>`       : add date & time stamp
-- `<M-a>`       : in table       : align table
-                : outside        : align paragraph following a pattern
-                : in visual mode : align selected lines
 - `<M-_>`       : table : add a separator line
 - `<M-e>`       : export with pandoc
 - `<M-S-e>`     : export with emacs (works only in org files)
@@ -332,7 +329,7 @@ Some of them are context sensitive :
 | `<M-v>`       | select subtree        | select subtree     |                     |
 | `<M-y>`       | yank subtree          | yank subtree       |                     |
 | `<M-S-x>`     | delete subtree        | delete subtree     |                     |
-| `<M-a>`       |                       |                    | align               |
+| `<M-a>`       |                       |                    | align table         |
 | `<M-left>`    | promote               | promote            | move column left    |
 | `<M-right>`   | demote                | demote             | move column right   |
 | `<M-up>`      | move subtree up       | move subtree up    | move row up         |
@@ -344,6 +341,9 @@ Some of them are context sensitive :
 
 Note that most table operations expect an aligned table. So, if it's
 not, you have to use `<m-a>` before juggling with rows & cols.
+
+The align function can also be used to align a paragraph, or the visual
+selection; following a pattern.
 
 If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
