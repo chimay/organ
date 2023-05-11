@@ -93,6 +93,19 @@ fun! organ#nest#speed (key)
 	return 'normal-' .. keytrans
 endfun
 
+" ---- <m-return>
+
+fun! organ#nest#meta_return ()
+	" For <m-cr> map
+	if organ#table#is_in_table ()
+		return organ#table#new_row ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#new ()
+	else
+		return organ#tree#new ()
+	endif
+endfun
+
 " ---- <m-arrow>
 
 fun! organ#nest#meta_left ()

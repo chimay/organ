@@ -22,6 +22,7 @@
     * [Prefixless](#prefixless)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
+    * [Available plugs](#available-plugs)
 * [Folding](#folding)
     * [Markers](#markers)
     * [Indent](#indent)
@@ -226,7 +227,8 @@ if ! exists("g:organ_loaded")
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- custom maps
-  nmap <c-cr> <plug>(organ-new)
+  nmap <c-cr> <plug>(organ-meta-return)
+  imap <c-cr> <plug>(organ-meta-return)
   nnoremap <backspace> :Organ<space>
 endif
 ```
@@ -380,18 +382,21 @@ Plugs can be mapped as usual :
 
 ```vim
 nmap <c-n> <plug>(organ-next)
+imap <c-n> <plug>(organ-next)
 ```
 
 If you wish to enable it only for certain filetypes, you can use autocommands :
 
 ```vim
 autocmd FileType org,markdown nmap <buffer> <c-n> <plug>(organ-next)
+autocmd FileType org,markdown imap <buffer> <c-n> <plug>(organ-next)
 ```
 
 This should have the same effect as writing :
 
 ```vim
 nmap <buffer> <c-n> <plug>(organ-next)
+imap <buffer> <c-n> <plug>(organ-next)
 ```
 
 in `ftplugin/org/main.vim` and `ftplugin/markdown/main.vim`, somewhere
@@ -414,10 +419,10 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-goto-headline)      | go to headline, with comp |                    |
 | `<plug>`(organ-cycle-fold)         | cycle current fold        |                    |
 | `<plug>`(organ-cycle-all-folds)    | cycle all folds           |                    |
-| `<plug>`(organ-new)                | new heading or item       |                    |
 | `<plug>`(organ-select-subtree)     | select subtree            |                    |
 | `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
 | `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
+| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
 | `<plug>`(organ-meta-left)          | promote                   | move column left   |
 | `<plug>`(organ-meta-right)         | demote                    | move column right  |
 | `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
