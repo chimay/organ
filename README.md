@@ -183,7 +183,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.templates = {}
   " ---- enable for every file if > 0
   let g:organ_config.everywhere = 0
-  " ---- enable speed keys on first char of headlines and list items lines
+  " ---- enable speed keys on first char of headlines and list items
   let g:organ_config.speedkeys = 1
   " ---- key to trigger <plug>(organ-previous)
   " ---- and go where speedkeys are available
