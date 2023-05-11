@@ -210,7 +210,7 @@ if ! exists("g:organ_loaded")
   " ---- must be >= 0
   " ---- default 1
   let g:organ_config.list.counter_start = 1
-	" ---- number of stored links to keep (default)
+  " ---- number of stored links to keep (default)
   let g:organ_config.links.keep = 5
   " ---- shortcuts to expand templates
   " ---- examples from default settings
