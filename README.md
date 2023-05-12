@@ -100,6 +100,8 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + delete row, colum
   + move row up or down
   + move column left or right
+  + go to next or previous cell
+  + go to beginning or end of cell
 - export in another format using
   + pandoc
   + emacs
