@@ -527,7 +527,13 @@ fun! organ#bird#path (move = 'dont-move')
 			endif
 			return path
 		endif
-		call organ#bird#parent ('move', 'wrap', properties)
+		let parent_linum = organ#bird#parent ('move', 'wrap', properties)
+		if parent_linum == 0
+			if move != 'move'
+				call setpos('.', position)
+			endif
+			return path
+		endif
 		let properties = organ#bird#properties ('move')
 		eval path->insert(properties.title)
 	endwhile

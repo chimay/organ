@@ -409,50 +409,6 @@ fun! organ#table#align_columns (argdict = {})
 	return grid
 endfun
 
-fun! organ#table#is_aligned (argdict = {})
-	" Whether table is aligned
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-	endif
-	if has_key (argdict, 'grid')
-		let grid =  argdict.grid
-	else
-		let grid =  organ#table#grid (argdict)
-	endif
-	" ---- grid derivates
-	let lengthes = organ#table#lengthes (grid)
-	let colmax = max(lengthes)
-	let dual = organ#table#dual(grid)
-	let maxima = organ#table#maxima(dual)
-	" ---- lines list
-	let linelist = getline(head_linum, tail_linum)
-	let lenlinelist = len(linelist)
-	" ---- double loop
-	let index = 0
-	for colnum in range(colmax)
-		for rownum in range(lenlinelist)
-			if lengthes[rownum] <= colnum
-				continue
-			endif
-			let row = grid[rownum]
-			let position = row[colnum]
-			let add = maxima[colnum] - position
-			if add > 0
-				return v:false
-			endif
-		endfor
-	endfor
-	return v:true
-endfun
-
 fun! organ#table#align (mode = 'normal') range
 	" Align table or paragraph
 	let mode = a:mode
@@ -479,6 +435,16 @@ fun! organ#table#align (mode = 'normal') range
 	endif
 	let grid = organ#table#align_columns (argdict)
 	return grid
+endfun
+
+" ---- update
+
+fun! organ#table#update ()
+	" Update table : to be used in InsertLeave autocommand
+	if ! organ#table#is_in_table ()
+		return []
+	endif
+	return organ#table#align_columns ()
 endfun
 
 " ---- move rows & cols

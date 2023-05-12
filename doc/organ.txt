@@ -498,19 +498,28 @@ further details, please refer to the
 ==============================================================================
 AUTOCOMMANDS	 					*organ-autocommands*
 
+Update table~
+
+Automatically update the current table alignment after each insertion : >
+
+ augroup organ
+   autocmd!
+   autocmd InsertLeave *.org,*.md call organ#table#update ()
+ augroup END
+<
+
+Conversion~
+
 If you copy some headings and links back and forth from org to markdown,
 you can automatically convert the links at buffer write with the following
 autocommands : >
 
- augroup organ
-   autocmd!
-   " ---- convert headings org <-> markdown
-   autocmd bufwritepre *.md call organ#tree#org2markdown ()
-   autocmd bufwritepre *.org call organ#tree#markdown2org ()
-   " ---- convert links org <-> markdown
-   autocmd bufwritepre *.md call organ#vine#org2markdown ()
-   autocmd bufwritepre *.org call organ#vine#markdown2org ()
- augroup END
+ " ---- convert headings org <-> markdown
+ autocmd bufwritepre *.md call organ#tree#org2markdown ()
+ autocmd bufwritepre *.org call organ#tree#markdown2org ()
+ " ---- convert links org <-> markdown
+ autocmd bufwritepre *.md call organ#vine#org2markdown ()
+ autocmd bufwritepre *.org call organ#vine#markdown2org ()
 <
 
 ==============================================================================
