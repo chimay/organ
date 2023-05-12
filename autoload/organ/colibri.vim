@@ -236,6 +236,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ prefix : '',
 			\ text : '',
+			\ checkbox : '',
 			\ todo : '',
 			\}
 	endif
@@ -249,27 +250,35 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ prefix : '',
 			\ text : '',
+			\ checkbox : '',
 			\ todo : '',
 			\}
 	endif
 	let itemhead = getline(linum)
+	let text = itemhead
 	" ---- tab -> spaces
 	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '\t', spaces, 'g')
-	" ---- computing level
-	let indent = itemhead->matchstr('\m^\s*')
+	let text = substitute(text, '\t', spaces, 'g')
+	" ---- indent & level
+	let indent_pattern = '\m^\s*'
+	let indent = text->matchstr(indent_pattern)
 	let numspaces = len(indent)
 	let common_indent = organ#colibri#common_indent ()
 	let numspaces -= common_indent
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
+	" -- text without indent
+	let text = substitute(text, indent_pattern, '', '')
 	" ---- prefix
-	let prefix_pattern = '\m\S\+\ze\s\+'
-	let prefix = itemhead->matchstr(prefix_pattern)
-	let prefix = substitute(prefix, '\m^\s*', '', '')
-	" ---- text without prefix
-	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let text = substitute(itemhead, prefix_pattern, '', '')
+	let prefix_pattern = '\m^\s*\zs\S\+\ze\s*'
+	let prefix = text->matchstr(prefix_pattern)
+	" -- text without prefix
+	let text = substitute(text, prefix_pattern, '', '')
+	" ---- checkbox
+	let checkbox_pattern = '\m^\s*\zs\[.\]'
+	let checkbox = text->matchstr(checkbox_pattern)
+	" -- text without checkbox
+	let text = substitute(text, checkbox_pattern, '', '')
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle
@@ -292,6 +301,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : indent,
 			\ prefix : prefix,
 			\ text : text,
+			\ checkbox : checkbox,
 			\ todo : todo,
 			\}
 	return properties
