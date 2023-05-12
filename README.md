@@ -431,6 +431,10 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-meta-right)         | demote                    | move column right  |
 | `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
 | `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
+| `<plug>`(organ-shift-left)         | cycle item prefix left    |                    |
+| `<plug>`(organ-shift-right)        | cycle item prefix right   |                    |
+| `<plug>`(organ-shift-up)           | cycle todo keyword left   |                    |
+| `<plug>`(organ-shift-down)         | cycle todo keyword right  |                    |
 | `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
 | `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
 | `<plug>`(organ-meta-shift-up)      | cycle todo right          | delete row         |
@@ -438,11 +442,8 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-tab)                |                           | go to next cell    |
 | `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
 | `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
-| `<plug>`(organ-cycle todo)         | cycle todo status         |                    |
 | `<plug>`(organ-align)              |                           | align table        |
 | `<plug>`(organ-new-separator-line) |                           | add separator line |
-| `<plug>`(organ-shift-left)         | cycle item prefix left    |                    |
-| `<plug>`(organ-shift-right)        | cycle item prefix right   |                    |
 
 | Plugs                            | Operation                         |
 |----------------------------------|-----------------------------------|

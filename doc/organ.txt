@@ -384,14 +384,18 @@ AVAILABLE PLUGS				*organ-bindings-available-plugs*
 | <plug>(organ-goto-headline)      | go to headline, with comp |                    |
 | <plug>(organ-cycle-fold)         | cycle current fold        |                    |
 | <plug>(organ-cycle-all-folds)    | cycle all folds           |                    |
-| <plug>(organ-new)                | new heading or item       |                    |
 | <plug>(organ-select-subtree)     | select subtree            |                    |
 | <plug>(organ-yank-subtree)       | yank subtree              |                    |
 | <plug>(organ-delete-subtree)     | delete subtree            |                    |
+| <plug>(organ-meta-return)        | new heading or item       | new row            |
 | <plug>(organ-meta-left)          | promote                   | move column left   |
 | <plug>(organ-meta-right)         | demote                    | move column right  |
 | <plug>(organ-meta-up)            | move heading or item up   | move row up        |
 | <plug>(organ-meta-down)          | move heading or item down | move row down      |
+| <plug>(organ-shift-left)         | cycle item prefix left    |                    |
+| <plug>(organ-shift-right)        | cycle item prefix right   |                    |
+| <plug>(organ-shift-up)           | cycle todo keyword left   |                    |
+| <plug>(organ-shift-down)         | cycle todo keyword right  |                    |
 | <plug>(organ-meta-shift-left)    | promote subtree           | delete column      |
 | <plug>(organ-meta-shift-right)   | demote subtree            | add new column     |
 | <plug>(organ-meta-shift-up)      | cycle todo right          | delete row         |
@@ -399,11 +403,8 @@ AVAILABLE PLUGS				*organ-bindings-available-plugs*
 | <plug>(organ-tab)                |                           | go to next cell    |
 | <plug>(organ-shift-tab)          |                           | go to prev cell    |
 | <plug>(organ-move-subtree-to)    | move subtree, prompt comp |                    |
-| <plug>(organ-cycle todo)         | cycle todo status         |                    |
 | <plug>(organ-align)              |                           | align table        |
 | <plug>(organ-new-separator-line) |                           | add separator line |
-| <plug>(organ-shift-left)         | cycle item prefix left    |                    |
-| <plug>(organ-shift-right)        | cycle item prefix right   |                    |
 
 | Plugs                          | Operation                         |
 | ------------------------------ | --------------------------------- |
