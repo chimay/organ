@@ -184,6 +184,73 @@ endfun
 
 " ---- cycle prefix
 
+fun! organ#bush#cycle_prefix_left (...)
+	" Cycle item prefix
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let indent = properties.indent
+	let level = properties.level
+	let prefix = properties.prefix
+	let counter = properties.counter
+	let checkbox = properties.checkbox
+	let todo = properties.todo
+	let text = properties.text
+	" ---- standardize prefix
+	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
+	" ---- prefix list
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
+	else
+		let filekey = &filetype
+	endif
+	let unordered = copy(g:organ_config.list.unordered[filekey])
+	let ordered = copy(g:organ_config.list.ordered[filekey])
+	let ordered = ordered->map({ _, v -> '1' .. v })
+	let prefixlist = unordered + ordered
+	" ---- no * if no indent
+	if indent ==# ''
+		let starindex = prefixlist->index('*')
+		if starindex > 0
+			eval prefixlist->remove(starindex)
+		endif
+	endif
+	" ---- cycle
+	let index = prefixlist->index(prefix)
+	let length = len(prefixlist)
+	let next = organ#utils#circular_minus (index, length)
+	let previous_prefix = prefixlist[next]
+	" ---- add spaces
+	let previous_prefix = previous_prefix .. ' '
+	if counter >= 0
+		let counter = '[@' .. counter .. '] '
+	else
+		let counter = ''
+	endif
+	if ! empty(checkbox)
+		let checkbox = checkbox .. ' '
+	endif
+	if ! empty(todo)
+		let todo = todo .. ' '
+	endif
+	" ---- update line
+	let newline = indent .. previous_prefix .. counter .. checkbox .. todo .. text
+	call setline(linum, newline)
+	" --- update counters
+	if previous_prefix =~ '\m^1'
+		call organ#bush#update_counters ()
+	endif
+	" ---- indent all item line(s)
+	call organ#bush#indent_item (level)
+	" ---- coda
+	let properties.prefix = previous_prefix
+	return properties
+endfun
+
 fun! organ#bush#cycle_prefix_right (...)
 	" Cycle item prefix
 	if a:0 > 0
@@ -247,105 +314,8 @@ fun! organ#bush#cycle_prefix_right (...)
 	" ---- indent all item line(s)
 	call organ#bush#indent_item (level)
 	" ---- coda
+	let properties.prefix = next_prefix
 	return properties
-endfun
-
-fun! organ#bush#cycle_prefix_left (...)
-	" Cycle item prefix
-	if a:0 > 0
-		let properties = a:1
-	else
-		let properties = organ#colibri#properties ()
-	endif
-	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counter = properties.counter
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- standardize prefix
-	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
-	" ---- prefix list
-	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		let filekey = 'default'
-	else
-		let filekey = &filetype
-	endif
-	let unordered = copy(g:organ_config.list.unordered[filekey])
-	let ordered = copy(g:organ_config.list.ordered[filekey])
-	let ordered = ordered->map({ _, v -> '1' .. v })
-	let prefixlist = unordered + ordered
-	" ---- no * if no indent
-	if indent ==# ''
-		let starindex = prefixlist->index('*')
-		if starindex > 0
-			eval prefixlist->remove(starindex)
-		endif
-	endif
-	" ---- cycle
-	let index = prefixlist->index(prefix)
-	let length = len(prefixlist)
-	let next = organ#utils#circular_minus (index, length)
-	let next_prefix = prefixlist[next]
-	" ---- add spaces
-	let next_prefix = next_prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
-	else
-		let counter = ''
-	endif
-	if ! empty(checkbox)
-		let checkbox = checkbox .. ' '
-	endif
-	if ! empty(todo)
-		let todo = todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. next_prefix .. counter .. checkbox .. todo .. text
-	call setline(linum, newline)
-	" --- update counters
-	if next_prefix =~ '\m^1'
-		call organ#bush#update_counters ()
-	endif
-	" ---- indent all item line(s)
-	call organ#bush#indent_item (level)
-	" ---- coda
-	return properties
-endfun
-
-fun! organ#bush#cycle_all_prefixes_right ()
-	" Cycle prefix of all items in parent subtree
-	let position = getcurpos ()
-	let properties = organ#colibri#properties ()
-	let level = properties.level
-	if level > 1
-		let linum = organ#colibri#parent ()
-		let subtree = organ#colibri#subtree ()
-		let head_linum = subtree.head_linum
-		let tail_linum = subtree.tail_linum
-	else
-		let head_linum = organ#colibri#list_start ()
-		let tail_linum = organ#colibri#list_end ()
-	endif
-	if head_linum == 0
-		echomsg 'organ bush cycle parent subtree prefix : itemhead not found'
-		return 0
-	endif
-	call cursor(head_linum, 1)
-	while v:true
-		let properties = organ#colibri#properties ()
-		if level == properties.level
-			call organ#bush#cycle_prefix_right (properties)
-		endif
-		let linum = organ#colibri#next ('move', 'dont-wrap')
-		if linum > tail_linum || linum == 0
-			call setpos('.', position)
-			return linum
-		endif
-	endwhile
 endfun
 
 fun! organ#bush#cycle_all_prefixes_left ()
@@ -371,6 +341,38 @@ fun! organ#bush#cycle_all_prefixes_left ()
 		let properties = organ#colibri#properties ()
 		if level == properties.level
 			call organ#bush#cycle_prefix_left (properties)
+		endif
+		let linum = organ#colibri#next ('move', 'dont-wrap')
+		if linum > tail_linum || linum == 0
+			call setpos('.', position)
+			return linum
+		endif
+	endwhile
+endfun
+
+fun! organ#bush#cycle_all_prefixes_right ()
+	" Cycle prefix of all items in parent subtree
+	let position = getcurpos ()
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	if level > 1
+		let linum = organ#colibri#parent ()
+		let subtree = organ#colibri#subtree ()
+		let head_linum = subtree.head_linum
+		let tail_linum = subtree.tail_linum
+	else
+		let head_linum = organ#colibri#list_start ()
+		let tail_linum = organ#colibri#list_end ()
+	endif
+	if head_linum == 0
+		echomsg 'organ bush cycle parent subtree prefix : itemhead not found'
+		return 0
+	endif
+	call cursor(head_linum, 1)
+	while v:true
+		let properties = organ#colibri#properties ()
+		if level == properties.level
+			call organ#bush#cycle_prefix_right (properties)
 		endif
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
