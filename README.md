@@ -583,9 +583,8 @@ org files only, and are either :
 - written in lua, which means they only work with neovim
 
 So, I started to write a lightweight org-mode plugin in plain simple
-vimscript, with minimal dependencies, and then I realized it wouldn't
-be too difficult to adapt it for markdown and folded files. And here it
-is !
+vimscript, and then I realized it wouldn't be too difficult to adapt it
+for markdown and folded files. And here it is !
 
 # Warning
 
