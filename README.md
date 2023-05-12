@@ -101,9 +101,9 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + create link with url completion
   + goto link under or close to cursor
   + goto next/previous link
-- insert timestamp
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
+- insert timestamp
 - export in another format using
   + pandoc
   + emacs
