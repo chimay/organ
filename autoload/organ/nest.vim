@@ -17,7 +17,23 @@ if ! exists('s:speedkeys')
 	lockvar s:speedkeys
 endif
 
-" --- generic
+" ---- helpers
+
+fun! organ#nest#is_on_headline_first_char ()
+	" Whether cursor is on headline first char
+	let first_char = col('.') == 1
+	let headline = organ#bird#is_on_headline ()
+	return first_char && headline
+endfun
+
+fun! organ#nest#is_on_itemhead_first_char ()
+	" Whether cursor is on first char & first line of list item
+	let first_char = col('.') == 1
+	let itemhead = organ#colibri#is_on_itemhead ()
+	return first_char && itemhead
+endfun
+
+" ---- generic
 
 fun! organ#nest#navig (function)
 	" Choose to apply headline or list navigation function
@@ -120,7 +136,11 @@ endfun
 
 fun! organ#nest#tab ()
 	" For <tab> map
-	if organ#table#is_in_table ()
+	if organ#nest#is_on_headline_first_char ()
+		return organ#bird#cycle_current_fold ()
+	elseif organ#nest#is_on_itemhead_first_char ()
+		return organ#bush#toggle_checkbox ()
+	elseif organ#table#is_in_table ()
 		return organ#table#next_cell ()
 	else
 		return organ#nest#speed ("\<tab>")
@@ -129,7 +149,9 @@ endfun
 
 fun! organ#nest#shift_tab ()
 	" For <s-tab> map
-	if organ#table#is_in_table ()
+	if organ#nest#is_on_headline_first_char ()
+		return organ#bird#cycle_all_folds ()
+	elseif organ#table#is_in_table ()
 		return organ#table#previous_cell ()
 	else
 		return organ#nest#speed ("\<s-tab>")

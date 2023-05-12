@@ -234,51 +234,6 @@ fun! organ#table#maxima (dual)
 	return map(dual, { _, v -> max(v)})
 endfun
 
-" ---- navigation
-
-fun! organ#table#next_cell ()
-	" Go to next cell
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
-	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-	let linum = search(pattern, flags)
-endfun
-
-fun! organ#table#previous_cell ()
-	" Go to previous cell
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
-	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
-	let linum = search(pattern, flags)
-endfun
-
-fun! organ#table#cell_begin ()
-	" Go to cell beginning
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
-	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
-	let linum = search(pattern, flags)
-	return linum
-endfun
-
-fun! organ#table#cell_end ()
-	" Go to cell end
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m\zs.\ze' .. delimiter
-	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
-	let linum = search(pattern, flags)
-	return linum
-endfun
-
-fun! organ#table#select_cell ()
-	" Select cell content
-	"normal! v
-	let linum = organ#table#cell_begin ()
-	normal! o
-	let linum = organ#table#cell_end ()
-	return linum
-endfun
-
 " ---- align
 
 fun! organ#table#shrink_separator_lines (argdict = {})
@@ -508,6 +463,55 @@ fun! organ#table#update ()
 	let argdict = organ#table#reduce_multi_spaces (argdict)
 	let argdict = organ#table#add_missing_columns (argdict)
 	return organ#table#align_columns (argdict)
+endfun
+
+" ---- navigation
+
+fun! organ#table#next_cell ()
+	" Go to next cell
+	call organ#table#update ()
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	let linum = search(pattern, flags)
+	return linum
+endfun
+
+fun! organ#table#previous_cell ()
+	" Go to previous cell
+	call organ#table#update ()
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
+	let linum = search(pattern, flags)
+	return linum
+endfun
+
+fun! organ#table#cell_begin ()
+	" Go to cell beginning
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
+	let linum = search(pattern, flags)
+	return linum
+endfun
+
+fun! organ#table#cell_end ()
+	" Go to cell end
+	let delimiter = organ#table#delimiter ()
+	let pattern = '\m\zs.\ze' .. delimiter
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
+	let linum = search(pattern, flags)
+	return linum
+endfun
+
+fun! organ#table#select_cell ()
+	" Select cell content
+	"normal! v
+	let linum = organ#table#cell_begin ()
+	normal! o
+	let linum = organ#table#cell_end ()
+	return linum
 endfun
 
 " ---- move rows & cols
