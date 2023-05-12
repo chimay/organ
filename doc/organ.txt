@@ -363,8 +363,8 @@ Some of them are context sensitive :
 | <M-right>     | demote                | demote             | move column right |
 | <M-up>        | move subtree up       | move subtree up    | move row up       |
 | <M-down>      | move subtree down     | move subtree down  | move row down     |
-| <S-left>      |                       | cycle prefix left  |                   |
-| <S-right>     |                       | cycle prefix right |                   |
+| <S-left>      |                       | cycle prefix left  | go to cell begin  |
+| <S-right>     |                       | cycle prefix right | go to cell end    |
 | <S-up>        | cycle todo left       | cycle todo left    |                   |
 | <S-down>      | cycle todo right      | cycle todo right   |                   |
 | <M-S-left>    | promote subtree       | promote subtree    | new column        |

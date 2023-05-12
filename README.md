@@ -331,8 +331,8 @@ Here is a complete list :
 | `<plug>`(organ-meta-right)         | demote                    | move column right  |
 | `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
 | `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
-| `<plug>`(organ-shift-left)         | cycle item prefix left    |                    |
-| `<plug>`(organ-shift-right)        | cycle item prefix right   |                    |
+| `<plug>`(organ-shift-left)         | cycle item prefix left    | go to cell begin   |
+| `<plug>`(organ-shift-right)        | cycle item prefix right   | go to cell end     |
 | `<plug>`(organ-shift-up)           | cycle todo keyword left   |                    |
 | `<plug>`(organ-shift-down)         | cycle todo keyword right  |                    |
 | `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
@@ -380,33 +380,33 @@ value in your init file, these bindings become available :
 
 Some of them are context sensitive :
 
-| Map           | Heading                 | List               | Table               |
-|---------------|-------------------------|--------------------|---------------------|
-| `<M-p>`       | previous heading        | previous item      |                     |
-| `<M-n>`       | next heading            | next item          |                     |
-| `<M-b>`       | prev head, same level   | prev item, = level |                     |
-| `<M-f>`       | next head, same level   | next item, = level |                     |
-| `<M-u>`       | parent heading          | parent item        |                     |
-| `<M-l>`       | child heading, loose    | child item, loose  |                     |
-| `<M-S-l>`     | child heading, strict   | child item, strict |                     |
-| `<M-v>`       | select subtree          | select subtree     |                     |
-| `<M-y>`       | yank subtree            | yank subtree       |                     |
-| `<M-S-x>`     | delete subtree          | delete subtree     |                     |
-| `<M-a>`       |                         |                    | align table         |
-| `<M-CR>`      | new headline            | new item           | new row             |
-| `<S-CR>`      | new headline            | new checkbox item  | new row             |
-| `<M-left>`    | promote                 | promote            | move column left    |
-| `<M-right>`   | demote                  | demote             | move column right   |
-| `<M-up>`      | move subtree up         | move subtree up    | move row up         |
-| `<M-down>`    | move subtree down       | move subtree down  | move row down       |
-| `<S-left>`    |                         | cycle prefix left  |                     |
-| `<S-right>`   |                         | cycle prefix right |                     |
-| `<S-up>`      | cycle todo left         | cycle todo left    |                     |
-| `<S-down>`    | cycle todo right        | cycle todo right   |                     |
-| `<M-S-left>`  | promote subtree         | promote subtree    | new column          |
-| `<M-S-right>` | demote subtree          | demote subtree     | delete column       |
-| `<M-S-up>`    |                         |                    | delete row          |
-| `<M-S-down>`  |                         |                    | new row             |
+| Map           | Heading               | List               | Table             |
+|---------------|-----------------------|--------------------|-------------------|
+| `<M-p>`       | previous heading      | previous item      |                   |
+| `<M-n>`       | next heading          | next item          |                   |
+| `<M-b>`       | prev head, same level | prev item, = level |                   |
+| `<M-f>`       | next head, same level | next item, = level |                   |
+| `<M-u>`       | parent heading        | parent item        |                   |
+| `<M-l>`       | child heading, loose  | child item, loose  |                   |
+| `<M-S-l>`     | child heading, strict | child item, strict |                   |
+| `<M-v>`       | select subtree        | select subtree     |                   |
+| `<M-y>`       | yank subtree          | yank subtree       |                   |
+| `<M-S-x>`     | delete subtree        | delete subtree     |                   |
+| `<M-a>`       |                       |                    | align table       |
+| `<M-CR>`      | new headline          | new item           | new row           |
+| `<S-CR>`      | new headline          | new checkbox item  | new row           |
+| `<M-left>`    | promote               | promote            | move column left  |
+| `<M-right>`   | demote                | demote             | move column right |
+| `<M-up>`      | move subtree up       | move subtree up    | move row up       |
+| `<M-down>`    | move subtree down     | move subtree down  | move row down     |
+| `<S-left>`    |                       | cycle prefix left  | go to cell begin  |
+| `<S-right>`   |                       | cycle prefix right | go to cell end    |
+| `<S-up>`      | cycle todo left       | cycle todo left    |                   |
+| `<S-down>`    | cycle todo right      | cycle todo right   |                   |
+| `<M-S-left>`  | promote subtree       | promote subtree    | new column        |
+| `<M-S-right>` | demote subtree        | demote subtree     | delete column     |
+| `<M-S-up>`    |                       |                    | delete row        |
+| `<M-S-down>`  |                       |                    | new row           |
 
 The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
