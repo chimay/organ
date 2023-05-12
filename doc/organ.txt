@@ -45,8 +45,8 @@ It is written in vimscript (VimL) and compatible with both Vim and Neovim.
 FEATURES		    			*organ-introduction-features*
 
 - folding based on headings in org and markdown files
-- headings base on folding in folded files
-  + you can handle your folds like orgmode headings
+- headings based on folding in folded files
+  + you can handle your folds like headings in orgmode
 - navigate in headings or list items hierarchy
   + next, previous : any level
   + forward, backward : same level as current one
@@ -61,8 +61,10 @@ FEATURES		    			*organ-introduction-features*
   + promote, demote heading or list item
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
-- cycle todo status
-- cycle list item prefix
+  + cycle todo status
+- lists
+  + cycle list item prefix
+  + toggle checkbox
 - insert timestamp
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
@@ -72,12 +74,14 @@ FEATURES		    			*organ-introduction-features*
   + goto link under or close to cursor
   + goto next/previous link
 - tables
-  + inside of table : align and add missing columns
+  + inside of table : align columns
   + outside of table : align following a pattern
   + add new row, colum
   + delete row, colum
   + move row up or down
   + move column left or right
+  + go to next or previous cell
+  + go to beginning or end of cell
 - export in another format using
   + pandoc
   + emacs
