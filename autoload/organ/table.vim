@@ -584,10 +584,10 @@ fun! organ#table#move_col_left (argdict = {})
 		let line = linelist[rownum]
 		if first == 1
 			let before = ''
-			let after = line
+			let after = line[third - 1:]
 		elseif third == len(line) + 1
 			let before = line
-			let after = ''
+			let after = line[third - 1:]
 		else
 			let before = line[:first - 2]
 			let after = line[third - 1:]
@@ -651,10 +651,10 @@ fun! organ#table#move_col_right (argdict = {})
 		let line = linelist[rownum]
 		if first == 1
 			let before = ''
-			let after = line
+			let after = line[third - 1:]
 		elseif third == len(line) + 1
 			let before = line
-			let after = ''
+			let after = line[third - 1:]
 		else
 			let before = line[:first - 2]
 			let after = line[third - 1:]

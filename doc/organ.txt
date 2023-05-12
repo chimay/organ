@@ -273,7 +273,7 @@ Here is a complete list :
 | Plugs                            | Heading or list item      | Table              |
 | -------------------------------- | ------------------------- | ------------------ |
 | <plug>(organ-previous)           | previous heading or item  |                    |
-| <plug>(organ-next)               | next heading or  item     |                    |
+| <plug>(organ-next)               | next heading or item      |                    |
 | <plug>(organ-backward)           | previous, same level      |                    |
 | <plug>(organ-forward)            | next, same level          |                    |
 | <plug>(organ-parent)             | parent heading or item    |                    |
