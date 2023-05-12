@@ -232,12 +232,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 		return #{
 			\ linum : 0,
 			\ itemhead : '',
-			\ level : 1,
 			\ indent : '',
+			\ level : 1,
 			\ prefix : '',
-			\ text : '',
 			\ checkbox : '',
 			\ todo : '',
+			\ text : '',
 			\}
 	endif
 	let linum = organ#colibri#itemhead (move)
@@ -246,12 +246,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 		return #{
 			\ linum : 0,
 			\ itemhead : '',
-			\ level : 1,
 			\ indent : '',
+			\ level : 1,
 			\ prefix : '',
-			\ text : '',
 			\ checkbox : '',
 			\ todo : '',
+			\ text : '',
 			\}
 	endif
 	let itemhead = getline(linum)
@@ -300,9 +300,9 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : level,
 			\ indent : indent,
 			\ prefix : prefix,
-			\ text : text,
 			\ checkbox : checkbox,
 			\ todo : todo,
+			\ text : text,
 			\}
 	return properties
 endfun
@@ -317,12 +317,14 @@ fun! organ#colibri#subtree (move = 'dont-move')
 		return #{
 			\ linum : 0,
 			\ head_linum : 0,
+			\ tail_linum : 0,
 			\ itemhead : '',
+			\ indent : '',
 			\ level : 1,
 			\ prefix : '',
-			\ text : '',
+			\ checkbox : '',
 			\ todo : '',
-			\ tail_linum : 0,
+			\ text : '',
 			\}
 	endif
 	let level = properties.level

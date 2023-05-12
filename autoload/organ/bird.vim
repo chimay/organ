@@ -194,28 +194,15 @@ fun! organ#bird#properties (move = 'dont-move')
 		return #{
 			\ linum : 0,
 			\ headline : '',
-			\ level : 1,
-			\ levelstring : '',
-			\ title : '',
 			\ commentstrings : [],
+			\ levelstring : '',
+			\ level : 1,
 			\ todo : '',
+			\ title : '',
 			\}
 	endif
 	let headline = getline(linum)
-	" ---- level & title
-	if s:rep_one_char->index(&filetype) >= 0
-		let char = organ#bird#char ()
-		let levelstring_pattern = '\m^[' .. char .. ']\+'
-		let levelstring = headline->matchstr(levelstring_pattern)
-		let level = len(levelstring)
-		let title = headline[level + 1:]
-	else
-		let marker = split(&foldmarker, ',')[0]
-		let level = organ#bird#foldlevel ()
-		let levelstring_pattern = '\m' .. marker .. '[0-9]\+'
-		let levelstring = headline->matchstr(levelstring_pattern)
-		let title = substitute(headline, levelstring_pattern, '', '')
-	endif
+	let title = headline
 	" ---- commentstring
 	if ! empty(&commentstring)
 		let commentstrings = []
@@ -238,6 +225,20 @@ fun! organ#bird#properties (move = 'dont-move')
 	else
 		let commentstrings = []
 	endif
+	" ---- level & title
+	if s:rep_one_char->index(&filetype) >= 0
+		let char = organ#bird#char ()
+		let levelstring_pattern = '\m^[' .. char .. ']\+'
+		let levelstring = title->matchstr(levelstring_pattern)
+		let level = len(levelstring)
+		let title = title[level + 1:]
+	else
+		let marker = split(&foldmarker, ',')[0]
+		let levelstring_pattern = '\m' .. marker .. '[0-9]\+'
+		let levelstring = title->matchstr(levelstring_pattern)
+		let level = organ#bird#foldlevel ()
+		let title = substitute(title, levelstring_pattern, '', '')
+	endif
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle
@@ -255,11 +256,11 @@ fun! organ#bird#properties (move = 'dont-move')
 	let properties = #{
 			\ linum : linum,
 			\ headline : headline,
-			\ level : level,
-			\ levelstring : levelstring,
-			\ title : title,
 			\ commentstrings : commentstrings,
+			\ levelstring : levelstring,
+			\ level : level,
 			\ todo : todo,
+			\ title : title,
 			\}
 	return properties
 endfun
@@ -276,10 +277,10 @@ fun! organ#bird#subtree (move = 'dont-move')
 			\ head_linum : 0,
 			\ tail_linum : 0,
 			\ headline : '',
+			\ commentstrings : [],
 			\ level : 1,
 			\ levelstring : '',
 			\ title : '',
-			\ commentstrings : [],
 			\ todo : '',
 			\}
 	endif
