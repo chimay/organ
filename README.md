@@ -336,12 +336,14 @@ Some of them are context sensitive :
 | `<M-right>`   | demote                  | demote             | move column right   |
 | `<M-up>`      | move subtree up         | move subtree up    | move row up         |
 | `<M-down>`    | move subtree down       | move subtree down  | move row down       |
-| `<M-S-left>`  | promote subtree         | promote subtree    | new column          |
-| `<M-S-right>` | demote subtree          | demote subtree     | delete column       |
-| `<M-S-up>`    | cycle todo left         | cycle todo left    | delete row          |
-| `<M-S-down>`  | cycle todo right        | cycle todo right   | new row             |
 | `<S-left>`    |                         | cycle prefix left  |                     |
 | `<S-right>`   |                         | cycle prefix right |                     |
+| `<S-up>`      | cycle todo left         | cycle todo left    |                     |
+| `<S-down>`    | cycle todo right        | cycle todo right   |                     |
+| `<M-S-left>`  | promote subtree         | promote subtree    | new column          |
+| `<M-S-right>` | demote subtree          | demote subtree     | delete column       |
+| `<M-S-up>`    |                         |                    | delete row          |
+| `<M-S-down>`  |                         |                    | new row             |
 
 The align function can also be used to align a paragraph, or the visual
 selection; following a pattern.
