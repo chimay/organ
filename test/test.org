@@ -48,7 +48,7 @@ content
       3) [ ] item 2.3.3
     5. [ ] item 2.2
 1. [ ] item 3
-  2. item
+  1. item
 2. [ ] item 3
 
 content

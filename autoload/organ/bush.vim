@@ -47,6 +47,7 @@ endfun
 fun! organ#bush#update_counters (maxlevel = 100)
 	" Update counters in ordered list
 	let maxlevel = a:maxlevel
+	let length = maxlevel
 	let global_counter_start = g:organ_config.list.counter_start
 	let position = getcurpos ()
 	let first = organ#colibri#list_start ()
@@ -74,6 +75,9 @@ fun! organ#bush#update_counters (maxlevel = 100)
 		let level = properties.level
 		let counter_start = properties.counter
 		let countindex = level - 1
+		for index in range(countindex + 1, length - 1)
+			let counterlist[index] = -1
+		endfor
 		if counter_start >= 0
 			let counterlist[countindex] = counter_start
 		else
