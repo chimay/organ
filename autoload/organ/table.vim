@@ -254,6 +254,29 @@ endfun
 
 " ---- align
 
+fun! organ#table#shrink_separator_lines (argdict = {})
+	" Reduce separator line to their minimum
+	let argdict = a:argdict
+	if has_key (argdict, 'head_linum')
+		let head_linum =  argdict.head_linum
+	else
+		let head_linum = organ#table#head ()
+		let argdict.head_linum = head_linum
+	endif
+	if has_key (argdict, 'tail_linum')
+		let tail_linum =  argdict.tail_linum
+	else
+		let tail_linum = organ#table#tail ()
+		let argdict.tail_linum = tail_linum
+	endif
+	for linum in range(head_linum, tail_linum)
+		if organ#table#is_separator_line (linum)
+			call setline(linum, '|-|')
+		endif
+	endfor
+	return argdict
+endfun
+
 fun! organ#table#reduce_multi_spaces (argdict = {})
 	" Reduce multi-spaces before a delimiter to one
 	let argdict = a:argdict
@@ -261,16 +284,19 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 		let delimiter =  argdict.delimiter
 	else
 		let delimiter = organ#table#delimiter ()
+		let argdict.delimiter = delimiter
 	endif
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
 	else
 		let head_linum = organ#table#head ()
+		let argdict.head_linum = head_linum
 	endif
 	if has_key (argdict, 'tail_linum')
 		let tail_linum =  argdict.tail_linum
 	else
 		let tail_linum = organ#table#tail ()
+		let argdict.tail_linum = tail_linum
 	endif
 	let range = head_linum .. ',' .. tail_linum
 	let pattern = '\m\s\+\(' .. delimiter .. '\)'
@@ -280,6 +306,7 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 	let position = getcurpos ()
 	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
 	call setpos('.',  position)
+	return argdict
 endfun
 
 fun! organ#table#add_missing_columns (argdict = {})
@@ -289,21 +316,25 @@ fun! organ#table#add_missing_columns (argdict = {})
 		let delimiter = argdict.delimiter
 	else
 		let delimiter = organ#table#delimiter ()
+		let argdict.delimiter = delimiter
 	endif
 	if has_key (argdict, 'head_linum')
 		let head_linum = argdict.head_linum
 	else
 		let head_linum = organ#table#head ()
+		let argdict.head_linum = head_linum
 	endif
 	if has_key (argdict, 'tail_linum')
 		let tail_linum =  argdict.tail_linum
 	else
 		let tail_linum = organ#table#tail ()
+		let argdict.tail_linum = tail_linum
 	endif
 	if has_key (argdict, 'grid')
 		let grid =  argdict.grid
 	else
 		let grid =  organ#table#grid (argdict)
+		let argdict.grid = grid
 	endif
 	let lengthes = organ#table#lengthes (grid)
 	let maxim = max(lengthes)
@@ -328,7 +359,7 @@ fun! organ#table#add_missing_columns (argdict = {})
 		endif
 		let index += 1
 	endfor
-	return grid
+	return argdict
 endfun
 
 fun! organ#table#align_columns (argdict = {})
@@ -339,16 +370,19 @@ fun! organ#table#align_columns (argdict = {})
 		let head_linum =  argdict.head_linum
 	else
 		let head_linum = organ#table#head ()
+		let argdict.head_linum = head_linum
 	endif
 	if has_key (argdict, 'tail_linum')
 		let tail_linum =  argdict.tail_linum
 	else
 		let tail_linum = organ#table#tail ()
+		let argdict.tail_linum = tail_linum
 	endif
 	if has_key (argdict, 'grid')
 		let grid =  argdict.grid
 	else
 		let grid =  organ#table#grid (argdict)
+		let argdict.grid = grid
 	endif
 	" ---- grid derivates
 	let lengthes = organ#table#lengthes (grid)
@@ -406,7 +440,7 @@ fun! organ#table#align_columns (argdict = {})
 		call setline(linum, linelist[index])
 		let linum += 1
 	endfor
-	return grid
+	return argdict
 endfun
 
 fun! organ#table#align (mode = 'normal') range
@@ -422,19 +456,16 @@ fun! organ#table#align (mode = 'normal') range
 	endif
 	if organ#table#is_in_table ()
 		let argdict.delimiter = organ#table#delimiter ()
-		call organ#table#reduce_multi_spaces (argdict)
-		let argdict.grid = organ#table#add_missing_columns (argdict)
+		let argdict = organ#table#shrink_separator_lines (argdict)
+		let argdict = organ#table#reduce_multi_spaces (argdict)
+		let argdict = organ#table#add_missing_columns (argdict)
 	else
 		let prompt = 'Align following pattern : '
 		let argdict.delimiter = input(prompt, '')
-		let prompt = 'Minimize spaces ? '
-		let confirm = confirm(prompt, "&Yes\n&No", 2)
-		if confirm == 1
-			call organ#table#reduce_multi_spaces (argdict)
-		endif
+		let argdict = organ#table#reduce_multi_spaces (argdict)
 	endif
-	let grid = organ#table#align_columns (argdict)
-	return grid
+	let argdict = organ#table#align_columns (argdict)
+	return argdict
 endfun
 
 " ---- update
@@ -444,7 +475,12 @@ fun! organ#table#update ()
 	if ! organ#table#is_in_table ()
 		return []
 	endif
-	return organ#table#align_columns ()
+	let argdict = {}
+	let argdict.delimiter = organ#table#delimiter ()
+	let argdict = organ#table#shrink_separator_lines (argdict)
+	let argdict = organ#table#reduce_multi_spaces (argdict)
+	let argdict = organ#table#add_missing_columns (argdict)
+	return organ#table#align_columns (argdict)
 endfun
 
 " ---- move rows & cols

@@ -93,7 +93,7 @@ fun! organ#nest#speed (key)
 	return 'normal-' .. keytrans
 endfun
 
-" ---- <m-return>
+" ---- return
 
 fun! organ#nest#meta_return ()
 	" For <m-cr> map
@@ -103,6 +103,36 @@ fun! organ#nest#meta_return ()
 		return organ#bush#new ()
 	else
 		return organ#tree#new ()
+	endif
+endfun
+
+fun! organ#nest#shift_return ()
+	" For <s-cr> map
+	if organ#table#is_in_table ()
+	elseif organ#colibri#is_in_list ()
+		return organ#bush#new_with_check ()
+	else
+		return organ#tree#new ()
+	endif
+endfun
+
+" ---- tab
+
+fun! organ#nest#tab ()
+	" For <tab> map
+	if organ#table#is_in_table ()
+		return organ#table#next_cell ()
+	else
+		return organ#nest#speed ("\<tab>")
+	endif
+endfun
+
+fun! organ#nest#shift_tab ()
+	" For <s-tab> map
+	if organ#table#is_in_table ()
+		return organ#table#previous_cell ()
+	else
+		return organ#nest#speed ("\<s-tab>")
 	endif
 endfun
 
@@ -231,26 +261,6 @@ fun! organ#nest#meta_shift_down ()
 		return organ#table#new_row ()
 	elseif organ#colibri#is_in_list ()
 	else
-	endif
-endfun
-
-" ---- tab
-
-fun! organ#nest#tab ()
-	" For <tab> map
-	if organ#table#is_in_table ()
-		return organ#table#next_cell ()
-	else
-		return organ#nest#speed ("\<tab>")
-	endif
-endfun
-
-fun! organ#nest#shift_tab ()
-	" For <s-tab> map
-	if organ#table#is_in_table ()
-		return organ#table#previous_cell ()
-	else
-		return organ#nest#speed ("\<s-tab>")
 	endif
 endfun
 

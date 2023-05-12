@@ -312,7 +312,7 @@ value in your init file, these bindings become available :
 - `<M-&>`      : go to next link
 - `<M-o>`      : go to link under or close to cursor
 - `<M-d>`      : add date & time stamp
-- `<M-_>`      : table : add a separator line
+- `<M-_>`      : add a separator line in a table
 - `<M-e>`      : export with pandoc
 - `<M-S-e>`    : export with emacs (works only in org files)
 
@@ -331,7 +331,8 @@ Some of them are context sensitive :
 | `<M-y>`       | yank subtree            | yank subtree       |                     |
 | `<M-S-x>`     | delete subtree          | delete subtree     |                     |
 | `<M-a>`       |                         |                    | align table         |
-| `<M-CR>`      | new subtree             | new subtree        | new row             |
+| `<M-CR>`      | new headline            | new item           | new row             |
+| `<S-CR>`      | new headline            | new checkbox item  | new row             |
 | `<M-left>`    | promote                 | promote            | move column left    |
 | `<M-right>`   | demote                  | demote             | move column right   |
 | `<M-up>`      | move subtree up         | move subtree up    | move row up         |
@@ -426,6 +427,9 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-select-subtree)     | select subtree            |                    |
 | `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
 | `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
+| `<plug>`(organ-tab)                |                           | go to next cell    |
+| `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
+| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
 | `<plug>`(organ-meta-return)        | new heading or item       | new row            |
 | `<plug>`(organ-meta-left)          | promote                   | move column left   |
 | `<plug>`(organ-meta-right)         | demote                    | move column right  |
@@ -439,8 +443,6 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
 | `<plug>`(organ-meta-shift-up)      | cycle todo right          | delete row         |
 | `<plug>`(organ-meta-shift-down)    | cycle todo left           | add new row        |
-| `<plug>`(organ-tab)                |                           | go to next cell    |
-| `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
 | `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
 | `<plug>`(organ-align)              |                           | align table        |
 | `<plug>`(organ-new-separator-line) |                           | add separator line |
