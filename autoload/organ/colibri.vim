@@ -235,6 +235,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ level : 1,
 			\ prefix : '',
+			\ counter : '',
 			\ checkbox : '',
 			\ todo : '',
 			\ text : '',
@@ -249,6 +250,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ level : 1,
 			\ prefix : '',
+			\ counter : '',
 			\ checkbox : '',
 			\ todo : '',
 			\ text : '',
@@ -270,10 +272,20 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" -- text without indent
 	let text = substitute(text, indent_pattern, '', '')
 	" ---- prefix
-	let prefix_pattern = '\m^\s*\zs\S\+\ze\s*'
+	let prefix_pattern = '\m^\s*\zs\S\+'
 	let prefix = text->matchstr(prefix_pattern)
 	" -- text without prefix
 	let text = substitute(text, prefix_pattern, '', '')
+	" ---- counter
+	let counter_pattern = '\m^\s*\zs\[@[0-9]\+\]'
+	let counter = text->matchstr(counter_pattern)
+	if empty(counter)
+		let counter = -1
+	else
+		let counter = str2nr(counter[2:-2])
+	endif
+	" -- text without counter
+	let text = substitute(text, counter_pattern, '', '')
 	" ---- checkbox
 	let checkbox_pattern = '\m^\s*\zs\[.\]'
 	let checkbox = text->matchstr(checkbox_pattern)
@@ -300,6 +312,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : level,
 			\ indent : indent,
 			\ prefix : prefix,
+			\ counter : counter,
 			\ checkbox : checkbox,
 			\ todo : todo,
 			\ text : text,
