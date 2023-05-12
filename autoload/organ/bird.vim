@@ -170,8 +170,7 @@ fun! organ#bird#headline (move = 'dont-move')
 	let position = getcurpos ()
 	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#generic_pattern ()
-	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
-	let flags ..= 'c'
+	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap', 'accept-here')
 	let linum = search(headline_pattern, flags)
 	if move != 'move'
 		call setpos('.', position)

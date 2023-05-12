@@ -67,14 +67,14 @@ if ! exists('s:plugs_normal')
 		\ [ 'organ-meta-right'         , 'organ#nest#meta_right()'           ] ,
 		\ [ 'organ-meta-up'            , 'organ#nest#meta_up()'              ] ,
 		\ [ 'organ-meta-down'          , 'organ#nest#meta_down()'            ] ,
-		\ [ 'organ-meta-shift-left'    , 'organ#nest#meta_shift_left()'      ] ,
-		\ [ 'organ-meta-shift-right'   , 'organ#nest#meta_shift_right()'     ] ,
-		\ [ 'organ-meta-shift-up'      , 'organ#nest#meta_shift_up()'        ] ,
-		\ [ 'organ-meta-shift-down'    , 'organ#nest#meta_shift_down()'      ] ,
 		\ [ 'organ-shift-left'         , 'organ#nest#shift_left()'           ] ,
 		\ [ 'organ-shift-right'        , 'organ#nest#shift_right()'          ] ,
 		\ [ 'organ-shift-up'           , 'organ#nest#shift_up()'             ] ,
 		\ [ 'organ-shift-down'         , 'organ#nest#shift_down()'           ] ,
+		\ [ 'organ-meta-shift-left'    , 'organ#nest#meta_shift_left()'      ] ,
+		\ [ 'organ-meta-shift-right'   , 'organ#nest#meta_shift_right()'     ] ,
+		\ [ 'organ-meta-shift-up'      , 'organ#nest#meta_shift_up()'        ] ,
+		\ [ 'organ-meta-shift-down'    , 'organ#nest#meta_shift_down()'      ] ,
 		\ [ 'organ-move-subtree-to'    , 'organ#tree#moveto'                 ] ,
 		\ [ 'organ-expand-template'    , 'organ#seed#expand'                 ] ,
 		\ [ 'organ-store-url'          , 'organ#vine#store'                  ] ,
@@ -93,7 +93,8 @@ endif
 
 if ! exists('s:plugs_visual')
 	let s:plugs_visual = [
-		\ [ 'organ-align' , "organ#table#align('visual')" ] ,
+		\ [ 'organ-align'       , "organ#table#align('visual')" ] ,
+		\ [ 'organ-select-cell' , 'organ#table#select_cell'     ] ,
 		\ ]
 	lockvar! s:plugs_visual
 endif
@@ -138,6 +139,8 @@ if ! exists('s:maps_normal')
 		\ [ '<tab>'       , 'organ-tab'                ] ,
 		\ [ '<s-tab>'     , 'organ-shift-tab'          ] ,
 		\ [ '<m-m>'       , 'organ-move-subtree-to'    ] ,
+		\ [ '<m-a>'       , 'organ-align'              ] ,
+		\ [ '<m-_>'       , 'organ-new-separator-line' ] ,
 		\ [ '<m-x>'       , 'organ-expand-template'    ] ,
 		\ [ '<m-s>'       , 'organ-store-url'          ] ,
 		\ [ '<m-->'       , 'organ-new-link'           ] ,
@@ -145,8 +148,6 @@ if ! exists('s:maps_normal')
 		\ [ '<m-&>'       , 'organ-next-link'          ] ,
 		\ [ '<m-o>'       , 'organ-goto-link-target'   ] ,
 		\ [ '<m-d>'       , 'organ-timestamp'          ] ,
-		\ [ '<m-a>'       , 'organ-align'              ] ,
-		\ [ '<m-_>'       , 'organ-new-separator-line' ] ,
 		\ [ '<m-e>'       , 'organ-export'             ] ,
 		\ [ '<m-s-e>'     , 'organ-alter-export'       ] ,
 		\ ]
@@ -155,7 +156,9 @@ endif
 
 if ! exists('s:maps_visual')
 	let s:maps_visual = [
-		\ [ '<m-a>' , 'organ-align' ] ,
+		\ [ '<m-a>'     , 'organ-align'       ] ,
+		\ [ '<s-left>'  , 'organ-select-cell' ] ,
+		\ [ '<s-right>' , 'organ-select-cell' ] ,
 		\]
 	lockvar! s:maps_visual
 endif

@@ -37,8 +37,7 @@ fun! organ#colibri#itemhead (move = 'dont-move')
 	" Head of current list item
 	let move = a:move
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap')
-	let flags ..= 'c'
+	let flags = organ#utils#search_flags ('backward', move, 'dont-wrap', 'accept-here')
 	return search(itemhead_pattern, flags)
 endfun
 

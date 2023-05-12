@@ -199,7 +199,7 @@ fun! organ#bush#cycle_prefix_right (...)
 	let ordered = ordered->map({ _, v -> '1' .. v })
 	let prefixlist = unordered + ordered
 	" ---- no * if no indent
-	if indent == ''
+	if indent ==# ''
 		let starindex = prefixlist->index('*')
 		if starindex > 0
 			eval prefixlist->remove(starindex)
@@ -246,7 +246,7 @@ fun! organ#bush#cycle_prefix_left (...)
 	let ordered = ordered->map({ _, v -> '1' .. v })
 	let prefixlist = unordered + ordered
 	" ---- no * if no indent
-	if indent == ''
+	if indent ==# ''
 		let starindex = prefixlist->index('*')
 		if starindex > 0
 			eval prefixlist->remove(starindex)

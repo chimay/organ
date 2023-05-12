@@ -18,11 +18,12 @@ fun! organ#utils#circular_minus (index, length)
 	return index
 endfun
 
-fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
+fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap', where = 'not-here')
 	" Search flags
 	let course = a:course
 	let move = a:move
 	let wrap = a:wrap
+	let where = a:where
 	let flags = ''
 	if course ==# 'backward'
 		let flags ..= 'b'
@@ -36,6 +37,9 @@ fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap')
 		let flags ..= 'w'
 	else
 		let flags ..= 'W'
+	endif
+	if where ==# 'accept-here'
+		let flags ..= 'c'
 	endif
 	return flags
 endfun

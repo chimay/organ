@@ -356,7 +356,30 @@ If there are some conflicts with your settings, you can restrict them
 to a sublist. Example :
 
 ```vim
-let g:organ_config.prefixless_plugs = ['organ-next', 'organ-backward', 'organ-forward']
+let g:organ_config.prefixless_plugs = [
+            \ 'organ-meta-return',
+            \ 'organ-shift-return',
+            \ 'organ-tab',
+            \ 'organ-shift-tab',
+            \ 'organ-meta-left',
+            \ 'organ-meta-right',
+            \ 'organ-meta-up',
+            \ 'organ-meta-down',
+            \ 'organ-shift-left',
+            \ 'organ-shift-right',
+            \ 'organ-shift-up',
+            \ 'organ-shift-down',
+            \ 'organ-meta-shift-left',
+            \ 'organ-meta-shift-right',
+            \ 'organ-meta-shift-up',
+            \ 'organ-meta-shift-down',
+            \ 'organ-new-separator-line',
+            \ 'organ-store-url',
+            \ 'organ-new-link',
+            \ 'organ-previous-link',
+            \ 'organ-next-link',
+            \ 'organ-timestamp',
+            \]
 ```
 
 You can also customize `g:organ_config.prefixless_modes` to create
@@ -427,10 +450,10 @@ You can find below a list of all available plugs.
 | `<plug>`(organ-select-subtree)     | select subtree            |                    |
 | `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
 | `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
+| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
+| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row            |
 | `<plug>`(organ-tab)                |                           | go to next cell    |
 | `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
-| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
-| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
 | `<plug>`(organ-meta-left)          | promote                   | move column left   |
 | `<plug>`(organ-meta-right)         | demote                    | move column right  |
 | `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |

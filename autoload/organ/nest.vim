@@ -187,6 +187,7 @@ endfun
 fun! organ#nest#shift_left ()
 	" For <s-left> map
 	if organ#table#is_in_table ()
+		return organ#table#cell_begin ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_all_prefixes_left ()
 	else
@@ -196,6 +197,7 @@ endfun
 fun! organ#nest#shift_right ()
 	" For <s-right> map
 	if organ#table#is_in_table ()
+		return organ#table#cell_end ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_all_prefixes_right ()
 	else
