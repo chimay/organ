@@ -87,14 +87,6 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - lists
   + cycle list item prefix
   + toggle checkbox
-- insert timestamp
-- expand shortcut to template (aka org-structure-template)
-  + markdown support limited to code blocks
-- links
-  + store url at cursor
-  + create link with url completion
-  + goto link under or close to cursor
-  + goto next/previous link
 - tables
   + inside of table : align columns
   + outside of table : align following a pattern
@@ -104,6 +96,14 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + move column left or right
   + go to next or previous cell
   + go to beginning or end of cell
+- links
+  + store url at cursor
+  + create link with url completion
+  + goto link under or close to cursor
+  + goto next/previous link
+- insert timestamp
+- expand shortcut to template (aka org-structure-template)
+  + markdown support limited to code blocks
 - export in another format using
   + pandoc
   + emacs
@@ -371,14 +371,16 @@ value in your init file, these bindings become available :
 - `<M-z>`      : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`    : cycle all folds visibility
 - `<M-m>`      : move subtree in another one, with prompt completion
-- `<M-x>`      : expand template
+- `<M-c>`      : toggle checkbox of list item
+- `<M-a>`      : align table, paragraph or selected lines
+- `<M-_>`      : add a separator line in a table
 - `<M-s>`      : store url at cursor
 - `<M-->`      : (press alt and dash) create new link
 - `<M-@>`      : go to previous link
 - `<M-&>`      : go to next link
 - `<M-o>`      : go to link under or close to cursor
+- `<M-x>`      : expand template
 - `<M-d>`      : add date & time stamp
-- `<M-_>`      : add a separator line in a table
 - `<M-e>`      : export with pandoc
 - `<M-S-e>`    : export with emacs (works only in org files)
 
@@ -396,7 +398,6 @@ Some of them are context sensitive :
 | `<M-v>`       | select subtree        | select subtree     |                   |
 | `<M-y>`       | yank subtree          | yank subtree       |                   |
 | `<M-S-x>`     | delete subtree        | delete subtree     |                   |
-| `<M-a>`       |                       |                    | align table       |
 | `<M-CR>`      | new headline          | new item           | new row           |
 | `<S-CR>`      | new headline          | new checkbox item  | new row           |
 | `<M-left>`    | promote               | promote            | move column left  |
@@ -411,9 +412,6 @@ Some of them are context sensitive :
 | `<M-S-right>` | demote subtree        | demote subtree     | delete column     |
 | `<M-S-up>`    |                       |                    | delete row        |
 | `<M-S-down>`  |                       |                    | new row           |
-
-The align function can also be used to align a paragraph, or the visual
-selection; following a pattern.
 
 Note that most table operations expect an aligned table. So, if it's
 not, you have to align it before juggling with rows & cols.
