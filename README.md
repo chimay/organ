@@ -561,6 +561,8 @@ autocmd bufwritepre *.org call organ#vine#markdown2org ()
 - [vimOrganizer](https://github.com/hsitz/VimOrganizer) (abandoned)
 - [nvim-orgmode](https://github.com/nvim-orgmode/orgmode) (lua, neovim only)
 
+All of these plugins are for org files only.
+
 # Misc
 
 ## Why this name
@@ -573,14 +575,17 @@ actions, an organist has to be organized, for sure.
 
 First of all, it is not intended as a clone, more of a loose adaptation.
 
-The current orgmode plugins for (neo)vim that I could find are either :
+The current orgmode plugins for (neo)vim that I could find are for
+org files only, and are either :
 
 - abandoned and not adapted for my usage
 - written in python (which is fine but still a dependency)
 - written in lua, which means they only work with neovim
 
-I wanted to write a lightweight plugin in plain simple vimscript, with
-minimal dependencies (most of it doesn't need anything else to work).
+So, I started to write a lightweight org-mode plugin in plain simple
+vimscript, with minimal dependencies, and then I realized it wouldn't
+be too difficult to adapt it for markdown and folded files. And here it
+is !
 
 # Warning
 
