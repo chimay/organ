@@ -72,6 +72,7 @@ fun! organ#void#config ()
 	endif
 	" -- ordered chars
 	if ! has_key(g:organ_config.list, 'counter_start')
+		" must be >= 0
 		let g:organ_config.list.counter_start = 1
 	endif
 	if ! has_key(g:organ_config.list, 'ordered')
