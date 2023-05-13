@@ -128,6 +128,10 @@ fun! organ#bush#set_prefix (prefix, ...)
 	return newitem
 endfun
 
+fun! organ#bush#cloak ()
+	" Set prefix to same as same level neighbours in same subtree
+endfun
+
 fun! organ#bush#update_counters (maxlevel = 30)
 	" Update counters in ordered list
 	let maxlevel = a:maxlevel
@@ -274,7 +278,6 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	let direction = a:direction
 	let position = getcurpos ()
 	let properties = organ#colibri#properties ()
-	let old_prefix = properties.prefix
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
@@ -312,6 +315,134 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	" ---- coda
 	call setpos('.', position)
 	return newprefix
+endfun
+
+" ---- checkbox
+
+fun! organ#bush#toggle_checkbox ()
+	" Cycle todo keyword marker left
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let indent = properties.indent
+	let level = properties.level
+	let prefix = properties.prefix
+	let counter = properties.counter
+	let checkbox = properties.checkbox
+	let todo = properties.todo
+	let text = properties.text
+	" ---- toggle checkbox
+	if empty(checkbox)
+		let toggled_checkbox = '[ ]'
+	elseif checkbox ==# '[ ]'
+		let toggled_checkbox = '[X]'
+	elseif checkbox =~ '\m\[[Xx]\]'
+		let toggled_checkbox = '[ ]'
+	else
+		throw 'organ bush toggle checkbox : bad checkbox format'
+	endif
+	" ---- add spaces
+	let prefix = prefix .. ' '
+	if counter >= 0
+		let counter = '[@' .. counter .. '] '
+	else
+		let counter = ''
+	endif
+	let toggled_checkbox = toggled_checkbox .. ' '
+	if ! empty(todo)
+		let todo = todo .. ' '
+	endif
+	" ---- update line
+	let newline = indent .. prefix .. counter .. toggled_checkbox .. todo .. text
+	call setline(linum, newline)
+	return newline
+endfun
+
+" ---- todo
+
+fun! organ#bush#cycle_todo_left ()
+	" Cycle todo keyword marker left
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let indent = properties.indent
+	let level = properties.level
+	let prefix = properties.prefix
+	let counter = properties.counter
+	let checkbox = properties.checkbox
+	let todo = properties.todo
+	let text = properties.text
+	" ---- previous in cycle
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let previous_todo = todo_cycle[-1]
+	elseif cycle_index == 0
+		let previous_todo = ''
+	else
+		let previous_todo = todo_cycle[cycle_index - 1]
+	endif
+	" ---- add spaces
+	let prefix = prefix .. ' '
+	if counter >= 0
+		let counter = '[@' .. counter .. '] '
+	else
+		let counter = ''
+	endif
+	if ! empty(checkbox)
+		let checkbox = checkbox .. ' '
+	endif
+	if ! empty(previous_todo)
+		let previous_todo = previous_todo .. ' '
+	endif
+	" ---- update line
+	let newline = indent .. prefix .. counter .. checkbox .. previous_todo .. text
+	call setline(linum, newline)
+	" ---- coda
+	return newline
+endfun
+
+fun! organ#bush#cycle_todo_right ()
+	" Cycle todo keyword marker right
+	let properties = organ#colibri#properties ()
+	let linum = properties.linum
+	let indent = properties.indent
+	let level = properties.level
+	let prefix = properties.prefix
+	let counter = properties.counter
+	let checkbox = properties.checkbox
+	let todo = properties.todo
+	let text = properties.text
+	" ---- next in cycle
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if cycle_index < 0
+		let next_todo = todo_cycle[0]
+	elseif cycle_index == lencycle - 1
+		let next_todo = ''
+	else
+		let next_todo = todo_cycle[cycle_index + 1]
+	endif
+	" ---- add spaces
+	let prefix = prefix .. ' '
+	if counter >= 0
+		let counter = '[@' .. counter .. '] '
+	else
+		let counter = ''
+	endif
+	if ! empty(checkbox)
+		let checkbox = checkbox .. ' '
+	endif
+	if ! empty(next_todo)
+		let next_todo = next_todo .. ' '
+	endif
+	" ---- update line
+	let newline = indent .. prefix .. counter .. checkbox .. next_todo .. text
+	call setline(linum, newline)
+	" ---- coda
+	return newline
 endfun
 
 " ---- promote & demote
@@ -528,132 +659,4 @@ fun! organ#bush#move_subtree_forward ()
 	call cursor(cursor_target, 1)
 	call organ#bush#update_counters ()
 	return cursor_target
-endfun
-
-" ---- checkbox
-
-fun! organ#bush#toggle_checkbox ()
-	" Cycle todo keyword marker left
-	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counter = properties.counter
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- toggle checkbox
-	if empty(checkbox)
-		let toggled_checkbox = '[ ]'
-	elseif checkbox ==# '[ ]'
-		let toggled_checkbox = '[X]'
-	elseif checkbox =~ '\m\[[Xx]\]'
-		let toggled_checkbox = '[ ]'
-	else
-		throw 'organ bush toggle checkbox : bad checkbox format'
-	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
-	else
-		let counter = ''
-	endif
-	let toggled_checkbox = toggled_checkbox .. ' '
-	if ! empty(todo)
-		let todo = todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counter .. toggled_checkbox .. todo .. text
-	call setline(linum, newline)
-	return newline
-endfun
-
-" ---- todo
-
-fun! organ#bush#cycle_todo_left ()
-	" Cycle todo keyword marker left
-	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counter = properties.counter
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- previous in cycle
-	let todo = properties.todo
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let previous_todo = todo_cycle[-1]
-	elseif cycle_index == 0
-		let previous_todo = ''
-	else
-		let previous_todo = todo_cycle[cycle_index - 1]
-	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
-	else
-		let counter = ''
-	endif
-	if ! empty(checkbox)
-		let checkbox = checkbox .. ' '
-	endif
-	if ! empty(previous_todo)
-		let previous_todo = previous_todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counter .. checkbox .. previous_todo .. text
-	call setline(linum, newline)
-	" ---- coda
-	return newline
-endfun
-
-fun! organ#bush#cycle_todo_right ()
-	" Cycle todo keyword marker right
-	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counter = properties.counter
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- next in cycle
-	let todo = properties.todo
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let next_todo = todo_cycle[0]
-	elseif cycle_index == lencycle - 1
-		let next_todo = ''
-	else
-		let next_todo = todo_cycle[cycle_index + 1]
-	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
-	else
-		let counter = ''
-	endif
-	if ! empty(checkbox)
-		let checkbox = checkbox .. ' '
-	endif
-	if ! empty(next_todo)
-		let next_todo = next_todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counter .. checkbox .. next_todo .. text
-	call setline(linum, newline)
-	" ---- coda
-	return newline
 endfun
