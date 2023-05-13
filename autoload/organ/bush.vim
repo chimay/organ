@@ -15,6 +15,8 @@ endif
 
 fun! organ#bush#indent_item (level, ...)
 	" Indent all list item line(s)
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let level = a:level
 	if a:0 > 0
 		let properties = a:1
@@ -46,11 +48,14 @@ fun! organ#bush#indent_item (level, ...)
 		let line = substitute(line, spaces, indent, '')
 		call setline(linum, line)
 	endfor
+	let &foldmethod = saved_foldmethod
 	return itemhead
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)
 	" Update counters in ordered list
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let maxlevel = a:maxlevel
 	let length = maxlevel
 	let global_counter_start = g:organ_config.list.counter_start
@@ -99,6 +104,7 @@ fun! organ#bush#update_counters (maxlevel = 30)
 		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)
+	let &foldmethod = saved_foldmethod
 	return counterlist
 endfun
 
@@ -161,6 +167,8 @@ endfun
 fun! organ#bush#set_prefix (prefix, ...)
 	" Cycle item prefix
 	" direction : 1 = right, -1 = left
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let prefix = a:prefix
 	if a:0 > 0
 		let properties = a:1
@@ -177,6 +185,7 @@ fun! organ#bush#set_prefix (prefix, ...)
 	call setline(linum, newitem)
 	" ---- indent all item line(s)
 	call organ#bush#indent_item (level)
+	let &foldmethod = saved_foldmethod
 	return newitem
 endfun
 
@@ -184,6 +193,8 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	" Set prefix to the one used by same level neighbours in same subtree
 	" If alone in level, just rotate prefix following promote/demote direction
 	" direction : 1 = right = next, -1 = left = previous
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let direction = a:direction
 	if a:0 > 0
 		let properties = a:1
@@ -226,6 +237,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	call organ#bush#set_prefix (prefix, properties)
 	" ---- coda
 	call setpos('.',  position)
+	let &foldmethod = saved_foldmethod
 	return properties
 endfun
 
@@ -319,6 +331,8 @@ endfun
 fun! organ#bush#cycle_prefix (direction = 1)
 	" Cycle prefix of all same-level items in parent subtree or in list
 	" direction : 1 = right = next, -1 = left = previous
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let direction = a:direction
 	let position = getcurpos ()
 	let properties = organ#colibri#properties ()
@@ -359,6 +373,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	endif
 	" ---- coda
 	call setpos('.', position)
+	let &foldmethod = saved_foldmethod
 	return newprefix
 endfun
 
