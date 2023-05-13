@@ -513,9 +513,6 @@ fun! organ#bush#promote (speed = 'slow')
 	" ---- update counters
 	if speed ==# 'slow'
 		call organ#bush#update_counters ()
-		if mode() ==# 'i'
-			startinsert!
-		endif
 	endif
 	" ---- coda
 	return linum
@@ -535,9 +532,6 @@ fun! organ#bush#demote (speed = 'slow')
 	" ---- update counters
 	if speed ==# 'slow'
 		call organ#bush#update_counters ()
-		if mode() ==# 'i'
-			startinsert!
-		endif
 	endif
 	" ---- coda
 	return linum
