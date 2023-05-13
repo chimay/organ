@@ -128,8 +128,42 @@ fun! organ#bush#set_prefix (prefix, ...)
 	return newitem
 endfun
 
-fun! organ#bush#cloak ()
+fun! organ#bush#disguise ()
 	" Set prefix to same as same level neighbours in same subtree
+	let position = getcurpos ()
+	let properties = organ#colibri#properties ()
+	let level = properties.level
+	" ---- find boundaries
+	if level > 1
+		let linum = organ#colibri#parent ()
+		let subtree = organ#colibri#subtree ()
+		let head_linum = subtree.head_linum
+		let tail_linum = subtree.tail_linum
+	else
+		let head_linum = organ#colibri#list_start ()
+		let tail_linum = organ#colibri#list_end ()
+	endif
+	if head_linum == 0
+		echomsg 'organ bush cycle prefix : itemhead not found'
+		return 0
+	endif
+	" ---- potential neighbours
+	let linum_previous = organ#colibri#previous ('dont-move', 'dont-wrap')
+	let linum_next = organ#colibri#next ('dont-move', 'dont-wrap')
+	if linum_previous > 0 && linum_previous >= head_linum
+		call cursor(linum_previous, 1)
+		let neighbour = organ#colibri#properties ()
+	elseif linum_next > 0 && linum_next <= tail_linum
+		call cursor(linum_next, 1)
+		let neighbour = organ#colibri#properties ()
+	else
+		return
+	endif
+	let prefix = neighbour.prefix
+	let level = properties.level
+	call organ#bush#set_prefix (prefix, properties)
+	" ---- coda
+	call setpos('.',  position)
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)
@@ -466,8 +500,12 @@ fun! organ#bush#promote ()
 	let linum = properties.linum
 	let itemhead = properties.itemhead
 	call setline(linum, itemhead)
+	" ---- ensure prefix uniformity
+	call organ#bush#disguise ()
 	" ---- update counters
 	call organ#bush#update_counters ()
+	" ---- indent
+	call organ#bush#indent_item (level)
 	" ---- coda
 	if mode() ==# 'i'
 		startinsert!
@@ -488,8 +526,12 @@ fun! organ#bush#demote ()
 	let linum = properties.linum
 	let itemhead = properties.itemhead
 	call setline(linum, itemhead)
+	" ---- ensure prefix uniformity
+	call organ#bush#disguise ()
 	" ---- update counters
 	call organ#bush#update_counters ()
+	" ---- indent
+	call organ#bush#indent_item (level)
 	" ---- coda
 	if mode() ==# 'i'
 		startinsert!
