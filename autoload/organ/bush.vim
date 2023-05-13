@@ -148,8 +148,10 @@ fun! organ#bush#disguise ()
 		return 0
 	endif
 	" ---- potential neighbours
-	let linum_previous = organ#colibri#previous ('dont-move', 'dont-wrap')
-	let linum_next = organ#colibri#next ('dont-move', 'dont-wrap')
+	let linum_previous = organ#colibri#backward ('dont-move', 'dont-wrap')
+	let linum_next = organ#colibri#forward ('dont-move', 'dont-wrap')
+	echomsg linum_previous linum_next
+	return
 	if linum_previous > 0 && linum_previous >= head_linum
 		call cursor(linum_previous, 1)
 		let neighbour = organ#colibri#properties ()
@@ -157,13 +159,14 @@ fun! organ#bush#disguise ()
 		call cursor(linum_next, 1)
 		let neighbour = organ#colibri#properties ()
 	else
-		return
+		return properties
 	endif
 	let prefix = neighbour.prefix
 	let level = properties.level
 	call organ#bush#set_prefix (prefix, properties)
 	" ---- coda
 	call setpos('.',  position)
+	return properties
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)

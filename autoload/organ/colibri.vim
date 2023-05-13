@@ -186,15 +186,15 @@ fun! organ#colibri#common_indent ()
 	let indentlist = []
 	let linum = first
 	for line in linelist
+		let line = substitute(line, "\t", spaces, 'g')
+		call setline(linum, line)
+		let linum += 1
 		if line =~ hollow_pattern
 			continue
 		endif
-		let line = substitute(line, "\t", spaces, 'g')
-		call setline(linum, line)
 		let leading = line->matchstr(indent_pattern)
 		let indent = len(leading)
 		eval indentlist->add(indent)
-		let linum += 1
 	endfor
 	return min(indentlist)
 endfun

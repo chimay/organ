@@ -73,8 +73,8 @@ content
         some text
         and more
      3. item
-	    text
-		text
+        text
+        text
 
 
 content
