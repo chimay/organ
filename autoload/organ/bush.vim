@@ -44,13 +44,47 @@ fun! organ#bush#indent_item (level)
 	return itemhead
 endfun
 
-fun! organ#bush#cycle_prefix (prefix, direction = 1)
+fun! organ#bush#cycle_prefix (direction = 1, ...)
 	" Cycle item prefix
 	" direction : 1 = forward, -1 = backward
-	let prefix = a:prefix
 	let direction = a:direction
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
 	" ---- standardize prefix
+	let prefix = properties.prefix
 	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
+	" ---- prefix list
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
+	else
+		let filekey = &filetype
+	endif
+	let unordered = copy(g:organ_config.list.unordered[filekey])
+	let ordered = copy(g:organ_config.list.ordered[filekey])
+	let ordered = ordered->map({ _, v -> '1' .. v })
+	let prefixlist = unordered + ordered
+	" ---- no * if no indent
+	let indent = properties.indent
+	if indent ==# ''
+		let starindex = prefixlist->index('*')
+		if starindex > 0
+			eval prefixlist->remove(starindex)
+		endif
+	endif
+	" ---- cycle
+	let index = prefixlist->index(prefix)
+	let length = len(prefixlist)
+	if direction == 1
+		let newindex = organ#utils#circular_plus (index, length)
+	elseif direction == -1
+		let newindex = organ#utils#circular_minus (index, length)
+	else
+		throw 'organ bush cycle prefix : bad direction'
+	endif
+	return prefixlist[newindex]
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)
