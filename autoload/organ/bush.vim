@@ -21,7 +21,6 @@ fun! organ#bush#indent_item (level, ...)
 	else
 		let properties = organ#colibri#properties ()
 	endif
-	let properties = organ#colibri#properties ()
 	let head = properties.linum
 	let itemhead = properties.itemhead
 	let tail = organ#colibri#itemtail ()
@@ -181,14 +180,22 @@ fun! organ#bush#set_prefix (prefix, ...)
 	return newitem
 endfun
 
-fun! organ#bush#disguise ()
+fun! organ#bush#update_prefix (direction = 1, ...)
 	" Set prefix to same as same level neighbours in same subtree
+	" direction : 1 = right = next, -1 = left = previous
+	let direction = a:direction
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
 	let position = getcurpos ()
 	let properties = organ#colibri#properties ()
+	let linum = properties.linum
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
-		let linum = organ#colibri#parent ()
+		call organ#colibri#parent ()
 		let subtree = organ#colibri#subtree ()
 		let head_linum = subtree.head_linum
 		let tail_linum = subtree.tail_linum
@@ -202,22 +209,21 @@ fun! organ#bush#disguise ()
 		return 0
 	endif
 	" ---- potential neighbours
-	let linum_previous = organ#colibri#backward ('dont-move', 'dont-wrap')
-	let linum_next = organ#colibri#forward ('dont-move', 'dont-wrap')
-	if linum_previous > 0 && linum_previous >= head_linum
-		call cursor(linum_previous, 1)
+	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
+	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
+	if linum_back > 0 && linum_back != linum && linum_back >= head_linum
+		call cursor(linum_back, 1)
 		let neighbour = organ#colibri#properties ()
-	elseif linum_next > 0 && linum_next <= tail_linum
-		call cursor(linum_next, 1)
+		let prefix = neighbour.prefix
+	elseif linum_forth > 0 && linum_forth != linum && linum_forth <= tail_linum
+		call cursor(linum_forth, 1)
 		let neighbour = organ#colibri#properties ()
+		let prefix = neighbour.prefix
 	else
-		return properties
+		let prefix = organ#bush#rotate_prefix (direction, properties, 'same-kind')
 	endif
-	let prefix = neighbour.prefix
 	let level = properties.level
 	call organ#bush#set_prefix (prefix, properties)
-	" ---- update counters
-	call organ#bush#update_counters ()
 	" ---- coda
 	call setpos('.',  position)
 	return properties
@@ -312,7 +318,7 @@ endfun
 
 fun! organ#bush#cycle_prefix (direction = 1)
 	" Cycle prefix of all same-level items in parent subtree or in list
-	" direction : 1 = right, -1 = left
+	" direction : 1 = right = next, -1 = left = previous
 	let direction = a:direction
 	let position = getcurpos ()
 	let properties = organ#colibri#properties ()
@@ -488,29 +494,25 @@ endfun
 
 " -- current only
 
-fun! organ#bush#promote ()
+fun! organ#bush#promote (speed = 'slow')
 	" Promote list item
+	let speed = a:speed
 	let properties = organ#colibri#properties ()
-	" --- indent
+	let linum = properties.linum
 	let level = properties.level
+	" --- do nothing if top level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
 		return 0
 	endif
+	" --- adjust indent
 	let properties.itemhead = organ#bush#indent_item (level - 1, properties)
-	" ---- rotate prefix
-	let newprefix = organ#bush#rotate_prefix (-1, properties, 'same-kind')
-	call organ#bush#set_prefix (newprefix, properties)
-	" ---- update line
-	let linum = properties.linum
-	let itemhead = properties.itemhead
-	call setline(linum, itemhead)
-	" ---- ensure prefix uniformity
-	call organ#bush#disguise ()
+	" ---- update prefix
+	call organ#bush#update_prefix (-1, properties)
 	" ---- update counters
-	call organ#bush#update_counters ()
-	" ---- indent
-	call organ#bush#indent_item (level)
+	if speed ==# 'slow'
+		call organ#bush#update_counters ()
+	endif
 	" ---- coda
 	if mode() ==# 'i'
 		startinsert!
@@ -518,25 +520,20 @@ fun! organ#bush#promote ()
 	return linum
 endfun
 
-fun! organ#bush#demote ()
+fun! organ#bush#demote (speed = 'slow')
 	" Demote list item
+	let speed = a:speed
 	let properties = organ#colibri#properties ()
-	" --- indent
-	let level = properties.level
-	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
-	" ---- rotate prefix
-	let newprefix = organ#bush#rotate_prefix (1, properties, 'same-kind')
-	call organ#bush#set_prefix (newprefix, properties)
-	" ---- update line
 	let linum = properties.linum
-	let itemhead = properties.itemhead
-	call setline(linum, itemhead)
-	" ---- ensure prefix uniformity
-	call organ#bush#disguise ()
+	let level = properties.level
+	" --- adjust indent
+	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
+	" ---- update prefix
+	call organ#bush#update_prefix (1, properties)
 	" ---- update counters
-	call organ#bush#update_counters ()
-	" ---- indent
-	call organ#bush#indent_item (level)
+	if speed ==# 'slow'
+		call organ#bush#update_counters ()
+	endif
 	" ---- coda
 	if mode() ==# 'i'
 		startinsert!
@@ -561,9 +558,10 @@ fun! organ#bush#promote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#promote ()
+		let linum = organ#bush#promote ('fast')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
+			call organ#bush#update_counters ()
 			call cursor(head_linum, 1)
 			return linum
 		endif
@@ -580,9 +578,10 @@ fun! organ#bush#demote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#demote ()
+		let linum = organ#bush#demote ('fast')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
+			call organ#bush#update_counters ()
 			call cursor(head_linum, 1)
 			return linum
 		endif
