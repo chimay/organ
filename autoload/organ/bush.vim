@@ -50,6 +50,59 @@ fun! organ#bush#indent_item (level, ...)
 	return itemhead
 endfun
 
+fun! organ#bush#update_counters (maxlevel = 30)
+	" Update counters in ordered list
+	let maxlevel = a:maxlevel
+	let length = maxlevel
+	let global_counter_start = g:organ_config.list.counter_start
+	let position = getcurpos ()
+	let first = organ#colibri#list_start ()
+	let last =  organ#colibri#list_end ()
+	let counterlist = repeat([-1], maxlevel)
+	let counter_pattern = '\m^\s*\zs[0-9]\+'
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	call cursor(first, 1)
+	let linum = first
+	while v:true
+		if linum == 0
+			break
+		endif
+		if linum > last
+			break
+		endif
+		let properties = organ#colibri#properties ()
+		let prefix = properties.prefix
+		let count = prefix->matchstr(counter_pattern)
+		if empty(count)
+			let linum = search(itemhead_pattern, flags)
+			continue
+		endif
+		let level = properties.level
+		let counter_start = properties.counter
+		let countindex = level - 1
+		for index in range(countindex + 1, length - 1)
+			let counterlist[index] = -1
+		endfor
+		if counter_start >= 0
+			let counterlist[countindex] = counter_start
+		else
+			if counterlist[countindex] < 0
+				let counterlist[countindex] = global_counter_start
+			else
+				let counterlist[countindex] += 1
+			endif
+		endif
+		let count = counterlist[countindex]
+		let line = properties.itemhead
+		let line = substitute(line, counter_pattern, count, '')
+		call setline(linum, line)
+		let linum = search(itemhead_pattern, flags)
+	endwhile
+	call setpos('.', position)
+	return counterlist
+endfun
+
 fun! organ#bush#rotate_prefix (direction = 1, ...)
 	" Return next/previous item prefix
 	" direction : 1 = right = next, -1 = left = previous
@@ -139,6 +192,7 @@ fun! organ#bush#disguise ()
 		let subtree = organ#colibri#subtree ()
 		let head_linum = subtree.head_linum
 		let tail_linum = subtree.tail_linum
+		call setpos('.',  position)
 	else
 		let head_linum = organ#colibri#list_start ()
 		let tail_linum = organ#colibri#list_end ()
@@ -150,8 +204,6 @@ fun! organ#bush#disguise ()
 	" ---- potential neighbours
 	let linum_previous = organ#colibri#backward ('dont-move', 'dont-wrap')
 	let linum_next = organ#colibri#forward ('dont-move', 'dont-wrap')
-	echomsg linum_previous linum_next
-	return
 	if linum_previous > 0 && linum_previous >= head_linum
 		call cursor(linum_previous, 1)
 		let neighbour = organ#colibri#properties ()
@@ -164,62 +216,11 @@ fun! organ#bush#disguise ()
 	let prefix = neighbour.prefix
 	let level = properties.level
 	call organ#bush#set_prefix (prefix, properties)
+	" ---- update counters
+	call organ#bush#update_counters ()
 	" ---- coda
 	call setpos('.',  position)
 	return properties
-endfun
-
-fun! organ#bush#update_counters (maxlevel = 30)
-	" Update counters in ordered list
-	let maxlevel = a:maxlevel
-	let length = maxlevel
-	let global_counter_start = g:organ_config.list.counter_start
-	let position = getcurpos ()
-	let first = organ#colibri#list_start ()
-	let last =  organ#colibri#list_end ()
-	let counterlist = repeat([-1], maxlevel)
-	let counter_pattern = '\m^\s*\zs[0-9]\+'
-	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-	call cursor(first, 1)
-	let linum = first
-	while v:true
-		if linum == 0
-			break
-		endif
-		if linum > last
-			break
-		endif
-		let properties = organ#colibri#properties ()
-		let prefix = properties.prefix
-		let count = prefix->matchstr(counter_pattern)
-		if empty(count)
-			let linum = search(itemhead_pattern, flags)
-			continue
-		endif
-		let level = properties.level
-		let counter_start = properties.counter
-		let countindex = level - 1
-		for index in range(countindex + 1, length - 1)
-			let counterlist[index] = -1
-		endfor
-		if counter_start >= 0
-			let counterlist[countindex] = counter_start
-		else
-			if counterlist[countindex] < 0
-				let counterlist[countindex] = global_counter_start
-			else
-				let counterlist[countindex] += 1
-			endif
-		endif
-		let count = counterlist[countindex]
-		let line = properties.itemhead
-		let line = substitute(line, counter_pattern, count, '')
-		call setline(linum, line)
-		let linum = search(itemhead_pattern, flags)
-	endwhile
-	call setpos('.', position)
-	return counterlist
 endfun
 
 " ---- new list item
@@ -322,6 +323,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 		let subtree = organ#colibri#subtree ()
 		let head_linum = subtree.head_linum
 		let tail_linum = subtree.tail_linum
+		call setpos('.',  position)
 	else
 		let head_linum = organ#colibri#list_start ()
 		let tail_linum = organ#colibri#list_end ()
