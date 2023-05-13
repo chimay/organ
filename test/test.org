@@ -41,12 +41,12 @@ content
 0. [@0] [X] item 1
   1) [X] item 2
     3. [@3] [ ] item 2.1
-    4. [X] item 2.3
-      1) [ ] item 2.3.1
-      2) [ ] item 2.3.2
-         bla bla
-      3) [ ] item 2.3.3
-    5. [ ] item 2.2
+    1. [X] item 2.3
+      1. [ ] item 2.3.1
+      1. [ ] item 2.3.2
+           bla bla
+      1. [ ] item 2.3.3
+  2. [ ] item 2.2
 1. [ ] item 3
   1. item
   2. item
@@ -64,15 +64,15 @@ content
      + [X] checkbox
    - item 2
      1. item 2.1
-     2. item 2.2
-        some text
-        and more
-
-     3. item 2.3
+     2. item 2.3
        * item 2.3.1
        * item 2.3.2
-         text
-         text
+           text
+           text
+     3. item 2.2
+          some text
+          and more
+
 
 content
 

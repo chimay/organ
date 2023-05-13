@@ -13,22 +13,28 @@ endif
 
 " ---- helpers
 
-fun! organ#bush#indent_item (level)
+fun! organ#bush#indent_item (level, ...)
 	" Indent all list item line(s)
 	let level = a:level
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
 	let properties = organ#colibri#properties ()
 	let head = properties.linum
 	let itemhead = properties.itemhead
 	let tail = organ#colibri#itemtail ()
 	let len_prefix = len(properties.prefix)
+	" ---- item head line
 	let shift = organ#colibri#common_indent ()
 	let step = g:organ_config.list.indent_length
 	let spaces = '\m^\s*'
-	" ---- item head line
 	let numspaces = shift + step * (level - 1)
 	let indent = repeat(' ', numspaces)
 	let itemhead = substitute(itemhead, spaces, indent, '')
 	call setline(head, itemhead)
+	let properties.itemhead = itemhead
 	" ---- other lines
 	if head >= tail
 		return itemhead
@@ -44,14 +50,19 @@ fun! organ#bush#indent_item (level)
 	return itemhead
 endfun
 
-fun! organ#bush#circular_prefix (direction = 1, ...)
-	" Return next item prefix left/right in list
-	" direction : 1 = right, -1 = left
+fun! organ#bush#rotate_prefix (direction = 1, ...)
+	" Return next/previous item prefix
+	" direction : 1 = right = next, -1 = left = previous
 	let direction = a:direction
 	if a:0 > 0
 		let properties = a:1
 	else
 		let properties = organ#colibri#properties ()
+	endif
+	if a:0 > 1
+		let type = a:2
+	else
+		let type = 'all'
 	endif
 	" ---- standardize prefix
 	let prefix = properties.prefix
@@ -65,7 +76,15 @@ fun! organ#bush#circular_prefix (direction = 1, ...)
 	let unordered = copy(g:organ_config.list.unordered[filekey])
 	let ordered = copy(g:organ_config.list.ordered[filekey])
 	let ordered = ordered->map({ _, v -> '1' .. v })
-	let prefixlist = unordered + ordered
+	if type ==# 'all'
+		let prefixlist = unordered + ordered
+	elseif unordered->index(prefix) >= 0
+		let prefixlist = unordered
+	elseif ordered->index(prefix) >= 0
+		let prefixlist = ordered
+	else
+		throw 'organ bush rotate prefix : unknown prefix'
+	endif
 	" ---- no * if no indent
 	let indent = properties.indent
 	if indent ==# ''
@@ -85,6 +104,28 @@ fun! organ#bush#circular_prefix (direction = 1, ...)
 		throw 'organ bush cycle prefix : bad direction'
 	endif
 	return prefixlist[newindex]
+endfun
+
+fun! organ#bush#set_prefix (prefix, ...)
+	" Cycle item prefix
+	" direction : 1 = right, -1 = left
+	let prefix = a:prefix
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let linum = properties.linum
+	let itemhead = properties.itemhead
+	let level = properties.level
+	" ---- update line
+	let prefix_pattern = '\m^\s*\zs\S\+'
+	let newitem = substitute(itemhead, prefix_pattern, prefix, '')
+	let properties.itemhead = newitem
+	call setline(linum, newitem)
+	" ---- indent all item line(s)
+	call organ#bush#indent_item (level)
+	return newitem
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)
@@ -227,27 +268,6 @@ endfun
 
 " ---- cycle prefix
 
-fun! organ#bush#set_prefix (prefix, ...)
-	" Cycle item prefix
-	" direction : 1 = right, -1 = left
-	let prefix = a:prefix
-	if a:0 > 0
-		let properties = a:1
-	else
-		let properties = organ#colibri#properties ()
-	endif
-	let linum = properties.linum
-	let itemhead = properties.itemhead
-	let level = properties.level
-	" ---- update line
-	let prefix_pattern = '\m^\s*\zs\S\+'
-	let newitem = substitute(itemhead, prefix_pattern, prefix, '')
-	call setline(linum, newitem)
-	" ---- indent all item line(s)
-	call organ#bush#indent_item (level)
-	return newitem
-endfun
-
 fun! organ#bush#cycle_prefix (direction = 1)
 	" Cycle prefix of all same-level items in parent subtree or in list
 	" direction : 1 = right, -1 = left
@@ -270,8 +290,8 @@ fun! organ#bush#cycle_prefix (direction = 1)
 		echomsg 'organ bush cycle prefix : itemhead not found'
 		return 0
 	endif
-	" ---- new prefix
-	let newprefix = organ#bush#circular_prefix (direction, properties)
+	" ---- rotate prefix
+	let newprefix = organ#bush#rotate_prefix (direction, properties)
 	" ---- loop
 	call cursor(head_linum, 1)
 	while v:true
@@ -300,108 +320,50 @@ endfun
 
 fun! organ#bush#promote ()
 	" Promote list item
-	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		let filekey = 'default'
-	else
-		let filekey = &filetype
-	endif
 	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let itemhead = properties.itemhead
 	" --- indent
-	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '\t', spaces, 'g')
 	let level = properties.level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
 		return 0
 	endif
-	let itemhead = organ#bush#indent_item (level - 1)
-	" ---- unordered item
-	let unordered = g:organ_config.list.unordered[filekey]
-	let len_unordered = len(unordered)
-	for index in range(len(unordered))
-		let second = '[' .. unordered[index] .. ']'
-		if itemhead =~ '\m^\s*' .. second
-			let stripe = organ#utils#circular_minus(index, len_unordered)
-			let first = unordered[stripe]
-			let itemhead = substitute(itemhead, second, first, '')
-			call setline(linum, itemhead)
-			call organ#bush#update_counters ()
-			if mode() ==# 'i'
-				startinsert!
-			endif
-			return linum
-		endif
-	endfor
-	" ---- ordered item
-	let ordered = g:organ_config.list.ordered[filekey]
-	let len_ordered = len(ordered)
-	for index in range(len(ordered))
-		let second = '[' .. ordered[index] .. ']'
-		if itemhead =~ '\m^\s*[0-9]\+' .. second
-			let stripe = organ#utils#circular_minus(index, len_ordered)
-			let first = ordered[stripe]
-			let itemhead = substitute(itemhead, second, first, '')
-			call setline(linum, itemhead)
-			call organ#bush#update_counters ()
-			if mode() ==# 'i'
-				startinsert!
-			endif
-			return linum
-		endif
-	endfor
+	let properties.itemhead = organ#bush#indent_item (level - 1, properties)
+	" ---- rotate prefix
+	let newprefix = organ#bush#rotate_prefix (-1, properties, 'same-kind')
+	call organ#bush#set_prefix (newprefix, properties)
+	" ---- update line
+	let linum = properties.linum
+	let itemhead = properties.itemhead
+	call setline(linum, itemhead)
+	" ---- update counters
+	call organ#bush#update_counters ()
+	" ---- coda
+	if mode() ==# 'i'
+		startinsert!
+	endif
+	return linum
 endfun
 
 fun! organ#bush#demote ()
 	" Demote list item
-	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
-		let filekey = 'default'
-	else
-		let filekey = &filetype
-	endif
 	let properties = organ#colibri#properties ()
+	" --- indent
+	let level = properties.level
+	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
+	" ---- rotate prefix
+	let newprefix = organ#bush#rotate_prefix (1, properties, 'same-kind')
+	call organ#bush#set_prefix (newprefix, properties)
+	" ---- update line
 	let linum = properties.linum
 	let itemhead = properties.itemhead
-	" --- indent
-	let spaces = repeat(' ', &tabstop)
-	let itemhead = substitute(itemhead, '\t', spaces, 'g')
-	let level = properties.level
-	let itemhead = organ#bush#indent_item (level + 1)
-	" ---- unordered item
-	let unordered = g:organ_config.list.unordered[filekey]
-	let len_unordered = len(unordered)
-	for index in range(len(unordered))
-		let first = '[' .. unordered[index] .. ']'
-		if itemhead =~ '\m^\s*' .. first
-			let stripe = organ#utils#circular_plus(index, len_unordered)
-			let second = unordered[stripe]
-			let itemhead = substitute(itemhead, first, second, '')
-			call setline(linum, itemhead)
-			call organ#bush#update_counters ()
-			if mode() ==# 'i'
-				startinsert!
-			endif
-			return linum
-		endif
-	endfor
-	" ---- ordered item
-	let ordered = g:organ_config.list.ordered[filekey]
-	let len_ordered = len(ordered)
-	for index in range(len(ordered))
-		let first = '[' .. ordered[index] .. ']'
-		if itemhead =~ '\m^\s*[0-9]\+' .. first
-			let stripe = organ#utils#circular_plus(index, len_ordered)
-			let second = ordered[stripe]
-			let itemhead = substitute(itemhead, first, second, '')
-			call setline(linum, itemhead)
-			call organ#bush#update_counters ()
-			if mode() ==# 'i'
-				startinsert!
-			endif
-			return linum
-		endif
-	endfor
+	call setline(linum, itemhead)
+	" ---- update counters
+	call organ#bush#update_counters ()
+	" ---- coda
+	if mode() ==# 'i'
+		startinsert!
+	endif
+	return linum
 endfun
 
 " -- subtree
@@ -621,7 +583,7 @@ fun! organ#bush#cycle_todo_left ()
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
-	" ---- next in cycle
+	" ---- previous in cycle
 	let todo = properties.todo
 	let todo_cycle = g:organ_config.todo_cycle
 	let lencycle = len(todo_cycle)
