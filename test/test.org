@@ -64,17 +64,17 @@ content
      + [X] checkbox
    - item 2
      1. item 2.1
-       1) item 2.3
+       * item 2.3
          - item 2.3.1
          - item 2.3.2
-         text
-         text
-     2. item 2.2
-        some text
-        and more
-     3. item
-        text
-        text
+           text
+           text
+       * item 2.2
+         some text
+         and more
+       * item
+          text
+          text
 
 
 content

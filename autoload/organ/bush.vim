@@ -541,6 +541,8 @@ endfun
 
 fun! organ#bush#promote_subtree ()
 	" Promote list item subtree
+	let save_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -557,15 +559,19 @@ fun! organ#bush#promote_subtree ()
 		let linum = organ#bush#promote ('fast')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
-			call organ#bush#update_counters ()
-			call cursor(head_linum, 1)
-			return linum
+			break
 		endif
 	endwhile
+	call organ#bush#update_counters ()
+	call cursor(head_linum, 1)
+	let &foldmethod = save_foldmethod
+	return linum
 endfun
 
 fun! organ#bush#demote_subtree ()
 	" Demote list item subtree
+	let save_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -577,11 +583,13 @@ fun! organ#bush#demote_subtree ()
 		let linum = organ#bush#demote ('fast')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
-			call organ#bush#update_counters ()
-			call cursor(head_linum, 1)
-			return linum
+			break
 		endif
 	endwhile
+	call organ#bush#update_counters ()
+	call cursor(head_linum, 1)
+	let &foldmethod = save_foldmethod
+	return linum
 endfun
 
 " ---- move
