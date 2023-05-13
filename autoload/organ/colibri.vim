@@ -178,23 +178,23 @@ fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
-	" ---- tab -> spaces
 	let spaces = repeat(' ', &tabstop)
-	let range = first .. ',' .. last
-	let runme = 'silent ' .. range .. 'substitute/' .. "\t" .. '/' .. spaces .. '/g'
-	execute runme
 	" ---- scan all list lines
 	let indent_pattern = '\m^\s*'
 	let hollow_pattern = '\m^\s*$'
 	let linelist = getline(first, last)
 	let indentlist = []
+	let linum = first
 	for line in linelist
 		if line =~ hollow_pattern
 			continue
 		endif
+		let line = substitute(line, "\t", spaces, 'g')
+		call setline(linum, line)
 		let leading = line->matchstr(indent_pattern)
 		let indent = len(leading)
 		eval indentlist->add(indent)
+		let linum += 1
 	endfor
 	return min(indentlist)
 endfun
