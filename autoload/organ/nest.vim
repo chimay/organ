@@ -211,7 +211,7 @@ fun! organ#nest#shift_left ()
 	if organ#table#is_in_table ()
 		return organ#table#cell_begin ()
 	elseif organ#colibri#is_in_list ()
-		return organ#bush#cycle_all_prefixes_left ()
+		return organ#bush#cycle_prefix (-1)
 	else
 	endif
 endfun
@@ -221,7 +221,7 @@ fun! organ#nest#shift_right ()
 	if organ#table#is_in_table ()
 		return organ#table#cell_end ()
 	elseif organ#colibri#is_in_list ()
-		return organ#bush#cycle_all_prefixes_right ()
+		return organ#bush#cycle_prefix (1)
 	else
 	endif
 endfun
