@@ -181,7 +181,8 @@ fun! organ#bush#set_prefix (prefix, ...)
 endfun
 
 fun! organ#bush#update_prefix (direction = 1, ...)
-	" Set prefix to same as same level neighbours in same subtree
+	" Set prefix to the one used by same level neighbours in same subtree
+	" If alone in level, just rotate prefix following promote/demote direction
 	" direction : 1 = right = next, -1 = left = previous
 	let direction = a:direction
 	if a:0 > 0
@@ -190,7 +191,6 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 		let properties = organ#colibri#properties ()
 	endif
 	let position = getcurpos ()
-	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
 	" ---- find boundaries
@@ -507,16 +507,17 @@ fun! organ#bush#promote (speed = 'slow')
 	endif
 	" --- adjust indent
 	let properties.itemhead = organ#bush#indent_item (level - 1, properties)
+	let properties.level -= 1
 	" ---- update prefix
 	call organ#bush#update_prefix (-1, properties)
 	" ---- update counters
 	if speed ==# 'slow'
 		call organ#bush#update_counters ()
+		if mode() ==# 'i'
+			startinsert!
+		endif
 	endif
 	" ---- coda
-	if mode() ==# 'i'
-		startinsert!
-	endif
 	return linum
 endfun
 
@@ -528,16 +529,17 @@ fun! organ#bush#demote (speed = 'slow')
 	let level = properties.level
 	" --- adjust indent
 	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
+	let properties.level += 1
 	" ---- update prefix
 	call organ#bush#update_prefix (1, properties)
 	" ---- update counters
 	if speed ==# 'slow'
 		call organ#bush#update_counters ()
+		if mode() ==# 'i'
+			startinsert!
+		endif
 	endif
 	" ---- coda
-	if mode() ==# 'i'
-		startinsert!
-	endif
 	return linum
 endfun
 
