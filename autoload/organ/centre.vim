@@ -241,7 +241,7 @@ fun! organ#centre#prefixless (mode = 'normal')
 	let middle = '<plug>('
 	let end = ')'
 	" ---- loop
-	let plugs = g:organ_config.prefixless_plugs
+	let plugs = g:organ_config.prefixless_plugs[mode]
 	let empty_plugs = empty(plugs)
 	for item in maplist
 		let left = item[0]

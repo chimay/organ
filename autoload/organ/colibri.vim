@@ -193,7 +193,7 @@ fun! organ#colibri#common_indent ()
 	return min(indentlist)
 endfun
 
-fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 100)
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 	" Item head pattern of level between minlevel and maxlevel
 	if empty(&filetype)
 		echomsg 'organ colibri level pattern : filetype not supported'

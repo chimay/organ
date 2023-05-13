@@ -49,7 +49,7 @@ fun! organ#bird#equiv_numspaces (...)
 	return equiv
 endfun
 
-fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 10)
+fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 30)
 	" Pattern of level between minlevel and maxlevel, for headline defined by indent
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
@@ -127,7 +127,7 @@ fun! organ#bird#generic_pattern ()
 	endif
 endfun
 
-fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 100)
+fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel

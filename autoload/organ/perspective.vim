@@ -37,7 +37,7 @@ endfun
 
 " ---- headlines
 
-fun! organ#perspective#headlines (minlevel = 1, maxlevel = 100)
+fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
 	" List of paths
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel

@@ -4,6 +4,8 @@
 "
 " Initialization of variables
 
+" ---- generic
+
 fun! organ#void#stops ()
 	" Initialize persistent data global var
 	if ! exists('g:ORGAN_STOPS')
@@ -39,7 +41,7 @@ fun! organ#void#config ()
 		let g:organ_config.prefixless_modes = ['normal', 'visual', 'insert']
 	endif
 	if ! has_key(g:organ_config, 'prefixless_plugs')
-		let g:organ_config.prefixless_plugs = []
+		let g:organ_config.prefixless_plugs = #{ normal : [], visual : [], insert : [] }
 	endif
 	if ! has_key(g:organ_config, 'todo_cycle')
 		let g:organ_config.todo_cycle = ['TODO', 'DONE']
@@ -128,9 +130,23 @@ fun! organ#void#foundation ()
 	call organ#void#config ()
 endfun
 
+fun! organ#void#standardize ()
+	" Standardize config variables
+	" ---- prefixless plugs to be mapped
+	let plugs = g:organ_config.prefixless_plugs
+	if type(plugs) == v:t_list || empty(plugs)
+		let plugs = {}
+		let plugs.normal = copy(g:organ_config.prefixless_plugs)
+		let plugs.visual = copy(g:organ_config.prefixless_plugs)
+		let plugs.insert = copy(g:organ_config.prefixless_plugs)
+		let g:organ_config.prefixless_plugs = plugs
+	endif
+endfun
+
 fun! organ#void#enable ()
 	" Enable maps
 	" To be used on filetype triggers
+	call organ#void#standardize ()
 	call organ#centre#cables ()
 endfun
 

@@ -182,8 +182,9 @@ Here is a complete example, cherrypick what you need :
 
 ```vim
 if ! exists("g:organ_loaded")
-  " ---- initialize dicts
+  " ---- DONT FORGET TO INITIALIZE DICTS BEFORE USING THEM
   let g:organ_config = {}
+  let g:organ_config.prefixless_plugs = {}
   let g:organ_config.list = {}
   let g:organ_config.links = {}
   let g:organ_config.templates = {}
@@ -204,8 +205,11 @@ if ! exists("g:organ_loaded")
   " ---- visual maps are defined only when significant
   let g:organ_config.prefixless_modes = ['normal', 'visual', 'insert']
   " ---- enable only the prefixless maps you want
+  " ---- leave a list empty to enable all plugs in the mode
   " ---- see the output of :map <plug>(organ- to see available plugs
-  " let g:organ_config.prefixless_plugs = ['organ-next', 'organ-backward', 'organ-forward']
+  " let g:organ_config.prefixless_plugs.normal = ['organ-backward', 'organ-forward']
+  " let g:organ_config.prefixless_plugs.visual = []
+  " let g:organ_config.prefixless_plugs.insert = []
   " ---- number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
   " ---- items chars in unordered list (default)
@@ -442,8 +446,30 @@ let g:organ_config.prefixless_plugs = [
             \]
 ```
 
-The elements of this list are derived from the plugs maps. For instance,
+The elements of this list are derived from the plugs names. For instance,
 `organ-meta-return` is derived from `<plug>(organ-meta-return)`
+
+You can also use a dictionary to have distinct map sets on normal,
+visual and insert modes :
+
+```vim
+let g:organ_config.prefixless_plugs = {}
+let g:organ_config.prefixless_plugs.normal = [
+            \ 'organ-meta-return',
+            \ 'organ-shift-return',
+            \ 'organ-tab',
+            \ 'organ-shift-tab',
+            \ 'organ-meta-left',
+            \ 'organ-meta-right',
+            \ 'organ-meta-up',
+            \ 'organ-meta-down',
+            \]
+let g:organ_config.prefixless_plugs.visual = []
+let g:organ_config.prefixless_plugs.insert = []
+```
+
+Leaving a list empty means that all available plugs for the mode will
+be enabled.
 
 You can also customize `g:organ_config.prefixless_modes` to create
 prefixless maps only in the modes you specify.

@@ -44,7 +44,16 @@ fun! organ#bush#indent_item (level)
 	return itemhead
 endfun
 
-fun! organ#bush#update_counters (maxlevel = 100)
+fun! organ#bush#cycle_prefix (prefix, direction = 1)
+	" Cycle item prefix
+	" direction : 1 = forward, -1 = backward
+	let prefix = a:prefix
+	let direction = a:direction
+	" ---- standardize prefix
+	let prefix = substitute(prefix, '\m[0-9]\+', '1', '')
+endfun
+
+fun! organ#bush#update_counters (maxlevel = 30)
 	" Update counters in ordered list
 	let maxlevel = a:maxlevel
 	let length = maxlevel
