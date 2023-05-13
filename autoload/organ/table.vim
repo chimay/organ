@@ -238,6 +238,8 @@ endfun
 
 fun! organ#table#shrink_separator_lines (argdict = {})
 	" Reduce separator line to their minimum
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -256,11 +258,14 @@ fun! organ#table#shrink_separator_lines (argdict = {})
 			call setline(linum, '|-|')
 		endif
 	endfor
+	let &foldmethod = saved_foldmethod
 	return argdict
 endfun
 
 fun! organ#table#reduce_multi_spaces (argdict = {})
 	" Reduce multi-spaces before a delimiter to one
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
 		let delimiter =  argdict.delimiter
@@ -288,11 +293,14 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 	let position = getcurpos ()
 	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
 	call setpos('.',  position)
+	let &foldmethod = saved_foldmethod
 	return argdict
 endfun
 
 fun! organ#table#add_missing_columns (argdict = {})
 	" Add missing columns delimiters
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
 		let delimiter = argdict.delimiter
@@ -341,12 +349,15 @@ fun! organ#table#add_missing_columns (argdict = {})
 		endif
 		let index += 1
 	endfor
+	let &foldmethod = saved_foldmethod
 	return argdict
 endfun
 
 fun! organ#table#align_columns (argdict = {})
 	" Align following a delimiter
 	" For tables : align columns in all table rows
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -422,6 +433,7 @@ fun! organ#table#align_columns (argdict = {})
 		call setline(linum, linelist[index])
 		let linum += 1
 	endfor
+	let &foldmethod = saved_foldmethod
 	return argdict
 endfun
 
@@ -711,6 +723,8 @@ endfun
 fun! organ#table#new_col ()
 	" Add new column at the right of the cursor
 	" Assume the table is aligned
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
 	let delimiter = organ#table#delimiter ()
@@ -759,6 +773,7 @@ fun! organ#table#new_col ()
 	endfor
 	" ---- coda
 	call cursor('.', second + 1)
+	let &foldmethod = saved_foldmethod
 endfun
 
 " ---- delete rows & cols
@@ -771,6 +786,8 @@ endfun
 fun! organ#table#delete_col ()
 	" Delete column
 	" Assume the table is aligned
+	let saved_foldmethod = &foldmethod
+	let &foldmethod = 'manual'
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
 	let delimiter = organ#table#delimiter ()
@@ -818,5 +835,6 @@ fun! organ#table#delete_col ()
 	endfor
 	" ---- coda
 	call cursor('.', first)
+	let &foldmethod = saved_foldmethod
 	return positions
 endfun

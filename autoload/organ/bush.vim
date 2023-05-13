@@ -541,7 +541,7 @@ endfun
 
 fun! organ#bush#promote_subtree ()
 	" Promote list item subtree
-	let save_foldmethod = &foldmethod
+	let saved_foldmethod = &foldmethod
 	let &foldmethod = 'manual'
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
@@ -564,13 +564,13 @@ fun! organ#bush#promote_subtree ()
 	endwhile
 	call organ#bush#update_counters ()
 	call cursor(head_linum, 1)
-	let &foldmethod = save_foldmethod
+	let &foldmethod = saved_foldmethod
 	return linum
 endfun
 
 fun! organ#bush#demote_subtree ()
 	" Demote list item subtree
-	let save_foldmethod = &foldmethod
+	let saved_foldmethod = &foldmethod
 	let &foldmethod = 'manual'
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
@@ -588,7 +588,7 @@ fun! organ#bush#demote_subtree ()
 	endwhile
 	call organ#bush#update_counters ()
 	call cursor(head_linum, 1)
-	let &foldmethod = save_foldmethod
+	let &foldmethod = saved_foldmethod
 	return linum
 endfun
 

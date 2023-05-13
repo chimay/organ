@@ -63,7 +63,7 @@ content
        * [X] check box
      + [X] checkbox
    - item 2
-     1. item 2.1
+     + item 2.1
        * item 2.3
          - item 2.3.1
          - item 2.3.2
@@ -73,8 +73,8 @@ content
          some text
          and more
        * item
-          text
-          text
+         text
+         text
 
 
 content
