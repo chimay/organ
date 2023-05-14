@@ -24,13 +24,13 @@ content
 0. [@0] item 1
   + item 1.1
   + item 1.2
-    1) item
-      1. item
+    + item
+      * item
         - item
         - item
         - item
         - item
-      2. item
+      * item
 1. [ ] item 2
   + [ ] item 2.1
   + [X] item 2.2

@@ -87,6 +87,7 @@ fun! organ#origami#suspend ()
 	if ! exists('b:organ_stops')
 		let b:organ_stops = {}
 		let b:organ_stops.foldmethod = {}
+		let b:organ_stops.foldmethod.locked = v:false
 	endif
 	if b:organ_stops.foldmethod.locked
 		return v:false
@@ -100,7 +101,7 @@ endfun
 fun! organ#origami#resume ()
 	" Resume expr folding
 	if ! exists('b:organ_stops')
-		throw 'organ origami resume : b:organ_stops does not exist'
+		echomsg 'organ origami resume : b:organ_stops does not exist'
 		return v:false
 	endif
 	let &l:foldmethod = b:organ_stops.foldmethod.value
