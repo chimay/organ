@@ -481,6 +481,15 @@ fun! organ#tree#cycle_todo_right ()
 	return newline
 endfun
 
+" ---- tags
+
+fun! organ#tree#tag ()
+	" Toggle tag
+	let prompt = 'Toggle headline tag : '
+	let complete = 'customlist,organ#complete#tag'
+	let tag = input(prompt, '', complete)
+endfun
+
 " ---- convert org <-> markdown
 
 fun! organ#tree#org2markdown ()

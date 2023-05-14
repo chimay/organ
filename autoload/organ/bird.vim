@@ -199,6 +199,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			\ level : 1,
 			\ todo : '',
 			\ title : '',
+			\ tags : [],
 			\}
 	endif
 	let headline = getline(linum)
@@ -251,6 +252,11 @@ fun! organ#bird#properties (move = 'dont-move')
 	if ! found
 		let todo = ''
 	endif
+	" ---- tags
+	let tags_pattern = '\m:\%([^:]\+:\)\+$'
+	let tagstring = title->matchstr(tags_pattern)
+	let tags = tagstring[1:-2]->split(':')
+	let title = substitute(title, tags_pattern, '', '')
 	" ---- coda
 	let title = trim(title)
 	let properties = #{
@@ -261,6 +267,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			\ level : level,
 			\ todo : todo,
 			\ title : title,
+			\ tags : tags,
 			\}
 	return properties
 endfun

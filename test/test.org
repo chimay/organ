@@ -1,6 +1,10 @@
 #+STARTUP: showall
 
+#+TAGS: abc(a) def(d) ghi
+
 * intro
+
+#+TAGS: jkl(j) lmn
 
 introduction
 

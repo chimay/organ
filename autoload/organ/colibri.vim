@@ -245,6 +245,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ checkbox : '',
 			\ todo : '',
 			\ text : '',
+			\ proportion : [],
 			\}
 	endif
 	let linum = organ#colibri#itemhead (move)
@@ -260,6 +261,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ checkbox : '',
 			\ todo : '',
 			\ text : '',
+			\ proportion : [],
 			\}
 	endif
 	let itemhead = getline(linum)

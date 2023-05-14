@@ -59,3 +59,20 @@ fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
 	call setpos('.', position)
 	return returnlist
 endfun
+
+fun! organ#perspective#tags ()
+	" List of tags defined on #+tags lines
+	let position = getcurpos()
+	let runme = 'global /\m\c^#+tags:/p'
+	let linelist = execute(runme)
+	let linelist = split(linelist, "\n")
+	let returnlist = []
+	for elem in linelist
+		let list = elem->split(' ')
+		let list = list[2:]
+		eval list->map({ _, v -> substitute(v, '\m([a-zA-Z])$', '', '')})
+		eval returnlist->extend(list)
+	endfor
+	call setpos('.', position)
+	return returnlist
+endfun

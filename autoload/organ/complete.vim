@@ -78,6 +78,15 @@ fun! organ#complete#headline_same_level_or_parent (arglead, cmdline, cursorpos)
 	return headlines
 endfun
 
+" -- tags
+
+fun! organ#complete#tag (arglead, cmdline, cursorpos)
+	" Complete tags defined on #+tags lines
+	let choices = organ#perspective#tags ()
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
 " ---- structure templates
 
 fun! organ#complete#templates_lang (arglead, cmdline, cursorpos)
