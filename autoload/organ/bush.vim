@@ -15,7 +15,6 @@ endif
 
 fun! organ#bush#indent_item (level, ...)
 	" Indent all list item line(s)
-	call organ#origami#suspend ()
 	let level = a:level
 	if a:0 > 0
 		let properties = a:1
@@ -47,13 +46,11 @@ fun! organ#bush#indent_item (level, ...)
 		let line = substitute(line, spaces, indent, '')
 		call setline(linum, line)
 	endfor
-	call organ#origami#resume ()
 	return itemhead
 endfun
 
 fun! organ#bush#update_counters (maxlevel = 30)
 	" Update counters in ordered list
-	call organ#origami#suspend ()
 	let maxlevel = a:maxlevel
 	let length = maxlevel
 	let global_counter_start = g:organ_config.list.counter_start
@@ -102,7 +99,6 @@ fun! organ#bush#update_counters (maxlevel = 30)
 		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)
-	call organ#origami#resume ()
 	return counterlist
 endfun
 
@@ -165,7 +161,6 @@ endfun
 fun! organ#bush#set_prefix (prefix, ...)
 	" Cycle item prefix
 	" direction : 1 = right, -1 = left
-	call organ#origami#suspend ()
 	let prefix = a:prefix
 	if a:0 > 0
 		let properties = a:1
@@ -182,7 +177,6 @@ fun! organ#bush#set_prefix (prefix, ...)
 	call setline(linum, newitem)
 	" ---- indent all item line(s)
 	call organ#bush#indent_item (level)
-	call organ#origami#resume ()
 	return newitem
 endfun
 
@@ -190,7 +184,6 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	" Set prefix to the one used by same level neighbours in same subtree
 	" If alone in level, just rotate prefix following promote/demote direction
 	" direction : 1 = right = next, -1 = left = previous
-	call organ#origami#suspend ()
 	let direction = a:direction
 	if a:0 > 0
 		let properties = a:1
@@ -235,7 +228,6 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	call organ#bush#set_prefix (prefix, properties)
 	" ---- coda
 	call setpos('.',  position)
-	call organ#origami#resume ()
 	return properties
 endfun
 

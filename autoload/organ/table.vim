@@ -238,7 +238,6 @@ endfun
 
 fun! organ#table#shrink_separator_lines (argdict = {})
 	" Reduce separator line to their minimum
-	call organ#origami#suspend ()
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -257,13 +256,11 @@ fun! organ#table#shrink_separator_lines (argdict = {})
 			call setline(linum, '|-|')
 		endif
 	endfor
-	call organ#origami#resume ()
 	return argdict
 endfun
 
 fun! organ#table#reduce_multi_spaces (argdict = {})
 	" Reduce multi-spaces before a delimiter to one
-	call organ#origami#suspend ()
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
 		let delimiter =  argdict.delimiter
@@ -291,13 +288,11 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 	let position = getcurpos ()
 	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
 	call setpos('.',  position)
-	call organ#origami#resume ()
 	return argdict
 endfun
 
 fun! organ#table#add_missing_columns (argdict = {})
 	" Add missing columns delimiters
-	call organ#origami#suspend ()
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
 		let delimiter = argdict.delimiter
@@ -346,14 +341,12 @@ fun! organ#table#add_missing_columns (argdict = {})
 		endif
 		let index += 1
 	endfor
-	call organ#origami#resume ()
 	return argdict
 endfun
 
 fun! organ#table#align_columns (argdict = {})
 	" Align following a delimiter
 	" For tables : align columns in all table rows
-	call organ#origami#suspend ()
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
 		let head_linum =  argdict.head_linum
@@ -429,12 +422,12 @@ fun! organ#table#align_columns (argdict = {})
 		call setline(linum, linelist[index])
 		let linum += 1
 	endfor
-	call organ#origami#resume ()
 	return argdict
 endfun
 
 fun! organ#table#align (mode = 'normal') range
 	" Align table or paragraph
+	call organ#origami#suspend ()
 	let mode = a:mode
 	let argdict = {}
 	if mode ==# 'visual'
@@ -455,6 +448,7 @@ fun! organ#table#align (mode = 'normal') range
 		let argdict = organ#table#reduce_multi_spaces (argdict)
 	endif
 	let argdict = organ#table#align_columns (argdict)
+	call organ#origami#resume ()
 	return argdict
 endfun
 
