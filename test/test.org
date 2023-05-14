@@ -14,7 +14,7 @@ introduction
 
 content
 
-** part 1.2                                                    :def:efg:
+** part 1.2                                                         :ab:
 
 content
 

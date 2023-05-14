@@ -389,6 +389,44 @@ fun! organ#tree#moveto ()
 	return target
 endfun
 
+" ---- tags
+
+fun! organ#tree#tag ()
+	" Toggle tag
+	let prompt = 'Toggle headline tag : '
+	let complete = 'customlist,organ#complete#tag'
+	let tag = input(prompt, '', complete)
+	let properties = organ#bird#properties ()
+	let linum = properties.linum
+	" ---- line
+	let line = getline(linum)
+	let tags_pattern = '\m:\%([^:]\+:\)\+$'
+	let line = substitute(line, tags_pattern, '', '')
+	let line = trim(line)
+	" ---- tag list
+	let taglist = properties.tags
+	let index = taglist->index(tag)
+	if index < 0
+		eval taglist->add(tag)
+	else
+		eval taglist->remove(index)
+	endif
+	if empty(taglist)
+		call setline(linum, line)
+		return line
+	endif
+	" ---- padding
+	let tagstring = ':' .. taglist->join(':') .. ':'
+	let length = len(line) + len(tagstring)
+	" -- 72 = roughly standard long line size
+	let padding = max([72 - length, 1])
+	let spaces = repeat(' ', padding)
+	let line ..= spaces
+	let line ..= tagstring
+	" ---- coda
+	call setline(linum, line)
+endfun
+
 " ---- todo
 
 fun! organ#tree#cycle_todo_left ()
@@ -497,45 +535,6 @@ fun! organ#tree#cycle_todo_right ()
 	" ---- coda
 	call setline(linum, newline)
 	return newline
-endfun
-
-" ---- tags
-
-fun! organ#tree#tag ()
-	" Toggle tag
-	let prompt = 'Toggle headline tag : '
-	let complete = 'customlist,organ#complete#tag'
-	let tag = input(prompt, '', complete)
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	" ---- line
-	let line = getline(linum)
-	let tags_pattern = '\m:\%([^:]\+:\)\+$'
-	let line = substitute(line, tags_pattern, '', '')
-	let line = trim(line)
-	" ---- tag list
-	let taglist = properties.tags
-	let index = taglist->index(tag)
-	if index < 0
-		eval taglist->add(tag)
-	else
-		eval taglist->remove(index)
-	endif
-	if empty(taglist)
-		call setline(linum, line)
-		return line
-	endif
-	" ---- padding
-	let tagstring = ':' .. taglist->join(':') .. ':'
-	let length = len(line) + len(tagstring)
-	" -- 72 = roughly standard long line size
-	let padding = max([72 - length, 1])
-	let spaces = repeat(' ', padding)
-	let line ..= spaces
-	let line ..= tagstring
-	echomsg tagstring
-	" ---- coda
-	call setline(linum, line)
 endfun
 
 " ---- convert org <-> markdown
