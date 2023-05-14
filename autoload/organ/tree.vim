@@ -400,6 +400,8 @@ fun! organ#tree#cycle_todo_left ()
 	let commentstrings = properties.commentstrings
 	let lencomlist = len(commentstrings)
 	let todo = properties.todo
+	let taglist = properties.tags
+	let tags = ':' .. taglist->join(':') .. ':'
 	" ---- cycle
 	let todo_cycle = g:organ_config.todo_cycle
 	let lencycle = len(todo_cycle)
@@ -432,6 +434,13 @@ fun! organ#tree#cycle_todo_left ()
 			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
 		endif
 	endif
+	" ---- tags
+	let length = len(newline) + len(tags)
+	let padding = max([72 - length, 1])
+	let spaces = repeat(' ', padding)
+	let newline ..= spaces
+	let newline ..= tags
+	" ---- coda
 	call setline(linum, newline)
 	return newline
 endfun
@@ -445,6 +454,8 @@ fun! organ#tree#cycle_todo_right ()
 	let commentstrings = properties.commentstrings
 	let lencomlist = len(commentstrings)
 	let todo = properties.todo
+	let taglist = properties.tags
+	let tags = ':' .. taglist->join(':') .. ':'
 	" ---- cycle
 	let todo_cycle = g:organ_config.todo_cycle
 	let lencycle = len(todo_cycle)
@@ -477,6 +488,13 @@ fun! organ#tree#cycle_todo_right ()
 			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
 		endif
 	endif
+	" ---- tags
+	let length = len(newline) + len(tags)
+	let padding = max([72 - length, 1])
+	let spaces = repeat(' ', padding)
+	let newline ..= spaces
+	let newline ..= tags
+	" ---- coda
 	call setline(linum, newline)
 	return newline
 endfun
@@ -524,24 +542,24 @@ endfun
 
 fun! organ#tree#org2markdown ()
 	" Convert org headlines to markdown
-	silent! %substitute/^\*\{7}\zs\*/#/g
-	silent! %substitute/^\*\{6}\zs\*/#/g
-	silent! %substitute/^\*\{5}\zs\*/#/g
-	silent! %substitute/^\*\{4}\zs\*/#/g
-	silent! %substitute/^\*\{3}\zs\*/#/g
-	silent! %substitute/^\*\{2}\zs\*/#/g
-	silent! %substitute/^\*\{1}\zs\*/#/g
+	let pre = '^\*\{'
+	let post = '}\zs\*'
+	for level in reverse(range(1, 30))
+		let pattern = pre .. level .. post
+		let runme = 'silent! %substitute/' .. pattern .. '/#/g'
+		let output = execute(runme)
+	endfor
 	silent! %substitute/^\*/#/g
 endfun
 
 fun! organ#tree#markdown2org ()
 	" Convert markdown headlines to org
-	silent! %substitute/^#\{7}\zs#/*/g
-	silent! %substitute/^#\{6}\zs#/*/g
-	silent! %substitute/^#\{5}\zs#/*/g
-	silent! %substitute/^#\{4}\zs#/*/g
-	silent! %substitute/^#\{3}\zs#/*/g
-	silent! %substitute/^#\{2}\zs#/*/g
-	silent! %substitute/^#\{1}\zs#/*/g
+	let pre = '^#\{'
+	let post = '}\zs#'
+	for level in reverse(range(1, 30))
+		let pattern = pre .. level .. post
+		let runme = 'silent! %substitute/' .. pattern .. '/*/g'
+		let output = execute(runme)
+	endfor
 	silent! %substitute/^#/*/g
 endfun
