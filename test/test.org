@@ -10,11 +10,11 @@ introduction
 
 * book 1
 
-** part 1.1   :ab:cd:
+** part 1.1                                              :ab:cd:lmn:efg:
 
 content
 
-** part 1.2
+** part 1.2                                                    :def:efg:
 
 content
 

@@ -32,6 +32,7 @@ if ! exists('s:speedkeys')
 		\ [ 'U'         , "organ#nest#oper('move_subtree_backward')" ] ,
 		\ [ 'D'         , "organ#nest#oper('move_subtree_forward')"  ] ,
 		\ [ 'M'         , 'organ#tree#moveto'                        ] ,
+		\ [ ';'         , 'organ#tree#tag'                           ] ,
 		\ [ 't'         , "organ#nest#oper('cycle_todo_right')"      ] ,
 		\ [ 'T'         , "organ#nest#oper('cycle_todo_left')"       ] ,
 		\ [ 'C'         , 'organ#bush#toggle_checkbox'               ] ,

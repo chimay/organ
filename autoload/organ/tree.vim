@@ -490,6 +490,12 @@ fun! organ#tree#tag ()
 	let tag = input(prompt, '', complete)
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
+	" ---- line
+	let line = getline(linum)
+	let tags_pattern = '\m:\%([^:]\+:\)\+$'
+	let line = substitute(line, tags_pattern, '', '')
+	let line = trim(line)
+	" ---- tag list
 	let taglist = properties.tags
 	let index = taglist->index(tag)
 	if index < 0
@@ -497,10 +503,20 @@ fun! organ#tree#tag ()
 	else
 		eval taglist->remove(index)
 	endif
-	let line = getline(linum)
-	let tags_pattern = '\m:\%([^:]\+:\)\+$'
-	let tags = ':' .. taglist->join(':') .. ':'
-	let line = substitute(line, tags_pattern, tags, '')
+	if empty(taglist)
+		call setline(linum, line)
+		return line
+	endif
+	" ---- padding
+	let tagstring = ':' .. taglist->join(':') .. ':'
+	let length = len(line) + len(tagstring)
+	" -- 72 = roughly standard long line size
+	let padding = max([72 - length, 1])
+	let spaces = repeat(' ', padding)
+	let line ..= spaces
+	let line ..= tagstring
+	echomsg tagstring
+	" ---- coda
 	call setline(linum, line)
 endfun
 

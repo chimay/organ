@@ -237,6 +237,7 @@ endfun
 
 fun! organ#bush#new ()
 	" New list item
+	call organ#origami#suspend ()
 	let properties = organ#colibri#properties ()
 	" ---- indent
 	let level = properties.level
@@ -257,6 +258,7 @@ fun! organ#bush#new ()
 	let colnum = col('$')
 	call cursor(linum, colnum)
 	startinsert!
+	call organ#origami#resume ()
 endfun
 
 fun! organ#bush#new_with_check ()

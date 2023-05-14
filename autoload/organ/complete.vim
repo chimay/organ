@@ -81,7 +81,7 @@ endfun
 " -- tags
 
 fun! organ#complete#tag (arglead, cmdline, cursorpos)
-	" Complete tags defined on #+tags lines
+	" Complete tags defined on #+tags & :tag:tag:...:
 	let choices = organ#perspective#tags ()
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)

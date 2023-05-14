@@ -61,11 +61,12 @@ fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
 endfun
 
 fun! organ#perspective#tags ()
-	" List of tags defined on #+tags lines
+	" List of tags defined on #+tags & :tag:tag:...:
 	let position = getcurpos()
-	let runme = 'global /\m\c^#+tags:/p'
-	let linelist = execute(runme)
-	let linelist = split(linelist, "\n")
+	" ---- #+tags lines
+	let runme = 'global /\m\c^#+tags:/print'
+	let output = execute(runme)
+	let linelist = split(output, "\n")
 	let returnlist = []
 	for elem in linelist
 		let list = elem->split(' ')
@@ -73,6 +74,18 @@ fun! organ#perspective#tags ()
 		eval list->map({ _, v -> substitute(v, '\m([a-zA-Z])$', '', '')})
 		eval returnlist->extend(list)
 	endfor
+	" ---- tags on headlines
+	let tags_pattern = '\m^\S\+.*\s\+\zs:\%([^:]\+:\)\+$'
+	let runme = 'global /' .. tags_pattern .. '/p'
+	let output = execute(runme)
+	let linelist = split(output, "\n")
+	for elem in linelist
+		let fields = split(elem, ' ')
+		let tagstring = fields[-1]
+		let list = tagstring[1:-2]->split(':')
+		eval returnlist->extend(list)
+	endfor
+	" ---- coda
 	call setpos('.', position)
 	return returnlist
 endfun

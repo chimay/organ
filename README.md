@@ -281,6 +281,10 @@ or a list item line. Here is a complete list :
 - `U`          : move subtree up
 - `D`          : move subtree down
 - `M`          : move subtree in another one, with prompt completion
+- `;`          : toggle tag in headline
+- `t`          : cycle todo right
+- `T`          : cycle todo left
+- `C`          : toggle checkbox in list item
 
 Some of them are context sensitive :
 
