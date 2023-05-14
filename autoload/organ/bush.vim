@@ -202,7 +202,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
-		call organ#colibri#parent ()
+		let parent_linum = organ#colibri#parent ()
 		let subtree = organ#colibri#subtree ()
 		let head_linum = subtree.head_linum
 		let tail_linum = subtree.tail_linum
@@ -216,6 +216,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 		return 0
 	endif
 	" ---- potential neighbours
+	call organ#colibri#itemhead ('move')
 	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
 	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
 	if linum_back > 0 && linum_back != linum && linum_back >= head_linum
@@ -227,6 +228,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 		let neighbour = organ#colibri#properties ()
 		let prefix = neighbour.prefix
 	else
+		" --- alone of level in subtree
 		let prefix = organ#bush#rotate_prefix (direction, properties, 'same-kind')
 	endif
 	let level = properties.level
