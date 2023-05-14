@@ -55,8 +55,10 @@ fun! organ#bush#update_counters (maxlevel = 30)
 	let length = maxlevel
 	let global_counter_start = g:organ_config.list.counter_start
 	let position = getcurpos ()
+	" ---- find boundaries
 	let first = organ#colibri#list_start ()
-	let last =  organ#colibri#list_end ()
+	let last = organ#colibri#list_end ()
+	" ---- counters
 	let counterlist = repeat([-1], maxlevel)
 	let counter_pattern = '\m^\s*\zs[0-9]\+'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
@@ -197,14 +199,14 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	if level > 1
 		let parent_linum = organ#colibri#parent ()
 		let subtree = organ#colibri#subtree ()
-		let head_linum = subtree.head_linum
-		let tail_linum = subtree.tail_linum
+		let first = subtree.head_linum
+		let last = subtree.tail_linum
 		call setpos('.',  position)
 	else
-		let head_linum = organ#colibri#list_start ()
-		let tail_linum = organ#colibri#list_end ()
+		let first = organ#colibri#list_start ()
+		let last = organ#colibri#list_end ()
 	endif
-	if head_linum == 0
+	if first == 0
 		echomsg 'organ bush cycle prefix : itemhead not found'
 		return 0
 	endif
@@ -212,11 +214,11 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	call organ#colibri#itemhead ('move')
 	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
 	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
-	if linum_back > 0 && linum_back != linum && linum_back >= head_linum
+	if linum_back > 0 && linum_back != linum && linum_back >= first
 		call cursor(linum_back, 1)
 		let neighbour = organ#colibri#properties ()
 		let prefix = neighbour.prefix
-	elseif linum_forth > 0 && linum_forth != linum && linum_forth <= tail_linum
+	elseif linum_forth > 0 && linum_forth != linum && linum_forth <= last
 		call cursor(linum_forth, 1)
 		let neighbour = organ#colibri#properties ()
 		let prefix = neighbour.prefix
@@ -330,34 +332,34 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	if level > 1
 		let linum = organ#colibri#parent ()
 		let subtree = organ#colibri#subtree ()
-		let head_linum = subtree.head_linum
-		let tail_linum = subtree.tail_linum
+		let first = subtree.head_linum
+		let last = subtree.tail_linum
 		call setpos('.',  position)
 	else
-		let head_linum = organ#colibri#list_start ()
-		let tail_linum = organ#colibri#list_end ()
+		let first = organ#colibri#list_start ()
+		let last = organ#colibri#list_end ()
 	endif
-	if head_linum == 0
+	if first == 0
 		echomsg 'organ bush cycle prefix : itemhead not found'
 		return 0
 	endif
 	" ---- rotate prefix
 	let newprefix = organ#bush#rotate_prefix (direction, properties)
 	" ---- loop
-	call cursor(head_linum, 1)
+	call cursor(first, 1)
 	while v:true
 		let properties = organ#colibri#properties ()
 		if level == properties.level
 			call organ#bush#set_prefix (newprefix, properties)
 		endif
 		let linum = organ#colibri#next ('move', 'dont-wrap')
-		if linum > tail_linum || linum == 0
+		if linum > last || linum == 0
 			break
 		endif
 	endwhile
 	" ---- update counters
 	if newprefix =~ '\m^[0-9]\+'
-		call cursor(head_linum, 1)
+		call cursor(first, 1)
 		call organ#bush#update_counters ()
 	endif
 	" ---- coda
