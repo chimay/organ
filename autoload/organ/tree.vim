@@ -488,6 +488,20 @@ fun! organ#tree#tag ()
 	let prompt = 'Toggle headline tag : '
 	let complete = 'customlist,organ#complete#tag'
 	let tag = input(prompt, '', complete)
+	let properties = organ#bird#properties ()
+	let linum = properties.linum
+	let taglist = properties.tags
+	let index = taglist->index(tag)
+	if index < 0
+		eval taglist->add(tag)
+	else
+		eval taglist->remove(index)
+	endif
+	let line = getline(linum)
+	let tags_pattern = '\m:\%([^:]\+:\)\+$'
+	let tags = ':' .. taglist->join(':') .. ':'
+	let line = substitute(line, tags_pattern, tags, '')
+	call setline(linum, line)
 endfun
 
 " ---- convert org <-> markdown
