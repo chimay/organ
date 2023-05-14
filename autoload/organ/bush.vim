@@ -498,9 +498,12 @@ endfun
 
 " -- current only
 
-fun! organ#bush#promote (speed = 'slow')
+fun! organ#bush#promote (mode = 'alone')
 	" Promote list item
-	let speed = a:speed
+	let mode = a:mode
+	if mode ==# 'alone'
+		call organ#origami#suspend ()
+	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
@@ -515,16 +518,20 @@ fun! organ#bush#promote (speed = 'slow')
 	" ---- update prefix
 	call organ#bush#update_prefix (-1, properties)
 	" ---- update counters
-	if speed ==# 'slow'
+	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		call organ#origami#resume ()
 	endif
 	" ---- coda
 	return linum
 endfun
 
-fun! organ#bush#demote (speed = 'slow')
+fun! organ#bush#demote (mode = 'alone')
 	" Demote list item
-	let speed = a:speed
+	let mode = a:mode
+	if mode ==# 'alone'
+		call organ#origami#suspend ()
+	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
@@ -534,8 +541,9 @@ fun! organ#bush#demote (speed = 'slow')
 	" ---- update prefix
 	call organ#bush#update_prefix (1, properties)
 	" ---- update counters
-	if speed ==# 'slow'
+	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		call organ#origami#resume ()
 	endif
 	" ---- coda
 	return linum
@@ -559,7 +567,7 @@ fun! organ#bush#promote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#promote ('fast')
+		let linum = organ#bush#promote ('batch')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
@@ -582,7 +590,7 @@ fun! organ#bush#demote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#demote ('fast')
+		let linum = organ#bush#demote ('batch')
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
