@@ -84,6 +84,8 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + move subtree up or down
   + move current subtree in another one (aka org-refile)
   + cycle todo status
+- headlines
+  + tags
 - lists
   + cycle list item prefix
   + toggle checkbox
