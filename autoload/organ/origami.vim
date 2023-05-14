@@ -4,30 +4,6 @@
 "
 " Folding
 
-fun! organ#origami#folding_text ()
-	" Orgmode folding text
-	let comstr = substitute(&commentstring, '%s', '', '')
-	let text = getline(v:foldstart)
-	let text = substitute(text, '\m{{{[0-9]\?', '', '')				" }}}
-	let text = substitute(text, comstr, '', 'g')
-	let text = substitute(text, '\t', '', 'g')
-	let text = substitute(text, '’', "'", 'g')
-	let text = substitute(text, '\m\C[[=A=]]', 'A', 'g')
-	let text = substitute(text, '\m\C[[=E=]]', 'E', 'g')
-	let text = substitute(text, '\m\C[[=I=]]', 'I', 'g')
-	let text = substitute(text, '\m\C[[=O=]]', 'O', 'g')
-	let text = substitute(text, '\m\C[[=U=]]', 'U', 'g')
-	let text = substitute(text, '\m\C[[=a=]]', 'a', 'g')
-	let text = substitute(text, '\m\C[[=e=]]', 'e', 'g')
-	let text = substitute(text, '\m\C[[=i=]]', 'i', 'g')
-	let text = substitute(text, '\m\C[[=o=]]', 'o', 'g')
-	let text = substitute(text, '\m\C[[=u=]]', 'u', 'g')
-	let Nlines = v:foldend - v:foldstart
-	let text = text .. ' :: ' .. Nlines .. ' lines' .. v:folddashes
-	let text = substitute(text, '\m \{2,}', ' ', 'g')
-	return text
-endfun
-
 " ---- orgmode
 
 fun! organ#origami#orgmode (linum)
@@ -78,6 +54,19 @@ endfun
 
 " ---- generic
 
+fun! organ#origami#folding_text ()
+	" Orgmode folding text
+	let comstr = substitute(&commentstring, '%s', '', '')
+	let text = getline(v:foldstart)
+	let text = substitute(text, '\m{{{[0-9]\?', '', '')				" }}}
+	let text = substitute(text, comstr, '', 'g')
+	let text = substitute(text, '\t', '', 'g')
+	let Nlines = v:foldend - v:foldstart
+	let text = text .. ' :: ' .. Nlines .. ' lines' .. v:folddashes
+	let text = substitute(text, '\m \{2,}', ' ', 'g')
+	return text
+endfun
+
 fun! organ#origami#folding ()
 	" Generic folding
 	setlocal foldmethod=expr
@@ -89,4 +78,32 @@ fun! organ#origami#folding ()
 	elseif &filetype ==# 'asciidoc'
 		setlocal foldexpr=organ#origami#asciidoc(v:lnum)
 	endif
+endfun
+
+" ---- suspend & resume during heavy functions that does not need it
+
+fun! organ#origami#suspend ()
+	" Suspend expr folding
+	if ! exists('b:organ_stops')
+		let b:organ_stops = {}
+		let b:organ_stops.foldmethod = {}
+	endif
+	if b:organ_stops.foldmethod.locked
+		return v:false
+	endif
+	let b:organ_stops.foldmethod.value = &l:foldmethod
+	let b:organ_stops.foldmethod.locked = v:true
+	let &l:foldmethod = 'manual'
+	return v:true
+endfun
+
+fun! organ#origami#resume ()
+	" Resume expr folding
+	if ! exists('b:organ_stops')
+		throw 'organ origami resume : b:organ_stops does not exist'
+		return v:false
+	endif
+	let &l:foldmethod = b:organ_stops.foldmethod.value
+	let b:organ_stops.foldmethod.locked = v:false
+	return v:true
 endfun
