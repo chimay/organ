@@ -74,9 +74,8 @@ fun! organ#bush#update_counters (maxlevel = 30)
 			break
 		endif
 		let properties = organ#colibri#properties ()
-		let prefix = properties.prefix
-		let count = prefix->matchstr(counter_pattern)
-		if empty(count)
+		let counter = properties.counter
+		if counter < 0
 			let linum = search(itemhead_pattern, flags)
 			continue
 		endif
@@ -267,6 +266,24 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 	return newtodo
 endfun
 
+fun! organ#bush#update_ratios (maxlevel = 30)
+	" Update ratios of [X] checked boxes in children
+	let maxlevel = a:maxlevel
+	let length = maxlevel
+	let linumlist = repeat([-1], maxlevel)
+	" ---- find boundaries
+	let first = organ#colibri#list_start ()
+	let last = organ#colibri#list_end ()
+	" ---- checkboxes
+	let itemhead_pattern = organ#colibri#generic_pattern ()
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	call cursor(first, 1)
+	let linum = first
+	while v:true
+		let properties = organ#colibri#properties ()
+	endwhile
+endfun
+
 fun! organ#bush#rebuild (properties = {}, mode = 'apply')
 	" Rebuild item head from properties
 	let properties = a:properties
@@ -278,10 +295,11 @@ fun! organ#bush#rebuild (properties = {}, mode = 'apply')
 	let linum = properties.linum
 	let indent = properties.indent
 	let prefix = copy(properties.prefix)
-	let counterstartstring = properties.counterstartstring
-	let checkboxstring = properties.checkboxstring
-	let todo = properties.todo
-	let text = properties.text
+	let counterstartstring = copy(properties.counterstartstring)
+	let checkboxstring = copy(properties.checkboxstring)
+	let todo = copy(properties.todo)
+	let text = copy(properties.text)
+	let ratiostring = copy(properties.ratiostring)
 	" ---- add spaces
 	let prefix ..= ' '
 	if ! empty(counterstartstring)
@@ -293,8 +311,11 @@ fun! organ#bush#rebuild (properties = {}, mode = 'apply')
 	if ! empty(todo)
 		let todo ..= ' '
 	endif
+	if ! empty(text)
+		let text ..= ' '
+	endif
 	" ---- line
-	let line = indent .. prefix .. counterstartstring .. checkboxstring .. todo .. text
+	let line = indent .. prefix .. counterstartstring .. checkboxstring .. todo .. text .. ratiostring
 	" ---- apply
 	if mode ==# 'apply'
 		call setline(linum, line)
