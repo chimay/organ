@@ -209,8 +209,8 @@ fun! organ#bird#properties (move = 'dont-move')
 	let headline = getline(linum)
 	let title = headline
 	" ---- commentstring
-	if ! empty(&commentstring)
-		let commentstrings = []
+	let commentstrings = []
+	if s:rep_one_char->index(&filetype) < 0 && ! empty(&commentstring)
 		let comlist = split(&commentstring, '%s')
 		let lencomlist = len(comlist)
 		if lencomlist >= 1
@@ -221,14 +221,12 @@ fun! organ#bird#properties (move = 'dont-move')
 			let title = substitute(title, comstr_pattern, '', '')
 		endif
 		if lencomlist >= 2
-			let comstr_pattern = '\m' .. comlist[1]
+			let comstr_pattern = '\m' .. comlist[1] .. '$'
 			let comstr_pattern = comstr_pattern->escape('.*')
 			let comstr = title->matchstr(comstr_pattern)
 			eval commentstrings->add(comstr)
 			let title = substitute(title, comstr_pattern, '', '')
 		endif
-	else
-		let commentstrings = []
 	endif
 	" ---- level & title
 	if s:rep_one_char->index(&filetype) >= 0

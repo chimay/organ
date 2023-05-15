@@ -183,39 +183,6 @@ fun! organ#bush#set_prefix (prefix, ...)
 	return newitem
 endfun
 
-fun! organ#bush#rotate_todo (direction = 1, ...)
-	" Return next/previous todo keywoard
-	" direction : 1 = right = next, -1 = left = previous
-	let direction = a:direction
-	if a:0 > 0
-		let properties = a:1
-	else
-		let properties = organ#colibri#properties ()
-	endif
-	let todo = properties.todo
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if direction == 1
-		if cycle_index < 0
-			let rotated = todo_cycle[0]
-		elseif cycle_index == lencycle - 1
-			let rotated = ''
-		else
-			let rotated = todo_cycle[cycle_index + 1]
-		endif
-	elseif direction == -1
-		if cycle_index < 0
-			let rotated = todo_cycle[-1]
-		elseif cycle_index == 0
-			let rotated = ''
-		else
-			let rotated = todo_cycle[cycle_index - 1]
-		endif
-	endif
-	return rotated
-endfun
-
 fun! organ#bush#update_prefix (direction = 1, ...)
 	" Set prefix to the one used by same level neighbours in same subtree
 	" If alone in level, just rotate prefix following promote/demote direction
@@ -265,6 +232,39 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	" ---- coda
 	call setpos('.',  position)
 	return properties
+endfun
+
+fun! organ#bush#rotate_todo (direction = 1, ...)
+	" Return next/previous todo keywoard
+	" direction : 1 = right = next, -1 = left = previous
+	let direction = a:direction
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if direction == 1
+		if cycle_index < 0
+			let rotated = todo_cycle[0]
+		elseif cycle_index == lencycle - 1
+			let rotated = ''
+		else
+			let rotated = todo_cycle[cycle_index + 1]
+		endif
+	elseif direction == -1
+		if cycle_index < 0
+			let rotated = todo_cycle[-1]
+		elseif cycle_index == 0
+			let rotated = ''
+		else
+			let rotated = todo_cycle[cycle_index - 1]
+		endif
+	endif
+	return rotated
 endfun
 
 fun! organ#bush#rebuild (properties = {})
