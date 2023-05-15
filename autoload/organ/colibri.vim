@@ -243,9 +243,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ prefix : '',
 			\ counter : -1,
 			\ counter_start : -1,
+			\ checkbox_string : '',
 			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
+			\ ratiostring : '',
 			\ ratio : [],
 			\}
 	endif
@@ -260,9 +262,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ prefix : '',
 			\ counter : -1,
 			\ counter_start : -1,
+			\ checkbox_string : '',
 			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
+			\ ratiostring : '',
 			\ ratio : [],
 			\}
 	endif
@@ -281,7 +285,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let level = numspaces / indent_length + 1
 	" -- text without indent
 	let text = substitute(text, indent_pattern, '', '')
-	" ---- prefix
+	" ---- prefix & counter
 	let prefix_pattern = '\m^\s*\zs\S\+'
 	let prefix = text->matchstr(prefix_pattern)
 	if len(prefix) > 1
@@ -291,7 +295,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	endif
 	" -- text without prefix
 	let text = substitute(text, prefix_pattern, '', '')
-	" ---- counter start
+	" ---- counter_start
 	let counter_pattern = '\m^\s*\zs\[@[0-9]\+\]'
 	let counter_start = text->matchstr(counter_pattern)
 	if empty(counter_start)
@@ -326,6 +330,17 @@ fun! organ#colibri#properties (move = 'dont-move')
 	if ! found
 		let todo = ''
 	endif
+	" ---- ratio of [X] checkboxes in children
+	let ratio_pattern = '\m\[[0-9]\+/[0-9]\+\]$'
+	let ratiostring = text->matchstr(ratio_pattern)
+	if len(ratiostring) > 1
+		let ratio = ratiostring[1:-2]->split('/')
+	else
+		let ratiosting = ''
+		let ratio = []
+	endif
+	" -- text without ratio
+	let text = substitute(text, ratio_pattern, '', '')
 	" ---- coda
 	let text = trim(text)
 	let properties = #{
@@ -336,10 +351,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ prefix : prefix,
 			\ counter : counter,
 			\ counter_start : counter_start,
+			\ checkbox_string : checkbox_string,
 			\ checkbox : checkbox,
 			\ todo : todo,
 			\ text : text,
-			\ ratio : ['TODO'],
+			\ ratiostring : ratiostring,
+			\ ratio : ratio,
 			\}
 	return properties
 endfun

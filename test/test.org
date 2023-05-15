@@ -35,8 +35,8 @@ content
         - item
         - item
       * item
-1. [ ] item 2
-  + [ ] item 2.1
+1. [ ] item 2 [0/1]
+  + [ ] item 2.1 [2/3]
   + [X] item 2.2
 
     1. item 2.3

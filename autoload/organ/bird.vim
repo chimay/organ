@@ -202,6 +202,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			\ level : 1,
 			\ todo : '',
 			\ title : '',
+			\ tagstring : '',
 			\ tags : [],
 			\}
 	endif
@@ -270,6 +271,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			\ level : level,
 			\ todo : todo,
 			\ title : title,
+			\ tagstring : tagstring,
 			\ tags : tags,
 			\}
 	return properties
