@@ -77,23 +77,19 @@ fun! organ#tree#rebuild (properties = {}, mode = 'apply')
 	endif
 	if lencomlist >= 1
 		let commentstrings[0] ..= ' '
+	endif
 	if lencomlist >= 2
 		let commentstrings[1] = ' ' .. commentstrings[1]
-	endif
 	endif
 	" ---- padding for tags
 	let padding = ''
 	if ! empty(tagstring)
 		let length = len(levelstring) + len(todo) + len(title) + len(tagstring)
-		for elem in taglist
-			let length += len(elem)
-		endfor
 		" -- 72 = roughly standard long line size
 		let padlen = max([72 - length, 1])
 		let padding = repeat(' ', padlen)
 	endif
 	" ---- core
-	let line = ''
 	if s:rep_one_char->index(&filetype) >= 0
 		let line = levelstring .. todo .. title .. padding .. tagstring
 	else
@@ -120,21 +116,32 @@ endfun
 fun! organ#tree#new ()
 	" New heading
 	let properties = organ#bird#properties ()
+	let levelstring = copy(properties.levelstring)
 	let level = properties.level
+	let commentstrings = copy(properties.commentstrings)
+	let lencomlist = len(commentstrings)
+	if lencomlist >= 1
+		let commentstrings[0] ..= ' '
+	endif
+	if lencomlist >= 2
+		let commentstrings[1] = ' ' .. commentstrings[1]
+	endif
+	" ---- new heading line
 	if s:rep_one_char->index(&filetype) >= 0
-		let line = organ#bird#char()->repeat(level) .. ' '
+		let line = levelstring .. ' '
 	else
-		let marker = split(&foldmarker, ',')[0]
-		let comlist = split(&commentstring, '%s')
-		let lencomlist = len(comlist)
-		if lencomlist == 0
-			let line = ' ' .. marker .. string(level)
-		elseif lencomlist == 1
-			let line = comlist[0] .. '  ' .. marker .. string(level) .. ' '
-		else
-			let line = comlist[0] .. '  ' .. marker .. string(level) .. ' ' .. comlist[1]
+		let line = ' ' .. levelstring
+	endif
+	" -- commentstring
+	if s:rep_one_char->index(&filetype) < 0 && ! empty(commentstrings)
+		if lencomlist >= 1
+			let line = commentstrings[0] .. line
+		endif
+		if lencomlist >= 2
+			let line = line .. commentstrings[1]
 		endif
 	endif
+	" ---- append
 	let linelist = [line, '']
 	call append('.', linelist)
 	let linum = line('.') + 1
@@ -146,8 +153,8 @@ fun! organ#tree#new ()
 		if lencomlist == 0
 			call cursor('.', 1)
 		else
-			let lencomstr = len(comlist[0])
-			call cursor('.', lencomstr + 2)
+			let lencomstr = len(commentstrings[0])
+			call cursor('.', 1 + lencomstr)
 		endif
 		startinsert
 	endif
