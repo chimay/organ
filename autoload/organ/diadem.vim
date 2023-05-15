@@ -33,6 +33,7 @@ let s:command_meta_actions = [
 	\ [ 'move-subtree-down'       , "organ#nest#oper('move_subtree_forward')"  ] ,
 	\ [ 'move-subtree-to'         , 'organ#tree#moveto'                        ] ,
 	\ [ 'tag'                     , 'organ#tree#tag'                           ] ,
+	\ [ 'toggle-checkbox'         , 'organ#bush#toggle_checkbox'               ] ,
 	\ [ 'cycle-todo-right'        , "organ#nest#oper('cycle_todo_right')"      ] ,
 	\ [ 'cycle-todo-left'         , "organ#nest#oper('cycle_todo_left')"       ] ,
 	\ [ 'align'                   , 'organ#table#align'                        ] ,
