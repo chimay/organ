@@ -249,22 +249,22 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 	let cycle_index = todo_cycle->index(todo)
 	if direction == 1
 		if cycle_index < 0
-			let rotated = todo_cycle[0]
+			let newtodo = todo_cycle[0]
 		elseif cycle_index == lencycle - 1
-			let rotated = ''
+			let newtodo = ''
 		else
-			let rotated = todo_cycle[cycle_index + 1]
+			let newtodo = todo_cycle[cycle_index + 1]
 		endif
 	elseif direction == -1
 		if cycle_index < 0
-			let rotated = todo_cycle[-1]
+			let newtodo = todo_cycle[-1]
 		elseif cycle_index == 0
-			let rotated = ''
+			let newtodo = ''
 		else
-			let rotated = todo_cycle[cycle_index - 1]
+			let newtodo = todo_cycle[cycle_index - 1]
 		endif
 	endif
-	return rotated
+	return newtodo
 endfun
 
 fun! organ#bush#rebuild (properties = {}, mode = 'apply')
@@ -461,102 +461,15 @@ endfun
 
 " ---- todo
 
-fun! organ#bush#cycle_todo_left ()
-	" Cycle todo keyword marker left
+fun! organ#bush#cycle_todo (direction = 1)
+	" Cycle todo keyword marker following direction
+	" direction : 1 = right = next, -1 = left = previous
+	let direction = a:direction
 	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counterstart = properties.counterstart
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- previous in cycle
-	let todo = properties.todo
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let previous_todo = todo_cycle[-1]
-	elseif cycle_index == 0
-		let previous_todo = ''
-	else
-		let previous_todo = todo_cycle[cycle_index - 1]
-	endif
-	" ---- counter start
-	if counterstart >= 0
-		let counterstart = '[@' .. counterstart .. '] '
-	else
-		let counterstart = ''
-	endif
-	" ---- checkbox
-	if checkbox == -1
-		let checkbox = ''
-	elseif checkbox == 0
-		let checkbox = '[ ] '
-	elseif checkbox == 1
-		let checkbox = '[X] '
-	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if ! empty(previous_todo)
-		let previous_todo = previous_todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counterstart .. checkbox .. previous_todo .. text
-	call setline(linum, newline)
-	" ---- coda
-	return newline
-endfun
-
-fun! organ#bush#cycle_todo_right ()
-	" Cycle todo keyword marker right
-	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counterstart = properties.counterstart
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
-	" ---- next in cycle
-	let todo = properties.todo
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let next_todo = todo_cycle[0]
-	elseif cycle_index == lencycle - 1
-		let next_todo = ''
-	else
-		let next_todo = todo_cycle[cycle_index + 1]
-	endif
-	" ---- counter start
-	if counterstart >= 0
-		let counterstart = '[@' .. counterstart .. '] '
-	else
-		let counterstart = ''
-	endif
-	" ---- checkbox
-	if checkbox == -1
-		let checkbox = ''
-	elseif checkbox == 0
-		let checkbox = '[ ] '
-	elseif checkbox == 1
-		let checkbox = '[X] '
-	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if ! empty(next_todo)
-		let next_todo = next_todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counterstart .. checkbox .. next_todo .. text
-	call setline(linum, newline)
-	" ---- coda
-	return newline
+	let todo = copy(properties.todo)
+	let newtodo = organ#bush#rotate_todo (direction, properties)
+	let properties.todo = newtodo
+	return organ#bush#rebuild(properties)
 endfun
 
 " ---- promote & demote

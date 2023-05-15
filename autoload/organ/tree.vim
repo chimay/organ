@@ -518,7 +518,6 @@ endfun
 fun! organ#tree#tag ()
 	" Toggle tag
 	let properties = organ#bird#properties ()
-	let linum = properties.linum
 	let taglist = properties.tags
 	" ---- ask user the tag to toggle
 	let prompt = 'Toggle headline tag : '

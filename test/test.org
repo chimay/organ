@@ -45,19 +45,21 @@ content
          and more
       2) item 2.4
       3) item 2.3.1
-2. item 3
+1. item 3
+
+ text
 
 0. [@0] [X] item 1
-  1) [X] item 2
+  1. [X] item 2
     3) [@3] [ ] item 2.1
-    4) [X] item 2.3
+    4) [ ] item 2.3
     5) item
     6) item
     7) item
-      + [ ] item 2.3.1
-      + [ ] item 2.3.2
-        bla bla
-      + [ ] item 2.3.3
+      1. [ ] item 2.3.1
+      2. [ ] item 2.3.2
+         bla bla
+      3. [ ] item 2.3.3
     8) [ ] item 2.2
 1. [ ] item 3
   1. item
