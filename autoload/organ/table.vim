@@ -287,7 +287,7 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 	let substit = substit->escape('/')
 	let position = getcurpos ()
 	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
-	call setpos('.',  position)
+	call setpos('.', position)
 	return argdict
 endfun
 

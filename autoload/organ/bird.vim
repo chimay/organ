@@ -313,7 +313,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let subtree.head_linum = properties.linum
 	let subtree.tail_linum = tail_linum
 	if move !=  'move'
-		call setpos('.',  position)
+		call setpos('.', position)
 	endif
 	return subtree
 endfun

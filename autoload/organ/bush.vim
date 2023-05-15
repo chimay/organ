@@ -201,7 +201,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 		let subtree = organ#colibri#subtree ()
 		let first = subtree.head_linum
 		let last = subtree.tail_linum
-		call setpos('.',  position)
+		call setpos('.', position)
 	else
 		let first = organ#colibri#list_start ()
 		let last = organ#colibri#list_end ()
@@ -229,7 +229,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	let level = properties.level
 	call organ#bush#set_prefix (prefix, properties)
 	" ---- coda
-	call setpos('.',  position)
+	call setpos('.', position)
 	return properties
 endfun
 
@@ -269,8 +269,10 @@ endfun
 fun! organ#bush#update_ratios (maxlevel = 30)
 	" Update ratios of [X] checked boxes in children
 	let maxlevel = a:maxlevel
+	let position = getcurpos()
 	let length = maxlevel
 	let linumlist = repeat([-1], maxlevel)
+	let ratiodict = {}
 	" ---- find boundaries
 	let first = organ#colibri#list_start ()
 	let last = organ#colibri#list_end ()
@@ -280,8 +282,20 @@ fun! organ#bush#update_ratios (maxlevel = 30)
 	call cursor(first, 1)
 	let linum = first
 	while v:true
+		if linum == 0
+			break
+		endif
+		if linum > last
+			break
+		endif
 		let properties = organ#colibri#properties ()
+		let level = properties.level
+		let levelindex = level - 1
+		let linumlist[levelindex] = linum
+		let linum = search(itemhead_pattern, flags)
 	endwhile
+	call setpos('.', position)
+	return [linumlist, ratiodict]
 endfun
 
 fun! organ#bush#rebuild (properties = {}, mode = 'apply')
@@ -424,7 +438,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 		let subtree = organ#colibri#subtree ()
 		let first = subtree.head_linum
 		let last = subtree.tail_linum
-		call setpos('.',  position)
+		call setpos('.', position)
 	else
 		let first = organ#colibri#list_start ()
 		let last = organ#colibri#list_end ()
