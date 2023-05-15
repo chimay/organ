@@ -305,7 +305,14 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let text = substitute(text, counter_pattern, '', '')
 	" ---- checkbox
 	let checkbox_pattern = '\m^\s*\zs\[.\]'
-	let checkbox = text->matchstr(checkbox_pattern)
+	let checkbox_string = text->matchstr(checkbox_pattern)
+	if empty(checkbox_string)
+		let checkbox = -1
+	elseif checkbox_string ==# '[ ]'
+		let checkbox = 0
+	elseif checkbox_string =~ '\[[xX]\]'
+		let checkbox = 1
+	endif
 	" -- text without checkbox
 	let text = substitute(text, checkbox_pattern, '', '')
 	" ---- todo status

@@ -384,14 +384,12 @@ fun! organ#bush#toggle_checkbox ()
 	let todo = properties.todo
 	let text = properties.text
 	" ---- toggle checkbox
-	if empty(checkbox)
+	if checkbox == -1
 		let toggled_checkbox = '[ ]'
-	elseif checkbox ==# '[ ]'
+	elseif checkbox == 0
 		let toggled_checkbox = '[X]'
-	elseif checkbox =~ '\m\[[Xx]\]'
+	elseif checkbox == 1
 		let toggled_checkbox = '[ ]'
-	else
-		throw 'organ bush toggle checkbox : bad checkbox format'
 	endif
 	" ---- add spaces
 	let prefix = prefix .. ' '
@@ -435,16 +433,22 @@ fun! organ#bush#cycle_todo_left ()
 	else
 		let previous_todo = todo_cycle[cycle_index - 1]
 	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
+	" ---- counter start
 	if counter_start >= 0
 		let counter_start = '[@' .. counter_start .. '] '
 	else
 		let counter_start = ''
 	endif
-	if ! empty(checkbox)
-		let checkbox = checkbox .. ' '
+	" ---- checkbox
+	if checkbox == -1
+		let checkbox = ''
+	elseif checkbox == 0
+		let checkbox = '[ ] '
+	elseif checkbox == 1
+		let checkbox = '[X] '
 	endif
+	" ---- add spaces
+	let prefix = prefix .. ' '
 	if ! empty(previous_todo)
 		let previous_todo = previous_todo .. ' '
 	endif
@@ -478,16 +482,22 @@ fun! organ#bush#cycle_todo_right ()
 	else
 		let next_todo = todo_cycle[cycle_index + 1]
 	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
+	" ---- counter start
 	if counter_start >= 0
 		let counter_start = '[@' .. counter_start .. '] '
 	else
 		let counter_start = ''
 	endif
-	if ! empty(checkbox)
-		let checkbox = checkbox .. ' '
+	" ---- checkbox
+	if checkbox == -1
+		let checkbox = ''
+	elseif checkbox == 0
+		let checkbox = '[ ] '
+	elseif checkbox == 1
+		let checkbox = '[X] '
 	endif
+	" ---- add spaces
+	let prefix = prefix .. ' '
 	if ! empty(next_todo)
 		let next_todo = next_todo .. ' '
 	endif
