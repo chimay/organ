@@ -90,8 +90,8 @@ let s:plugs_normal = [
 	\ [ 'organ-previous-link'      , 'organ#vine#previous'               ] ,
 	\ [ 'organ-next-link'          , 'organ#vine#next'                   ] ,
 	\ [ 'organ-goto-link-target'   , 'organ#vine#goto'                   ] ,
-	\ [ 'organ-timestamp'          , 'organ#utils#timestamp'             ] ,
 	\ [ 'organ-expand-template'    , 'organ#seed#expand'                 ] ,
+	\ [ 'organ-timestamp'          , 'organ#utils#timestamp'             ] ,
 	\ [ 'organ-export'             , 'organ#nest#export'                 ] ,
 	\ [ 'organ-alter-export'       , 'organ#nest#alter_export'           ] ,
 	\ ]
