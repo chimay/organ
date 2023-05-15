@@ -67,6 +67,7 @@ FEATURES		    			*organ-introduction-features*
 - lists
   + cycle list item prefix
   + toggle checkbox
+  + checked boxes ratio on parent
 - tables
   + inside of table : align columns
   + outside of table : align following a pattern

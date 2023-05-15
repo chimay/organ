@@ -89,6 +89,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - lists
   + cycle list item prefix
   + toggle checkbox
+  + checked boxes ratio on parent
 - tables
   + inside of table : align columns
   + outside of table : align following a pattern

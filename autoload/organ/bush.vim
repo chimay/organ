@@ -267,7 +267,7 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 endfun
 
 fun! organ#bush#update_ratios (maxlevel = 30)
-	" Update ratios of [X] checked boxes in children
+	" Update ratios of [X] checked boxes in parent
 	let maxlevel = a:maxlevel
 	let position = getcurpos()
 	let length = maxlevel
@@ -577,6 +577,7 @@ fun! organ#bush#promote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		call organ#bush#update_ratios ()
 		if col('.') > 1
 			let step = g:organ_config.list.indent_length
 			call cursor('.', col('.') - step)
@@ -604,6 +605,7 @@ fun! organ#bush#demote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		call organ#bush#update_ratios ()
 		if col('.') > 1
 			let step = g:organ_config.list.indent_length
 			call cursor('.', col('.') + step)
@@ -640,6 +642,7 @@ fun! organ#bush#promote_subtree ()
 		endif
 	endwhile
 	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	call setpos('.', position)
 	if col('.') > 1
 		let step = g:organ_config.list.indent_length
@@ -668,6 +671,7 @@ fun! organ#bush#demote_subtree ()
 		endif
 	endwhile
 	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	call setpos('.', position)
 	if col('.') > 1
 		let step = g:organ_config.list.indent_length
