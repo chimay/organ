@@ -351,8 +351,8 @@ Here is a complete list :
 | `<plug>`(organ-shift-down)         | cycle todo keyword right  |                    |
 | `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
 | `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
-| `<plug>`(organ-meta-shift-up)      | cycle todo right          | delete row         |
-| `<plug>`(organ-meta-shift-down)    | cycle todo left           | add new row        |
+| `<plug>`(organ-meta-shift-up)      |                           | delete row         |
+| `<plug>`(organ-meta-shift-down)    |                           | add new row        |
 | `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
 | `<plug>`(organ-align)              |                           | align table        |
 | `<plug>`(organ-new-separator-line) |                           | add separator line |
@@ -381,7 +381,8 @@ value in your init file, these bindings become available :
 - `<M-z>`      : cycle current fold visibility (like an improved `za`)
 - `<M-S-z>`    : cycle all folds visibility
 - `<M-m>`      : move subtree in another one, with prompt completion
-- `<M-c>`      : toggle checkbox of list item
+- `<M-t>`      : toggle tag on headline
+- `<M-c>`      : toggle checkbox on list item
 - `<M-a>`      : align table, paragraph or selected lines
 - `<M-_>`      : add a separator line in a table
 - `<M-s>`      : store url at cursor
