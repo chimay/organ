@@ -18,22 +18,61 @@ endif
 
 " ---- helpers
 
+fun! organ#tree#rotate_todo (direction = 1, ...)
+	" Return next/previous todo keywoard
+	" direction : 1 = right = next, -1 = left = previous
+	let direction = a:direction
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#bird#properties ()
+	endif
+	let todo = properties.todo
+	let todo_cycle = g:organ_config.todo_cycle
+	let lencycle = len(todo_cycle)
+	let cycle_index = todo_cycle->index(todo)
+	if direction == 1
+		if cycle_index < 0
+			let rotated = todo_cycle[0]
+		elseif cycle_index == lencycle - 1
+			let rotated = ''
+		else
+			let rotated = todo_cycle[cycle_index + 1]
+		endif
+	elseif direction == -1
+		if cycle_index < 0
+			let rotated = todo_cycle[-1]
+		elseif cycle_index == 0
+			let rotated = ''
+		else
+			let rotated = todo_cycle[cycle_index - 1]
+		endif
+	endif
+	return rotated
+endfun
+
 fun! organ#tree#rebuild (properties = {}, mode = 'apply')
 	" Rebuild headline from properties
 	let properties = a:properties
 	if empty(properties)
 		let properties = organ#bird#properties ()
 	endif
+	" ---- properties
 	let linum = properties.linum
 	let levelstring = properties.levelstring
-	let title = properties.title
-	let commentstrings = properties.commentstrings
-	let lencomlist = len(commentstrings)
-	let todo = properties.todo
-	let taglist = properties.tags
-	let tags = ':' .. taglist->join(':') .. ':'
+	" ---- add spaces
+	let levelstring ..= ' '
+	if ! empty(todo)
+		let todo ..= ' '
+	endif
+	" ---- line
+	let line = ''
+	if s:rep_one_char->index(&filetype) >= 0
+	else
+	endif
+	" ---- apply
 	if mode ==# 'apply'
-		call setline(linum, newline)
+		call setline(linum, line)
 	endif
 	return newline
 endfun
