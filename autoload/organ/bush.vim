@@ -442,37 +442,21 @@ endfun
 fun! organ#bush#toggle_checkbox ()
 	" Cycle todo keyword marker left
 	let properties = organ#colibri#properties ()
-	let linum = properties.linum
-	let indent = properties.indent
-	let level = properties.level
-	let prefix = properties.prefix
-	let counterstart = properties.counterstart
-	let checkbox = properties.checkbox
-	let todo = properties.todo
-	let text = properties.text
+	let checkbox = copy(properties.checkbox)
 	" ---- toggle checkbox
 	if checkbox == -1
-		let toggled_checkbox = '[ ]'
+		let checkbox = 0
+		let checkboxstring = '[ ]'
 	elseif checkbox == 0
-		let toggled_checkbox = '[X]'
+		let checkbox = 1
+		let checkboxstring = '[X]'
 	elseif checkbox == 1
-		let toggled_checkbox = '[ ]'
+		let checkbox = 0
+		let checkboxstring = '[ ]'
 	endif
-	" ---- add spaces
-	let prefix = prefix .. ' '
-	if counterstart >= 0
-		let counterstart = '[@' .. counterstart .. '] '
-	else
-		let counterstart = ''
-	endif
-	let toggled_checkbox = toggled_checkbox .. ' '
-	if ! empty(todo)
-		let todo = todo .. ' '
-	endif
-	" ---- update line
-	let newline = indent .. prefix .. counterstart .. toggled_checkbox .. todo .. text
-	call setline(linum, newline)
-	return newline
+	let properties.checkbox = checkbox
+	let properties.checkboxstring = checkboxstring
+	return organ#bush#rebuild(properties)
 endfun
 
 " ---- todo
