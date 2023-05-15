@@ -332,7 +332,7 @@ fun! organ#table#add_missing_columns (argdict = {})
 				let newline = line[:-2] .. addme->repeat(add) .. line[-1:]
 			else
 				let addme = delimiter
-				let newline ..= addme->repeat(add)
+				let newline = line .. addme->repeat(add)
 			endif
 			call setline(linum, newline)
 			let grid_index = grid[index]
