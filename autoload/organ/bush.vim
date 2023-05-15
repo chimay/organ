@@ -81,7 +81,7 @@ fun! organ#bush#update_counters (maxlevel = 30)
 			continue
 		endif
 		let level = properties.level
-		let counter_start = properties.counter_start
+		let counter_start = properties.counterstart
 		let countindex = level - 1
 		for index in range(countindex + 1, length - 1)
 			let counterlist[index] = -1
@@ -388,7 +388,7 @@ fun! organ#bush#toggle_checkbox ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counter_start
+	let counter_start = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -426,7 +426,7 @@ fun! organ#bush#cycle_todo_left ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counter_start
+	let counter_start = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -475,7 +475,7 @@ fun! organ#bush#cycle_todo_right ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counter_start
+	let counter_start = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text

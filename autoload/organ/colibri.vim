@@ -242,8 +242,8 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
-			\ counter_start : -1,
-			\ checkbox_string : '',
+			\ counterstart : -1,
+			\ checkboxstring : '',
 			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
@@ -261,8 +261,8 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
-			\ counter_start : -1,
-			\ checkbox_string : '',
+			\ counterstart : -1,
+			\ checkboxstring : '',
 			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
@@ -295,24 +295,24 @@ fun! organ#colibri#properties (move = 'dont-move')
 	endif
 	" -- text without prefix
 	let text = substitute(text, prefix_pattern, '', '')
-	" ---- counter_start
+	" ---- counterstart
 	let counter_pattern = '\m^\s*\zs\[@[0-9]\+\]'
-	let counter_start = text->matchstr(counter_pattern)
-	if empty(counter_start)
-		let counter_start = -1
+	let counterstart = text->matchstr(counter_pattern)
+	if empty(counterstart)
+		let counterstart = -1
 	else
-		let counter_start = str2nr(counter_start[2:-2])
+		let counterstart = str2nr(counterstart[2:-2])
 	endif
-	" -- text without counter_start
+	" -- text without counterstart
 	let text = substitute(text, counter_pattern, '', '')
 	" ---- checkbox
 	let checkbox_pattern = '\m^\s*\zs\[.\]'
-	let checkbox_string = text->matchstr(checkbox_pattern)
-	if empty(checkbox_string)
+	let checkboxstring = text->matchstr(checkbox_pattern)
+	if empty(checkboxstring)
 		let checkbox = -1
-	elseif checkbox_string ==# '[ ]'
+	elseif checkboxstring ==# '[ ]'
 		let checkbox = 0
-	elseif checkbox_string =~ '\[[xX]\]'
+	elseif checkboxstring =~ '\[[xX]\]'
 		let checkbox = 1
 	endif
 	" -- text without checkbox
@@ -350,8 +350,8 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : indent,
 			\ prefix : prefix,
 			\ counter : counter,
-			\ counter_start : counter_start,
-			\ checkbox_string : checkbox_string,
+			\ counterstart : counterstart,
+			\ checkboxstring : checkboxstring,
 			\ checkbox : checkbox,
 			\ todo : todo,
 			\ text : text,
