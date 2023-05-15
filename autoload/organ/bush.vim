@@ -333,6 +333,7 @@ fun! organ#bush#update_ratios (maxlevel = 30)
 		else
 			if line =~ ratio_pattern
 				let newline = substitute(line, ratio_pattern, '', '')
+				let newline = substitute(newline, '\m\s*$', '', '')
 				call setline(linum, newline)
 			endif
 		endif
@@ -535,7 +536,9 @@ fun! organ#bush#toggle_checkbox ()
 	endif
 	let properties.checkbox = checkbox
 	let properties.checkboxstring = checkboxstring
-	return organ#bush#rebuild(properties)
+	let line = organ#bush#rebuild(properties)
+	call organ#bush#update_ratios ()
+	return line
 endfun
 
 " ---- todo
