@@ -15,45 +15,53 @@
 
 " ---- script constants
 
-if ! exists('s:src_langs')
-	let s:src_langs = organ#crystal#fetch('templates/languages')
-	lockvar s:src_langs
+if exists('s:src_langs')
+	unlockvar s:src_langs
 endif
+let s:src_langs = organ#crystal#fetch('templates/languages')
+lockvar s:src_langs
 
-if ! exists('s:url_prefixes')
-	let s:url_prefixes = organ#crystal#fetch('url/prefixes')
-	lockvar s:url_prefixes
+if exists('s:url_prefixes')
+	unlockvar s:url_prefixes
 endif
+let s:url_prefixes = organ#crystal#fetch('url/prefixes')
+lockvar s:url_prefixes
 
-if ! exists('s:pandoc_formats')
-	let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
-	lockvar s:pandoc_formats
+if exists('s:pandoc_formats')
+	unlockvar s:pandoc_formats
 endif
+let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
+lockvar s:pandoc_formats
 
-if ! exists('s:emacs_functions')
-	let s:emacs_functions = organ#crystal#fetch('export/functions/emacs', 'dict')
-	lockvar s:emacs_functions
+if exists('s:emacs_functions')
+	unlockvar s:emacs_functions
 endif
+let s:emacs_functions = organ#crystal#fetch('export/functions/emacs', 'dict')
+lockvar s:emacs_functions
 
-if ! exists('s:emacs_formats')
-	let s:emacs_formats = keys(s:emacs_functions)
-	lockvar s:emacs_formats
+if exists('s:emacs_formats')
+	unlockvar s:emacs_formats
 endif
+let s:emacs_formats = keys(s:emacs_functions)
+lockvar s:emacs_formats
 
-if ! exists('s:asciidoc_formats')
-	let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
-	lockvar s:asciidoc_formats
+if exists('s:asciidoc_formats')
+	unlockvar s:asciidoc_formats
 endif
+let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
+lockvar s:asciidoc_formats
 
-if ! exists('s:asciidoctor_formats')
-	let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
-	lockvar s:asciidoctor_formats
+if exists('s:asciidoctor_formats')
+	unlockvar s:asciidoctor_formats
 endif
+let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
+lockvar s:asciidoctor_formats
 
-if ! exists('s:subcommands_actions')
-	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
-	lockvar s:subcommands_actions
+if exists('s:subcommands_actions')
+	unlockvar s:subcommands_actions
 endif
+let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
+lockvar s:subcommands_actions
 
 " ---- headlines
 

@@ -8,10 +8,11 @@
 
 " ---- script constants
 
-if ! exists('s:rep_one_char')
-	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
-	lockvar s:rep_one_char
+if exists('s:rep_one_char')
+	unlockvar s:rep_one_char
 endif
+let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+lockvar s:rep_one_char
 
 " ---- generic
 

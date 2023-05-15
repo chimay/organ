@@ -6,20 +6,23 @@
 
 " ---- script constants
 
-if ! exists('s:rep_one_char')
-	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
-	lockvar s:rep_one_char
+if exists('s:rep_one_char')
+	unlockvar s:rep_one_char
 endif
+let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+lockvar s:rep_one_char
 
-if ! exists('s:level_separ')
-	let s:level_separ = organ#crystal#fetch('separator/level')
-	lockvar s:level_separ
+if exists('s:level_separ')
+	unlockvar s:level_separ
 endif
+let s:level_separ = organ#crystal#fetch('separator/level')
+lockvar s:level_separ
 
-if ! exists('s:field_separ')
-	let s:field_separ = organ#crystal#fetch('separator/field')
-	lockvar s:field_separ
+if exists('s:field_separ')
+	unlockvar s:field_separ
 endif
+let s:field_separ = organ#crystal#fetch('separator/field')
+lockvar s:field_separ
 
 " ---- indent helpers
 

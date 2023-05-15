@@ -6,45 +6,53 @@
 
 " ---- script constants
 
-if ! exists('s:subcommands_actions')
-	let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
-	lockvar s:subcommands_actions
+if exists('s:subcommands_actions')
+	unlockvar s:subcommands_actions
 endif
+let s:subcommands_actions = organ#diadem#fetch('command/meta/actions')
+lockvar s:subcommands_actions
 
-if ! exists('s:speedkeys')
-	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
-	lockvar s:speedkeys
+if exists('s:speedkeys')
+	unlockvar s:speedkeys
 endif
+let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
+lockvar s:speedkeys
 
-if ! exists('s:normal_plugs')
-	let s:normal_plugs = organ#geode#fetch('plugs/normal')
-	lockvar s:normal_plugs
+if exists('s:normal_plugs')
+	unlockvar s:normal_plugs
 endif
+let s:normal_plugs = organ#geode#fetch('plugs/normal')
+lockvar s:normal_plugs
 
-if ! exists('s:visual_plugs')
-	let s:visual_plugs = organ#geode#fetch('plugs/visual')
-	lockvar s:visual_plugs
+if exists('s:visual_plugs')
+	unlockvar s:visual_plugs
 endif
+let s:visual_plugs = organ#geode#fetch('plugs/visual')
+lockvar s:visual_plugs
 
-if ! exists('s:insert_plugs')
-	let s:insert_plugs = organ#geode#fetch('plugs/insert')
-	lockvar s:insert_plugs
+if exists('s:insert_plugs')
+	unlockvar s:insert_plugs
 endif
+let s:insert_plugs = organ#geode#fetch('plugs/insert')
+lockvar s:insert_plugs
 
-if ! exists('s:normal_maps')
-	let s:normal_maps = organ#geode#fetch('maps/normal')
-	lockvar s:level_2_normal_maps
+if exists('s:normal_maps')
+	unlockvar s:level_2_normal_maps
 endif
+let s:normal_maps = organ#geode#fetch('maps/normal')
+lockvar s:level_2_normal_maps
 
-if ! exists('s:visual_maps')
-	let s:visual_maps = organ#geode#fetch('maps/visual')
-	lockvar s:level_2_visual_maps
+if exists('s:visual_maps')
+	unlockvar s:level_2_visual_maps
 endif
+let s:visual_maps = organ#geode#fetch('maps/visual')
+lockvar s:level_2_visual_maps
 
-if ! exists('s:insert_maps')
-	let s:insert_maps = organ#geode#fetch('maps/insert')
-	lockvar s:level_2_insert_maps
+if exists('s:insert_maps')
+	unlockvar s:level_2_insert_maps
 endif
+let s:insert_maps = organ#geode#fetch('maps/insert')
+lockvar s:level_2_insert_maps
 
 " ---- script variables
 

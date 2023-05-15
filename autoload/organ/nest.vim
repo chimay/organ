@@ -7,15 +7,17 @@
 
 " ---- script constants
 
-if ! exists('s:rep_one_char')
-	let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
-	lockvar s:rep_one_char
+if exists('s:rep_one_char')
+	unlockvar s:rep_one_char
 endif
+let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+lockvar s:rep_one_char
 
-if ! exists('s:speedkeys')
-	let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
-	lockvar s:speedkeys
+if exists('s:speedkeys')
+	unlockvar s:speedkeys
 endif
+let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
+lockvar s:speedkeys
 
 " ---- helpers
 

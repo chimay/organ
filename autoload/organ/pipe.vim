@@ -7,30 +7,35 @@
 
 " ---- constants
 
-if ! exists('s:pandoc_formats')
-	let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
-	lockvar s:pandoc_formats
+if exists('s:pandoc_formats')
+	unlockvar s:pandoc_formats
 endif
+let s:pandoc_formats = organ#crystal#fetch('export/formats/pandoc')
+lockvar s:pandoc_formats
 
-if ! exists('s:emacs_functions')
-	let s:emacs_functions = organ#crystal#fetch('export/functions/emacs', 'dict')
-	lockvar s:emacs_functions
+if exists('s:emacs_functions')
+	unlockvar s:emacs_functions
 endif
+let s:emacs_functions = organ#crystal#fetch('export/functions/emacs', 'dict')
+lockvar s:emacs_functions
 
-if ! exists('s:emacs_formats')
-	let s:emacs_formats = keys(s:emacs_functions)
-	lockvar s:emacs_formats
+if exists('s:emacs_formats')
+	unlockvar s:emacs_formats
 endif
+let s:emacs_formats = keys(s:emacs_functions)
+lockvar s:emacs_formats
 
-if ! exists('s:asciidoc_formats')
-	let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
-	lockvar s:asciidoc_formats
+if exists('s:asciidoc_formats')
+	unlockvar s:asciidoc_formats
 endif
+let s:asciidoc_formats = organ#crystal#fetch('export/formats/asciidoc')
+lockvar s:asciidoc_formats
 
-if ! exists('s:asciidoctor_formats')
-	let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
-	lockvar s:asciidoctor_formats
+if exists('s:asciidoctor_formats')
+	unlockvar s:asciidoctor_formats
 endif
+let s:asciidoctor_formats = organ#crystal#fetch('export/formats/asciidoctor')
+lockvar s:asciidoctor_formats
 
 " ---- helpers
 

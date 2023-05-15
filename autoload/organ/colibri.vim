@@ -4,8 +4,6 @@
 "
 " Navigation on orgmode or markdown lists hierarchy
 
-" ---- script constants
-
 " ---- helpers
 
 fun! organ#colibri#generic_pattern ()
