@@ -33,8 +33,8 @@ fun! organ#bush#indent_item (level, ...)
 	let numspaces = shift + step * (level - 1)
 	let indent = repeat(' ', numspaces)
 	let itemhead = substitute(itemhead, spaces, indent, '')
-	call setline(head, itemhead)
 	let properties.itemhead = itemhead
+	call setline(head, itemhead)
 	" ---- other lines
 	if head >= tail
 		return itemhead
@@ -163,7 +163,7 @@ endfun
 
 fun! organ#bush#set_prefix (prefix, ...)
 	" Cycle item prefix
-	" direction : 1 = right, -1 = left
+	" direction : 1 = right = next, -1 = left = previous
 	let prefix = a:prefix
 	if a:0 > 0
 		let properties = a:1

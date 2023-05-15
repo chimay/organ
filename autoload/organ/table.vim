@@ -328,6 +328,7 @@ fun! organ#table#add_missing_columns (argdict = {})
 			let line = getline(linum)
 			if organ#table#is_separator_line (linum)
 				let addme = organ#table#separator_delimiter ()
+				" -- needs the colon for compatibilty
 				let newline = line[:-2] .. addme->repeat(add) .. line[-1:]
 			else
 				let addme = delimiter

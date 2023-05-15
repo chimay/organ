@@ -37,17 +37,25 @@ endfun
 
 " ---- generic
 
-fun! organ#nest#navig (function)
+fun! organ#nest#navig (function, ...)
 	" Choose to apply headline or list navigation function
 	let function = a:function
 	if organ#colibri#is_in_list ()
-		return organ#colibri#{function} ()
+		if a:0 > 0
+			return call('organ#colibri#' .. function, a:000)
+		else
+			return organ#colibri#{function} ()
+		endif
 	else
-		return organ#bird#{function} ()
+		if a:0 > 0
+			return call('organ#bird#' .. function, a:000)
+		else
+			return organ#bird#{function} ()
+		endif
 	endif
 endfun
 
-fun! organ#nest#oper (function)
+fun! organ#nest#oper (function, ...)
 	" Choose to apply headline or list operation function
 	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
 		echomsg 'organ nest oper : not supported for indent folds'
@@ -55,9 +63,17 @@ fun! organ#nest#oper (function)
 	endif
 	let function = a:function
 	if organ#colibri#is_in_list ()
-		return organ#bush#{function} ()
+		if a:0 > 0
+			return call('organ#bush#' .. function, a:000)
+		else
+			return organ#bush#{function} ()
+		endif
 	else
-		return organ#tree#{function} ()
+		if a:0 > 0
+			return call('organ#tree#' .. function, a:000)
+		else
+			return organ#tree#{function} ()
+		endif
 	endif
 endfun
 
@@ -232,9 +248,9 @@ fun! organ#nest#shift_up ()
 	" For <s-up> map
 	if organ#table#is_in_table ()
 	elseif organ#colibri#is_in_list ()
-		return organ#bush#cycle_todo_left ()
+		return organ#bush#cycle_todo (-1)
 	else
-		return organ#tree#cycle_todo_left ()
+		return organ#tree#cycle_todo (-1)
 	endif
 endfun
 
@@ -242,9 +258,9 @@ fun! organ#nest#shift_down ()
 	" For <s-right> map
 	if organ#table#is_in_table ()
 	elseif organ#colibri#is_in_list ()
-		return organ#bush#cycle_todo_right ()
+		return organ#bush#cycle_todo (1)
 	else
-		return organ#tree#cycle_todo_right ()
+		return organ#tree#cycle_todo (1)
 	endif
 endfun
 

@@ -33,22 +33,22 @@ fun! organ#tree#rotate_todo (direction = 1, ...)
 	let cycle_index = todo_cycle->index(todo)
 	if direction == 1
 		if cycle_index < 0
-			let rotated = todo_cycle[0]
+			let newtodo = todo_cycle[0]
 		elseif cycle_index == lencycle - 1
-			let rotated = ''
+			let newtodo = ''
 		else
-			let rotated = todo_cycle[cycle_index + 1]
+			let newtodo = todo_cycle[cycle_index + 1]
 		endif
 	elseif direction == -1
 		if cycle_index < 0
-			let rotated = todo_cycle[-1]
+			let newtodo = todo_cycle[-1]
 		elseif cycle_index == 0
-			let rotated = ''
+			let newtodo = ''
 		else
-			let rotated = todo_cycle[cycle_index - 1]
+			let newtodo = todo_cycle[cycle_index - 1]
 		endif
 	endif
-	return rotated
+	return newtodo
 endfun
 
 fun! organ#tree#rebuild (properties = {}, mode = 'apply')
@@ -517,18 +517,23 @@ endfun
 
 fun! organ#tree#tag ()
 	" Toggle tag
+	let properties = organ#bird#properties ()
+	let linum = properties.linum
+	let taglist = properties.tags
+	" ---- ask user the tag to toggle
 	let prompt = 'Toggle headline tag : '
 	let complete = 'customlist,organ#complete#tag'
 	let tag = input(prompt, '', complete)
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	" ---- line
-	let line = getline(linum)
-	let tags_pattern = '\m:\%([^:]\+:\)\+$'
-	let line = substitute(line, tags_pattern, '', '')
-	let line = trim(line)
+	" ---- remove surrounding colons if needed
+	if tag[0] ==# ':'
+		let tag = tag[1:]
+	endif
+	" -- needs the colon for compatibilty
+	if tag[-1:] ==# ':'
+		let tag = tag[:-2]
+	endif
+	echomsg tag
 	" ---- tag list
-	let taglist = properties.tags
 	let index = taglist->index(tag)
 	if index < 0
 		eval taglist->add(tag)
@@ -536,129 +541,25 @@ fun! organ#tree#tag ()
 		eval taglist->remove(index)
 	endif
 	if empty(taglist)
-		call setline(linum, line)
-		return line
+		let tagstring = ''
+	else
+		let tagstring = ':' .. taglist->join(':') .. ':'
 	endif
-	" ---- padding
-	let tagstring = ':' .. taglist->join(':') .. ':'
-	let length = len(line) + len(tagstring)
-	" -- 72 = roughly standard long line size
-	let padding = max([72 - length, 1])
-	let spaces = repeat(' ', padding)
-	let line ..= spaces
-	let line ..= tagstring
-	" ---- coda
-	call setline(linum, line)
+	let properties.tags = taglist
+	let properties.tagstring = tagstring
+	return organ#tree#rebuild(properties)
 endfun
 
 " ---- todo
 
-fun! organ#tree#cycle_todo_left ()
-	" Cycle todo keyword marker left
+fun! organ#tree#cycle_todo (direction = 1)
+	" Cycle todo keyword marker following direction
+	" direction : 1 = right = next, -1 = left = previous
+	let direction = a:direction
 	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	let levelstring = properties.levelstring
-	let title = properties.title
-	let commentstrings = properties.commentstrings
-	let lencomlist = len(commentstrings)
-	let todo = properties.todo
-	let taglist = properties.tags
-	let tags = ':' .. taglist->join(':') .. ':'
-	" ---- cycle
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let next_todo = todo_cycle[-1]
-	elseif cycle_index == 0
-		let next_todo = ''
-	else
-		let next_todo = todo_cycle[cycle_index - 1]
-	endif
-	" ---- commentstring
-	let comstr = split(&commentstring, '%s')
-	" ---- new line
-	if s:rep_one_char->index(&filetype) >= 0
-		if empty(next_todo)
-			let newline = levelstring .. ' ' .. title
-		else
-			let newline = levelstring .. ' ' .. next_todo .. ' ' .. title
-		endif
-	else
-		if empty(next_todo)
-			let newline = title .. ' ' .. levelstring
-		else
-			let newline = next_todo .. ' ' .. title .. ' ' .. levelstring
-		endif
-		if lencomlist == 1
-			let newline = comstr[0] .. ' ' .. newline
-		elseif lencomlist >= 2
-			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
-		endif
-	endif
-	" ---- tags
-	let length = len(newline) + len(tags)
-	let padding = max([72 - length, 1])
-	let spaces = repeat(' ', padding)
-	let newline ..= spaces
-	let newline ..= tags
-	" ---- coda
-	call setline(linum, newline)
-	return newline
-endfun
-
-fun! organ#tree#cycle_todo_right ()
-	" Cycle todo keyword marker right
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	let levelstring = properties.levelstring
-	let title = properties.title
-	let commentstrings = properties.commentstrings
-	let lencomlist = len(commentstrings)
-	let todo = properties.todo
-	let taglist = properties.tags
-	let tags = ':' .. taglist->join(':') .. ':'
-	" ---- cycle
-	let todo_cycle = g:organ_config.todo_cycle
-	let lencycle = len(todo_cycle)
-	let cycle_index = todo_cycle->index(todo)
-	if cycle_index < 0
-		let next_todo = todo_cycle[0]
-	elseif cycle_index == lencycle - 1
-		let next_todo = ''
-	else
-		let next_todo = todo_cycle[cycle_index + 1]
-	endif
-	" ---- commentstring
-	let comstr = split(&commentstring, '%s')
-	" ---- new line
-	if s:rep_one_char->index(&filetype) >= 0
-		if empty(next_todo)
-			let newline = levelstring .. ' ' .. title
-		else
-			let newline = levelstring .. ' ' .. next_todo .. ' ' .. title
-		endif
-	else
-		if empty(next_todo)
-			let newline = title .. ' ' .. levelstring
-		else
-			let newline = next_todo .. ' ' .. title .. ' ' .. levelstring
-		endif
-		if lencomlist == 1
-			let newline = comstr[0] .. ' ' .. newline
-		elseif lencomlist >= 2
-			let newline = comstr[0] .. ' ' .. newline .. ' ' .. comstr[1]
-		endif
-	endif
-	" ---- tags
-	let length = len(newline) + len(tags)
-	let padding = max([72 - length, 1])
-	let spaces = repeat(' ', padding)
-	let newline ..= spaces
-	let newline ..= tags
-	" ---- coda
-	call setline(linum, newline)
-	return newline
+	let newtodo = organ#tree#rotate_todo (direction, properties)
+	let properties.todo = newtodo
+	return organ#tree#rebuild(properties)
 endfun
 
 " ---- convert org <-> markdown
