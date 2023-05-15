@@ -25,26 +25,26 @@ content
 
 content
 
-0. [@0] item 1
-  + item 1.1
-  + item 1.2
+0. [@0] item 1 [2/5]
+  + [ ] item 1.1
+  + [ ] item 1.2
     + item
+      * item [2/3]
+        - item
+        - [ ] item
+        - [X] item
+        - [X] item
       * item
-        - item
-        - item
-        - item
-        - item
-      * item
-  + [ ] item 2 [0/1]
-  + [ ] item 2.1 [2/3]
-  + [X] item 2.2
+  + [X] item 2
+  + [ ] item 2.1
+  + [X] item 2.2 [0/1]
 
-    + item 2.3
-      1) item 2.3.2
+    + [ ] item 2.3 [0/3]
+      1) [ ] item 2.3.2
          some text
          and more
-      2) item 2.4
-      3) item 2.3.1
+      2) [ ] item 2.4
+      3) [ ] item 2.3.1
 1. item 3
 
  text

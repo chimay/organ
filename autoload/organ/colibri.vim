@@ -337,8 +337,9 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let ratiostring = text->matchstr(ratio_pattern)
 	if len(ratiostring) > 1
 		let ratio = ratiostring[1:-2]->split('/')
+		let ratio = ratio->map({ _, v -> str2nr(v) })
 	else
-		let ratiosting = ''
+		let ratiostring = ''
 		let ratio = []
 	endif
 	" -- text without ratio

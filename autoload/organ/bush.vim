@@ -271,14 +271,16 @@ fun! organ#bush#update_ratios (maxlevel = 30)
 	let maxlevel = a:maxlevel
 	let position = getcurpos()
 	let length = maxlevel
-	let linumlist = repeat([-1], maxlevel)
+	let linumlist = []
+	let lastlinumlist = repeat([-1], maxlevel)
 	let ratiodict = {}
 	" ---- find boundaries
 	let first = organ#colibri#list_start ()
 	let last = organ#colibri#list_end ()
-	" ---- checkboxes
+	" ---- scan checkboxes
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
+	let ratio_pattern = '\m\[[0-9]\+/[0-9]\+\]$'
 	call cursor(first, 1)
 	let linum = first
 	while v:true
@@ -288,14 +290,56 @@ fun! organ#bush#update_ratios (maxlevel = 30)
 		if linum > last
 			break
 		endif
+		eval linumlist->add(linum)
 		let properties = organ#colibri#properties ()
+		" -- lastlinumlist
 		let level = properties.level
 		let levelindex = level - 1
-		let linumlist[levelindex] = linum
+		let lastlinumlist[levelindex] = linum
+		" -- parent = last linum of level - 1
+		if level == 1
+			let linum = search(itemhead_pattern, flags)
+			continue
+		endif
+		let checkbox = properties.checkbox
+		if checkbox < 0
+			let linum = search(itemhead_pattern, flags)
+			continue
+		endif
+		let parentindex = level - 2
+		let parent_linum = lastlinumlist[parentindex]
+		if ! has_key(ratiodict, parent_linum)
+			let ratiodict[parent_linum] = [checkbox, 1]
+		else
+			let ratio = ratiodict[parent_linum]
+			let ratio = [ratio[0] + checkbox, ratio[1] + 1]
+			let ratiodict[parent_linum] = ratio
+		endif
+		" -- next
 		let linum = search(itemhead_pattern, flags)
 	endwhile
+	" ---- update ratios strings
+	for linum in linumlist
+		let line = getline(linum)
+		if has_key(ratiodict, linum)
+			let ratio = ratiodict[linum]
+			let ratiostring = '[' .. ratio[0] .. '/' .. ratio[1] .. ']'
+			if line =~ ratio_pattern
+				let newline = substitute(line, ratio_pattern, ratiostring, '')
+			else
+				let newline = line .. ' ' .. ratiostring
+			endif
+			call setline(linum, newline)
+		else
+			if line =~ ratio_pattern
+				let newline = substitute(line, ratio_pattern, '', '')
+				call setline(linum, newline)
+			endif
+		endif
+	endfor
+	" ---- coda
 	call setpos('.', position)
-	return [linumlist, ratiodict]
+	return [linumlist, lastlinumlist, ratiodict]
 endfun
 
 fun! organ#bush#rebuild (properties = {}, mode = 'apply')
