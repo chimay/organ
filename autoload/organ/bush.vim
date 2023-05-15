@@ -44,8 +44,8 @@ fun! organ#bush#indent_item (level, ...)
 	let indent = repeat(' ', numspaces)
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
-		let line = substitute(line, spaces, indent, '')
-		call setline(linum, line)
+		let newline = substitute(line, spaces, indent, '')
+		call setline(linum, newline)
 	endfor
 	return itemhead
 endfun
@@ -97,8 +97,8 @@ fun! organ#bush#update_counters (maxlevel = 30)
 		endif
 		let count = counterlist[countindex]
 		let line = properties.itemhead
-		let line = substitute(line, counter_pattern, count, '')
-		call setline(linum, line)
+		let newline = substitute(line, counter_pattern, count, '')
+		call setline(linum, newline)
 		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)

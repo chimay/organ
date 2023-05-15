@@ -328,12 +328,12 @@ fun! organ#table#add_missing_columns (argdict = {})
 			let line = getline(linum)
 			if organ#table#is_separator_line (linum)
 				let addme = organ#table#separator_delimiter ()
-				let line = line[:-2] .. addme->repeat(add) .. line[-1:]
+				let newline = line[:-2] .. addme->repeat(add) .. line[-1:]
 			else
 				let addme = delimiter
-				let line ..= addme->repeat(add)
+				let newline ..= addme->repeat(add)
 			endif
-			call setline(linum, line)
+			call setline(linum, newline)
 			let grid_index = grid[index]
 			let last_pos = grid_index[-1]
 			let addedpos = range(last_pos + 1, last_pos + add)

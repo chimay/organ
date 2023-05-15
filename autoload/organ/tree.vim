@@ -18,7 +18,7 @@ endif
 
 " ---- helpers
 
-fun! organ#tree#rebuild (properties = {})
+fun! organ#tree#rebuild (properties = {}, mode = 'apply')
 	" Rebuild headline from properties
 	let properties = a:properties
 	if empty(properties)
@@ -32,6 +32,10 @@ fun! organ#tree#rebuild (properties = {})
 	let todo = properties.todo
 	let taglist = properties.tags
 	let tags = ':' .. taglist->join(':') .. ':'
+	if mode ==# 'apply'
+		call setline(linum, newline)
+	endif
+	return newline
 endfun
 
 " ---- new heading
