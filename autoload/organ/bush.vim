@@ -81,13 +81,13 @@ fun! organ#bush#update_counters (maxlevel = 30)
 			continue
 		endif
 		let level = properties.level
-		let counter_start = properties.counterstart
+		let counterstart = properties.counterstart
 		let countindex = level - 1
 		for index in range(countindex + 1, length - 1)
 			let counterlist[index] = -1
 		endfor
-		if counter_start >= 0
-			let counterlist[countindex] = counter_start
+		if counterstart >= 0
+			let counterlist[countindex] = counterstart
 		else
 			if counterlist[countindex] < 0
 				let counterlist[countindex] = global_counter_start
@@ -267,12 +267,39 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 	return rotated
 endfun
 
-fun! organ#bush#rebuild (properties = {})
+fun! organ#bush#rebuild (properties = {}, mode = 'apply')
 	" Rebuild item head from properties
 	let properties = a:properties
+	let mode = a:mode
 	if empty(properties)
 		let properties = organ#colibri#properties ()
 	endif
+	" ---- properties
+	let linum = properties.linum
+	let indent = properties.indent
+	let prefix = copy(properties.prefix)
+	let counterstartstring = properties.counterstartstring
+	let checkboxstring = properties.checkboxstring
+	let todo = properties.todo
+	let text = properties.text
+	" ---- add spaces
+	let prefix ..= ' '
+	if ! empty(counterstartstring)
+		let counterstartstring ..= ' '
+	endif
+	if ! empty(checkboxstring)
+		let checkboxstring ..= ' '
+	endif
+	if ! empty(todo)
+		let todo ..= ' '
+	endif
+	" ---- line
+	let line = indent .. prefix .. counterstartstring .. checkboxstring .. todo .. text
+	" ---- apply
+	if mode ==# 'apply'
+		call setline(linum, line)
+	endif
+	return line
 endfun
 
 " ---- new list item
@@ -280,16 +307,14 @@ endfun
 fun! organ#bush#new ()
 	" New list item
 	call organ#origami#suspend ()
+	" ---- properties
 	let properties = organ#colibri#properties ()
-	" ---- indent
-	let level = properties.level
-	let shift = organ#colibri#common_indent ()
-	let step = g:organ_config.list.indent_length
-	let numspaces = shift + step * (level - 1)
-	let indent = repeat(' ', numspaces)
+	let indent = properties.indent
+	let prefix = copy(properties.prefix)
+	" ---- add spaces
+	let prefix ..= ' '
 	" ---- prefix
-	let prefix = properties.prefix
-	let line = indent .. prefix .. ' '
+	let line = indent .. prefix
 	" ---- append to buffer
 	call append('.', line)
 	" ---- update counters
@@ -305,16 +330,15 @@ endfun
 
 fun! organ#bush#new_with_check ()
 	" New list item with check box
+	call organ#origami#suspend ()
+	" ---- properties
 	let properties = organ#colibri#properties ()
-	" ---- indent
-	let level = properties.level
-	let shift = organ#colibri#common_indent ()
-	let step = g:organ_config.list.indent_length
-	let numspaces = shift + step * (level - 1)
-	let indent = repeat(' ', numspaces)
+	let indent = properties.indent
+	let prefix = copy(properties.prefix)
+	" ---- add spaces
+	let prefix ..= ' '
 	" ---- prefix
-	let prefix = properties.prefix
-	let line = indent .. prefix .. ' [ ] '
+	let line = indent .. prefix .. '[ ] '
 	" ---- append to buffer
 	call append('.', line)
 	" ---- update counters
@@ -325,6 +349,7 @@ fun! organ#bush#new_with_check ()
 	let colnum = col('$')
 	call cursor(linum, colnum)
 	startinsert!
+	call organ#origami#resume ()
 endfun
 
 " ---- select, yank, delete
@@ -421,7 +446,7 @@ fun! organ#bush#toggle_checkbox ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counterstart
+	let counterstart = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -435,17 +460,17 @@ fun! organ#bush#toggle_checkbox ()
 	endif
 	" ---- add spaces
 	let prefix = prefix .. ' '
-	if counter_start >= 0
-		let counter_start = '[@' .. counter_start .. '] '
+	if counterstart >= 0
+		let counterstart = '[@' .. counterstart .. '] '
 	else
-		let counter_start = ''
+		let counterstart = ''
 	endif
 	let toggled_checkbox = toggled_checkbox .. ' '
 	if ! empty(todo)
 		let todo = todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter_start .. toggled_checkbox .. todo .. text
+	let newline = indent .. prefix .. counterstart .. toggled_checkbox .. todo .. text
 	call setline(linum, newline)
 	return newline
 endfun
@@ -459,7 +484,7 @@ fun! organ#bush#cycle_todo_left ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counterstart
+	let counterstart = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -476,10 +501,10 @@ fun! organ#bush#cycle_todo_left ()
 		let previous_todo = todo_cycle[cycle_index - 1]
 	endif
 	" ---- counter start
-	if counter_start >= 0
-		let counter_start = '[@' .. counter_start .. '] '
+	if counterstart >= 0
+		let counterstart = '[@' .. counterstart .. '] '
 	else
-		let counter_start = ''
+		let counterstart = ''
 	endif
 	" ---- checkbox
 	if checkbox == -1
@@ -495,7 +520,7 @@ fun! organ#bush#cycle_todo_left ()
 		let previous_todo = previous_todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter_start .. checkbox .. previous_todo .. text
+	let newline = indent .. prefix .. counterstart .. checkbox .. previous_todo .. text
 	call setline(linum, newline)
 	" ---- coda
 	return newline
@@ -508,7 +533,7 @@ fun! organ#bush#cycle_todo_right ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter_start = properties.counterstart
+	let counterstart = properties.counterstart
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -525,10 +550,10 @@ fun! organ#bush#cycle_todo_right ()
 		let next_todo = todo_cycle[cycle_index + 1]
 	endif
 	" ---- counter start
-	if counter_start >= 0
-		let counter_start = '[@' .. counter_start .. '] '
+	if counterstart >= 0
+		let counterstart = '[@' .. counterstart .. '] '
 	else
-		let counter_start = ''
+		let counterstart = ''
 	endif
 	" ---- checkbox
 	if checkbox == -1
@@ -544,7 +569,7 @@ fun! organ#bush#cycle_todo_right ()
 		let next_todo = next_todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter_start .. checkbox .. next_todo .. text
+	let newline = indent .. prefix .. counterstart .. checkbox .. next_todo .. text
 	call setline(linum, newline)
 	" ---- coda
 	return newline

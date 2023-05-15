@@ -242,6 +242,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
+			\ counterstartstring : '',
 			\ counterstart : -1,
 			\ checkboxstring : '',
 			\ checkbox : -1,
@@ -261,6 +262,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
+			\ counterstartstring : '',
 			\ counterstart : -1,
 			\ checkboxstring : '',
 			\ checkbox : -1,
@@ -297,11 +299,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let text = substitute(text, prefix_pattern, '', '')
 	" ---- counterstart
 	let counter_pattern = '\m^\s*\zs\[@[0-9]\+\]'
-	let counterstart = text->matchstr(counter_pattern)
-	if empty(counterstart)
+	let counterstartstring = text->matchstr(counter_pattern)
+	if empty(counterstartstring)
 		let counterstart = -1
 	else
-		let counterstart = str2nr(counterstart[2:-2])
+		let counterstart = str2nr(counterstartstring[2:-2])
 	endif
 	" -- text without counterstart
 	let text = substitute(text, counter_pattern, '', '')
@@ -350,6 +352,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : indent,
 			\ prefix : prefix,
 			\ counter : counter,
+			\ counterstartstring : counterstartstring,
 			\ counterstart : counterstart,
 			\ checkboxstring : checkboxstring,
 			\ checkbox : checkbox,

@@ -219,8 +219,7 @@ if ! exists("g:organ_loaded")
   " ---- items chars in ordered list (default)
   let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
   " ---- first item counter in an ordered list
-  " ---- must be >= 0
-  " ---- default 1
+  " ---- must be >= 0, default 1
   let g:organ_config.list.counter_start = 1
   " ---- number of stored links to keep (default)
   let g:organ_config.links.keep = 5
