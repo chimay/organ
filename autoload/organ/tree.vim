@@ -111,8 +111,10 @@ endfun
 
 " -- current heading only
 
-fun! organ#tree#promote ()
+fun! organ#tree#promote (mode = 'alone')
 	" Promote heading
+	let mode = a:mode
+	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
@@ -134,14 +136,19 @@ fun! organ#tree#promote ()
 		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
-	if mode() ==# 'i'
-		startinsert!
+	if mode ==# 'alone'
+		call setpos('.', position)
+		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.')
+			call cursor('.', col('.') - 1)
+		endif
 	endif
 	return linum
 endfun
 
-fun! organ#tree#demote ()
+fun! organ#tree#demote (mode = 'alone')
 	" Demote heading
+	let mode = a:mode
+	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
@@ -161,9 +168,12 @@ fun! organ#tree#demote ()
 		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
-	normal! zv
-	if mode() ==# 'i'
-		startinsert!
+	if mode ==# 'alone'
+		call setpos('.', position)
+		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.')
+			call cursor('.', col('.') + 1)
+		endif
+		normal! zv
 	endif
 	return linum
 endfun
@@ -172,6 +182,7 @@ endfun
 
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
+	let position = getcurpos ()
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -185,17 +196,22 @@ fun! organ#tree#promote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#tree#promote ()
+		let linum = organ#tree#promote ('batch')
 		let linum = organ#bird#next ('move', 'dont-wrap')
 		if linum >= tail_linum || linum == 0
-			call cursor(head_linum, 1)
-			return linum
+			break
 		endif
 	endwhile
+	call setpos('.', position)
+	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.')
+		call cursor('.', col('.') - 1)
+	endif
+	return linum
 endfun
 
 fun! organ#tree#demote_subtree ()
 	" Demote subtree
+	let position = getcurpos ()
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -204,13 +220,17 @@ fun! organ#tree#demote_subtree ()
 	endif
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#tree#demote ()
+		let linum = organ#tree#demote ('batch')
 		let linum = organ#bird#next ('move', 'dont-wrap')
 		if linum >= tail_linum || linum == 0
-			call cursor(head_linum, 1)
-			return linum
+			break
 		endif
 	endwhile
+	call setpos('.', position)
+	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.')
+		call cursor('.', col('.') + 1)
+	endif
+	return linum
 endfun
 
 " ---- move

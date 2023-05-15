@@ -543,6 +543,8 @@ fun! organ#bush#promote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		let step = g:organ_config.list.indent_length
+		call cursor('.', col('.') - step)
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -566,6 +568,8 @@ fun! organ#bush#demote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
+		let step = g:organ_config.list.indent_length
+		call cursor('.', col('.') + step)
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -577,6 +581,7 @@ endfun
 fun! organ#bush#promote_subtree ()
 	" Promote list item subtree
 	call organ#origami#suspend ()
+	let position = getcurpos ()
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -597,7 +602,9 @@ fun! organ#bush#promote_subtree ()
 		endif
 	endwhile
 	call organ#bush#update_counters ()
-	call cursor(head_linum, 1)
+	call setpos('.', position)
+	let step = g:organ_config.list.indent_length
+	call cursor('.', col('.') - step)
 	call organ#origami#resume ()
 	return linum
 endfun
@@ -605,6 +612,7 @@ endfun
 fun! organ#bush#demote_subtree ()
 	" Demote list item subtree
 	call organ#origami#suspend ()
+	let position = getcurpos ()
 	let subtree = organ#colibri#subtree ()
 	let head_linum = subtree.head_linum
 	if head_linum == 0
@@ -620,7 +628,9 @@ fun! organ#bush#demote_subtree ()
 		endif
 	endwhile
 	call organ#bush#update_counters ()
-	call cursor(head_linum, 1)
+	call setpos('.', position)
+	let step = g:organ_config.list.indent_length
+	call cursor('.', col('.') + step)
 	call organ#origami#resume ()
 	return linum
 endfun
