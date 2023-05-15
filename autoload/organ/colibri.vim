@@ -186,8 +186,10 @@ fun! organ#colibri#common_indent ()
 	let indentlist = []
 	let linum = first
 	for line in linelist
-		let line = substitute(line, "\t", spaces, 'g')
-		call setline(linum, line)
+		if line =~ "\t"
+			let line = substitute(line, "\t", spaces, 'g')
+			call setline(linum, line)
+		endif
 		let linum += 1
 		if line =~ hollow_pattern
 			continue
@@ -241,11 +243,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ level : 1,
 			\ prefix : '',
-			\ counter : '',
-			\ checkbox : '',
+			\ counter : -1,
+			\ counter_start : -1,
+			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
-			\ proportion : [],
+			\ ratio : [],
 			\}
 	endif
 	let linum = organ#colibri#itemhead (move)
@@ -257,11 +260,12 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : '',
 			\ level : 1,
 			\ prefix : '',
-			\ counter : '',
-			\ checkbox : '',
+			\ counter : -1,
+			\ counter_start : -1,
+			\ checkbox : -1,
 			\ todo : '',
 			\ text : '',
-			\ proportion : [],
+			\ ratio : [],
 			\}
 	endif
 	let itemhead = getline(linum)
@@ -282,17 +286,22 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" ---- prefix
 	let prefix_pattern = '\m^\s*\zs\S\+'
 	let prefix = text->matchstr(prefix_pattern)
+	if len(prefix) > 1
+		let counter = str2nr(prefix[:-2])
+	else
+		let counter = -1
+	endif
 	" -- text without prefix
 	let text = substitute(text, prefix_pattern, '', '')
-	" ---- counter
+	" ---- counter start
 	let counter_pattern = '\m^\s*\zs\[@[0-9]\+\]'
-	let counter = text->matchstr(counter_pattern)
-	if empty(counter)
-		let counter = -1
+	let counter_start = text->matchstr(counter_pattern)
+	if empty(counter_start)
+		let counter_start = -1
 	else
-		let counter = str2nr(counter[2:-2])
+		let counter_start = str2nr(counter_start[2:-2])
 	endif
-	" -- text without counter
+	" -- text without counter_start
 	let text = substitute(text, counter_pattern, '', '')
 	" ---- checkbox
 	let checkbox_pattern = '\m^\s*\zs\[.\]'
@@ -321,9 +330,11 @@ fun! organ#colibri#properties (move = 'dont-move')
 			\ indent : indent,
 			\ prefix : prefix,
 			\ counter : counter,
+			\ counter_start : counter_start,
 			\ checkbox : checkbox,
 			\ todo : todo,
 			\ text : text,
+			\ ratio : ['TODO'],
 			\}
 	return properties
 endfun

@@ -80,7 +80,7 @@ fun! organ#bush#update_counters (maxlevel = 30)
 			continue
 		endif
 		let level = properties.level
-		let counter_start = properties.counter
+		let counter_start = properties.counter_start
 		let countindex = level - 1
 		for index in range(countindex + 1, length - 1)
 			let counterlist[index] = -1
@@ -379,7 +379,7 @@ fun! organ#bush#toggle_checkbox ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter = properties.counter
+	let counter_start = properties.counter_start
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -395,17 +395,17 @@ fun! organ#bush#toggle_checkbox ()
 	endif
 	" ---- add spaces
 	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
+	if counter_start >= 0
+		let counter_start = '[@' .. counter_start .. '] '
 	else
-		let counter = ''
+		let counter_start = ''
 	endif
 	let toggled_checkbox = toggled_checkbox .. ' '
 	if ! empty(todo)
 		let todo = todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter .. toggled_checkbox .. todo .. text
+	let newline = indent .. prefix .. counter_start .. toggled_checkbox .. todo .. text
 	call setline(linum, newline)
 	return newline
 endfun
@@ -419,7 +419,7 @@ fun! organ#bush#cycle_todo_left ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter = properties.counter
+	let counter_start = properties.counter_start
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -437,10 +437,10 @@ fun! organ#bush#cycle_todo_left ()
 	endif
 	" ---- add spaces
 	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
+	if counter_start >= 0
+		let counter_start = '[@' .. counter_start .. '] '
 	else
-		let counter = ''
+		let counter_start = ''
 	endif
 	if ! empty(checkbox)
 		let checkbox = checkbox .. ' '
@@ -449,7 +449,7 @@ fun! organ#bush#cycle_todo_left ()
 		let previous_todo = previous_todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter .. checkbox .. previous_todo .. text
+	let newline = indent .. prefix .. counter_start .. checkbox .. previous_todo .. text
 	call setline(linum, newline)
 	" ---- coda
 	return newline
@@ -462,7 +462,7 @@ fun! organ#bush#cycle_todo_right ()
 	let indent = properties.indent
 	let level = properties.level
 	let prefix = properties.prefix
-	let counter = properties.counter
+	let counter_start = properties.counter_start
 	let checkbox = properties.checkbox
 	let todo = properties.todo
 	let text = properties.text
@@ -480,10 +480,10 @@ fun! organ#bush#cycle_todo_right ()
 	endif
 	" ---- add spaces
 	let prefix = prefix .. ' '
-	if counter >= 0
-		let counter = '[@' .. counter .. '] '
+	if counter_start >= 0
+		let counter_start = '[@' .. counter_start .. '] '
 	else
-		let counter = ''
+		let counter_start = ''
 	endif
 	if ! empty(checkbox)
 		let checkbox = checkbox .. ' '
@@ -492,7 +492,7 @@ fun! organ#bush#cycle_todo_right ()
 		let next_todo = next_todo .. ' '
 	endif
 	" ---- update line
-	let newline = indent .. prefix .. counter .. checkbox .. next_todo .. text
+	let newline = indent .. prefix .. counter_start .. checkbox .. next_todo .. text
 	call setline(linum, newline)
 	" ---- coda
 	return newline
