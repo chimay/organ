@@ -226,7 +226,7 @@ fun! organ#tree#promote (mode = 'alone')
 	call setline(linum, headline)
 	if mode ==# 'alone'
 		call setpos('.', position)
-		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.')
+		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
 			call cursor('.', col('.') - 1)
 		endif
 	endif
@@ -258,7 +258,7 @@ fun! organ#tree#demote (mode = 'alone')
 	call setline(linum, headline)
 	if mode ==# 'alone'
 		call setpos('.', position)
-		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.')
+		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
 			call cursor('.', col('.') + 1)
 		endif
 		normal! zv
@@ -291,7 +291,7 @@ fun! organ#tree#promote_subtree ()
 		endif
 	endwhile
 	call setpos('.', position)
-	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.')
+	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
 		call cursor('.', col('.') - 1)
 	endif
 	return linum
@@ -315,7 +315,7 @@ fun! organ#tree#demote_subtree ()
 		endif
 	endwhile
 	call setpos('.', position)
-	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.')
+	if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
 		call cursor('.', col('.') + 1)
 	endif
 	return linum

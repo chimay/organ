@@ -519,8 +519,10 @@ fun! organ#bush#promote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
-		let step = g:organ_config.list.indent_length
-		call cursor('.', col('.') - step)
+		if col('.') > 1
+			let step = g:organ_config.list.indent_length
+			call cursor('.', col('.') - step)
+		endif
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -544,8 +546,10 @@ fun! organ#bush#demote (mode = 'alone')
 	" ---- update counters
 	if mode ==# 'alone'
 		call organ#bush#update_counters ()
-		let step = g:organ_config.list.indent_length
-		call cursor('.', col('.') + step)
+		if col('.') > 1
+			let step = g:organ_config.list.indent_length
+			call cursor('.', col('.') + step)
+		endif
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -579,8 +583,10 @@ fun! organ#bush#promote_subtree ()
 	endwhile
 	call organ#bush#update_counters ()
 	call setpos('.', position)
-	let step = g:organ_config.list.indent_length
-	call cursor('.', col('.') - step)
+	if col('.') > 1
+		let step = g:organ_config.list.indent_length
+		call cursor('.', col('.') - step)
+	endif
 	call organ#origami#resume ()
 	return linum
 endfun
@@ -605,8 +611,10 @@ fun! organ#bush#demote_subtree ()
 	endwhile
 	call organ#bush#update_counters ()
 	call setpos('.', position)
-	let step = g:organ_config.list.indent_length
-	call cursor('.', col('.') + step)
+	if col('.') > 1
+		let step = g:organ_config.list.indent_length
+		call cursor('.', col('.') + step)
+	endif
 	call organ#origami#resume ()
 	return linum
 endfun
