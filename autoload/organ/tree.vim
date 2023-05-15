@@ -54,27 +54,65 @@ endfun
 fun! organ#tree#rebuild (properties = {}, mode = 'apply')
 	" Rebuild headline from properties
 	let properties = a:properties
+	let mode = a:mode
 	if empty(properties)
 		let properties = organ#bird#properties ()
 	endif
 	" ---- properties
 	let linum = properties.linum
-	let levelstring = properties.levelstring
+	let levelstring = copy(properties.levelstring)
+	let title = copy(properties.title)
+	let todo = copy(properties.todo)
+	let tagstring = copy(properties.tagstring)
+	let commentstrings = copy(properties.commentstrings)
+	let lencomlist = len(commentstrings)
 	" ---- add spaces
-	let levelstring ..= ' '
+	if s:rep_one_char->index(&filetype) >= 0
+		let levelstring ..= ' '
+	else
+		let title ..= ' '
+	endif
 	if ! empty(todo)
 		let todo ..= ' '
 	endif
-	" ---- line
+	if lencomlist >= 1
+		let commentstrings[0] ..= ' '
+	if lencomlist >= 2
+		let commentstrings[1] = ' ' .. commentstrings[1]
+	endif
+	endif
+	" ---- padding for tags
+	let padding = ''
+	if ! empty(tagstring)
+		let length = len(levelstring) + len(todo) + len(title) + len(tagstring)
+		for elem in taglist
+			let length += len(elem)
+		endfor
+		" -- 72 = roughly standard long line size
+		let padlen = max([72 - length, 1])
+		let padding = repeat(' ', padlen)
+	endif
+	" ---- core
 	let line = ''
 	if s:rep_one_char->index(&filetype) >= 0
+		let line = levelstring .. todo .. title .. padding .. tagstring
 	else
+		let line = todo .. title .. levelstring .. padding .. tagstring
+	endif
+	" ---- commentstrings
+	if s:rep_one_char->index(&filetype) < 0 && ! empty(commentstrings)
+		if lencomlist >= 1
+			let line = commentstrings[0] .. line
+		endif
+		if lencomlist >= 2
+			let line = line .. commentstrings[1]
+		endif
 	endif
 	" ---- apply
 	if mode ==# 'apply'
 		call setline(linum, line)
 	endif
-	return newline
+	return line
 endfun
 
 " ---- new heading
