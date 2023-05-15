@@ -233,6 +233,14 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	return properties
 endfun
 
+fun! organ#bush#rebuild (properties = {})
+	" Rebuild item head from properties
+	let properties = a:properties
+	if empty(properties)
+		let properties = organ#colibri#properties ()
+	endif
+endfun
+
 " ---- new list item
 
 fun! organ#bush#new ()

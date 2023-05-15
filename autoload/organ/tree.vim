@@ -18,6 +18,22 @@ endif
 
 " ---- helpers
 
+fun! organ#tree#rebuild (properties = {})
+	" Rebuild headline from properties
+	let properties = a:properties
+	if empty(properties)
+		let properties = organ#bird#properties ()
+	endif
+	let linum = properties.linum
+	let levelstring = properties.levelstring
+	let title = properties.title
+	let commentstrings = properties.commentstrings
+	let lencomlist = len(commentstrings)
+	let todo = properties.todo
+	let taglist = properties.tags
+	let tags = ':' .. taglist->join(':') .. ':'
+endfun
+
 " ---- new heading
 
 fun! organ#tree#new ()
