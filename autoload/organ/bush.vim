@@ -197,7 +197,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
-		let parent_linum = organ#colibri#parent ()
+		let parent_linum = organ#colibri#parent ('move', 'dont-wrap')
 		let subtree = organ#colibri#subtree ()
 		let first = subtree.head_linum
 		let last = subtree.tail_linum
@@ -481,7 +481,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
-		let linum = organ#colibri#parent ()
+		let linum = organ#colibri#parent ('move', 'dont-wrap')
 		let subtree = organ#colibri#subtree ()
 		let first = subtree.head_linum
 		let last = subtree.tail_linum
@@ -496,6 +496,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	endif
 	" ---- rotate prefix
 	let newprefix = organ#bush#rotate_prefix (direction, properties)
+	echomsg first last newprefix
 	" ---- loop
 	call cursor(first, 1)
 	while v:true
