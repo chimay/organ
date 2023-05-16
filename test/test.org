@@ -264,7 +264,7 @@ Multibyte table
 
 | row 1 col 1     | row 1 col 2 | hello | there |
 |-----------------+-------------+-------+-------|
-| aà eéè          |             |       |       |
+| aà eéè          | i ï î       |       |       |
 | row 2 col 1     | row 2 col 2 | u ù   |       |
 | row 3 col 1 max | row 3 col 2 |       |       |
 

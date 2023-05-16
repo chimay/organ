@@ -796,9 +796,9 @@ fun! organ#table#delete_col ()
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
-	let cursor = col('.')
+	let charcol = charcol('.')
 	for colnum in range(colmax - 1)
-		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+		if charcol >= positions[colnum] && charcol <= positions[colnum + 1]
 			break
 		endif
 	endfor
@@ -806,20 +806,22 @@ fun! organ#table#delete_col ()
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
 	" ---- one column, two delimiters
-	let first = positions[colnum]
-	let second = positions[colnum + 1]
+	let char_first = positions[colnum]
+	let char_second = positions[colnum + 1]
 	" ---- add new column in all table lines
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		if first == 1
+		let byte_first = line->byteidx(char_first - 1) + 1
+		let byte_second = line->byteidx(char_second - 1) + 1
+		if byte_first == 1
 			let before = ''
 			let after = line
-		elseif second == len(line) + 1
+		elseif byte_second == len(line) + 1
 			let before = line
 			let after = ''
 		else
-			let before = line[:first - 2]
-			let after = line[second - 1:]
+			let before = line[:byte_first - 2]
+			let after = line[byte_second - 1:]
 		endif
 		let linelist[rownum] = before .. after
 	endfor
@@ -830,7 +832,7 @@ fun! organ#table#delete_col ()
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', first)
+	call cursor('.', byte_first)
 	call organ#origami#resume ()
 	return positions
 endfun
