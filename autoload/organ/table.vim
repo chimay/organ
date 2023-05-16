@@ -281,6 +281,7 @@ fun! organ#table#reduce_multi_spaces (argdict = {})
 		let argdict.tail_linum = tail_linum
 	endif
 	let range = head_linum .. ',' .. tail_linum
+	" ---- also replace indent tabs
 	let pattern = '\m\s\+\(' .. delimiter .. '\)'
 	let substit = ' \1'
 	let pattern = pattern->escape('/')

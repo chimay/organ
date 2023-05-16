@@ -22,6 +22,22 @@
 
 " chapter 1.3.1 {{{3
 
+let str = 'aàeéè'
+
+	let line = getline(25)
+
+echo len(line) strcharlen(line) strwidth(line) strdisplaywidth(line)
+
+finish
+
+echo str->byteidx(0) str->byteidx(1) str->byteidx(2) str->byteidx(3)
+echo str->byteidx(4) str->byteidx(5) str->byteidx(6) str->strlen()
+
+echo str->charidx(0) str->charidx(1) str->charidx(2) str->charidx(3)
+echo str->charidx(4) str->charidx(5) str->charidx(6) str->charidx(7)
+
+" see also charcol() strcharpart() strchars()
+
 " content
 
 " section 1.3.1.1 {{{4

@@ -176,7 +176,50 @@ lockvar! s:maps_visual
 if exists('s:maps_insert')
 	unlockvar! s:maps_insert
 endif
-let s:maps_insert = s:maps_normal
+let s:maps_insert = [
+	\ [ '<m-p>'       , 'organ-previous'           ] ,
+	\ [ '<m-n>'       , 'organ-next'               ] ,
+	\ [ '<m-b>'       , 'organ-backward'           ] ,
+	\ [ '<m-f>'       , 'organ-forward'            ] ,
+	\ [ '<m-u>'       , 'organ-parent'             ] ,
+	\ [ '<m-l>'       , 'organ-loose-child'        ] ,
+	\ [ '<m-s-l>'     , 'organ-strict-child'       ] ,
+	\ [ '<m-i>'       , 'organ-info'               ] ,
+	\ [ '<m-h>'       , 'organ-goto-headline'      ] ,
+	\ [ '<m-z>'       , 'organ-cycle-fold'         ] ,
+	\ [ '<m-s-z>'     , 'organ-cycle-all-folds'    ] ,
+	\ [ '<m-v>'       , 'organ-select-subtree'     ] ,
+	\ [ '<m-y>'       , 'organ-yank-subtree'       ] ,
+	\ [ '<m-s-x>'     , 'organ-delete-subtree'     ] ,
+	\ [ '<m-cr>'      , 'organ-meta-return'        ] ,
+	\ [ '<s-cr>'      , 'organ-shift-return'       ] ,
+	\ [ '<m-left>'    , 'organ-meta-left'          ] ,
+	\ [ '<m-right>'   , 'organ-meta-right'         ] ,
+	\ [ '<m-up>'      , 'organ-meta-up'            ] ,
+	\ [ '<m-down>'    , 'organ-meta-down'          ] ,
+	\ [ '<s-left>'    , 'organ-shift-left'         ] ,
+	\ [ '<s-right>'   , 'organ-shift-right'        ] ,
+	\ [ '<s-up>'      , 'organ-shift-up'           ] ,
+	\ [ '<s-down>'    , 'organ-shift-down'         ] ,
+	\ [ '<m-s-left>'  , 'organ-meta-shift-left'    ] ,
+	\ [ '<m-s-right>' , 'organ-meta-shift-right'   ] ,
+	\ [ '<m-s-up>'    , 'organ-meta-shift-up'      ] ,
+	\ [ '<m-s-down>'  , 'organ-meta-shift-down'    ] ,
+	\ [ '<m-m>'       , 'organ-move-subtree-to'    ] ,
+	\ [ '<m-t>'       , 'organ-toggle-tag'         ] ,
+	\ [ '<m-c>'       , 'organ-toggle-checkbox'    ] ,
+	\ [ '<m-a>'       , 'organ-align'              ] ,
+	\ [ '<m-_>'       , 'organ-new-separator-line' ] ,
+	\ [ '<m-s>'       , 'organ-store-url'          ] ,
+	\ [ '<m-->'       , 'organ-new-link'           ] ,
+	\ [ '<m-@>'       , 'organ-previous-link'      ] ,
+	\ [ '<m-&>'       , 'organ-next-link'          ] ,
+	\ [ '<m-o>'       , 'organ-goto-link-target'   ] ,
+	\ [ '<m-x>'       , 'organ-expand-template'    ] ,
+	\ [ '<m-d>'       , 'organ-timestamp'          ] ,
+	\ [ '<m-e>'       , 'organ-export'             ] ,
+	\ [ '<m-s-e>'     , 'organ-alter-export'       ] ,
+	\ ]
 lockvar! s:maps_insert
 
 " ---- public interface
