@@ -350,6 +350,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 	" Previous heading
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	let linum = line('.')
 	call cursor(linum, 1)
 	let line = getline('.')
@@ -360,9 +361,13 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird previous : not found'
 		return 0
 	endif
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -370,6 +375,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 	" Next heading
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	call cursor('.', col('$'))
 	let headline_pattern = organ#bird#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', move, wrap)
@@ -378,9 +384,13 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird next : not found'
 		return 0
 	endif
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -390,6 +400,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	" Backward heading of same level
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
@@ -401,9 +412,13 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -411,6 +426,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	" Forward heading of same level
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
@@ -422,9 +438,13 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	let headline_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -439,6 +459,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 	else
 		let properties = organ#bird#properties ()
 	endif
+	let position = getcurpos ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ bird parent : current headline not found'
@@ -457,9 +478,13 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 		echomsg 'organ bird parent : no parent found'
 		return linum
 	endif
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -467,6 +492,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 	" Child headline, or, more generally, first headline of level + 1, forward
 	let move = a:move
 	let wrap = a:wrap
+	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	if linum == 0
@@ -481,9 +507,13 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 		echomsg 'organ bird loose child : no child found'
 		return linum
 	endif
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 
@@ -492,7 +522,6 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 	let move = a:move
 	let wrap = a:wrap
 	let position = getcurpos ()
-	" TODO
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
@@ -510,9 +539,13 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 		call organ#spiral#cursor ()
 		return 0
 	endif
-	call cursor('.', 1)
-	normal! zv
-	call organ#spiral#cursor ()
+	if move ==# 'move'
+		call cursor('.', 1)
+		normal! zv
+		call organ#spiral#cursor ()
+	else
+		call setpos('.', position)
+	endif
 	return linum
 endfun
 

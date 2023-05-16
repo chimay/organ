@@ -212,7 +212,9 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	endif
 	" ---- potential neighbours
 	call organ#colibri#itemhead ('move')
+	call cursor('.', 1)
 	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
+	call cursor('.', col('$'))
 	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
 	if linum_back > 0 && linum_back != linum && linum_back >= first
 		call cursor(linum_back, 1)
@@ -269,7 +271,7 @@ endfun
 fun! organ#bush#update_ratios (maxlevel = 30)
 	" Update ratios of [X] checked boxes in parent
 	let maxlevel = a:maxlevel
-	let position = getcurpos()
+	let position = getcurpos ()
 	let length = maxlevel
 	let linumlist = []
 	let lastlinumlist = repeat([-1], maxlevel)

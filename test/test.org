@@ -25,15 +25,15 @@ content
 
 content
 
-0. [@0] item 1 [3/5]
+0. [@0] item 1 [4/5]
   + [ ] item 1.1
-  + [ ] item 1.2
+  + [X] item 1.2
     + item
       * item [2/3]
-        - item
-        - [ ] item
-        - [X] item
-        - [X] item
+        1. item
+        2. [ ] item
+        3. [X] TODO item
+        4. [X] item
       * item
   + [X] item 2
   + [X] item 2.1

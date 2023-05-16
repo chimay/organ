@@ -23,7 +23,7 @@ lockvar s:field_separ
 fun! organ#perspective#headlines_numbers ()
 	" List of headlines line numbers
 	let headline_pattern = organ#bird#generic_pattern ()
-	let position = getcurpos()
+	let position = getcurpos ()
 	let runme = 'global /' .. headline_pattern .. '/number'
 	let returnlist = execute(runme)
 	let returnlist = split(returnlist, "\n")
@@ -43,7 +43,7 @@ fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
 	" List of paths
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	let position = getcurpos()
+	let position = getcurpos ()
 	let headnumlist = organ#perspective#headlines_numbers ()
 	let returnlist = []
 	for linum in headnumlist
@@ -64,7 +64,7 @@ endfun
 
 fun! organ#perspective#tags ()
 	" List of tags defined on #+tags & :tag:tag:...:
-	let position = getcurpos()
+	let position = getcurpos ()
 	" ---- #+tags lines
 	let runme = 'global /\m\c^#+tags:/print'
 	let output = execute(runme)
