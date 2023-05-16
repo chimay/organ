@@ -92,6 +92,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + checked boxes ratio on parent
 - tables
   + inside of table : align columns
+    - also works with multibyte characters
   + outside of table : align following a pattern
   + add new row, colum
   + delete row, colum

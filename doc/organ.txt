@@ -70,6 +70,7 @@ FEATURES		    			*organ-introduction-features*
   + checked boxes ratio on parent
 - tables
   + inside of table : align columns
+    - also works with multibyte characters
   + outside of table : align following a pattern
   + add new row, colum
   + delete row, colum
