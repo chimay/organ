@@ -435,6 +435,7 @@ fun! organ#table#align (mode = 'normal') range
 	" Align table or paragraph
 	call organ#origami#suspend ()
 	let mode = a:mode
+	let position = getcurpos ()
 	let argdict = {}
 	if mode ==# 'visual'
 		let argdict.head_linum = a:firstline
@@ -454,6 +455,7 @@ fun! organ#table#align (mode = 'normal') range
 		let argdict = organ#table#reduce_multi_spaces (argdict)
 	endif
 	let argdict = organ#table#align_columns (argdict)
+	call setpos('.', position)
 	call organ#origami#resume ()
 	return argdict
 endfun
