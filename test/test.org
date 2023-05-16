@@ -260,6 +260,14 @@ content
 
 *** chapter 3.3.2
 
+Multibyte table
+
+| row 1 col 1     | row 1 col 2 | hello | there |
+|-----------------+-------------+-------+-------|
+| aà eéè          |             |       |       |
+| row 2 col 1     | row 2 col 2 | u ù   |       |
+| row 3 col 1 max | row 3 col 2 |       |       |
+
 content
 
 ** part 3.4

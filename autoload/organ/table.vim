@@ -126,6 +126,7 @@ endfun
 
 fun! organ#table#positions (argdict = {})
 	" Positions of the delimiter char
+	" First char of the line = 1
 	let argdict = a:argdict
 	if has_key (argdict, 'delimiter')
 		let delimiter =  argdict.delimiter
@@ -138,19 +139,21 @@ fun! organ#table#positions (argdict = {})
 		let linum = line('.')
 	endif
 	let line = getline(linum)
+	if organ#table#is_separator_line (linum)
+		let pattern = organ#table#separator_delimiter_pattern ()
+	else
+		let pattern = delimiter
+	endif
 	let positions = []
-	let index = 0
+	let byte_index = 0
 	while v:true
-		if organ#table#is_separator_line (linum)
-			let pattern = organ#table#separator_delimiter_pattern ()
-		else
-			let pattern = delimiter
-		endif
-		let index = line->match(pattern, index) + 1
-		if index == 0
+		let byte_index = line->match(pattern, byte_index)
+		if byte_index < 0
 			break
 		endif
-		eval positions->add(index)
+		let char_index = line->charidx(byte_index) + 1
+		eval positions->add(char_index)
+		let byte_index += 1
 	endwhile
 	return positions
 endfun
@@ -384,12 +387,13 @@ fun! organ#table#align_columns (argdict = {})
 				continue
 			endif
 			let row = grid[rownum]
-			let position = row[colnum]
-			let add = maxima[colnum] - position
+			let char_position = row[colnum]
+			let add = maxima[colnum] - char_position
 			if add == 0
 				continue
 			endif
 			let line = linelist[rownum]
+			let byte_position = line->byteidx(char_position - 1) + 1
 			" -- shift
 			let is_sep_line = line =~ organ#table#separator_pattern ()
 			if colnum > 0 && is_sep_line
@@ -398,15 +402,15 @@ fun! organ#table#align_columns (argdict = {})
 				let shift = repeat(' ', add)
 			endif
 			" -- adapt line
-			if position == 1
+			if byte_position == 1
 				let before = ''
 				let after = line
-			elseif position == len(line) + 1
+			elseif byte_position == len(line) + 1
 				let before = line
 				let after = ''
 			else
-				let before = line[:position - 2]
-				let after = line[position - 1:]
+				let before = line[:byte_position - 2]
+				let after = line[byte_position - 1:]
 			endif
 			let linelist[rownum] = before .. shift .. after
 			" -- adapt grid & maxima
