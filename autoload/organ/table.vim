@@ -732,9 +732,9 @@ fun! organ#table#new_col ()
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
-	let cursor = col('.')
+	let charcol = charcol('.')
 	for colnum in range(colmax - 1)
-		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+		if charcol >= positions[colnum] && charcol <= positions[colnum + 1]
 			break
 		endif
 	endfor
@@ -742,17 +742,19 @@ fun! organ#table#new_col ()
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
 	" ---- one column, two delimiters
-	let first = positions[colnum]
-	let second = positions[colnum + 1]
+	let char_first = positions[colnum]
+	let char_second = positions[colnum + 1]
 	" ---- add new column in all table lines
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		if second == len(line)
+		let byte_first = line->byteidx(char_first - 1) + 1
+		let byte_second = line->byteidx(char_second - 1) + 1
+		if byte_second == len(line)
 			let before = line
 			let after = ''
 		else
-			let before = line[:second - 1]
-			let after = line[second:]
+			let before = line[:byte_second - 1]
+			let after = line[byte_second:]
 		endif
 		if line =~ organ#table#separator_pattern ()
 			let linelist[rownum] = before .. '--' .. sepdelim .. after
@@ -767,7 +769,7 @@ fun! organ#table#new_col ()
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', second + 1)
+	call cursor('.', byte_second + 1)
 	call organ#origami#resume ()
 endfun
 
