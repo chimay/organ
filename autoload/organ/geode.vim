@@ -205,6 +205,8 @@ let s:maps_insert = [
 	\ [ '<m-s-right>' , 'organ-meta-shift-right'   ] ,
 	\ [ '<m-s-up>'    , 'organ-meta-shift-up'      ] ,
 	\ [ '<m-s-down>'  , 'organ-meta-shift-down'    ] ,
+	\ [ '<tab>'       , 'organ-tab'                ] ,
+	\ [ '<s-tab>'     , 'organ-shift-tab'          ] ,
 	\ [ '<m-m>'       , 'organ-move-subtree-to'    ] ,
 	\ [ '<m-t>'       , 'organ-toggle-tag'         ] ,
 	\ [ '<m-c>'       , 'organ-toggle-checkbox'    ] ,
