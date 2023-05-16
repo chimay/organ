@@ -739,12 +739,14 @@ fun! organ#table#new_col ()
 		endif
 	endfor
 	" ---- lines list
+	let current_linum = line('.')
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
 	" ---- one column, two delimiters
 	let char_first = positions[colnum]
 	let char_second = positions[colnum + 1]
 	" ---- add new column in all table lines
+	let linum = head_linum
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let byte_first = line->byteidx(char_first - 1) + 1
@@ -761,6 +763,10 @@ fun! organ#table#new_col ()
 		else
 			let linelist[rownum] = before .. '  ' .. delimiter .. after
 		endif
+		if linum == current_linum
+			let cursor_col = byte_second + 1
+		endif
+		let linum += 1
 	endfor
 	" ---- commit changes to buffer
 	let linum = head_linum
@@ -769,7 +775,7 @@ fun! organ#table#new_col ()
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', byte_second + 1)
+	call cursor('.', cursor_col)
 	call organ#origami#resume ()
 endfun
 
@@ -803,12 +809,14 @@ fun! organ#table#delete_col ()
 		endif
 	endfor
 	" ---- lines list
+	let current_linum = line('.')
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
 	" ---- one column, two delimiters
 	let char_first = positions[colnum]
 	let char_second = positions[colnum + 1]
 	" ---- add new column in all table lines
+	let linum = head_linum
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let byte_first = line->byteidx(char_first - 1) + 1
@@ -824,6 +832,10 @@ fun! organ#table#delete_col ()
 			let after = line[byte_second - 1:]
 		endif
 		let linelist[rownum] = before .. after
+		if linum == current_linum
+			let cursor_col = byte_first
+		endif
+		let linum += 1
 	endfor
 	" ---- commit changes to buffer
 	let linum = head_linum
@@ -832,7 +844,7 @@ fun! organ#table#delete_col ()
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', byte_first)
+	call cursor('.', cursor_col)
 	call organ#origami#resume ()
 	return positions
 endfun
