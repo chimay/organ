@@ -585,28 +585,49 @@ fun! organ#table#move_col_left (argdict = {})
 		return positions
 	endif
 	" ---- lines list
+	let current_linum = line('.')
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
+	" ---- patterns
+	let separator_pattern = organ#table#separator_pattern ()
+	let tabdelim = organ#table#delimiter ()
+	let sepdelim = organ#table#separator_delimiter ()
 	" ---- two columns to exchange, three delimiters
-	let first = positions[colnum - 1]
-	let second = positions[colnum]
-	let third = positions[colnum + 1]
+	let char_first = positions[colnum - 1]
+	let char_second = positions[colnum]
+	let char_third = positions[colnum + 1]
 	" ---- move column in all table lines
+	let linum = head_linum
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		if first == 1
+		" -- chunks
+		let byte_first = line->byteidx(char_first - 1) + 1
+		let byte_second = line->byteidx(char_second - 1) + 1
+		let byte_third = line->byteidx(char_third - 1) + 1
+		if byte_first == 1
 			let before = ''
-			let after = line[third - 1:]
-		elseif third == len(line) + 1
+			let after = line[byte_third - 1:]
+		elseif byte_third == len(line) + 1
 			let before = line
-			let after = line[third - 1:]
+			let after = line[byte_third - 1:]
 		else
-			let before = line[:first - 2]
-			let after = line[third - 1:]
+			let before = line[:byte_first - 2]
+			let after = line[byte_third - 1:]
 		endif
-		let previous = line[first - 1:second - 2]
-		let current = line[second - 1:third - 2]
+		let previous = line[byte_first - 1:byte_second - 2]
+		let current = line[byte_second - 1:byte_third - 2]
+		" -- adjust separator line
+		if colnum == 1 && tabdelim != sepdelim && line =~ separator_pattern
+			let current = tabdelim .. current[1:]
+			let previous = sepdelim .. previous[1:]
+		endif
+		" --- reorder
 		let linelist[rownum] = before .. current .. previous .. after
+		" -- store cursor column for the end
+		if linum == current_linum
+			let cursor_col = cursor - (byte_second - byte_first)
+		endif
+		let linum += 1
 	endfor
 	" ---- commit changes to buffer
 	let linum = head_linum
@@ -615,7 +636,7 @@ fun! organ#table#move_col_left (argdict = {})
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', cursor - (second - first))
+	call cursor('.', cursor_col)
 	return positions
 endfun
 
@@ -652,28 +673,49 @@ fun! organ#table#move_col_right (argdict = {})
 		return positions
 	endif
 	" ---- lines list
+	let current_linum = line('.')
 	let linelist = getline(head_linum, tail_linum)
 	let lenlinelist = len(linelist)
+	" ---- patterns
+	let separator_pattern = organ#table#separator_pattern ()
+	let tabdelim = organ#table#delimiter ()
+	let sepdelim = organ#table#separator_delimiter ()
 	" ---- two columns to exchange, three delimiters
-	let first = positions[colnum]
-	let second = positions[colnum + 1]
-	let third = positions[colnum + 2]
+	let char_first = positions[colnum]
+	let char_second = positions[colnum + 1]
+	let char_third = positions[colnum + 2]
 	" ---- move column in all table lines
+	let linum = head_linum
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		if first == 1
+		" -- chunks
+		let byte_first = line->byteidx(char_first - 1) + 1
+		let byte_second = line->byteidx(char_second - 1) + 1
+		let byte_third = line->byteidx(char_third - 1) + 1
+		if byte_first == 1
 			let before = ''
-			let after = line[third - 1:]
-		elseif third == len(line) + 1
+			let after = line[byte_third - 1:]
+		elseif byte_third == len(line) + 1
 			let before = line
-			let after = line[third - 1:]
+			let after = line[byte_third - 1:]
 		else
-			let before = line[:first - 2]
-			let after = line[third - 1:]
+			let before = line[:byte_first - 2]
+			let after = line[byte_third - 1:]
 		endif
-		let current = line[first - 1:second - 2]
-		let next = line[second - 1:third - 2]
+		let current = line[byte_first - 1:byte_second - 2]
+		let next = line[byte_second - 1:byte_third - 2]
+		" -- adjust separator line
+		if colnum == 0 && tabdelim != sepdelim && line =~ separator_pattern
+			let next = tabdelim .. next[1:]
+			let current = sepdelim .. current[1:]
+		endif
+		" --- reorder
 		let linelist[rownum] = before .. next .. current .. after
+		" -- store cursor column for the end
+		if linum == current_linum
+			let cursor_col = cursor + (byte_third - byte_second)
+		endif
+		let linum += 1
 	endfor
 	" ---- commit changes to buffer
 	let linum = head_linum
@@ -682,7 +724,7 @@ fun! organ#table#move_col_right (argdict = {})
 		let linum += 1
 	endfor
 	" ---- coda
-	call cursor('.', cursor + (third - second))
+	call cursor('.', cursor_col)
 	return positions
 endfun
 
@@ -763,6 +805,7 @@ fun! organ#table#new_col ()
 		else
 			let linelist[rownum] = before .. '  ' .. delimiter .. after
 		endif
+		" -- store cursor column for the end
 		if linum == current_linum
 			let cursor_col = byte_second + 1
 		endif
@@ -832,6 +875,7 @@ fun! organ#table#delete_col ()
 			let after = line[byte_second - 1:]
 		endif
 		let linelist[rownum] = before .. after
+		" -- store cursor column for the end
 		if linum == current_linum
 			let cursor_col = byte_first
 		endif

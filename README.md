@@ -89,7 +89,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - lists
   + cycle list item prefix
   + toggle checkbox
-  + checked boxes ratio on parent
+  + checked boxes ratio on parent item
 - tables
   + inside of table : align columns
     - also works with multibyte characters
