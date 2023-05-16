@@ -465,12 +465,15 @@ fun! organ#table#update ()
 	if ! organ#table#is_in_table ()
 		return []
 	endif
+	let position = getcurpos ()
 	let argdict = {}
 	let argdict.delimiter = organ#table#delimiter ()
 	let argdict = organ#table#shrink_separator_lines (argdict)
 	let argdict = organ#table#reduce_multi_spaces (argdict)
 	let argdict = organ#table#add_missing_columns (argdict)
-	return organ#table#align_columns (argdict)
+	let argdict = organ#table#align_columns (argdict)
+	call setpos('.', position)
+	return argdict
 endfun
 
 " ---- navigation
