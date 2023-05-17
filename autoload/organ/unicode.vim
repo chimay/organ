@@ -10,12 +10,12 @@ if exists('s:punctuation')
 unlockvar! s:punctuation
 endif
 let s:punctuation = [
-	\ [ 'nbsp'  , ' '  ],
-	\ [ 'sect'  , '§'  ],
-	\ [ 'para, pilcrow'  , '¶'  ],
-	\ [ 'micro'  , 'µ'  ],
-	\ [ 'left double angle quote'  , '«'  ],
-	\ [ 'right double angle quote'  , '»'  ],
+	\ [ 'nbsp'                     , ' ' ],
+	\ [ 'sect'                     , '§' ],
+	\ [ 'para pilcrow'             , '¶' ],
+	\ [ 'micro'                    , 'µ' ],
+	\ [ 'left double angle quote'  , '«' ],
+	\ [ 'right double angle quote' , '»' ],
 \ ]
 lockvar! s:punctuation
 
@@ -177,8 +177,8 @@ if exists('s:miscellaneous')
 unlockvar! s:miscellaneous
 endif
 let s:miscellaneous = [
-	\ [ 'mdash'  , '—' ],
-	\ [ 'brvbar' , '¦' ],
+	\ [ 'm dash'    , '—' ],
+	\ [ 'breve bar' , '¦' ],
 \ ]
 lockvar! s:miscellaneous
 

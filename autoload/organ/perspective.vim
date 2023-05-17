@@ -91,3 +91,16 @@ fun! organ#perspective#tags ()
 	call setpos('.', position)
 	return returnlist
 endfun
+
+" ---- unicode
+
+fun! organ#perspective#unicode ()
+	let charlist = deepcopy(organ#unicode#fetch('all'))
+	let returnlist = []
+	for entry in charlist
+		eval entry->reverse()
+		let record = join(entry, s:field_separ)
+		eval returnlist->add(record)
+	endfor
+	return returnlist
+endfun
