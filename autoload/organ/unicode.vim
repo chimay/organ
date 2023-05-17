@@ -29,6 +29,51 @@ let s:philosophy = [
 \ ]
 lockvar! s:philosophy
 
+" ---- cosmos
+
+if exists('s:cosmos')
+unlockvar! s:cosmos
+endif
+let s:cosmos = [
+	\ [ 'sun'                , '☉' ],
+	\ [ 'first quarter moon' , '☽' ],
+	\ [ 'last quarter moon'  , '☾' ],
+	\ [ 'mercury'            , '☿' ],
+	\ [ 'venus female'       , '♀' ],
+	\ [ 'earth'              , '♁' ],
+	\ [ 'mars male'          , '♂' ],
+	\ [ 'jupiter'            , '♃' ],
+	\ [ 'saturn'             , '♄' ],
+	\ [ 'uranus'             , '♅' ],
+	\ [ 'neptune'            , '♆' ],
+	\ [ 'pluto'              , '♇' ],
+	\ [ 'aries'              , '♈' ],
+	\ [ 'taurus'             , '♉' ],
+	\ [ 'gemini'             , '♊' ],
+	\ [ 'cancer'             , '♋' ],
+	\ [ 'leo'                , '♌' ],
+	\ [ 'virgo'              , '♍' ],
+	\ [ 'libra'              , '♎' ],
+	\ [ 'scorpius'           , '♏' ],
+	\ [ 'sagittarius'        , '♐' ],
+	\ [ 'capricorn'          , '♑' ],
+	\ [ 'aquarius'           , '♒' ],
+	\ [ 'pisces'             , '♓' ],
+\ ]
+lockvar! s:cosmos
+
+" ---- weather
+
+if exists('s:weather')
+unlockvar! s:weather
+endif
+let s:weather = [
+	\ [ 'lightning'          , '☇' ],
+	\ [ 'thunderstorm'       , '☈' ],
+	\ [ 'thunder cloud rain' , '⛈' ],
+\ ]
+lockvar! s:weather
+
 " ---- punctuation
 
 if exists('s:punctuation')
@@ -243,17 +288,34 @@ let s:music = [
 \ ]
 lockvar! s:music
 
-" ---- weather
+" ---- games
 
-if exists('s:weather')
-unlockvar! s:weather
+if exists('s:games')
+unlockvar! s:games
 endif
-let s:weather = [
-	\ [ 'lightning'          , '☇' ],
-	\ [ 'thunderstorm'       , '☈' ],
-	\ [ 'thunder cloud rain' , '⛈' ],
+let s:games = [
+	\ [ 'white heart suit'   , '♡' ],
+	\ [ 'white diamond suit' , '♢' ],
+	\ [ 'white club suit'    , '♧' ],
+	\ [ 'white spade suit'   , '♤' ],
+	\ [ 'black heart suit'   , '♥' ],
+	\ [ 'black diamond suit' , '♦' ],
+	\ [ 'black club suit'    , '♣' ],
+	\ [ 'black spade suit'   , '♠' ],
 \ ]
-lockvar! s:weather
+lockvar! s:games
+
+" ---- currencies
+
+if exists('s:currencies')
+unlockvar! s:currencies
+endif
+let s:currencies = [
+	\ [ 'pound' , '£' ],
+	\ [ 'euro'  , '€' ],
+	\ [ 'yen'   , '¥' ],
+\ ]
+lockvar! s:currencies
 
 " ---- miscellaneous
 
@@ -263,7 +325,7 @@ endif
 let s:miscellaneous = [
 	\ [ 'n dash'             , '–' ],
 	\ [ 'm dash'             , '—' ],
-	\ [ 'breve bar'          , '¦' ],
+	\ [ 'broken bar'         , '¦' ],
 \ ]
 lockvar! s:miscellaneous
 
@@ -274,16 +336,20 @@ if exists('s:lists')
 endif
 let s:lists = [
 			\ 'philosophy',
+			\ 'cosmos',
+			\ 'weather',
 			\ 'punctuation',
 			\ 'arrows',
 			\ 'greek uppercase',
 			\ 'greek lowercase',
+			\ 'math_basic',
 			\ 'math_set',
 			\ 'math_operators',
 			\ 'math_geometry',
 			\ 'math_misc',
 			\ 'music',
-			\ 'weather',
+			\ 'games',
+			\ 'currencies',
 			\ 'miscellaneous',
 			\ ]
 lockvar! s:lists
