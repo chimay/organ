@@ -209,7 +209,7 @@ if exists('s:math_basic')
 unlockvar! s:math_basic
 endif
 let s:math_basic = [
-	\ [ 'equiv'            , '≡' ],
+	\ [ 'equivalent'       , '≡' ],
 	\ [ 'less or equal'    , '≤' ],
 	\ [ 'greater or equal' , '≥' ],
 	\ [ 'for all'          , '∀' ],
