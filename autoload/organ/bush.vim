@@ -570,12 +570,14 @@ fun! organ#bush#promote (mode = 'alone')
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
-	" --- do nothing if top level
+	" ---  do nothing if top level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
 		return 0
 	endif
-	" --- adjust indent
+	" ---- is cursor at end of line ?
+	let is_cursor_at_eol = col('.') == col('$')
+	" ---  adjust indent
 	let properties.itemhead = organ#bush#indent_item (level - 1, properties)
 	let properties.level -= 1
 	" ---- update prefix
@@ -586,7 +588,9 @@ fun! organ#bush#promote (mode = 'alone')
 		call organ#bush#update_ratios ()
 		if col('.') > 1
 			let step = g:organ_config.list.indent_length
-			call cursor('.', col('.') - step)
+			if ! is_cursor_at_eol
+				call cursor('.', col('.') - step)
+			endif
 		endif
 		call organ#origami#resume ()
 	endif
