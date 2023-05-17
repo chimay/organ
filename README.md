@@ -108,7 +108,8 @@ It is written in vimscript and is compatible with both Vim and Neovim.
 - expand shortcut to template (aka org-structure-template)
   + markdown support limited to code blocks
 - insert timestamp
-- insert (some) unicode character
+- insert unicode character
+  + see autoload/organ/unicode.vim to see available chars
 - export in another format using
   + pandoc
   + emacs
