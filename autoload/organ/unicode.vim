@@ -342,23 +342,23 @@ if exists('s:lists')
 	unlockvar! s:lists
 endif
 let s:lists = [
-			\ 'philosophy',
-			\ 'cosmos',
-			\ 'weather',
-			\ 'punctuation',
-			\ 'arrows',
-			\ 'greek uppercase',
-			\ 'greek lowercase',
-			\ 'math_basic',
-			\ 'math_set',
-			\ 'math_operators',
-			\ 'math_geometry',
-			\ 'math_misc',
-			\ 'music',
-			\ 'games',
-			\ 'currencies',
-			\ 'miscellaneous',
-			\ ]
+	\ 'philosophy',
+	\ 'cosmos',
+	\ 'weather',
+	\ 'punctuation',
+	\ 'arrows',
+	\ 'greek uppercase',
+	\ 'greek lowercase',
+	\ 'math_basic',
+	\ 'math_set',
+	\ 'math_operators',
+	\ 'math_geometry',
+	\ 'math_misc',
+	\ 'music',
+	\ 'games',
+	\ 'currencies',
+	\ 'miscellaneous',
+	\ ]
 lockvar! s:lists
 
 if exists('s:all')
