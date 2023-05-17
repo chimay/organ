@@ -115,6 +115,15 @@ fun! organ#complete#url (arglead, cmdline, cursorpos)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
+" ---- unicode characters
+
+fun! organ#complete#unicode (arglead, cmdline, cursorpos)
+	" Complete unicode characters
+	let choices = organ#perspective#unicode ()
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
 " ---- export
 
 fun! organ#complete#pandoc_formats (arglead, cmdline, cursorpos)
