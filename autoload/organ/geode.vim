@@ -102,7 +102,6 @@ if exists('s:plugs_visual')
 endif
 let s:plugs_visual = [
 	\ [ 'organ-align'       , "organ#table#align('visual')" ] ,
-	\ [ 'organ-select-cell' , 'organ#table#select_cell'     ] ,
 	\ ]
 lockvar! s:plugs_visual
 

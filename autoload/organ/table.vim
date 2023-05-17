@@ -520,7 +520,7 @@ endfun
 
 fun! organ#table#select_cell ()
 	" Select cell content
-	"normal! v
+	normal! v
 	let linum = organ#table#cell_begin ()
 	normal! o
 	let linum = organ#table#cell_end ()

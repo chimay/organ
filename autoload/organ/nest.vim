@@ -257,6 +257,7 @@ endfun
 fun! organ#nest#shift_down ()
 	" For <s-right> map
 	if organ#table#is_in_table ()
+		return organ#table#select_cell ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_todo (1)
 	else

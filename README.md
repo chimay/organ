@@ -257,6 +257,67 @@ are kept in the `g:ORGAN_STOPS` global variable. It is persistent across
 
 # Bindings
 
+## Available plugs
+
+Plugs are intermediates that give you acces to the plugin routines. You
+can map your favorite keys like that :
+
+```vim
+nmap <c-n> <plug>(organ-next)
+```
+
+Here is a complete list :
+
+| Plugs                              | Heading or list item      | Table              |
+|------------------------------------|---------------------------|--------------------|
+| `<plug>`(organ-previous)           | previous heading or item  |                    |
+| `<plug>`(organ-next)               | next heading or item      |                    |
+| `<plug>`(organ-backward)           | previous, same level      |                    |
+| `<plug>`(organ-forward)            | next, same level          |                    |
+| `<plug>`(organ-parent)             | parent heading or item    |                    |
+| `<plug>`(organ-loose-child)        | loose child               |                    |
+| `<plug>`(organ-strict-child)       | strict child              |                    |
+| `<plug>`(organ-info)               | full heading path         |                    |
+| `<plug>`(organ-goto-headline)      | go to headline, with comp |                    |
+| `<plug>`(organ-cycle-fold)         | cycle current fold        |                    |
+| `<plug>`(organ-cycle-all-folds)    | cycle all folds           |                    |
+| `<plug>`(organ-select-subtree)     | select subtree            |                    |
+| `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
+| `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
+| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
+| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row            |
+| `<plug>`(organ-tab)                |                           | go to next cell    |
+| `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
+| `<plug>`(organ-meta-left)          | promote                   | move column left   |
+| `<plug>`(organ-meta-right)         | demote                    | move column right  |
+| `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
+| `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
+| `<plug>`(organ-shift-left)         | cycle item prefix left    | go to cell begin   |
+| `<plug>`(organ-shift-right)        | cycle item prefix right   | go to cell end     |
+| `<plug>`(organ-shift-up)           | cycle todo keyword left   |                    |
+| `<plug>`(organ-shift-down)         | cycle todo keyword right  | select cell        |
+| `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
+| `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
+| `<plug>`(organ-meta-shift-up)      |                           | delete row         |
+| `<plug>`(organ-meta-shift-down)    |                           | add new row        |
+| `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
+| `<plug>`(organ-align)              |                           | align table        |
+| `<plug>`(organ-new-separator-line) |                           | add separator line |
+
+| Plugs                            | Operation                         |
+|----------------------------------|-----------------------------------|
+| `<plug>`(organ-expand-template)  | expand template before cursor     |
+| `<plug>`(organ-store-url)        | store url under or near cursor    |
+| `<plug>`(organ-new-link)         | create new link                   |
+| `<plug>`(organ-previous-link)    | go to previous link               |
+| `<plug>`(organ-next-link)        | go to next link                   |
+| `<plug>`(organ-goto-link-target) | go to link target                 |
+| `<plug>`(organ-timestamp)        | add timestamp at cursor           |
+| `<plug>`(organ-export)           | export document                   |
+| `<plug>`(organ-alter-export)     | export document, alternative tool |
+
+You can also list them with the command `:map <plug>(organ-`.
+
 ## Speed keys
 
 If you set the `g:organ_config.speedkeys` variable to a greater-than-zero
@@ -305,72 +366,11 @@ Some of them are filetype dependent :
 
 ## Always defined
 
-Once you are on the first char of a headline, the speedkeys become
-available. The plug `<plug>(organ-previous)` brings you precisely there,
-and is therefore one of the most important maps. For this reason,
+Once you are on the first char of a headline or list item, the speedkeys
+become available. The plug `<plug>(organ-previous)` brings you precisely
+there, and is therefore one of the most important maps. For this reason,
 it's always defined, regardless of the prefixless setting. You can use
 `g:organ_config.previous` to choose the key that triggers it.
-
-## Available plugs
-
-Plugs are intermediates that give you acces to the plugin routines. You
-can map your favorite keys like that :
-
-```vim
-nmap <c-n> <plug>(organ-next)
-```
-
-Here is a complete list :
-
-| Plugs                              | Heading or list item      | Table              |
-|------------------------------------|---------------------------|--------------------|
-| `<plug>`(organ-previous)           | previous heading or item  |                    |
-| `<plug>`(organ-next)               | next heading or item      |                    |
-| `<plug>`(organ-backward)           | previous, same level      |                    |
-| `<plug>`(organ-forward)            | next, same level          |                    |
-| `<plug>`(organ-parent)             | parent heading or item    |                    |
-| `<plug>`(organ-loose-child)        | loose child               |                    |
-| `<plug>`(organ-strict-child)       | strict child              |                    |
-| `<plug>`(organ-info)               | full heading path         |                    |
-| `<plug>`(organ-goto-headline)      | go to headline, with comp |                    |
-| `<plug>`(organ-cycle-fold)         | cycle current fold        |                    |
-| `<plug>`(organ-cycle-all-folds)    | cycle all folds           |                    |
-| `<plug>`(organ-select-subtree)     | select subtree            |                    |
-| `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
-| `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
-| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
-| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row            |
-| `<plug>`(organ-tab)                |                           | go to next cell    |
-| `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
-| `<plug>`(organ-meta-left)          | promote                   | move column left   |
-| `<plug>`(organ-meta-right)         | demote                    | move column right  |
-| `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
-| `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
-| `<plug>`(organ-shift-left)         | cycle item prefix left    | go to cell begin   |
-| `<plug>`(organ-shift-right)        | cycle item prefix right   | go to cell end     |
-| `<plug>`(organ-shift-up)           | cycle todo keyword left   |                    |
-| `<plug>`(organ-shift-down)         | cycle todo keyword right  |                    |
-| `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
-| `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
-| `<plug>`(organ-meta-shift-up)      |                           | delete row         |
-| `<plug>`(organ-meta-shift-down)    |                           | add new row        |
-| `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
-| `<plug>`(organ-align)              |                           | align table        |
-| `<plug>`(organ-new-separator-line) |                           | add separator line |
-
-| Plugs                            | Operation                         |
-|----------------------------------|-----------------------------------|
-| `<plug>`(organ-expand-template)  | expand template before cursor     |
-| `<plug>`(organ-store-url)        | store url under or near cursor    |
-| `<plug>`(organ-new-link)         | create new link                   |
-| `<plug>`(organ-previous-link)    | go to previous link               |
-| `<plug>`(organ-next-link)        | go to next link                   |
-| `<plug>`(organ-goto-link-target) | go to link target                 |
-| `<plug>`(organ-timestamp)        | add timestamp at cursor           |
-| `<plug>`(organ-export)           | export document                   |
-| `<plug>`(organ-alter-export)     | export document, alternative tool |
-
-You can also list them with the command `:map <plug>(organ-`.
 
 ## Prefixless
 
@@ -419,7 +419,7 @@ Some of them are context sensitive :
 | `<S-left>`    |                       | cycle prefix left  | go to cell begin  |
 | `<S-right>`   |                       | cycle prefix right | go to cell end    |
 | `<S-up>`      | cycle todo left       | cycle todo left    |                   |
-| `<S-down>`    | cycle todo right      | cycle todo right   |                   |
+| `<S-down>`    | cycle todo right      | cycle todo right   | select cell       |
 | `<M-S-left>`  | promote subtree       | promote subtree    | new column        |
 | `<M-S-right>` | demote subtree        | demote subtree     | delete column     |
 | `<M-S-up>`    |                       |                    | delete row        |
