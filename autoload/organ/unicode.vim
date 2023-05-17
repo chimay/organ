@@ -70,8 +70,10 @@ if exists('s:weather')
 unlockvar! s:weather
 endif
 let s:weather = [
+	\ [ 'cloud'              , '☁' ],
 	\ [ 'sun behind cloud'   , '⛅' ],
 	\ [ 'rain'               , '⛆' ],
+	\ [ 'snowman & snow'     , '☃' ],
 	\ [ 'snowman'            , '⛄' ],
 	\ [ 'lightning'          , '☇' ],
 	\ [ 'thunderstorm'       , '☈' ],
