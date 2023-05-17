@@ -110,7 +110,7 @@ fun! organ#complete#url (arglead, cmdline, cursorpos)
 	" Complete url for links
 	let urls = organ#vine#urlist ()
 	let tree = glob('**', v:true, v:true)
-	let choices = urls + s:url_prefixes + tree
+	let choices = urls + tree + s:url_prefixes
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)
 endfun

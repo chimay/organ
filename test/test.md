@@ -25,8 +25,6 @@ content
 
 ## part 1.2
 
-![orgue](~/racine/pictura/avatar/OrgueAtlanticCityConventionAll.jpg)
-
 content
 
 ## part 1.3
