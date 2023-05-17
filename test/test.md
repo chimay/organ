@@ -27,8 +27,6 @@ content
 
 content
 
-
-
 ## part 1.3
 
 content

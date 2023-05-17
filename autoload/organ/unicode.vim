@@ -10,9 +10,22 @@ if exists('s:philosophy')
 unlockvar! s:philosophy
 endif
 let s:philosophy = [
-	\ [ 'taijitu yin yang'   , '☯' ],
-	\ [ 'trigram'            , '☰' ],
-	\ [ 'dharma wheel'       , '☸' ],
+	\ [ 'taijitu yin yang'    , '☯' ],
+	\ [ 'yang'                , '⚊' ],
+	\ [ 'yin'                 , '⚋' ],
+	\ [ 'digram greater yang' , '⚌' ],
+	\ [ 'digram lesser yang'  , '⚎' ],
+	\ [ 'digram lesser yin'   , '⚍' ],
+	\ [ 'digram greater yin'  , '⚏' ],
+	\ [ 'trigram heaven'      , '☰' ],
+	\ [ 'trigram lake'        , '☱' ],
+	\ [ 'trigram fire'        , '☲' ],
+	\ [ 'trigram thunder'     , '☳' ],
+	\ [ 'trigram wind'        , '☴' ],
+	\ [ 'trigram water'       , '☵' ],
+	\ [ 'trigram mountain'    , '☶' ],
+	\ [ 'trigram earth'       , '☷' ],
+	\ [ 'dharma wheel'        , '☸' ],
 \ ]
 lockvar! s:philosophy
 
