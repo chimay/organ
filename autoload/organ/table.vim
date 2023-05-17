@@ -20,7 +20,7 @@ fun! organ#table#separator_delimiter ()
 	elseif &filetype ==# 'markdown'
 		return '|'
 	endif
-	return '|'
+	return '+'
 endfun
 
 fun! organ#table#separator_delimiter_pattern ()
@@ -30,7 +30,7 @@ fun! organ#table#separator_delimiter_pattern ()
 	elseif &filetype ==# 'markdown'
 		return '|'
 	endif
-	return '|'
+	return '[|+]'
 endfun
 
 fun! organ#table#generic_pattern (argdict = {})
@@ -56,8 +56,11 @@ fun! organ#table#separator_pattern ()
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
 	endif
+	let pattern = '\m^\s*|-\+|\s*$\|'
+	let pattern ..= '^\s*|\%(-*+\)\+-*|\s*$'
+	return pattern
 	" -- never matches
-	return '\m^$\&^.$'
+	"return '\m^$\&^.$'
 endfun
 
 fun! organ#table#outside_pattern (argdict = {})
