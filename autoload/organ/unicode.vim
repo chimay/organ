@@ -4,20 +4,67 @@
 "
 " Internal Constants for unicode characters
 
+" ---- philosophy
+
+if exists('s:philosophy')
+unlockvar! s:philosophy
+endif
+let s:philosophy = [
+	\ [ 'taijitu yin yang'   , '☯' ],
+	\ [ 'trigram'            , '☰' ],
+	\ [ 'dharma wheel'       , '☸' ],
+\ ]
+lockvar! s:philosophy
+
 " ---- punctuation
 
 if exists('s:punctuation')
 unlockvar! s:punctuation
 endif
 let s:punctuation = [
-	\ [ 'nbsp'                     , ' ' ],
-	\ [ 'sect'                     , '§' ],
-	\ [ 'para pilcrow'             , '¶' ],
-	\ [ 'micro'                    , 'µ' ],
-	\ [ 'left double angle quote'  , '«' ],
-	\ [ 'right double angle quote' , '»' ],
+	\ [ 'nbsp'                     , ' '  ],
+	\ [ 'sect'                     , '§'  ],
+	\ [ 'para pilcrow'             , '¶'  ],
+	\ [ 'micro'                    , 'µ'  ],
+	\ [ 'left angle quote'         , '‹'  ],
+	\ [ 'right angle quote'        , '›'  ],
+	\ [ 'left angle quote var'     , '⧼'  ],
+	\ [ 'right angle quote var'    , '⧽'  ],
+	\ [ 'left double angle quote'  , '«'  ],
+	\ [ 'right double angle quote' , '»'  ],
+	\ [ 'reference mark'           , '※ ' ],
+	\ [ 'dotted cross'             , '⁜'  ],
+	\ [ 'asterism triple asterisk' , '⁂ ' ],
+	\ [ 'flower'                   , '⁕'  ],
+	\ [ 'dagger'                   , '†'  ],
+	\ [ 'double dagger'            , '‡'  ],
 \ ]
 lockvar! s:punctuation
+
+" ---- arrows
+
+if exists('s:arrows')
+unlockvar! s:arrows
+endif
+let s:arrows = [
+	\ [ 'left arrow'              , '←' ],
+	\ [ 'right arrow'             , '→' ],
+	\ [ 'up arrow'                , '↑' ],
+	\ [ 'down arrow'              , '↓' ],
+	\ [ 'north west arrow'        , '↖' ],
+	\ [ 'north east arrow'        , '↗' ],
+	\ [ 'south west arrow'        , '↙' ],
+	\ [ 'south east arrow'        , '↘' ],
+	\ [ 'left right arrow'        , '↔' ],
+	\ [ 'up down arrow'           , '↕' ],
+	\ [ 'double left arrow'       , '⇐' ],
+	\ [ 'double right arrow'      , '⇒' ],
+	\ [ 'double up arrow'         , '⇑' ],
+	\ [ 'double down arrow'       , '⇓' ],
+	\ [ 'double left right arrow' , '⇔' ],
+	\ [ 'double up down arrow'    , '⇕' ],
+\ ]
+lockvar! s:arrows
 
 " ---- greek
 
@@ -148,13 +195,25 @@ let s:math_operators= [
 \ ]
 lockvar! s:math_operators
 
+if exists('s:math_geometry')
+unlockvar! s:math_geometry
+endif
+let s:math_geometry= [
+	\ [ 'perpendicular' , '⊥' ],
+	\ [ 'parallel'      , '∥' ],
+	\ [ 'not parallel'  , '∦' ],
+	\ [ 'angle'         , '∠' ],
+	\ [ 'right angle'   , '∟' ],
+	\ [ 'lozenge'       , '◊' ],
+	\ [ 'large circle'  , '◯' ],
+\ ]
+lockvar! s:math_geometry
+
 if exists('s:math_misc')
 unlockvar! s:math_misc
 endif
 let s:math_misc= [
-	\ [ 'infinity'        , '∞'  ],
-	\ [ 'perp'            , '⊥'  ],
-	\ [ 'dagger'          , '†'  ],
+	\ [ 'infinity'      , '∞' ],
 \ ]
 lockvar! s:math_misc
 
@@ -171,14 +230,27 @@ let s:music = [
 \ ]
 lockvar! s:music
 
+" ---- weather
+
+if exists('s:weather')
+unlockvar! s:weather
+endif
+let s:weather = [
+	\ [ 'lightning'          , '☇' ],
+	\ [ 'thunderstorm'       , '☈' ],
+	\ [ 'thunder cloud rain' , '⛈' ],
+\ ]
+lockvar! s:weather
+
 " ---- miscellaneous
 
 if exists('s:miscellaneous')
 unlockvar! s:miscellaneous
 endif
 let s:miscellaneous = [
-	\ [ 'm dash'    , '—' ],
-	\ [ 'breve bar' , '¦' ],
+	\ [ 'n dash'             , '–' ],
+	\ [ 'm dash'             , '—' ],
+	\ [ 'breve bar'          , '¦' ],
 \ ]
 lockvar! s:miscellaneous
 
@@ -188,13 +260,17 @@ if exists('s:lists')
 	unlockvar! s:lists
 endif
 let s:lists = [
+			\ 'philosophy',
 			\ 'punctuation',
+			\ 'arrows',
 			\ 'greek uppercase',
 			\ 'greek lowercase',
 			\ 'math_set',
 			\ 'math_operators',
+			\ 'math_geometry',
 			\ 'math_misc',
 			\ 'music',
+			\ 'weather',
 			\ 'miscellaneous',
 			\ ]
 lockvar! s:lists
