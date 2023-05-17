@@ -558,8 +558,11 @@ Completion is available for :
 
 - meta-command subcommands
 - full path of headlines (goto, move to)
-- stored links and links protocols (adding new link)
-- language of source code block (template expansion)
+- adding a new link
+  + stored links
+  + file tree in current directory
+  + links protocols
+- template expansion : languages of source code block
 
 It is intended to work roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
