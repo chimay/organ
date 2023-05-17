@@ -47,6 +47,7 @@ let s:cosmos = [
 	\ [ 'uranus'             , '♅' ],
 	\ [ 'neptune'            , '♆' ],
 	\ [ 'pluto'              , '♇' ],
+	\ [ 'sextile'            , '⚹' ],
 	\ [ 'aries'              , '♈' ],
 	\ [ 'taurus'             , '♉' ],
 	\ [ 'gemini'             , '♊' ],
@@ -59,7 +60,8 @@ let s:cosmos = [
 	\ [ 'capricorn'          , '♑' ],
 	\ [ 'aquarius'           , '♒' ],
 	\ [ 'pisces'             , '♓' ],
-\ ]
+	\ [ 'ophiuchus'          , '⛎' ],
+	\ ]
 lockvar! s:cosmos
 
 " ---- weather
@@ -68,6 +70,9 @@ if exists('s:weather')
 unlockvar! s:weather
 endif
 let s:weather = [
+	\ [ 'sun behind cloud'   , '⛅' ],
+	\ [ 'rain'               , '⛆' ],
+	\ [ 'snowman'            , '⛄' ],
 	\ [ 'lightning'          , '☇' ],
 	\ [ 'thunderstorm'       , '☈' ],
 	\ [ 'thunder cloud rain' , '⛈' ],
