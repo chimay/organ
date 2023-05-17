@@ -314,6 +314,7 @@ Here is a complete list :
 | `<plug>`(organ-next-link)        | go to next link                   |
 | `<plug>`(organ-goto-link-target) | go to link target                 |
 | `<plug>`(organ-timestamp)        | add timestamp at cursor           |
+| `<plug>`(organ-unicode)          | add unicode character at cursor   |
 | `<plug>`(organ-export)           | export document                   |
 | `<plug>`(organ-alter-export)     | export document, alternative tool |
 
@@ -394,6 +395,7 @@ value in your init file, these bindings become available :
 - `<M-o>`      : go to link under or close to cursor
 - `<M-x>`      : expand template
 - `<M-d>`      : add date & time stamp
+- `<M-$>`      : add unicode character
 - `<M-e>`      : export with pandoc
 - `<M-S-e>`    : export with emacs (works only in org files)
 

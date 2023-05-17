@@ -93,8 +93,6 @@ let s:punctuation = [
 	\ [ 'micro'                    , 'µ'  ],
 	\ [ 'left angle quote'         , '‹'  ],
 	\ [ 'right angle quote'        , '›'  ],
-	\ [ 'left angle quote var'     , '⧼'  ],
-	\ [ 'right angle quote var'    , '⧽'  ],
 	\ [ 'left double angle quote'  , '«'  ],
 	\ [ 'right double angle quote' , '»'  ],
 	\ [ 'reference mark'           , '※ ' ],
@@ -257,6 +255,8 @@ let s:math_operators= [
 	\ [ 'n product'        , '∏'  ],
 	\ [ 'integral'         , '∫'  ],
 	\ [ 'contour integral' , '∮'  ],
+	\ [ 'left angle'       , '⧼'  ],
+	\ [ 'right angle'      , '⧽'  ],
 \ ]
 lockvar! s:math_operators
 

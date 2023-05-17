@@ -26,6 +26,7 @@ content
 ## part 1.2
 
 content
+unicode : ☯ ⚌ ∥ ⚹
 
 ## part 1.3
 

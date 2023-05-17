@@ -92,6 +92,7 @@ let s:plugs_normal = [
 	\ [ 'organ-goto-link-target'   , 'organ#vine#goto'                   ] ,
 	\ [ 'organ-expand-template'    , 'organ#seed#expand'                 ] ,
 	\ [ 'organ-timestamp'          , 'organ#utils#timestamp'             ] ,
+	\ [ 'organ-unicode'            , 'organ#calligraphy#insert'          ] ,
 	\ [ 'organ-export'             , 'organ#nest#export'                 ] ,
 	\ [ 'organ-alter-export'       , 'organ#nest#alter_export'           ] ,
 	\ ]
@@ -159,6 +160,7 @@ let s:maps_normal = [
 	\ [ '<m-o>'       , 'organ-goto-link-target'   ] ,
 	\ [ '<m-x>'       , 'organ-expand-template'    ] ,
 	\ [ '<m-d>'       , 'organ-timestamp'          ] ,
+	\ [ '<m-$>'       , 'organ-unicode'            ] ,
 	\ [ '<m-e>'       , 'organ-export'             ] ,
 	\ [ '<m-s-e>'     , 'organ-alter-export'       ] ,
 	\ ]
@@ -218,6 +220,7 @@ let s:maps_insert = [
 	\ [ '<m-o>'       , 'organ-goto-link-target'   ] ,
 	\ [ '<m-x>'       , 'organ-expand-template'    ] ,
 	\ [ '<m-d>'       , 'organ-timestamp'          ] ,
+	\ [ '<m-$>'       , 'organ-unicode'            ] ,
 	\ [ '<m-e>'       , 'organ-export'             ] ,
 	\ [ '<m-s-e>'     , 'organ-alter-export'       ] ,
 	\ ]
