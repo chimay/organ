@@ -245,7 +245,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
-  " ---- number of evaluated expressions to keep in history
+  " ---- number of evaluated expressions to keep in history (default)
   let g:organ_config.expr.keep = 30
   " ---- custom maps
   nmap <c-cr> <plug>(organ-meta-return)
