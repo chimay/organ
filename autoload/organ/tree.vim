@@ -120,6 +120,7 @@ fun! organ#tree#new ()
 	let level = properties.level
 	let commentstrings = copy(properties.commentstrings)
 	let lencomlist = len(commentstrings)
+	" ---- add spaces
 	if lencomlist >= 1
 		let commentstrings[0] ..= ' '
 	endif
@@ -199,9 +200,9 @@ endfun
 
 " -- current heading only
 
-fun! organ#tree#promote (mode = 'alone')
+fun! organ#tree#promote (context = 'alone')
 	" Promote heading
-	let mode = a:mode
+	let context = a:context
 	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
@@ -224,7 +225,7 @@ fun! organ#tree#promote (mode = 'alone')
 		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
-	if mode ==# 'alone'
+	if context ==# 'alone'
 		call setpos('.', position)
 		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
 			call cursor('.', col('.') - 1)
@@ -233,9 +234,9 @@ fun! organ#tree#promote (mode = 'alone')
 	return linum
 endfun
 
-fun! organ#tree#demote (mode = 'alone')
+fun! organ#tree#demote (context = 'alone')
 	" Demote heading
-	let mode = a:mode
+	let context = a:context
 	let position = getcurpos ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
@@ -256,7 +257,7 @@ fun! organ#tree#demote (mode = 'alone')
 		let headline = substitute(headline, old, new, '')
 	endif
 	call setline(linum, headline)
-	if mode ==# 'alone'
+	if context ==# 'alone'
 		call setpos('.', position)
 		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
 			call cursor('.', col('.') + 1)

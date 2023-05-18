@@ -561,10 +561,10 @@ endfun
 
 " -- current only
 
-fun! organ#bush#promote (mode = 'alone')
+fun! organ#bush#promote (context = 'alone')
 	" Promote list item
-	let mode = a:mode
-	if mode ==# 'alone'
+	let context = a:context
+	if context ==# 'alone'
 		call organ#origami#suspend ()
 	endif
 	let properties = organ#colibri#properties ()
@@ -583,7 +583,7 @@ fun! organ#bush#promote (mode = 'alone')
 	" ---- update prefix
 	call organ#bush#update_prefix (-1, properties)
 	" ---- update counters
-	if mode ==# 'alone'
+	if context ==# 'alone'
 		call organ#bush#update_counters ()
 		call organ#bush#update_ratios ()
 		if col('.') > 1
@@ -598,10 +598,10 @@ fun! organ#bush#promote (mode = 'alone')
 	return linum
 endfun
 
-fun! organ#bush#demote (mode = 'alone')
+fun! organ#bush#demote (context = 'alone')
 	" Demote list item
-	let mode = a:mode
-	if mode ==# 'alone'
+	let context = a:context
+	if context ==# 'alone'
 		call organ#origami#suspend ()
 	endif
 	let properties = organ#colibri#properties ()
@@ -613,7 +613,7 @@ fun! organ#bush#demote (mode = 'alone')
 	" ---- update prefix
 	call organ#bush#update_prefix (1, properties)
 	" ---- update counters
-	if mode ==# 'alone'
+	if context ==# 'alone'
 		call organ#bush#update_counters ()
 		call organ#bush#update_ratios ()
 		if col('.') > 1
