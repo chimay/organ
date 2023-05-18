@@ -14,6 +14,9 @@ fun! organ#void#stops ()
 	if ! has_key(g:ORGAN_STOPS, 'urls')
 		let g:ORGAN_STOPS.urls = []
 	endif
+	if ! has_key(g:ORGAN_STOPS, 'expr')
+		let g:ORGAN_STOPS.expr = #{ vim : [], python : [] }
+	endif
 endfun
 
 fun! organ#void#config ()

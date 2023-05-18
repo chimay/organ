@@ -88,6 +88,7 @@ FEATURES		    			*organ-introduction-features*
 - insert timestamp
 - insert unicode character
   + refer to autoload/organ/unicode.vim to see available chars
+- insert result of vim or python expression
 - export in another format using
   + pandoc
   + emacs
@@ -332,6 +333,8 @@ Here is a complete list :
 | <plug>(organ-next-link)        | go to next link                   |
 | <plug>(organ-goto-link-target) | go to link target                 |
 | <plug>(organ-timestamp)        | add timestamp at cursor           |
+| <plug>(organ-eval-vim)         | eval vim expression               |
+| <plug>(organ-eval-python)      | eval python expression            |
 | <plug>(organ-unicode)          | add unicode character at cursor   |
 | <plug>(organ-export)           | export document                   |
 | <plug>(organ-alter-export)     | export document, alternative tool |
@@ -360,6 +363,8 @@ value in your init file, these bindings become available :
 - `<M-o>`      : go to link under or close to cursor
 - `<M-x>`      : expand template
 - `<M-d>`      : add date & time stamp
+- `<M-=>`      : insert result of vim expression
+- `<M-'>`      : insert result of python expression
 - `<M-$>`      : add unicode character
 - `<M-e>`      : export with pandoc
 - `<M-S-e>`    : export with emacs (works only in org files)

@@ -222,10 +222,9 @@ fun! organ#vine#new ()
 	let prompt = 'Link description : '
 	let desc = input(prompt)
 	let link = organ#vine#template (url, desc)
-	let lenlink = len(link)
 	let newline = before .. link .. after
 	call setline(linum, newline)
-	let colnum += lenlink
+	let colnum += len(link)
 	call cursor(linum, colnum)
 endfun
 

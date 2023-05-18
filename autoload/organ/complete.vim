@@ -115,6 +115,22 @@ fun! organ#complete#url (arglead, cmdline, cursorpos)
 	return organ#kyusu#pour(wordlist, choices)
 endfun
 
+" ---- expressions to evaluate
+
+fun! organ#complete#vim_expression (arglead, cmdline, cursorpos)
+	" Complete expression
+	let choices = g:ORGAN_STOPS.expr.vim
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
+fun! organ#complete#python_expression (arglead, cmdline, cursorpos)
+	" Complete expression
+	let choices = g:ORGAN_STOPS.expr.python
+	let wordlist = split(a:cmdline)
+	return organ#kyusu#pour(wordlist, choices)
+endfun
+
 " ---- unicode characters
 
 fun! organ#complete#unicode (arglead, cmdline, cursorpos)

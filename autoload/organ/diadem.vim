@@ -56,6 +56,8 @@ let s:command_meta_actions = [
 	\ [ 'alter-export'            , 'organ#nest#alter_export'                  ] ,
 	\ [ 'expand-template'         , 'organ#seed#expand'                        ] ,
 	\ [ 'timestamp'               , 'organ#abacus#timestamp'                   ] ,
+	\ [ 'eval-vim'                , 'organ#abacus#eval_vim'                    ] ,
+	\ [ 'eval-python'             , 'organ#abacus#eval_python'                 ] ,
 	\ [ 'unicode'                 , 'organ#calligraphy#insert'                 ] ,
 	\ [ 'export-with-pandoc'      , 'organ#pipe#pandoc_export'                 ] ,
 	\ [ 'export-with-emacs'       , 'organ#pipe#emacs_export'                  ] ,
