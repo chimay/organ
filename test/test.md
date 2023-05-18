@@ -30,7 +30,7 @@ unicode : ☯ ⚌ ∥ ⚹
 
 ## part 1.3
 
-content
+content 191027
 
 ### chapter 1.3.1
 

@@ -271,6 +271,8 @@ let s:maps_insert = [
 	\ [ '<m-o>'       , 'organ-goto-link-target'   ] ,
 	\ [ '<m-x>'       , 'organ-expand-template'    ] ,
 	\ [ '<m-d>'       , 'organ-timestamp'          ] ,
+	\ [ '<m-=>'       , 'organ-eval-vim'           ] ,
+	\ [ "<m-'>"       , 'organ-eval-python'        ] ,
 	\ [ '<m-$>'       , 'organ-unicode'            ] ,
 	\ [ '<m-e>'       , 'organ-export'             ] ,
 	\ [ '<m-s-e>'     , 'organ-alter-export'       ] ,

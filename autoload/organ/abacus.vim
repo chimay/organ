@@ -60,7 +60,7 @@ fun! organ#abacus#eval_python ()
 	endif
 	let g:ORGAN_STOPS.expr.python = store
 	" ---- result
-	let runme = "python print(" .. expression .. ")"
+	let runme = "python3 print(" .. expression .. ")"
 	let result = execute(runme)
 	let result = result->substitute('\n', '', 'g')
 	" ---- add result to default register
