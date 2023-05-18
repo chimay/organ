@@ -125,7 +125,7 @@ let s:plugs_insert = [
 	\ [ 'organ-select-subtree'     , "organ#nest#oper('select_subtree')" ] ,
 	\ [ 'organ-yank-subtree'       , "organ#nest#oper('yank_subtree')"   ] ,
 	\ [ 'organ-delete-subtree'     , "organ#nest#oper('delete_subtree')" ] ,
-	\ [ 'organ-meta-return'        , 'organ#nest#meta_return()'          ] ,
+	\ [ 'organ-meta-return'        , "organ#nest#meta_return('insert')"  ] ,
 	\ [ 'organ-shift-return'       , 'organ#nest#shift_return()'         ] ,
 	\ [ 'organ-tab'                , 'organ#nest#tab()'                  ] ,
 	\ [ 'organ-shift-tab'          , 'organ#nest#shift_tab()'            ] ,

@@ -129,12 +129,16 @@ endfun
 
 " ---- return
 
-fun! organ#nest#meta_return ()
+fun! organ#nest#meta_return (...)
 	" For <m-cr> map
 	if organ#table#is_in_table ()
 		return organ#table#new_row ()
 	elseif organ#colibri#is_in_list ()
-		return organ#bush#new ()
+		if a:0 > 0
+			return call('organ#bush#new', a:000)
+		else
+			return organ#bush#new ()
+		endif
 	else
 		return organ#tree#new ()
 	endif

@@ -397,17 +397,25 @@ fun! organ#bush#new (mode = 'normal')
 	" ---- add spaces
 	let prefix ..= ' '
 	" ---- prefix
-	let line = indent .. prefix
+	let newline = indent .. prefix
+	let newcolnum = len(newline) + 1
+	" ---- in insert mode, split the current line at cursor
+	if mode ==# 'insert'
+		let linum = line('.')
+		let colnum = col('.')
+		let line = getline(linum)
+		let [before, after] = organ#utils#line_split_by_cursor (line, colnum)
+		call setline(linum, before)
+		let newline ..= after
+	endif
 	" ---- append to buffer
-	call append('.', line)
+	call append('.', newline)
 	" ---- update counters
 	call organ#bush#update_counters ()
 	" ---- move cursor
 	let linum = line('.') + 1
-	call cursor(linum, 1)
-	let colnum = col('$')
-	call cursor(linum, colnum)
-	startinsert!
+	call cursor(linum, newcolnum)
+	startinsert
 	call organ#origami#resume ()
 endfun
 
