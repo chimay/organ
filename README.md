@@ -17,18 +17,21 @@
 * [Configuration](#configuration)
     * [Persistent data](#persistent-data)
 * [Bindings](#bindings)
+    * [Available plugs](#available-plugs)
     * [Speed keys](#speed-keys)
     * [Always defined](#always-defined)
     * [Prefixless](#prefixless)
+        * [Restrict](#restrict)
     * [With prefix](#with-prefix)
     * [Custom](#custom)
-    * [Available plugs](#available-plugs)
 * [Folding](#folding)
     * [Markers](#markers)
     * [Indent](#indent)
 * [Meta-command](#meta-command)
 * [Prompt completion](#prompt-completion)
 * [Autocommands](#autocommands)
+    * [Update table](#update-table)
+    * [Conversion](#conversion)
 * [Related](#related)
 * [Misc](#misc)
     * [Why this name](#why-this-name)
@@ -109,7 +112,7 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + markdown support limited to code blocks
 - insert timestamp
 - insert unicode character
-  + see autoload/organ/unicode.vim to see available chars
+  + refer to autoload/organ/unicode.vim to see available chars
 - export in another format using
   + pandoc
   + emacs

@@ -87,7 +87,7 @@ FEATURES		    			*organ-introduction-features*
   + markdown support limited to code blocks
 - insert timestamp
 - insert unicode character
-  + see autoload/organ/unicode.vim to see available chars
+  + refer to autoload/organ/unicode.vim to see available chars
 - export in another format using
   + pandoc
   + emacs
