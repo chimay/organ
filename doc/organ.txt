@@ -646,6 +646,7 @@ of the modules within them.
 | ----------------- | -------------------------------------------------- |
 | bird.vim          | Navigation in headings hierarchy                   |
 | bush.vim          | Operations on lists hierarchy                      |
+| calligraphy.vim   | Unicode characters                                 |
 | centre.vim        | Commands & mappings                                |
 | colibri.vim       | Navigation in lists hierarchy                      |
 | complete.vim      | Completion functions                               |
@@ -661,6 +662,7 @@ of the modules within them.
 | spiral.vim        | Golden ratio                                       |
 | table.vim         | tables                                             |
 | tree.vim          | Operations on headings hierarchy                   |
+| unicode.vim       | Unicode characters lists                           |
 | utils.vim         | Small utils                                        |
 | vine.vim          | Link management                                    |
 | void.vim          | Initiaze & reset variables                         |
