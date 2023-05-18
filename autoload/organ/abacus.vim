@@ -15,10 +15,15 @@ fun! organ#abacus#eval_vim ()
 	let complete = 'customlist,organ#complete#vim_expression'
 	let expression = input(prompt, '', complete)
 	" ---- add expression to history
-	let stoplist = g:ORGAN_STOPS.expr.vim
-	if stoplist->index(expression) < 0
-		eval stoplist->add(expression)
+	let store = g:ORGAN_STOPS.expr.vim
+	if store->index(expression) < 0
+		eval store->insert(expression)
 	endif
+	let keep = g:organ_config.expr.keep
+	if keep > 0
+		let store = store[:keep - 1]
+	endif
+	let g:ORGAN_STOPS.expr.vim = store
 	" ---- result
 	let result = eval(expression)
 	" ---- add result to default register
@@ -45,10 +50,15 @@ fun! organ#abacus#eval_python ()
 	let complete = 'customlist,organ#complete#python_expression'
 	let expression = input(prompt, '', complete)
 	" ---- add expression to history
-	let stoplist = g:ORGAN_STOPS.expr.python
-	if stoplist->index(expression) < 0
-		eval stoplist->add(expression)
+	let store = g:ORGAN_STOPS.expr.python
+	if store->index(expression) < 0
+		eval store->insert(expression)
 	endif
+	let keep = g:organ_config.expr.keep
+	if keep > 0
+		let store = store[:keep - 1]
+	endif
+	let g:ORGAN_STOPS.expr.python = store
 	" ---- result
 	let runme = "python print(" .. expression .. ")"
 	let result = execute(runme)

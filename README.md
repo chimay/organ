@@ -198,6 +198,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.list = {}
   let g:organ_config.links = {}
   let g:organ_config.templates = {}
+  let g:organ_config.expr = {}
   " ---- enable for every file if > 0
   let g:organ_config.everywhere = 0
   " ---- enable speed keys on first char of headlines and list items
@@ -229,7 +230,7 @@ if ! exists("g:organ_loaded")
   " ---- first item counter in an ordered list
   " ---- must be >= 0, default 1
   let g:organ_config.list.counter_start = 1
-  " ---- number of stored links to keep (default)
+  " ---- number of stored links to keep in history (default)
   let g:organ_config.links.keep = 5
   " ---- shortcuts to expand templates
   " ---- examples from default settings
@@ -244,6 +245,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
   " ---- timestamp format
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
+  " ---- number of evaluated expressions to keep in history
+  let g:organ_config.expr.keep = 30
   " ---- custom maps
   nmap <c-cr> <plug>(organ-meta-return)
   imap <c-cr> <plug>(organ-meta-return)

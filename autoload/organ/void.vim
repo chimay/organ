@@ -125,6 +125,13 @@ fun! organ#void#config ()
 					\ ':s' : 'section',
 					\}
 	endif
+	" ---- expressions
+	if ! has_key(g:organ_config, 'expr')
+		let g:organ_config.expr = {}
+	endif
+	if ! has_key(g:organ_config.expr, 'keep')
+		let g:organ_config.expr.keep = 30
+	endif
 endfun
 
 fun! organ#void#foundation ()
