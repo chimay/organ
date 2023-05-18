@@ -34,7 +34,7 @@ content
 
 ### chapter 1.3.1
 
-content  text
+content text
 
 | title | other title | col 3 |
 |-------|-------------|-------|

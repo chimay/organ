@@ -201,18 +201,3 @@ fun! organ#utils#line_split_by_cursor (...)
 	endif
 	return [before, after]
 endfun
-
-fun! organ#utils#timestamp ()
-	" Insert date & time stamp at cursor
-	let linum = line('.')
-	let colnum = col('.')
-	let line = getline(linum)
-	let [before, after] = organ#utils#line_split_by_cursor (line, colnum)
-	let format = g:organ_config.timestamp_format
-	let stamp = strftime(format)
-	let lenstamp = len(stamp)
-	let newline = before .. stamp .. after
-	call setline(linum, newline)
-	let colnum += lenstamp
-	call cursor(linum, colnum)
-endfun
