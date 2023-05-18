@@ -212,20 +212,10 @@ fun! organ#vine#new ()
 		echomsg 'organ vine template : filetype not supported'
 		return ''
 	endif
-	let position = getcurpos ()
-	let linum = position[1]
-	let colnum = position[2]
+	let linum = line('.')
+	let colnum = col('.')
 	let line = getline(linum)
-	if colnum <= 1
-		let before = ''
-		let after = line
-	elseif colnum == col('$')
-		let before = line
-		let after = ''
-	else
-		let before = line[:colnum - 2]
-		let after = line[colnum - 1:]
-	endif
+	let [before, after] = organ#utils#line_split_by_cursor (line, colnum)
 	let prompt = 'Link url : '
 	let complete = 'customlist,organ#complete#url'
 	let url = input(prompt, '', complete)

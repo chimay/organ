@@ -16,21 +16,10 @@ lockvar s:field_separ
 
 fun! organ#calligraphy#insert ()
 	" Insert unicode character
-	" -
-	let position = getcurpos ()
-	let linum = position[1]
-	let colnum = position[2]
+	let linum = line('.')
+	let colnum = col('.')
 	let line = getline(linum)
-	if colnum <= 1
-		let before = ''
-		let after = line
-	elseif colnum == col('$')
-		let before = line
-		let after = ''
-	else
-		let before = line[:colnum - 2]
-		let after = line[colnum - 1:]
-	endif
+	let [before, after] = organ#utils#line_split_by_cursor (line, colnum)
 	let prompt = 'Character name : '
 	let complete = 'customlist,organ#complete#unicode'
 	let entry = input(prompt, '', complete)

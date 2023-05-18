@@ -386,9 +386,10 @@ endfun
 
 " ---- new list item
 
-fun! organ#bush#new ()
+fun! organ#bush#new (mode = 'normal')
 	" New list item
 	call organ#origami#suspend ()
+	let mode = a:mode
 	" ---- properties
 	let properties = organ#colibri#properties ()
 	let indent = properties.indent

@@ -115,6 +115,7 @@ endfun
 
 fun! organ#tree#new ()
 	" New heading
+	let mode = a:mode
 	let properties = organ#bird#properties ()
 	let levelstring = copy(properties.levelstring)
 	let level = properties.level
