@@ -25,7 +25,7 @@ fun! organ#abacus#eval_vim ()
 	endif
 	let g:ORGAN_STOPS.expr.vim = store
 	" ---- result
-	let result = eval(expression)
+	let result = string(eval(expression))
 	" ---- add result to default register
 	call setreg('"', result, 'c')
 	" ---- insert result into line
