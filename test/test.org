@@ -199,7 +199,7 @@ c  = d
 | row 1 col 1 | row 1 col 2 | hello | there |
 |-------------+-------------+-------+-------|
 | row 1 col 1 | row 1 col 2 | hello | there |
-| hello       | ROW         |       |       |
+| hello       | ROW         |   jjj |       |
 | row 2 col 1 | row 2 col 2 |       |       |
 
 another

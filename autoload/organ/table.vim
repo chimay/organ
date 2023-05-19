@@ -242,7 +242,45 @@ fun! organ#table#maxima (dual)
 	return map(dual, { _, v -> max(v)})
 endfun
 
-" ---- align
+" ---- align, new
+
+fun! organ#table#minindent ()
+	" Minimize table indent
+	let first = organ#table#head ()
+	let last =  organ#table#tail ()
+	let spaces = repeat(' ', &tabstop)
+	" ---- eval min indent
+	let indent_pattern = '\m^\s*'
+	let linelist = getline(first, last)
+	let indentlist = []
+	let linum = first
+	for line in linelist
+		if line =~ "\t"
+			let line = substitute(line, "\t", spaces, 'g')
+			call setline(linum, line)
+		endif
+		let leading = line->matchstr(indent_pattern)
+		let indent = len(leading)
+		eval indentlist->add(indent)
+		let linum += 1
+	endfor
+	let minindent = min(indentlist)
+	let minlead = repeat(' ', minindent)
+	" ---- reduce
+	let index = 0
+	let linum = first
+	for index in range(len(linelist))
+		let indent = indentlist[index]
+		if indent > minindent
+			eval line->substitute(indent_pattern, minlead, '')
+			call setline(linum, line)
+		endif
+		let linum += 1
+	endfor
+	return minindent
+endfun
+
+" ---- align, legacy
 
 fun! organ#table#shrink_separator_lines (argdict = {})
 	" Reduce separator line to their minimum
