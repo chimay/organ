@@ -396,9 +396,6 @@ fun! organ#table#align_columns (argdict = {})
 			if add == 0
 				continue
 			endif
-			if modified->index(rownum) < 0
-				eval modified->add(rownum)
-			endif
 			let line = linelist[rownum]
 			let byte_position = line->byteidx(char_position - 1) + 1
 			" -- shift
@@ -427,6 +424,10 @@ fun! organ#table#align_columns (argdict = {})
 					let maxima[rightcol] = row[rightcol]
 				endif
 			endfor
+			" ---- register row as modified
+			if modified->index(rownum) < 0
+				eval modified->add(rownum)
+			endif
 		endfor
 	endfor
 	" ---- commit changes to buffer
