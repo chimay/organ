@@ -384,6 +384,7 @@ fun! organ#table#align_columns (argdict = {})
 	let lenlinelist = len(linelist)
 	" ---- double loop
 	let index = 0
+	let modified = []
 	for colnum in range(colmax)
 		for rownum in range(lenlinelist)
 			if lengthes[rownum] <= colnum
@@ -394,6 +395,9 @@ fun! organ#table#align_columns (argdict = {})
 			let add = maxima[colnum] - char_position
 			if add == 0
 				continue
+			endif
+			if modified->index(rownum) < 0
+				eval modified->add(rownum)
 			endif
 			let line = linelist[rownum]
 			let byte_position = line->byteidx(char_position - 1) + 1
@@ -427,8 +431,12 @@ fun! organ#table#align_columns (argdict = {})
 	endfor
 	" ---- commit changes to buffer
 	let linum = head_linum
-	for index in range(len(linelist))
-		call setline(linum, linelist[index])
+	for rownum in range(lenlinelist)
+		if modified->index(rownum) < 0
+			let linum += 1
+			continue
+		endif
+		call setline(linum, linelist[rownum])
 		let linum += 1
 	endfor
 	return argdict
@@ -487,7 +495,7 @@ fun! organ#table#next_cell ()
 	" Go to next cell
 	call organ#table#update ()
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let pattern = '\m' .. delimiter .. '\s\{0,1}\zs.\ze'
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	let linum = search(pattern, flags)
 	return linum
@@ -497,7 +505,7 @@ fun! organ#table#previous_cell ()
 	" Go to previous cell
 	call organ#table#update ()
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let pattern = '\m' .. delimiter .. '\s\{0,1}\zs.\ze'
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	let linum = search(pattern, flags)
 	return linum
@@ -506,7 +514,7 @@ endfun
 fun! organ#table#cell_begin ()
 	" Go to cell beginning
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\zs.\ze\s*\S'
+	let pattern = '\m' .. delimiter .. '\s\{0,}\zs.\ze'
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
 	let linum = search(pattern, flags)
 	return linum
@@ -515,7 +523,7 @@ endfun
 fun! organ#table#cell_end ()
 	" Go to cell end
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m\zs.\ze' .. delimiter
+	let pattern = '\m\zs.\ze\s\{0,}' .. delimiter
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
 	let linum = search(pattern, flags)
 	return linum
