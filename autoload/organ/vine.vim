@@ -30,6 +30,12 @@ fun! organ#vine#template (url, desc = '')
 		else
 			let link = '[' .. desc .. '](' .. url .. ')'
 		endif
+	else
+		if empty(desc)
+			let link = '[[' .. url .. ']]'
+		else
+			let link = '[[' .. url .. '][' .. desc .. ']]'
+		endif
 	endif
 	let link ..= ' '
 	return link
@@ -208,10 +214,6 @@ endfun
 
 fun! organ#vine#new ()
 	" Create new link
-	if s:rep_one_char->index(&filetype) < 0
-		echomsg 'organ vine template : filetype not supported'
-		return ''
-	endif
 	let linum = line('.')
 	let colnum = col('.')
 	let line = getline(linum)

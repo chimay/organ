@@ -71,7 +71,7 @@ content
 
 *** chapter 1.3.1
 
-content ☯ ⛵≤ 🗁 🗎
+content ☯ ⛵≤ 🗁  🗎 🌧🌤
 
    - item 1 [0/1]
      + [ ] item 1.1
