@@ -55,10 +55,12 @@ fun! organ#table#separator_pattern ()
 	elseif &filetype ==# 'markdown'
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
+	else
+		"let pattern = '\m^\s*|\s*-\+\s*|\s*$\|'
+		"let pattern ..= '^\s*|\s*\%(-*\s*[|+]\s*\)\+-*\s*|\s*$'
+		let pattern = '\m^\s*|\s*[-:]\+\s*[|+]\s*\%([-:]*\s*|\s*\)*\s*$'
+		return pattern
 	endif
-	let pattern = '\m^\s*|-\+|\s*$\|'
-	let pattern ..= '^\s*|\%(-*+\)\+-*|\s*$'
-	return pattern
 	" -- never matches
 	"return '\m^$\&^.$'
 endfun
