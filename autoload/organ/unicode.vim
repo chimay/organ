@@ -83,14 +83,21 @@ if exists('s:weather')
 unlockvar! s:weather
 endif
 let s:weather = [
-	\ [ 'cloud'              , '☁' ],
-	\ [ 'sun behind cloud'   , '⛅' ],
-	\ [ 'rain'               , '⛆' ],
-	\ [ 'snowman & snow'     , '☃' ],
-	\ [ 'snowman'            , '⛄' ],
-	\ [ 'lightning'          , '☇' ],
-	\ [ 'thunderstorm'       , '☈' ],
-	\ [ 'thunder cloud rain' , '⛈' ],
+	\ [ 'cloud'                            , '☁' ],
+	\ [ 'sun behind cloud'                 , '⛅' ],
+	\ [ 'white sun behind cloud'           , '🌥' ],
+	\ [ 'white sun with small cloud'       , '🌤' ],
+	\ [ 'white sun behind cloud with rain' , '🌦' ],
+	\ [ 'cloud with rain'                  , '🌧' ],
+	\ [ 'cloud with snow'                  , '🌨' ],
+	\ [ 'cloud with lightning'             , '🌩' ],
+	\ [ 'cloud with tornado'               , '🌪' ],
+	\ [ 'rain'                             , '⛆' ],
+	\ [ 'snowman & snow'                   , '☃' ],
+	\ [ 'snowman'                          , '⛄' ],
+	\ [ 'lightning'                        , '☇' ],
+	\ [ 'thunderstorm'                     , '☈' ],
+	\ [ 'thunder cloud rain'               , '⛈' ],
 \ ]
 lockvar! s:weather
 
@@ -366,6 +373,9 @@ let s:music = [
 	\ [ 'flat'                         , '♭' ],
 	\ [ 'double sharp'                 , '𝄪' ],
 	\ [ 'double flat'                  , '𝄫' ],
+	\ [ 'arpeggiato up'                , '𝆃' ],
+	\ [ 'left repeat'                  , '𝄆' ],
+	\ [ 'right repeat'                 , '𝄇' ],
 	\ [ 'dal segno'                    , '𝄋' ],
 	\ [ 'coda'                         , '𝄌' ],
 \ ]
