@@ -24,6 +24,18 @@ endif
 let s:field_separ = organ#crystal#fetch('separator/field')
 lockvar s:field_separ
 
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
+if exists('s:tags_pattern')
+	unlockvar s:tags_pattern
+endif
+let s:tags_pattern = organ#crystal#fetch('pattern/headline/tag')
+lockvar s:tags_pattern
+
 " ---- indent helpers
 
 fun! organ#bird#tabspaces (...)
@@ -35,8 +47,7 @@ fun! organ#bird#tabspaces (...)
 		let linum = line('.')
 	endif
 	let line = getline(linum)
-	let indent_pattern = '\m^[ \t]*'
-	let leading = line->matchstr(indent_pattern)
+	let leading = line->matchstr(s:indent_pattern)
 	" ---- \t doesnt work here
 	let tabs = leading->count("\t")
 	let spaces = leading->count(' ')
@@ -255,10 +266,9 @@ fun! organ#bird#properties (move = 'dont-move')
 		let todo = ''
 	endif
 	" ---- tags
-	let tags_pattern = '\m:\%([^:]\+:\)\+$'
-	let tagstring = title->matchstr(tags_pattern)
+	let tagstring = title->matchstr(s:tags_pattern)
 	let tags = tagstring[1:-2]->split(':')
-	let title = substitute(title, tags_pattern, '', '')
+	let title = substitute(title, s:tags_pattern, '', '')
 	" ---- coda
 	let title = trim(title)
 	let properties = #{

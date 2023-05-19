@@ -36,16 +36,41 @@ lockvar! s:separator_level
 if exists('s:separator_field')
 	unlockvar! s:separator_field
 endif
-" digraph : in insert mode : ctrl-k vv -> │ != usual | == <bar>
 let s:separator_field = ' │ '
 lockvar! s:separator_field
 
 if exists('s:separator_field_bar')
 	unlockvar! s:separator_field_bar
 endif
-" digraph : ctrl-k vv ->
+" digraph : in insert mode : ctrl-k vv -> │ != usual | == <bar>
 let s:separator_field_bar = '│'
 lockvar! s:separator_field_bar
+
+" ---- patterns
+
+if exists('s:pattern_indent')
+	unlockvar! s:pattern_indent
+endif
+let s:pattern_indent = '\m^\s*'
+lockvar! s:pattern_indent
+
+if exists('s:pattern_line_hollow')
+	unlockvar! s:pattern_line_hollow
+endif
+let s:pattern_line_hollow = '\m^\s*$'
+lockvar! s:pattern_line_hollow
+
+if exists('s:pattern_angle')
+	unlockvar! s:pattern_angle
+endif
+let s:pattern_angle = '\m<[^>]\+>'
+lockvar! s:pattern_angle
+
+if exists('s:pattern_headline_tag')
+	unlockvar! s:pattern_headline_tag
+endif
+let s:pattern_headline_tag = '\m:\%([^:]\+:\)\+$'
+lockvar! s:pattern_headline_tag
 
 " ---- structure templates
 

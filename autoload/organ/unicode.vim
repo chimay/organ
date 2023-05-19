@@ -131,6 +131,7 @@ let s:punctuation = [
 	\ [ 'horizontal bar'           , '―'  ],
 	\ [ 'double low line'          , '‗'  ],
 	\ [ 'overline'                 , '‾'  ],
+	\ [ 'vertical bar var'         , '│'  ],
 	\ [ 'broken vertical bar'      , '¦'  ],
 	\ [ 'double vertical bar'      , '‖'  ],
 	\ [ 'left angle quote'         , '‹'  ],

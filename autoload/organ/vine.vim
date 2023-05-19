@@ -146,6 +146,13 @@ fun! organ#vine#url (link)
 			let pattern = '\m\[[^\]]\+\](\zs[^)]\+\ze)'
 			let url = link->matchstr(pattern)
 		endif
+	else
+		let pattern = '\m\[\[\zs[^\]]\+\ze\]\]'
+		let url = link->matchstr(pattern)
+		if empty(url)
+			let pattern = '\m\[\[\zs[^\]]\+\ze\]\[[^\]]\+\]\]'
+			let url = link->matchstr(pattern)
+		endif
 	endif
 	return url
 endfun

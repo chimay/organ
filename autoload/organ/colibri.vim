@@ -4,6 +4,20 @@
 "
 " Navigation on orgmode or markdown lists hierarchy
 
+" ---- script constants
+
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
+if exists('s:hollow_pattern')
+	unlockvar s:hollow_pattern
+endif
+let s:hollow_pattern = organ#crystal#fetch('pattern/line/hollow')
+lockvar s:hollow_pattern
+
 " ---- helpers
 
 fun! organ#colibri#generic_pattern ()
@@ -45,11 +59,10 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	let linum = line('.')
 	let current_line = getline(linum)
 	let itemhead_pattern = organ#colibri#generic_pattern ()
-	let hollow_pattern = '\m^\s*$'
 	if current_line =~ itemhead_pattern
 		return v:true
 	endif
-	if current_line =~ hollow_pattern
+	if current_line =~ s:hollow_pattern
 		if linum == line('$')
 			return v:false
 		endif
@@ -64,7 +77,7 @@ fun! organ#colibri#is_in_list (move = 'dont-move')
 	endif
 	let linelist = getline(head_linum, linum - 1)
 	for line in linelist
-		if line =~ hollow_pattern
+		if line =~ s:hollow_pattern
 			return v:false
 		endif
 	endfor
@@ -79,11 +92,10 @@ fun! organ#colibri#list_start (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let hollow_pattern = '\m^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	while v:true
-		let linum = search(hollow_pattern, flags)
+		let linum = search(s:hollow_pattern, flags)
 		if linum == 0
 			let linum = 1
 			if move != 'move'
@@ -119,11 +131,10 @@ fun! organ#colibri#list_end (move = 'dont-move')
 		return 0
 	endif
 	let position = getcurpos ()
-	let hollow_pattern = '\m^\s*$'
 	let itemhead_pattern = organ#colibri#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 	while v:true
-		let linum = search(hollow_pattern, flags)
+		let linum = search(s:hollow_pattern, flags)
 		if linum == 0
 			let linum = line('$')
 			if move != 'move'
@@ -178,8 +189,6 @@ fun! organ#colibri#common_indent ()
 	let last =  organ#colibri#list_end ()
 	let spaces = repeat(' ', &tabstop)
 	" ---- scan all list lines
-	let indent_pattern = '\m^\s*'
-	let hollow_pattern = '\m^\s*$'
 	let linelist = getline(first, last)
 	let indentlist = []
 	let linum = first
@@ -189,10 +198,10 @@ fun! organ#colibri#common_indent ()
 			call setline(linum, line)
 		endif
 		let linum += 1
-		if line =~ hollow_pattern
+		if line =~ s:hollow_pattern
 			continue
 		endif
-		let leading = line->matchstr(indent_pattern)
+		let leading = line->matchstr(s:indent_pattern)
 		let indent = len(leading)
 		eval indentlist->add(indent)
 	endfor
@@ -278,15 +287,14 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let spaces = repeat(' ', &tabstop)
 	let text = substitute(text, '\t', spaces, 'g')
 	" ---- indent & level
-	let indent_pattern = '\m^\s*'
-	let indent = text->matchstr(indent_pattern)
+	let indent = text->matchstr(s:indent_pattern)
 	let numspaces = len(indent)
 	let common_indent = organ#colibri#common_indent ()
 	let numspaces -= common_indent
 	let indent_length = g:organ_config.list.indent_length
 	let level = numspaces / indent_length + 1
 	" -- text without indent
-	let text = substitute(text, indent_pattern, '', '')
+	let text = substitute(text, s:indent_pattern, '', '')
 	" ---- prefix & counter
 	let prefix_pattern = '\m^\s*\zs\S\+'
 	let prefix = text->matchstr(prefix_pattern)

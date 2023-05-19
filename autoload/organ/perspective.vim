@@ -78,7 +78,7 @@ fun! organ#perspective#tags ()
 	endfor
 	" ---- tags on headlines
 	let tags_pattern = '\m^\S\+.*\s\+\zs:\%([^:]\+:\)\+$'
-	let runme = 'global /' .. tags_pattern .. '/p'
+	let runme = 'global /' .. tags_pattern .. '/print'
 	let output = execute(runme)
 	let linelist = split(output, "\n")
 	for elem in linelist
