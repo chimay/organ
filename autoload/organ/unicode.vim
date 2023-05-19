@@ -344,14 +344,30 @@ if exists('s:music')
 unlockvar! s:music
 endif
 let s:music = [
-	\ [ 'quarter note'                 , '♩' ],
-	\ [ 'eighth note'                  , '♪' ],
+	\ [ 'g key'                        , '𝄞' ],
+	\ [ 'c key'                        , '𝄡' ],
+	\ [ 'f key'                        , '𝄢' ],
+	\ [ 'double whole note (breve)'    , '𝅜' ],
+	\ [ 'whole note'                   , '𝅝' ],
+	\ [ 'half note'                    , '𝅗𝅥' ],
+	\ [ 'quarter note'                 , '𝅘𝅥' ],
+	\ [ '8th note'                     , '𝅘𝅥𝅮' ],
+	\ [ '16th note'                    , '𝅘𝅥𝅯' ],
+	\ [ '32th note'                    , '𝅘𝅥𝅰' ],
+	\ [ '64th note'                    , '𝅘𝅥𝅱' ],
+	\ [ '128th note'                   , '𝅘𝅥𝅲' ],
+	\ [ 'quarter note var'             , '♩' ],
+	\ [ '8th note var'                 , '♪' ],
 	\ [ 'beamed eighth (8th) note'     , '♫' ],
 	\ [ 'beamed sixteenth (16th) note' , '♬' ],
+	\ [ 'tie'                          , '‿' ],
 	\ [ 'sharp'                        , '♯' ],
 	\ [ 'natural'                      , '♮' ],
 	\ [ 'flat'                         , '♭' ],
-	\ [ 'tie'                          , '‿' ],
+	\ [ 'double sharp'                 , '𝄪' ],
+	\ [ 'double flat'                  , '𝄫' ],
+	\ [ 'dal segno'                    , '𝄋' ],
+	\ [ 'coda'                         , '𝄌' ],
 \ ]
 lockvar! s:music
 
@@ -402,6 +418,28 @@ let s:currencies = [
 \ ]
 lockvar! s:currencies
 
+" ---- computing
+
+if exists('s:computing')
+unlockvar! s:computing
+endif
+let s:computing = [
+	\ [ 'folder'                         , '🗀' ],
+	\ [ 'black folder'                   , '🖿' ],
+	\ [ 'open folder'                    , '🗁' ],
+	\ [ 'card file box'                  , '🗃' ],
+	\ [ 'file folder'                    , '📁' ],
+	\ [ 'open file folder'               , '📂' ],
+	\ [ 'document'                       , '🗎' ],
+	\ [ 'empty document'                 , '🗋' ],
+	\ [ 'document with text'             , '🖹' ],
+	\ [ 'page facing up'                 , '📄' ],
+	\ [ 'document with text and picture' , '🖺' ],
+	\ [ 'document with picture'          , '🖻' ],
+	\ [ 'frame with picture'             , '🖼' ],
+\ ]
+lockvar! s:computing
+
 " ---- miscellaneous
 
 if exists('s:miscellaneous')
@@ -435,6 +473,7 @@ let s:lists = [
 	\ 'music',
 	\ 'games',
 	\ 'currencies',
+	\ 'computing',
 	\ 'miscellaneous',
 	\ ]
 lockvar! s:lists
@@ -444,8 +483,11 @@ if exists('s:all')
 endif
 let s:all = []
 for s:name in s:lists
-	let s:formated = substitute(s:name, ' ', '_', 'g')
-	eval s:all->extend(s:{s:formated})
+	let s:varname = s:name->substitute(' ', '_', 'g')
+	let s:slash = s:name->substitute(' ', '/', 'g') .. '/'
+	let s:items = deepcopy(s:{s:varname})
+	let s:completed = s:items->map({ _, v -> [s:slash .. v[0], v[1]] })
+	eval s:all->extend(s:completed)
 endfor
 lockvar! s:all
 

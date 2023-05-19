@@ -71,13 +71,13 @@ content
 
 *** chapter 1.3.1
 
-content
+content ☯ ⛵≤
 
-   - item 1
+   - item 1 [0/1]
      + [ ] item 1.1
-     + item 1.2
+     + item 1.2 [2/2]
        * [X] check box
-     + [X] checkbox
+       * [X] checkbox
    - item 2
      + item 2.1
        * item 2.3

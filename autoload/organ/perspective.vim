@@ -63,7 +63,7 @@ fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
 endfun
 
 fun! organ#perspective#tags ()
-	" List of tags defined on #+tags & :tag:tag:...:
+	" List of tags defined on #+tags & headlines :tag:tag:...:
 	let position = getcurpos ()
 	" ---- #+tags lines
 	let runme = 'global /\m\c^#+tags:/print'
@@ -98,6 +98,7 @@ fun! organ#perspective#unicode ()
 	let charlist = deepcopy(organ#unicode#fetch('all'))
 	let returnlist = []
 	for entry in charlist
+		let entry[0] = entry[0]->substitute('/', s:level_separ, 'g')
 		eval entry->reverse()
 		let record = join(entry, s:field_separ)
 		eval returnlist->add(record)

@@ -26,6 +26,6 @@ fun! organ#calligraphy#insert ()
 	let character = entry->split(s:field_separ)[0]
 	let newline = before .. character .. after
 	call setline(linum, newline)
-	let colnum += 1
+	let colnum += 2
 	call cursor(linum, colnum)
 endfun
