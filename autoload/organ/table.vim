@@ -242,7 +242,7 @@ fun! organ#table#maxima (dual)
 	return map(dual, { _, v -> max(v)})
 endfun
 
-" ---- align, new
+" ---- align, new TODO
 
 fun! organ#table#minindent ()
 	" Minimize table indent
@@ -554,20 +554,46 @@ endfun
 
 fun! organ#table#cell_begin ()
 	" Go to cell beginning
+	let position = getcurpos ()
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\s\{0,}\zs.\ze'
 	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
+	" ---- delimiter
+	let linum_delim = search(delimiter, flags)
+	let colnum_delim = col('.')
+	call setpos('.', position)
+	" ---- cell begin
+	let pattern = '\m' .. delimiter .. '\s*\zs[^ |]\ze'
 	let linum = search(pattern, flags)
-	return linum
+	let colnum = col('.')
+	" ---- empty cell
+	if linum < linum_delim || colnum < colnum_delim
+		call setpos('.', position)
+		return [linum, colnum]
+	endif
+	" ---- coda
+	return [linum, colnum]
 endfun
 
 fun! organ#table#cell_end ()
 	" Go to cell end
+	let position = getcurpos ()
 	let delimiter = organ#table#delimiter ()
-	let pattern = '\m\zs.\ze\s\{0,}' .. delimiter
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
+	" ---- delimiter
+	let linum_delim = search(delimiter, flags)
+	let colnum_delim = col('.')
+	call setpos('.', position)
+	" ---- cell end
+	let pattern = '\m\zs[^ |]\ze\s*' .. delimiter
 	let linum = search(pattern, flags)
-	return linum
+	let colnum = col('.')
+	" ---- empty cell
+	if linum > linum_delim || colnum > colnum_delim
+		call setpos('.', position)
+		return [linum, colnum]
+	endif
+	" ---- coda
+	return [linum, colnum]
 endfun
 
 fun! organ#table#select_cell ()

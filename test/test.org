@@ -327,7 +327,7 @@ Multibyte table
 | there     | row 1 col 2 | row 1 col 1     | hello |
 |-----------+-------------+-----------------+-------|
 |           | i ï î       | aà eéè          | u ù   |
-|           | row 2 col 2 | row 2 col 1     | u ù   |
+|           | row 2 col 2 | row 2 rol 1     | u ù   |
 | ð € đ ŋ ħ | þ ¶ ß       | row 3 col 1 max |       |
 
 | row 1 col 1     | there     |
