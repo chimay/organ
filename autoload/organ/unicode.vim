@@ -25,6 +25,8 @@ let s:philosophy = [
 	\ [ 'trigram water'        , '☵' ],
 	\ [ 'trigram mountain'     , '☶' ],
 	\ [ 'trigram earth'        , '☷' ],
+	\ [ 'devanagari om'        , 'ॐ' ],
+	\ [ 'tamil om'             , 'ௐ' ],
 	\ [ 'dharma wheel'         , '☸' ],
 	\ [ 'ankh'                 , '☥' ],
 	\ [ 'staff of Aesculapius' , '⚕' ],
@@ -100,6 +102,19 @@ let s:weather = [
 	\ [ 'thunder cloud rain'               , '⛈' ],
 \ ]
 lockvar! s:weather
+
+" ---- alchemy
+
+if exists('s:alchemy')
+unlockvar! s:alchemy
+endif
+let s:alchemy = [
+	\ [ 'fire element'  , '🜂' ],
+	\ [ 'air element'   , '🜁' ],
+	\ [ 'water element' , '🜄' ],
+	\ [ 'earth element' , '🜃' ],
+\ ]
+lockvar! s:alchemy
 
 " ---- punctuation
 
@@ -334,6 +349,11 @@ let s:math_geometry= [
 	\ [ 'lozenge'                           , '◊' ],
 	\ [ 'black parallelogram'               , '▰' ],
 	\ [ 'white parallelogram'               , '▱' ],
+	\ [ 'black pentagon'                    , '⬟' ],
+	\ [ 'white pentagon'                    , '⬠' ],
+	\ [ 'black hexagon'                     , '⬢' ],
+	\ [ 'white hexagon'                     , '⬡' ],
+	\ [ 'horizontal black hexagon'          , '⬣' ],
 \ ]
 lockvar! s:math_geometry
 
@@ -471,6 +491,7 @@ let s:lists = [
 	\ 'philosophy',
 	\ 'cosmos',
 	\ 'weather',
+	\ 'alchemy',
 	\ 'punctuation',
 	\ 'arrows',
 	\ 'greek uppercase',
