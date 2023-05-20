@@ -192,9 +192,9 @@ content
 
 content
 
-a  = b  = c
-ab = cd = ef
-c  = d
+   a = b = c
+ ab = cd = ef
+  c  = d
 
 | row 1 col 1 | row 1 col 2 | hello | there |
 |-------------+-------------+-------+-------|

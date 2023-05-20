@@ -244,6 +244,7 @@ fun! organ#table#cellgrid (paragraph)
 		else
 			let cells = line->split(delimiter, v:true)
 		endif
+		eval cells->map({ _, v -> trim(v) })
 		eval cellgrid->add(cells)
 		let linum += 1
 	endfor
@@ -389,6 +390,22 @@ fun! organ#table#align_cells (paragraph)
 	return paragraph
 endfun
 
+fun! organ#table#commit (paragraph)
+	" Commit lines to buffer
+	let paragraph = a:paragraph
+	let linum = paragraph.linumlist[0]
+	let pristine = paragraph.pristine
+	let rownum = 0
+	for line in paragraph.linelist
+		if line != pristine[rownum]
+			call setline(linum, line)
+		endif
+		let rownum += 1
+		let linum += 1
+	endfor
+	return paragraph
+endfun
+
 fun! organ#table#meta_align (mode = 'normal') range
 	" Align table or paragraph
 	call organ#origami#suspend ()
@@ -432,16 +449,7 @@ fun! organ#table#meta_align (mode = 'normal') range
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
 	" ---- commit lines to buffer
-	let rownum = 0
-	let linum = head_linum
-	let pristine = paragraph.pristine
-	for line in paragraph.linelist
-		if line != pristine[rownum]
-			call setline(linum, line)
-		endif
-		let rownum += 1
-		let linum += 1
-	endfor
+	call organ#table#commit (paragraph)
 	" ---- coda
 	call setpos('.', position)
 	call organ#origami#resume ()
