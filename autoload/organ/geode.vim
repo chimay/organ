@@ -34,7 +34,7 @@ let s:speedkeys = [
 	\ [ 'U'         , "organ#nest#oper('move_subtree_backward')" ] ,
 	\ [ 'D'         , "organ#nest#oper('move_subtree_forward')"  ] ,
 	\ [ 'M'         , 'organ#tree#moveto'                        ] ,
-	\ [ ';'         , 'organ#tree#tag'                           ] ,
+	\ [ 'l'         , 'organ#tree#tag'                           ] ,
 	\ [ 't'         , "organ#nest#oper('cycle_todo', 1)"         ] ,
 	\ [ 'T'         , "organ#nest#oper('cycle_todo', -1)"        ] ,
 	\ [ 'C'         , 'organ#bush#toggle_checkbox'               ] ,

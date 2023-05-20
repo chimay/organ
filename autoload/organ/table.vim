@@ -125,6 +125,28 @@ fun! organ#table#tail (move = 'dont-move')
 	return linum - 1
 endfun
 
+" -- cells
+
+fun! organ#table#cellgrid (paragraph)
+	" All cells informations
+	" Use split(string, pattern, keepempty)
+	let paragraph = a:paragraph
+	let delimiter = paragraph.delimiter
+	let separator_delimiter = paragraph.separator_delimiter
+	let cellgrid = []
+	let linum = paragraph.head_linum
+	for line in paragraph.linelist
+		if organ#table#is_separator_line (linum)
+			let cells = line->split(separator_delimiter, v:true)
+		else
+			let cells = line->split(delimiter, v:true)
+		endif
+		eval cellgrid->add(cells)
+		let linum += 1
+	endfor
+	return cellgrid
+endfun
+
 " -- positions
 
 fun! organ#table#positions (argdict = {})
@@ -276,6 +298,49 @@ fun! organ#table#minindent ()
 		let linum += 1
 	endfor
 	return minindent
+endfun
+
+fun! organ#table#align_cells (paragraph)
+	" Align cells
+	let paragraph = a:paragraph
+	return paragraph
+endfun
+
+fun! organ#table#meta_align (mode = 'normal') range
+	" Align table or paragraph
+	call organ#origami#suspend ()
+	let mode = a:mode
+	let position = getcurpos ()
+	let paragraph = {}
+	" ---- head & tail
+	if mode ==# 'visual'
+		let paragraph.head_linum = a:firstline
+		let paragraph.tail_linum = a:lastline
+	else
+		let paragraph.head_linum = organ#table#head ()
+		let paragraph.tail_linum = organ#table#tail ()
+	endif
+	" ---- lines
+	let paragraph.linumlist = range(head_linum, tail_linum)
+	let paragraph.linelist = getline(paragraph.head_linum, paragraph.tail_linum)
+	" ---- delimiter pattern
+	let paragraph.is_table = organ#table#is_in_table ()
+	if paragraph.is_table
+		let paragraph.delimiter = organ#table#delimiter ()
+		let paragraph.separator_delimiter = organ#table#separator_delimiter_pattern ()
+	else
+		let prompt = 'Align following pattern : '
+		let paragraph.delimiter = input(prompt, '')
+		let paragraph.separator_delimiter = paragraph.delimiter
+	endif
+	" ---- cell grid
+	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
+	" ---- align cells
+	let paragraph = organ#table#align_cells (paragraph)
+	" ---- coda
+	call setpos('.', position)
+	call organ#origami#resume ()
+	return paragraph
 endfun
 
 " ---- align, legacy
