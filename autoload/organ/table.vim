@@ -595,6 +595,7 @@ fun! organ#table#build (...)
 	let paragraph.delimiter = organ#table#delimiter ()
 	let paragraph.sepline_delimiter = organ#table#sepline_delimiter ()
 	let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
+	let paragraph.sepline_pattern = organ#table#sepline_pattern ()
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph = organ#table#add_missing_delims(paragraph)
 	" ---- cells
@@ -730,7 +731,6 @@ endfun
 
 fun! organ#table#move_col_left (...)
 	" Move table column left
-	" Assume the table is aligned
 	let paragraph = organ#table#update ()
 	let linumlist = paragraph.linumlist
 	let linelist = paragraph.linelist
@@ -760,11 +760,15 @@ fun! organ#table#move_col_left (...)
 			break
 		endif
 	endfor
-	let curcolnum = colnum
+	" ---- indent = cellrow[0]
+	" ---- first col = cellrow[1]
+	let curcolnum = colnum + 1
 	" ---- can't move further left
-	if curcolnum == 0
+	if curcolnum == 1
 		return paragraph
 	endif
+	" ---- previous col length
+	let lenprevcol = len(curcellrow[curcolnum - 1])
 	" ---- exchange columns
 	for rownum in range(lenlinelist)
 		let cellrow = cellgrid[rownum]
@@ -776,20 +780,35 @@ fun! organ#table#move_col_left (...)
 		let cellgrid[rownum] = newcellrow
 	endfor
 	" ---- coda
+	let paragraph = organ#table#rebuild_lines (paragraph)
 	call organ#table#commit (paragraph)
+	" -- 3 = 2 for spaces and 1 for delim
+	call cursor('.', col('.') - lenprevcol - 3)
 	return paragraph
 endfun
 
 fun! organ#table#move_col_right ()
 	" Move table column right
-	" Assume the table is aligned
-	let head_linum = organ#table#head ()
-	let tail_linum = organ#table#tail ()
-	let positions = organ#table#positions ()
-	let colmax = len(positions)
+	let paragraph = organ#table#update ()
+	let linumlist = paragraph.linumlist
+	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
+	let cellgrid = paragraph.cellgrid
+	let delimgrid = paragraph.delimgrid
+	" ---- patterns
+	let separator_pattern = organ#table#sepline_pattern ()
+	let tabdelim = organ#table#delimiter ()
+	let sepdelim = organ#table#sepline_delimiter ()
+	" ---- current line
+	let curlinum = line('.')
+	let currownum = linumlist->index(curlinum)
+	let curcellrow = cellgrid[currownum]
+	let curdelimrow = delimgrid[currownum]
+	let positions = organ#table#positions (curlinum)
 	" ---- two delimiters or less = only one column
+	let colmax = len(curdelimrow)
 	if colmax <= 2
-		return positions
+		return paragraph
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
@@ -799,64 +818,33 @@ fun! organ#table#move_col_right ()
 			break
 		endif
 	endfor
+	" ---- indent = cellrow[0]
+	" ---- first col = cellrow[1]
+	let curcolnum = colnum + 1
 	" ---- can't move further right
-	if colnum >= colmax - 2
-		return positions
+	if curcolnum >= colmax - 1
+		return paragraph
 	endif
-	" ---- lines list
-	let current_linum = line('.')
-	let linelist = getline(head_linum, tail_linum)
-	let lenlinelist = len(linelist)
-	" ---- patterns
-	let separator_pattern = organ#table#sepline_pattern ()
-	let tabdelim = organ#table#delimiter ()
-	let sepdelim = organ#table#sepline_delimiter ()
-	" ---- two columns to exchange, three delimiters
-	let char_first = positions[colnum]
-	let char_second = positions[colnum + 1]
-	let char_third = positions[colnum + 2]
-	" ---- move column in all table lines
-	let linum = head_linum
+	" ---- next col length
+	let lennextcol = len(curcellrow[curcolnum + 1])
+	" ---- exchange columns
 	for rownum in range(lenlinelist)
-		let line = linelist[rownum]
-		" -- chunks
-		let byte_first = line->byteidx(char_first - 1) + 1
-		let byte_second = line->byteidx(char_second - 1) + 1
-		let byte_third = line->byteidx(char_third - 1) + 1
-		if byte_first == 1
-			let before = ''
-			let after = line[byte_third - 1:]
-		elseif byte_third == len(line) + 1
-			let before = line
-			let after = line[byte_third - 1:]
-		else
-			let before = line[:byte_first - 2]
-			let after = line[byte_third - 1:]
-		endif
-		let current = line[byte_first - 1:byte_second - 2]
-		let next = line[byte_second - 1:byte_third - 2]
-		" -- adjust separator line
-		if colnum == 0 && tabdelim != sepdelim && line =~ separator_pattern
-			let next = tabdelim .. next[1:]
-			let current = sepdelim .. current[1:]
-		endif
-		" --- reorder
-		let linelist[rownum] = before .. next .. current .. after
-		" -- store cursor column for the end
-		if linum == current_linum
-			let cursor_col = cursor + (byte_third - byte_second)
-		endif
-		let linum += 1
-	endfor
-	" ---- commit changes to buffer
-	let linum = head_linum
-	for index in range(len(linelist))
-		call setline(linum, linelist[index])
-		let linum += 1
+		let cellrow = cellgrid[rownum]
+		" -- indent = cellrow[0]
+		" -- first col = cellrow[1]
+		let current = cellrow[curcolnum]
+		let next = cellrow[curcolnum + 1]
+		let newcellrow = copy(cellrow)
+		let newcellrow[curcolnum] = next
+		let newcellrow[curcolnum + 1] = current
+		let cellgrid[rownum] = newcellrow
 	endfor
 	" ---- coda
-	call cursor('.', cursor_col)
-	return positions
+	let paragraph = organ#table#rebuild_lines (paragraph)
+	call organ#table#commit (paragraph)
+	" -- 3 = 2 for spaces and 1 for delim
+	call cursor('.', col('.') + lennextcol + 3)
+	return paragraph
 endfun
 
 " ---- new rows & cols
