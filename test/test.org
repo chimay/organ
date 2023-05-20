@@ -192,10 +192,10 @@ content
 
 content
 
- a  = b  = c  ; d ; e
+ a  = b = c ; d ; e
  ab = cd = ef ; f
- c  = d  : g  : h ; f ; g   ; hj ; k
- d  : e  ; f  = g = h = ijk = l
+ c  = d : g : h ; f ; g ; hj ; k
+ d    : e ; f = g = h = ijk = l
 
   | row 1 col 1 | row 1 col 2 | hello |
    |-+-|

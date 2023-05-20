@@ -202,7 +202,7 @@ fun! organ#table#delimgrid (paragraph)
 	" Grid of cells limiters
 	let paragraph = a:paragraph
 	let delimiter = paragraph.delimiter
-	let sepdelim_pattern = paragraph.separator_delimiter_pattern
+	let sepdelim_pattern = paragraph.sepline_delimiter_pattern
 	let delimgrid = []
 	" ---- loop
 	let linum = paragraph.linumlist[0]
@@ -232,7 +232,7 @@ fun! organ#table#cellgrid (paragraph)
 	" Use split(string, pattern, keepempty)
 	let paragraph = a:paragraph
 	let delimiter = paragraph.delimiter
-	let sepdelim_pattern = paragraph.separator_delimiter_pattern
+	let sepdelim_pattern = paragraph.sepline_delimiter_pattern
 	let cellgrid = []
 	" ---- loop
 	let linum = paragraph.linumlist[0]
@@ -377,7 +377,7 @@ fun! organ#table#add_missing_delims (paragraph)
 	let linumlist = paragraph.linumlist
 	let linelist = paragraph.linelist
 	let delimiter = paragraph.delimiter
-	let sepdelim = paragraph.separator_delimiter
+	let sepdelim = paragraph.sepline_delimiter
 	let delimgrid = paragraph.delimgrid
 	" ---- add loop
 	let lengthes = organ#table#lengthes (delimgrid)
@@ -448,10 +448,21 @@ fun! organ#table#align_cells (paragraph)
 			let cellrow[colnum] = content
 		endfor
 	endfor
-	" ---- rebuild lines
+	" ---- coda
+	return paragraph
+endfun
+
+fun! organ#table#rebuild_lines (paragraph)
+	" Rebuild lines from paragraph
+	let paragraph = a:paragraph
+	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
+	let cellgrid = paragraph.cellgrid
+	let delimgrid = paragraph.delimgrid
+	let sepline_pattern = paragraph.sepline_pattern
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		let is_sep_line = line =~ organ#table#sepline_pattern ()
+		let is_sep_line = line =~ sepline_pattern
 		let cellrow = cellgrid[rownum]
 		let delimrow = delimgrid[rownum]
 		let lencells = len(cellrow)
@@ -479,7 +490,6 @@ fun! organ#table#align_cells (paragraph)
 		endfor
 		let linelist[rownum] = newline->substitute('\m\s*$', '', 'g')
 	endfor
-	" ---- coda
 	return paragraph
 endfun
 
@@ -526,13 +536,15 @@ fun! organ#table#align (mode = 'normal') range
 	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
 		let paragraph.delimiter = organ#table#delimiter ()
-		let paragraph.separator_delimiter = organ#table#sepline_delimiter ()
-		let paragraph.separator_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
+		let paragraph.sepline_delimiter = organ#table#sepline_delimiter ()
+		let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
+		let paragraph.sepline_pattern = organ#table#sepline_pattern ()
 	else
 		let prompt = 'Align following pattern : '
 		let paragraph.delimiter = input(prompt, '')
-		let paragraph.separator_delimiter = paragraph.delimiter
-		let paragraph.separator_delimiter_pattern = paragraph.delimiter
+		let paragraph.sepline_delimiter = paragraph.delimiter
+		let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
+		let paragraph.sepline_pattern = organ#table#sepline_pattern ()
 	endif
 	" ---- delimiters
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
@@ -547,6 +559,8 @@ fun! organ#table#align (mode = 'normal') range
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
+	" ---- rebuild lines
+	let paragraph = organ#table#rebuild_lines (paragraph)
 	" ---- commit lines to buffer
 	call organ#table#commit (paragraph)
 	" ---- coda
@@ -579,8 +593,8 @@ fun! organ#table#build (...)
 	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiters
 	let paragraph.delimiter = organ#table#delimiter ()
-	let paragraph.separator_delimiter = organ#table#sepline_delimiter ()
-	let paragraph.separator_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
+	let paragraph.sepline_delimiter = organ#table#sepline_delimiter ()
+	let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph = organ#table#add_missing_delims(paragraph)
 	" ---- cells
@@ -752,59 +766,18 @@ fun! organ#table#move_col_left (...)
 		return paragraph
 	endif
 	" ---- exchange columns
-	for rownum in range(len(cellgrid))
+	for rownum in range(lenlinelist)
+		let cellrow = cellgrid[rownum]
+		let previous = cellrow[curcolnum - 1]
+		let current = cellrow[curcolnum]
+		let newcellrow = copy(cellrow)
+		let newcellrow[curcolnum - 1] = current
+		let newcellrow[curcolnum] = previous
+		let cellgrid[rownum] = newcellrow
 	endfor
 	" ---- coda
 	call organ#table#commit (paragraph)
-	echomsg currownum curcellrow curdelimrow positions curcolnum
 	return paragraph
-	" ---- old
-	" ---- two columns to exchange, three delimiters
-	let char_first = positions[colnum - 1]
-	let char_second = positions[colnum]
-	let char_third = positions[colnum + 1]
-	" ---- move column in all table lines
-	let linum = head_linum
-	for rownum in range(lenlinelist)
-		let line = linelist[rownum]
-		" -- chunks
-		let byte_first = line->byteidx(char_first - 1) + 1
-		let byte_second = line->byteidx(char_second - 1) + 1
-		let byte_third = line->byteidx(char_third - 1) + 1
-		if byte_first == 1
-			let before = ''
-			let after = line[byte_third - 1:]
-		elseif byte_third == len(line) + 1
-			let before = line
-			let after = line[byte_third - 1:]
-		else
-			let before = line[:byte_first - 2]
-			let after = line[byte_third - 1:]
-		endif
-		let previous = line[byte_first - 1:byte_second - 2]
-		let current = line[byte_second - 1:byte_third - 2]
-		" -- adjust separator line
-		if colnum == 1 && tabdelim != sepdelim && line =~ separator_pattern
-			let current = tabdelim .. current[1:]
-			let previous = sepdelim .. previous[1:]
-		endif
-		" --- reorder
-		let linelist[rownum] = before .. current .. previous .. after
-		" -- store cursor column for the end
-		if linum == current_linum
-			let cursor_col = cursor - (byte_second - byte_first)
-		endif
-		let linum += 1
-	endfor
-	" ---- commit changes to buffer
-	let linum = head_linum
-	for index in range(len(linelist))
-		call setline(linum, linelist[index])
-		let linum += 1
-	endfor
-	" ---- coda
-	call cursor('.', cursor_col)
-	return positions
 endfun
 
 fun! organ#table#move_col_right ()
