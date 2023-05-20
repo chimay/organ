@@ -192,9 +192,25 @@ content
 
 content
 
-   a = b = c ; d ; e
+ a  = b  = c  ; d ; e
  ab = cd = ef ; f
-  c  = d : g : h
+ c  = d  : g  : h ; f ; g   ; hj ; k
+ d  : e  ; f  = g = h = ijk = l
+
+  | row 1 col 1 | row 1 col 2 | hello |
+   |-+-|
+	  |
+ | row 2 col 1  | row 2 col 2   |
+  |-+-+-|
+   | row 3 col 1 max    | uù 3 col 2   |
+  |-|
+ | aeéè1 col 1 | ðđŋ 1 col 2 | hello |
+ | row 1 col 1 | row 1 col 2 | hello |
+  | row 1 col 1 | row 1 col 2 |
+     | toto | 2.5 |
+     | 1 | 3 |
+    | - |
+  | row 1 col 1 | row 1 col 2 |
 
 | row 1 col 1 | row 1 col 2 | hello | there |
 |-------------+-------------+-------+-------|
@@ -321,20 +337,6 @@ content
 content
 
 *** chapter 3.3.2                                                :music:
-
-  | row 1 col 1 | row 1 col 2 | hello |
-   |-+-|
-	  |
- | row 2 col 1  | row 2 col 2   |
-  |-+-+-|
-   | row 3 col 1 max    | row 3 col 2   |
-  |-|
- | row 1 col 1 | row 1 col 2 | hello |
-  | row 1 col 1 | row 1 col 2 |
-     | toto | 2.5 |
-     | 1 | 3 |
-    | - |
-  | row 1 col 1 | row 1 col 2 |
 
 Multibyte table
 

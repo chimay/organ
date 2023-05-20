@@ -70,14 +70,9 @@ fun! organ#table#separator_pattern ()
 	"return '\m^$\&^.$'
 endfun
 
-fun! organ#table#outside_pattern (argdict = {})
+fun! organ#table#outside_pattern ()
 	" Pattern for non table lines
-	let argdict = a:argdict
-	if has_key (argdict, 'delimiter')
-		let delimiter =  argdict.delimiter
-	else
-		let delimiter = organ#table#delimiter ()
-	endif
+	let delimiter = organ#table#delimiter ()
 	let pattern = '\m^$\|'
 	let pattern ..= '^\s*[^' .. delimiter .. ' ].*'
 	let pattern ..= '\|.*[^' .. delimiter .. ' ]\s*$'
@@ -108,6 +103,8 @@ fun! organ#table#is_separator_line (...)
 	return line =~ pattern
 endfun
 
+" -- head & tail
+
 fun! organ#table#head (move = 'dont-move')
 	" First line of table
 	let move = a:move
@@ -132,7 +129,7 @@ fun! organ#table#tail (move = 'dont-move')
 	return linum - 1
 endfun
 
-" --- grid
+" -- grid
 
 fun! organ#table#lengthes (grid)
 	" Lengthes of lists in grid
@@ -146,29 +143,6 @@ fun! organ#table#metalen (grid)
 	let Lengthes = { list -> copy(list)->map({ _, v -> strcharlen(v) }) }
 	let Metalen = { _, list -> Lengthes(list) }
 	return map(grid, Metalen)
-endfun
-
-fun! organ#table#maxima (grid)
-	" Maxima of elements in grid
-	let grid = deepcopy(a:grid)
-	return map(grid, { _, v -> max(v)})
-endfun
-
-fun! organ#table#complete (grid, absent = -1)
-	" Complete grid with elements equals to absent
-	let complete = deepcopy(a:grid)
-	let absent = a:absent
-	let absentcell = [absent]
-	let lengthes = organ#table#lengthes (complete)
-	let maxim = max(lengthes)
-	for index in range(len(complete))
-		let add = maxim - lengthes[index]
-		if add > 0
-			let added = absentcell->repeat(add)
-			eval complete[index]->extend(added)
-		endif
-	endfor
-	return complete
 endfun
 
 fun! organ#table#dual (grid)
@@ -199,7 +173,30 @@ fun! organ#table#dual (grid)
 	return dual
 endfun
 
-" -- align TODO
+fun! organ#table#maxima (grid)
+	" Maxima of elements in grid
+	let grid = deepcopy(a:grid)
+	return map(grid, { _, v -> max(v)})
+endfun
+
+fun! organ#table#complete (grid, absent = -1)
+	" Complete grid with elements equals to absent
+	let complete = deepcopy(a:grid)
+	let absent = a:absent
+	let absentcell = [absent]
+	let lengthes = organ#table#lengthes (complete)
+	let maxim = max(lengthes)
+	for index in range(len(complete))
+		let add = maxim - lengthes[index]
+		if add > 0
+			let added = absentcell->repeat(add)
+			eval complete[index]->extend(added)
+		endif
+	endfor
+	return complete
+endfun
+
+" -- align
 
 fun! organ#table#delimgrid (paragraph)
 	" Grid of cells limiters
@@ -248,8 +245,10 @@ fun! organ#table#cellgrid (paragraph)
 		let indent = cells[0]
 		eval cells->map({ _, v -> trim(v) })
 		let cells[0] = indent
-		" -- first is ident, last should be empty
-		let cells = cells[:-2]
+		" -- remove last if empty
+		if empty(cells[-1])
+			let cells = cells[:-2]
+		endif
 		" -- add to grid
 		eval cellgrid->add(cells)
 		let linum += 1
@@ -316,7 +315,28 @@ fun! organ#table#posgrid (argdict = {})
 	return grid
 endfun
 
-" ---- align, new TODO
+" ---- align
+
+fun! organ#table#shrink_separator_lines (paragraph)
+	" Reduce separator line to their minimum
+	let paragraph = a:paragraph
+	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
+	let cellgrid = paragraph.cellgrid
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		let is_sep_line = line =~ organ#table#separator_pattern ()
+		if ! is_sep_line
+			continue
+		endif
+		" -- cells
+		let cells = cellgrid[rownum]
+		for colnum in range(1, len(cells) - 1)
+			let cells[colnum] = '-'
+		endfor
+	endfor
+	return paragraph
+endfun
 
 fun! organ#table#minindent (paragraph)
 	" Minimize table indent
@@ -431,12 +451,30 @@ fun! organ#table#align_cells (paragraph)
 	endfor
 	" ---- rebuild lines
 	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		let is_sep_line = line =~ organ#table#separator_pattern ()
 		let cells = cellgrid[rownum]
 		let delims = delimgrid[rownum]
+		let lencells = len(cells)
+		let lendelims = len(delims)
 		let newline = ''
-		for colnum in range(len(cells))
-			let newline ..= cells[colnum] .. ' '
-			let newline ..= delims[colnum] .. ' '
+		for colnum in range(lencells)
+			if colnum > 0 && is_sep_line
+				let postcell = '-'
+			elseif colnum == 0
+				let postcell = ''
+			else
+				let postcell = ' '
+			endif
+			if colnum < lencells - 1 && is_sep_line
+				let postdelim = '-'
+			else
+				let postdelim = ' '
+			endif
+			let newline ..= cells[colnum] .. postcell
+			if colnum < lendelims
+				let newline ..= delims[colnum] .. postdelim
+			endif
 		endfor
 		let linelist[rownum] = newline
 	endfor
@@ -460,7 +498,7 @@ fun! organ#table#commit (paragraph)
 	return paragraph
 endfun
 
-fun! organ#table#meta_align (mode = 'normal') range
+fun! organ#table#align (mode = 'normal') range
 	" Align table or paragraph
 	call organ#origami#suspend ()
 	let mode = a:mode
@@ -499,6 +537,9 @@ fun! organ#table#meta_align (mode = 'normal') range
 	endif
 	" ---- cells
 	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
+	if paragraph.is_table
+		let paragraph = organ#table#shrink_separator_lines(paragraph)
+	endif
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
@@ -510,238 +551,6 @@ fun! organ#table#meta_align (mode = 'normal') range
 	return paragraph
 endfun
 
-" ---- align, legacy
-
-fun! organ#table#shrink_separator_lines (argdict = {})
-	" Reduce separator line to their minimum
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-		let argdict.head_linum = head_linum
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-		let argdict.tail_linum = tail_linum
-	endif
-	for linum in range(head_linum, tail_linum)
-		if organ#table#is_separator_line (linum)
-			call setline(linum, '|-|')
-		endif
-	endfor
-	return argdict
-endfun
-
-fun! organ#table#reduce_multi_spaces (argdict = {})
-	" Reduce multi-spaces before a delimiter to one
-	let argdict = a:argdict
-	if has_key (argdict, 'delimiter')
-		let delimiter =  argdict.delimiter
-	else
-		let delimiter = organ#table#delimiter ()
-		let argdict.delimiter = delimiter
-	endif
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-		let argdict.head_linum = head_linum
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-		let argdict.tail_linum = tail_linum
-	endif
-	let range = head_linum .. ',' .. tail_linum
-	" ---- also replace indent tabs
-	let pattern = '\m\s\+\(' .. delimiter .. '\)'
-	let substit = ' \1'
-	let pattern = pattern->escape('/')
-	let substit = substit->escape('/')
-	let position = getcurpos ()
-	execute 'silent!' range 'substitute /' .. pattern .. '/' .. substit .. '/g'
-	call setpos('.', position)
-	return argdict
-endfun
-
-fun! organ#table#add_missing_columns (argdict = {})
-	" Add missing columns delimiters
-	let argdict = a:argdict
-	if has_key (argdict, 'delimiter')
-		let delimiter = argdict.delimiter
-	else
-		let delimiter = organ#table#delimiter ()
-		let argdict.delimiter = delimiter
-	endif
-	if has_key (argdict, 'head_linum')
-		let head_linum = argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-		let argdict.head_linum = head_linum
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-		let argdict.tail_linum = tail_linum
-	endif
-	if has_key (argdict, 'grid')
-		let grid =  argdict.grid
-	else
-		let grid =  organ#table#posgrid (argdict)
-		let argdict.grid = grid
-	endif
-	let lengthes = organ#table#lengthes (grid)
-	let maxim = max(lengthes)
-	let index = 0
-	for linum in range(head_linum, tail_linum)
-		let width = lengthes[index]
-		let add = maxim - width
-		if add > 0
-			let line = getline(linum)
-			if organ#table#is_separator_line (linum)
-				let addme = organ#table#separator_delimiter ()
-				" -- needs the colon for compatibilty
-				let newline = line[:-2] .. addme->repeat(add) .. line[-1:]
-			else
-				let addme = delimiter
-				let newline = line .. addme->repeat(add)
-			endif
-			call setline(linum, newline)
-			let grid_index = grid[index]
-			let last_pos = grid_index[-1]
-			let addedpos = range(last_pos + 1, last_pos + add)
-			eval grid_index->extend(addedpos)
-		endif
-		let index += 1
-	endfor
-	return argdict
-endfun
-
-fun! organ#table#align_columns (argdict = {})
-	" Align following a delimiter
-	" For tables : align columns in all table rows
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-		let argdict.head_linum = head_linum
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-		let argdict.tail_linum = tail_linum
-	endif
-	if has_key (argdict, 'grid')
-		let grid =  argdict.grid
-	else
-		let grid =  organ#table#posgrid (argdict)
-		let argdict.grid = grid
-	endif
-	" ---- grid derivates
-	let lengthes = organ#table#lengthes (grid)
-	let colmax = max(lengthes)
-	let dual = organ#table#dual(grid)
-	let maxima = organ#table#maxima(dual)
-	" ---- lines list
-	let linelist = getline(head_linum, tail_linum)
-	let lenlinelist = len(linelist)
-	" ---- double loop
-	let index = 0
-	let modified = []
-	for colnum in range(colmax)
-		for rownum in range(lenlinelist)
-			if lengthes[rownum] <= colnum
-				continue
-			endif
-			let row = grid[rownum]
-			let char_position = row[colnum]
-			let add = maxima[colnum] - char_position
-			if add == 0
-				continue
-			endif
-			let line = linelist[rownum]
-			let byte_position = line->byteidx(char_position - 1) + 1
-			" -- shift
-			let is_sep_line = line =~ organ#table#separator_pattern ()
-			if colnum > 0 && is_sep_line
-				let shift = repeat('-', add)
-			else
-				let shift = repeat(' ', add)
-			endif
-			" -- adapt line
-			if byte_position == 1
-				let before = ''
-				let after = line
-			elseif byte_position == len(line) + 1
-				let before = line
-				let after = ''
-			else
-				let before = line[:byte_position - 2]
-				let after = line[byte_position - 1:]
-			endif
-			let linelist[rownum] = before .. shift .. after
-			" -- adapt grid & maxima
-			for rightcol in range(colnum, lengthes[rownum] - 1)
-				let row[rightcol] += add
-				if row[rightcol] > maxima[rightcol]
-					let maxima[rightcol] = row[rightcol]
-				endif
-			endfor
-			" ---- register row as modified
-			if modified->index(rownum) < 0
-				eval modified->add(rownum)
-			endif
-		endfor
-	endfor
-	" ---- commit changes to buffer
-	let linum = head_linum
-	for rownum in range(lenlinelist)
-		if modified->index(rownum) < 0
-			let linum += 1
-			continue
-		endif
-		call setline(linum, linelist[rownum])
-		let linum += 1
-	endfor
-	return argdict
-endfun
-
-fun! organ#table#align (mode = 'normal') range
-	" Align table or paragraph
-	call organ#origami#suspend ()
-	let mode = a:mode
-	let position = getcurpos ()
-	let argdict = {}
-	if mode ==# 'visual'
-		let argdict.head_linum = a:firstline
-		let argdict.tail_linum = a:lastline
-	else
-		let argdict.head_linum = organ#table#head ()
-		let argdict.tail_linum = organ#table#tail ()
-	endif
-	if organ#table#is_in_table ()
-		let argdict.delimiter = organ#table#delimiter ()
-		let argdict = organ#table#shrink_separator_lines (argdict)
-		let argdict = organ#table#reduce_multi_spaces (argdict)
-		let argdict = organ#table#add_missing_columns (argdict)
-	else
-		let prompt = 'Align following pattern : '
-		let argdict.delimiter = input(prompt, '')
-		let argdict = organ#table#reduce_multi_spaces (argdict)
-	endif
-	let argdict = organ#table#align_columns (argdict)
-	call setpos('.', position)
-	call organ#origami#resume ()
-	return argdict
-endfun
-
 " ---- update
 
 fun! organ#table#update ()
@@ -750,12 +559,13 @@ fun! organ#table#update ()
 		return []
 	endif
 	let position = getcurpos ()
-	let argdict = {}
-	let argdict.delimiter = organ#table#delimiter ()
-	let argdict = organ#table#shrink_separator_lines (argdict)
-	let argdict = organ#table#reduce_multi_spaces (argdict)
-	let argdict = organ#table#add_missing_columns (argdict)
-	let argdict = organ#table#align_columns (argdict)
+	let paragraph = {}
+	let paragraph.delimiter = organ#table#delimiter ()
+	let paragraph.separator_delimiter = organ#table#separator_delimiter ()
+	let paragraph.separator_delimiter_pattern = organ#table#separator_delimiter_pattern ()
+	let paragraph = organ#table#minindent(paragraph)
+	let paragraph = organ#table#add_missing_delims(paragraph)
+	let paragraph = organ#table#align_cells (paragraph)
 	call setpos('.', position)
 	return argdict
 endfun
