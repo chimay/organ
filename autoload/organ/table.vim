@@ -592,6 +592,38 @@ fun! organ#table#update ()
 	return paragraph
 endfun
 
+" ---- build paragraph
+
+fun! organ#table#build (...)
+	" Paragraph dict
+	if a:0 > 1
+		let head_linum = a:1
+		let tail_linum = a:2
+	else
+		let head_linum = organ#table#head ()
+		let tail_linum = organ#table#tail ()
+	endif
+	" ---- init
+	let position = getcurpos ()
+	let paragraph = {}
+	" ---- lines
+	let paragraph.linumlist = range(head_linum, tail_linum)
+	let paragraph.linelist = getline(head_linum, tail_linum)
+	let paragraph.pristine = copy(paragraph.linelist)
+	" ---- indent
+	let paragraph = organ#table#minindent(paragraph)
+	" ---- delimiters
+	let paragraph.delimiter = organ#table#delimiter ()
+	let paragraph.separator_delimiter = organ#table#separator_delimiter ()
+	let paragraph.separator_delimiter_pattern = organ#table#separator_delimiter_pattern ()
+	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
+	" ---- cells
+	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
+	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
+	" ---- coda
+	return paragraph
+endfun
+
 " ---- navigation
 
 fun! organ#table#next_cell ()
@@ -880,13 +912,9 @@ fun! organ#table#new_row ()
 	let linum = line('.')
 	let newrow = '| |'
 	call append('.', newrow)
-	let paragraph = #{
-		\ linumlist : [linum, linum + 1],
-		\ linelist : [getline('.'), newrow],
-		\}
-	call organ#table#add_missing_delims (paragraph)
-	call organ#table#align_cells (paragraph)
+	let paragraph = organ#table#update()
 	call cursor(linum + 1, col('.'))
+	return paragraph
 endfun
 
 fun! organ#table#new_separator_line ()
@@ -894,13 +922,9 @@ fun! organ#table#new_separator_line ()
 	let linum = line('.')
 	let newrow = '|-|'
 	call append('.', newrow)
-	let paragraph = #{
-		\ head_linum : linum,
-		\ tail_linum : linum + 1,
-		\}
-	call organ#table#add_missing_delims (paragraph)
-	call organ#table#align_cells (paragraph)
+	let paragraph = organ#table#update()
 	call cursor(linum + 1, col('.'))
+	return paragraph
 endfun
 
 fun! organ#table#new_col ()
