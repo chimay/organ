@@ -260,7 +260,34 @@ endfun
 " -- positions
 
 fun! organ#table#positions (...)
-	" Positions of the delimiter char
+	" Positions in bytes of the delimiter char
+	" First char of the line = 1
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	if a:0 > 1
+		let pattern = a:2
+	else
+		let pattern = organ#table#separator_delimiter_pattern ()
+	endif
+	let line = getline(linum)
+	let positions = []
+	let index = 0
+	while v:true
+		let index = line->match(pattern, index)
+		if index < 0
+			break
+		endif
+		eval positions->add(index)
+		let index += 1
+	endwhile
+	return positions
+endfun
+
+fun! organ#table#charpositions (...)
+	" Positions in char indexes of the delimiter char
 	" First char of the line = 1
 	if a:0 > 0
 		let linum = a:1
@@ -280,28 +307,11 @@ fun! organ#table#positions (...)
 		if byte_index < 0
 			break
 		endif
-		let char_index = line->charidx(byte_index) + 1
+		let char_index = line->charidx(byte_index)
 		eval positions->add(char_index)
 		let byte_index += 1
 	endwhile
 	return positions
-endfun
-
-fun! organ#table#posgrid (...)
-	" Positions in all table lines
-	if a:0 > 1
-		let head_linum = a:1
-		let tail_linum = a:2
-	else
-		let head_linum = organ#table#head ()
-		let tail_linum = organ#table#tail ()
-	endif
-	let grid = []
-	for linum in range(head_linum, tail_linum)
-		let positions = organ#table#positions (linum)
-		eval grid->add(positions)
-	endfor
-	return grid
 endfun
 
 " ---- align
@@ -708,16 +718,29 @@ fun! organ#table#move_col_left (...)
 	" Move table column left
 	" Assume the table is aligned
 	let paragraph = organ#table#update ()
+	let linumlist = paragraph.linumlist
 	let cellgrid = paragraph.cellgrid
+	let delimgrid = paragraph.delimgrid
+	" ---- current line
+	let linum = line('.')
+	let currownum = linumlist->index(linum)
+	let curcellrow = cellgrid[currownum]
+	let curdelimrow = delimgrid[currownum]
+	let positions = organ#table#positions (linum)
+	echomsg currownum curcellrow curdelimrow positions
+	" ---- two delimiters or less = only one column
+	let colmax = len(curdelimrow)
+	if colmax <= 2
+		return curdelimrow
+	endif
+	return
+	" ---- exchange columns
+	for rownum in range(len(cellgrid))
+	endfor
 	" ---- old
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
 	let positions = organ#table#positions ()
-	let colmax = len(positions)
-	" ---- two delimiters or less = only one column
-	if colmax <= 2
-		return positions
-	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
 	let cursor = col('.')

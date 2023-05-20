@@ -217,6 +217,7 @@ content
 | row 1 col 1 | row 1 col 2 | hello | there |
 | hello       | ROW         | jjj   |       |
 | row 2 col 1 | row 2 col 2 |       |       |
+| aeéè1 col 1 | ðđŋ 1 col 2 | hello |       |
 
 another
 
