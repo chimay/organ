@@ -432,9 +432,14 @@ fun! organ#table#meta_align (mode = 'normal') range
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
 	" ---- commit lines to buffer
+	let rownum = 0
 	let linum = head_linum
+	let pristine = paragraph.pristine
 	for line in paragraph.linelist
-		call setline(linum, line)
+		if line != pristine[rownum]
+			call setline(linum, line)
+		endif
+		let rownum += 1
 		let linum += 1
 	endfor
 	" ---- coda
