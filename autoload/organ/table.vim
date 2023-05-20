@@ -259,26 +259,20 @@ endfun
 
 " -- positions
 
-fun! organ#table#positions (argdict = {})
+fun! organ#table#positions (...)
 	" Positions of the delimiter char
 	" First char of the line = 1
-	let argdict = a:argdict
-	if has_key (argdict, 'delimiter')
-		let delimiter =  argdict.delimiter
-	else
-		let delimiter = organ#table#delimiter ()
-	endif
-	if has_key (argdict, 'linum')
-		let linum =  argdict.linum
+	if a:0 > 0
+		let linum = a:1
 	else
 		let linum = line('.')
 	endif
-	let line = getline(linum)
-	if organ#table#is_separator_line (linum)
-		let pattern = organ#table#separator_delimiter_pattern ()
+	if a:0 > 1
+		let pattern = a:2
 	else
-		let pattern = delimiter
+		let pattern = organ#table#separator_delimiter_pattern ()
 	endif
+	let line = getline(linum)
 	let positions = []
 	let byte_index = 0
 	while v:true
@@ -293,23 +287,18 @@ fun! organ#table#positions (argdict = {})
 	return positions
 endfun
 
-fun! organ#table#posgrid (argdict = {})
+fun! organ#table#posgrid (...)
 	" Positions in all table lines
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
+	if a:0 > 1
+		let head_linum = a:1
+		let tail_linum = a:2
 	else
 		let head_linum = organ#table#head ()
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
 		let tail_linum = organ#table#tail ()
 	endif
 	let grid = []
 	for linum in range(head_linum, tail_linum)
-		let argdict.linum = linum
-		let positions = organ#table#positions (argdict)
+		let positions = organ#table#positions (linum)
 		eval grid->add(positions)
 	endfor
 	return grid
@@ -729,21 +718,12 @@ fun! organ#table#move_row_down ()
 	return linum
 endfun
 
-fun! organ#table#move_col_left (argdict = {})
+fun! organ#table#move_col_left ()
 	" Move table column left
 	" Assume the table is aligned
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-	endif
-	let positions = organ#table#positions (argdict)
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	let positions = organ#table#positions ()
 	let colmax = len(positions)
 	" ---- two delimiters or less = only one column
 	if colmax <= 2
@@ -817,21 +797,12 @@ fun! organ#table#move_col_left (argdict = {})
 	return positions
 endfun
 
-fun! organ#table#move_col_right (argdict = {})
+fun! organ#table#move_col_right ()
 	" Move table column right
 	" Assume the table is aligned
-	let argdict = a:argdict
-	if has_key (argdict, 'head_linum')
-		let head_linum =  argdict.head_linum
-	else
-		let head_linum = organ#table#head ()
-	endif
-	if has_key (argdict, 'tail_linum')
-		let tail_linum =  argdict.tail_linum
-	else
-		let tail_linum = organ#table#tail ()
-	endif
-	let positions = organ#table#positions (argdict)
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	let positions = organ#table#positions ()
 	let colmax = len(positions)
 	" ---- two delimiters or less = only one column
 	if colmax <= 2
