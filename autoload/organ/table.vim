@@ -238,19 +238,19 @@ fun! organ#table#cellgrid (paragraph)
 	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
 		if organ#table#is_separator_line (linum)
-			let cells = line->split(sepdelim_pattern, v:true)
+			let cellrow = line->split(sepdelim_pattern, v:true)
 		else
-			let cells = line->split(delimiter, v:true)
+			let cellrow = line->split(delimiter, v:true)
 		endif
-		let indent = cells[0]
-		eval cells->map({ _, v -> trim(v) })
-		let cells[0] = indent
+		let indent = cellrow[0]
+		eval cellrow->map({ _, v -> trim(v) })
+		let cellrow[0] = indent
 		" -- remove last if empty
-		if empty(cells[-1])
-			let cells = cells[:-2]
+		if empty(cellrow[-1])
+			let cellrow = cellrow[:-2]
 		endif
 		" -- add to grid
-		eval cellgrid->add(cells)
+		eval cellgrid->add(cellrow)
 		let linum += 1
 	endfor
 	" ---- coda
@@ -319,9 +319,9 @@ fun! organ#table#shrink_separator_lines (paragraph)
 			continue
 		endif
 		" -- cells
-		let cells = cellgrid[rownum]
-		for colnum in range(1, len(cells) - 1)
-			let cells[colnum] = '-'
+		let cellrow = cellgrid[rownum]
+		for colnum in range(1, len(cellrow) - 1)
+			let cellrow[colnum] = '-'
 		endfor
 	endfor
 	return paragraph
@@ -416,9 +416,9 @@ fun! organ#table#align_cells (paragraph)
 		let line = linelist[rownum]
 		let is_sep_line = line =~ organ#table#separator_pattern ()
 		" -- cells
-		let cells = cellgrid[rownum]
-		for colnum in range(len(cells))
-			let content = cells[colnum]
+		let cellrow = cellgrid[rownum]
+		for colnum in range(len(cellrow))
+			let content = cellrow[colnum]
 			let add = maxima[colnum] - strcharlen(content)
 			if add == 0
 				continue
@@ -435,16 +435,16 @@ fun! organ#table#align_cells (paragraph)
 				" other : align left
 				let content = content .. shift
 			endif
-			let cells[colnum] = content
+			let cellrow[colnum] = content
 		endfor
 	endfor
 	" ---- rebuild lines
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let is_sep_line = line =~ organ#table#separator_pattern ()
-		let cells = cellgrid[rownum]
+		let cellrow = cellgrid[rownum]
 		let delims = delimgrid[rownum]
-		let lencells = len(cells)
+		let lencells = len(cellrow)
 		let lendelims = len(delims)
 		let newline = ''
 		for colnum in range(lencells)
@@ -462,12 +462,12 @@ fun! organ#table#align_cells (paragraph)
 			else
 				let postdelim = ' '
 			endif
-			let newline ..= cells[colnum] .. postcell
+			let newline ..= cellrow[colnum] .. postcell
 			if colnum < lendelims
 				let newline ..= delims[colnum] .. postdelim
 			endif
 		endfor
-		let linelist[rownum] = newline
+		let linelist[rownum] = newline->substitute('\m\s*$', '', 'g')
 	endfor
 	" ---- coda
 	return paragraph
@@ -545,14 +545,18 @@ fun! organ#table#align (mode = 'normal') range
 	return paragraph
 endfun
 
-" ---- update
+" ---- build paragraph
 
-fun! organ#table#update ()
-	" Update table : to be used in InsertLeave autocommand
-	if ! organ#table#is_in_table ()
-		return []
+fun! organ#table#build (...)
+	" Paragraph dict
+	if a:0 > 1
+		let head_linum = a:1
+		let tail_linum = a:2
+	else
+		let head_linum = organ#table#head ()
+		let tail_linum = organ#table#tail ()
 	endif
-	let position = getcurpos ()
+	" ---- init
 	let paragraph = {}
 	" ---- head & tail
 	let head_linum = organ#table#head ()
@@ -574,42 +578,24 @@ fun! organ#table#update ()
 	let paragraph = organ#table#shrink_separator_lines(paragraph)
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	let paragraph = organ#table#align_cells (paragraph)
+	" ---- coda
+	return paragraph
+endfun
+
+" ---- update
+
+fun! organ#table#update (...)
+	" Update table : to be used in InsertLeave autocommand
+	if ! organ#table#is_in_table ()
+		return []
+	endif
+	let position = getcurpos ()
+	" ---- build
+	let paragraph = call('organ#table#build', a:000)
 	" ---- commit
 	call organ#table#commit (paragraph)
 	" ---- coda
 	call setpos('.', position)
-	return paragraph
-endfun
-
-" ---- build paragraph
-
-fun! organ#table#build (...)
-	" Paragraph dict
-	if a:0 > 1
-		let head_linum = a:1
-		let tail_linum = a:2
-	else
-		let head_linum = organ#table#head ()
-		let tail_linum = organ#table#tail ()
-	endif
-	" ---- init
-	let position = getcurpos ()
-	let paragraph = {}
-	" ---- lines
-	let paragraph.linumlist = range(head_linum, tail_linum)
-	let paragraph.linelist = getline(head_linum, tail_linum)
-	let paragraph.pristine = copy(paragraph.linelist)
-	" ---- indent
-	let paragraph = organ#table#minindent(paragraph)
-	" ---- delimiters
-	let paragraph.delimiter = organ#table#delimiter ()
-	let paragraph.separator_delimiter = organ#table#separator_delimiter ()
-	let paragraph.separator_delimiter_pattern = organ#table#separator_delimiter_pattern ()
-	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
-	" ---- cells
-	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
-	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
-	" ---- coda
 	return paragraph
 endfun
 
@@ -718,9 +704,12 @@ fun! organ#table#move_row_down ()
 	return linum
 endfun
 
-fun! organ#table#move_col_left ()
+fun! organ#table#move_col_left (...)
 	" Move table column left
 	" Assume the table is aligned
+	let paragraph = organ#table#update ()
+	let cellgrid = paragraph.cellgrid
+	" ---- old
 	let head_linum = organ#table#head ()
 	let tail_linum = organ#table#tail ()
 	let positions = organ#table#positions ()
