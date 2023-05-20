@@ -121,7 +121,7 @@ fun! organ#nest#speed (key)
 	endif
 	" ---- non mapped key
 	if v:count > 0
-		let rhs = rhs->repeat(v:count)
+		let key = key->repeat(v:count)
 	endif
 	call feedkeys(key, 'n')
 	return 'normal-' .. keytrans
