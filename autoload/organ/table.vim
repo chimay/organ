@@ -431,6 +431,12 @@ fun! organ#table#meta_align (mode = 'normal') range
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
+	" ---- commit lines to buffer
+	let linum = head_linum
+	for line in paragraph.linelist
+		call setline(linum, line)
+		let linum += 1
+	endfor
 	" ---- coda
 	call setpos('.', position)
 	call organ#origami#resume ()
