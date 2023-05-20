@@ -4,6 +4,14 @@
 "
 " Table operations
 
+" ---- script constants
+
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
 " ---- helpers
 
 " -- patterns
@@ -227,12 +235,12 @@ fun! organ#table#cellgrid (paragraph)
 	" Use split(string, pattern, keepempty)
 	let paragraph = a:paragraph
 	let delimiter = paragraph.delimiter
-	let separator_delimiter = paragraph.separator_delimiter
+	let sepdelim_pattern = paragraph.separator_delimiter_pattern
 	let cellgrid = []
 	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
 		if organ#table#is_separator_line (linum)
-			let cells = line->split(separator_delimiter, v:true)
+			let cells = line->split(sepdelim_pattern, v:true)
 		else
 			let cells = line->split(delimiter, v:true)
 		endif
@@ -302,40 +310,38 @@ endfun
 
 " ---- align, new TODO
 
-fun! organ#table#minindent ()
+fun! organ#table#minindent (paragraph)
 	" Minimize table indent
-	let first = organ#table#head ()
-	let last =  organ#table#tail ()
+	let paragraph = a:paragraph
 	let spaces = repeat(' ', &tabstop)
 	" ---- eval min indent
-	let indent_pattern = '\m^\s*'
-	let linelist = getline(first, last)
+	let linelist = paragraph.linelist
 	let indentlist = []
-	let linum = first
+	let rownum = 0
 	for line in linelist
-		if line =~ "\t"
+		if line =~ "^\s*\t"
 			let line = substitute(line, "\t", spaces, 'g')
-			call setline(linum, line)
+			let linelist[rownum] = line
 		endif
-		let leading = line->matchstr(indent_pattern)
+		let leading = line->matchstr(s:indent_pattern)
 		let indent = len(leading)
 		eval indentlist->add(indent)
-		let linum += 1
+		let rownum += 1
 	endfor
 	let minindent = min(indentlist)
 	let minlead = repeat(' ', minindent)
 	" ---- reduce
-	let index = 0
-	let linum = first
-	for index in range(len(linelist))
-		let indent = indentlist[index]
+	let rownum = 0
+	for line in linelist
+		let indent = indentlist[rownum]
 		if indent > minindent
-			eval line->substitute(indent_pattern, minlead, '')
-			call setline(linum, line)
+			let line = line->substitute(s:indent_pattern, minlead, '')
+			let linelist[rownum] = line
 		endif
-		let linum += 1
+		let rownum += 1
 	endfor
-	return minindent
+	" ---- coda
+	return paragraph
 endfun
 
 fun! organ#table#add_missing_delims (paragraph)
@@ -346,6 +352,7 @@ fun! organ#table#add_missing_delims (paragraph)
 	let delimiter = paragraph.delimiter
 	let sepdelim = paragraph.separator_delimiter
 	let delimgrid = paragraph.delimgrid
+	" ---- add loop
 	let lengthes = organ#table#lengthes (delimgrid)
 	let maxim = max(lengthes)
 	let rownum = 0
@@ -358,7 +365,6 @@ fun! organ#table#add_missing_delims (paragraph)
 			if organ#table#is_separator_line (linum)
 				let addme = sepdelim->repeat(add)
 				let listaddme = [sepdelim]->repeat(add)
-				echo addme listaddme
 				" -- needs the colon for compatibilty
 				let newline = line[:-2] .. addme .. line[-1:]
 				let newdelims = delims[:-2] + listaddme + delims[-1:]
@@ -373,6 +379,7 @@ fun! organ#table#add_missing_delims (paragraph)
 		endif
 		let rownum += 1
 	endfor
+	" --- coda
 	return paragraph
 endfun
 
@@ -400,6 +407,8 @@ fun! organ#table#meta_align (mode = 'normal') range
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
 	let paragraph.pristine = copy(paragraph.linelist)
+	" ---- indent
+	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiter pattern
 	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
@@ -414,7 +423,9 @@ fun! organ#table#meta_align (mode = 'normal') range
 	endif
 	" ---- delimiters
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
-	let paragraph = organ#table#add_missing_delims(paragraph)
+	if paragraph.is_table
+		let paragraph = organ#table#add_missing_delims(paragraph)
+	endif
 	" ---- cells
 	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
