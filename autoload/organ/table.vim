@@ -143,7 +143,7 @@ endfun
 fun! organ#table#metalen (grid)
 	" Lengthes of each element of grid
 	let grid = deepcopy(a:grid)
-	let Lengthes = { list -> copy(list)->map({ _, v -> len(v) }) }
+	let Lengthes = { list -> copy(list)->map({ _, v -> strcharlen(v) }) }
 	let Metalen = { _, list -> Lengthes(list) }
 	return map(grid, Metalen)
 endfun
@@ -237,6 +237,7 @@ fun! organ#table#cellgrid (paragraph)
 	let delimiter = paragraph.delimiter
 	let sepdelim_pattern = paragraph.separator_delimiter_pattern
 	let cellgrid = []
+	" ---- loop
 	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
 		if organ#table#is_separator_line (linum)
@@ -244,10 +245,16 @@ fun! organ#table#cellgrid (paragraph)
 		else
 			let cells = line->split(delimiter, v:true)
 		endif
+		let indent = cells[0]
 		eval cells->map({ _, v -> trim(v) })
+		let cells[0] = indent
+		" -- first is ident, last should be empty
+		let cells = cells[:-2]
+		" -- add to grid
 		eval cellgrid->add(cells)
 		let linum += 1
 	endfor
+	" ---- coda
 	return cellgrid
 endfun
 
@@ -387,6 +394,53 @@ endfun
 fun! organ#table#align_cells (paragraph)
 	" Align cells
 	let paragraph = a:paragraph
+	let linumlist = paragraph.linumlist
+	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
+	let cellgrid = paragraph.cellgrid
+	let delimgrid = paragraph.delimgrid
+	let lengrid = paragraph.lengrid
+	let dual = organ#table#dual(lengrid)
+	let maxima = organ#table#maxima(dual)
+	" ---- double loop
+	for rownum in range(lenlinelist)
+		let line = linelist[rownum]
+		let is_sep_line = line =~ organ#table#separator_pattern ()
+		" -- cells
+		let cells = cellgrid[rownum]
+		for colnum in range(len(cells))
+			let content = cells[colnum]
+			let add = maxima[colnum] - strcharlen(content)
+			if add == 0
+				continue
+			endif
+			if colnum > 0 && is_sep_line
+				let shift = repeat('-', add)
+			else
+				let shift = repeat(' ', add)
+			endif
+			if content =~ '^[0-9.]\+$'
+				" number : align right
+				let content = shift .. content
+			else
+				" other : align left
+				let content = content .. shift
+			endif
+			let cells[colnum] = content
+		endfor
+	endfor
+	" ---- rebuild lines
+	for rownum in range(lenlinelist)
+		let cells = cellgrid[rownum]
+		let delims = delimgrid[rownum]
+		let newline = ''
+		for colnum in range(len(cells))
+			let newline ..= cells[colnum] .. ' '
+			let newline ..= delims[colnum] .. ' '
+		endfor
+		let linelist[rownum] = newline
+	endfor
+	" ---- coda
 	return paragraph
 endfun
 

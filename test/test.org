@@ -192,9 +192,9 @@ content
 
 content
 
-   a = b = c
- ab = cd = ef
-  c  = d
+   a = b = c ; d ; e
+ ab = cd = ef ; f
+  c  = d : g : h
 
 | row 1 col 1 | row 1 col 2 | hello | there |
 |-------------+-------------+-------+-------|
@@ -331,7 +331,8 @@ content
   |-|
  | row 1 col 1 | row 1 col 2 | hello |
   | row 1 col 1 | row 1 col 2 |
-     | toto |
+     | toto | 2.5 |
+     | 1 | 3 |
     | - |
   | row 1 col 1 | row 1 col 2 |
 
