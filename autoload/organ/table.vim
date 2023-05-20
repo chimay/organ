@@ -207,20 +207,20 @@ fun! organ#table#delimgrid (paragraph)
 	" ---- loop
 	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
-		let delims = []
-		"let Addmatch = { match -> string(delims->add(match[0])[-1]) }
+		let delimrow = []
+		"let Addmatch = { match -> string(delimrow->add(match[0])[-1]) }
 		if organ#table#is_separator_line (linum)
 			" -- not a real substitute, just to gather matches
 			" -- it's that or a while loop with matchstr()
 			"call substitute(line, separator_delimiter, Addmatch, 'g')
 			" -- or
-			call substitute(line, sepdelim_pattern, '\=delims->add(submatch(0))', 'g')
+			call substitute(line, sepdelim_pattern, '\=delimrow->add(submatch(0))', 'g')
 		else
 			"call substitute(line, delimiter, Addmatch, 'g')
 			" -- or
-			call substitute(line, delimiter, '\=delims->add(submatch(0))', 'g')
+			call substitute(line, delimiter, '\=delimrow->add(submatch(0))', 'g')
 		endif
-		eval delimgrid->add(delims)
+		eval delimgrid->add(delimrow)
 		let linum += 1
 	endfor
 	" ---- coda
@@ -378,18 +378,18 @@ fun! organ#table#add_missing_delims (paragraph)
 		let add = maxim - width
 		if add > 0
 			let line = linelist[rownum]
-			let delims = delimgrid[rownum]
+			let delimrow = delimgrid[rownum]
 			if organ#table#is_separator_line (linum)
 				let addme = sepdelim->repeat(add)
 				let listaddme = [sepdelim]->repeat(add)
 				" -- needs the colon for compatibilty
 				let newline = line[:-2] .. addme .. line[-1:]
-				let newdelims = delims[:-2] + listaddme + delims[-1:]
+				let newdelims = delimrow[:-2] + listaddme + delimrow[-1:]
 			else
 				let addme = delimiter->repeat(add)
 				let listaddme = [delimiter]->repeat(add)
 				let newline = line .. addme
-				let newdelims = delims + listaddme
+				let newdelims = delimrow + listaddme
 			endif
 			let linelist[rownum] = newline
 			let delimgrid[rownum] = newdelims
@@ -443,9 +443,9 @@ fun! organ#table#align_cells (paragraph)
 		let line = linelist[rownum]
 		let is_sep_line = line =~ organ#table#separator_pattern ()
 		let cellrow = cellgrid[rownum]
-		let delims = delimgrid[rownum]
+		let delimrow = delimgrid[rownum]
 		let lencells = len(cellrow)
-		let lendelims = len(delims)
+		let lendelims = len(delimrow)
 		let newline = ''
 		for colnum in range(lencells)
 			if colnum > 0 && is_sep_line
@@ -464,7 +464,7 @@ fun! organ#table#align_cells (paragraph)
 			endif
 			let newline ..= cellrow[colnum] .. postcell
 			if colnum < lendelims
-				let newline ..= delims[colnum] .. postdelim
+				let newline ..= delimrow[colnum] .. postdelim
 			endif
 		endfor
 		let linelist[rownum] = newline->substitute('\m\s*$', '', 'g')
@@ -587,7 +587,7 @@ endfun
 fun! organ#table#update (...)
 	" Update table : to be used in InsertLeave autocommand
 	if ! organ#table#is_in_table ()
-		return []
+		return {}
 	endif
 	let position = getcurpos ()
 	" ---- build
