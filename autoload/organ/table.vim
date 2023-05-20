@@ -468,6 +468,8 @@ fun! organ#table#align_cells (paragraph)
 			endif
 			if colnum < lencells - 1 && is_sep_line
 				let postdelim = '-'
+			elseif colnum == lencells - 1
+				let postdelim = ''
 			else
 				let postdelim = ' '
 			endif
@@ -488,13 +490,16 @@ fun! organ#table#commit (paragraph)
 	let linum = paragraph.linumlist[0]
 	let pristine = paragraph.pristine
 	let rownum = 0
+	let modified = 0
 	for line in paragraph.linelist
-		if line != pristine[rownum]
+		if line !=# pristine[rownum]
+			let modified += 1
 			call setline(linum, line)
 		endif
 		let rownum += 1
 		let linum += 1
 	endfor
+	let paragraph.modified = modified
 	return paragraph
 endfun
 
@@ -875,12 +880,12 @@ fun! organ#table#new_row ()
 	let linum = line('.')
 	let newrow = '| |'
 	call append('.', newrow)
-	let argdict = #{
-		\ head_linum : linum,
-		\ tail_linum : linum + 1,
+	let paragraph = #{
+		\ linumlist : [linum, linum + 1],
+		\ linelist : [getline('.'), newrow],
 		\}
-	call organ#table#add_missing_columns (argdict)
-	call organ#table#align_columns (argdict)
+	call organ#table#add_missing_delims (paragraph)
+	call organ#table#align_cells (paragraph)
 	call cursor(linum + 1, col('.'))
 endfun
 
@@ -889,12 +894,12 @@ fun! organ#table#new_separator_line ()
 	let linum = line('.')
 	let newrow = '|-|'
 	call append('.', newrow)
-	let argdict = #{
+	let paragraph = #{
 		\ head_linum : linum,
 		\ tail_linum : linum + 1,
 		\}
-	call organ#table#add_missing_columns (argdict)
-	call organ#table#align_columns (argdict)
+	call organ#table#add_missing_delims (paragraph)
+	call organ#table#align_cells (paragraph)
 	call cursor(linum + 1, col('.'))
 endfun
 
