@@ -33,11 +33,10 @@ fun! organ#table#separator_delimiter_pattern ()
 	return '[|+]'
 endfun
 
-fun! organ#table#generic_pattern (argdict = {})
+fun! organ#table#generic_pattern (...)
 	" Generic table line pattern
-	let argdict = a:argdict
-	if has_key (argdict, 'delimiter')
-		let delimiter =  argdict.delimiter
+	if a:0 > 0
+		let delimiter = a:1
 	else
 		let delimiter = organ#table#delimiter ()
 	endif
@@ -125,16 +124,45 @@ fun! organ#table#tail (move = 'dont-move')
 	return linum - 1
 endfun
 
-" -- cells
+" -- align TODO
+
+fun! organ#table#delimgrid (paragraph)
+	" Grid of cells limiters
+	let paragraph = a:paragraph
+	let delimiter = paragraph.delimiter
+	let separator_delimiter = paragraph.separator_delimiter
+	let delimgrid = []
+	" ---- loop
+	let linum = paragraph.linumlist[0]
+	for line in paragraph.linelist
+		let delims = []
+		let Addmatch = { match -> string(delims->add(match[0])) }
+		if organ#table#is_separator_line (linum)
+			" -- not a real substitute, just to gather matches
+			" -- it's that or a while loop with matchstr()
+			call substitute(line, separator_delimiter, Addmatch, 'g')
+			" -- or
+			"call substitute(line, separator_delimiter, '\=delims->add(submatch(0))', 'g')
+		else
+			call substitute(line, delimiter, Addmatch, 'g')
+			" -- or
+			"call substitute(line, delimiter, '\=delims->add(submatch(0))', 'g')
+		endif
+		eval delimgrid->add(delims)
+		let linum += 1
+	endfor
+	" ---- coda
+	return delimgrid
+endfun
 
 fun! organ#table#cellgrid (paragraph)
-	" All cells informations
+	" Grid of cells contents
 	" Use split(string, pattern, keepempty)
 	let paragraph = a:paragraph
 	let delimiter = paragraph.delimiter
 	let separator_delimiter = paragraph.separator_delimiter
 	let cellgrid = []
-	let linum = paragraph.head_linum
+	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
 		if organ#table#is_separator_line (linum)
 			let cells = line->split(separator_delimiter, v:true)
@@ -314,15 +342,15 @@ fun! organ#table#meta_align (mode = 'normal') range
 	let paragraph = {}
 	" ---- head & tail
 	if mode ==# 'visual'
-		let paragraph.head_linum = a:firstline
-		let paragraph.tail_linum = a:lastline
+		let head_linum = a:firstline
+		let tail_linum = a:lastline
 	else
-		let paragraph.head_linum = organ#table#head ()
-		let paragraph.tail_linum = organ#table#tail ()
+		let head_linum = organ#table#head ()
+		let tail_linum = organ#table#tail ()
 	endif
 	" ---- lines
 	let paragraph.linumlist = range(head_linum, tail_linum)
-	let paragraph.linelist = getline(paragraph.head_linum, paragraph.tail_linum)
+	let paragraph.linelist = getline(head_linum, tail_linum)
 	" ---- delimiter pattern
 	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
@@ -333,7 +361,8 @@ fun! organ#table#meta_align (mode = 'normal') range
 		let paragraph.delimiter = input(prompt, '')
 		let paragraph.separator_delimiter = paragraph.delimiter
 	endif
-	" ---- cell grid
+	" ---- grids
+	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
