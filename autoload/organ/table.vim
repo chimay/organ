@@ -124,29 +124,96 @@ fun! organ#table#tail (move = 'dont-move')
 	return linum - 1
 endfun
 
+" --- grid
+
+fun! organ#table#lengthes (grid)
+	" Lengthes of lists in grid
+	let grid = deepcopy(a:grid)
+	return map(grid, { _, v -> len(v)})
+endfun
+
+fun! organ#table#metalen (grid)
+	" Lengthes of each element of grid
+	let grid = deepcopy(a:grid)
+	let Lengthes = { list -> copy(list)->map({ _, v -> len(v) }) }
+	let Metalen = { _, list -> Lengthes(list) }
+	return map(grid, Metalen)
+endfun
+
+fun! organ#table#maxima (grid)
+	" Maxima of elements in grid
+	let grid = deepcopy(a:grid)
+	return map(grid, { _, v -> max(v)})
+endfun
+
+fun! organ#table#complete (grid, absent = -1)
+	" Complete grid with elements equals to absent
+	let complete = deepcopy(a:grid)
+	let absent = a:absent
+	let absentcell = [absent]
+	let lengthes = organ#table#lengthes (complete)
+	let maxim = max(lengthes)
+	for index in range(len(complete))
+		let add = maxim - lengthes[index]
+		if add > 0
+			let added = absentcell->repeat(add)
+			eval complete[index]->extend(added)
+		endif
+	endfor
+	return complete
+endfun
+
+fun! organ#table#dual (grid)
+	" Dual of positions in all table lines
+	let grid = a:grid
+	" -- outer length
+	let outer_length = len(grid)
+	" -- inner max length
+	let lengthes = organ#table#lengthes (grid)
+	let inner_length = max(lengthes)
+	" -- span
+	let outer_span = range(outer_length)
+	let inner_span = range(inner_length)
+	" -- init dual
+	" can't use repeat() with nested list :
+	" it uses references to the same inner list
+	let dual = copy(inner_span)->map('[]')
+	" -- double loop
+	for inner in inner_span
+		let dualelem = dual[inner]
+		for outer in outer_span
+			if inner < lengthes[outer]
+				eval dualelem->add(grid[outer][inner])
+			endif
+		endfor
+	endfor
+	" -- coda
+	return dual
+endfun
+
 " -- align TODO
 
 fun! organ#table#delimgrid (paragraph)
 	" Grid of cells limiters
 	let paragraph = a:paragraph
 	let delimiter = paragraph.delimiter
-	let separator_delimiter = paragraph.separator_delimiter
+	let sepdelim_pattern = paragraph.separator_delimiter_pattern
 	let delimgrid = []
 	" ---- loop
 	let linum = paragraph.linumlist[0]
 	for line in paragraph.linelist
 		let delims = []
-		let Addmatch = { match -> string(delims->add(match[0])) }
+		"let Addmatch = { match -> string(delims->add(match[0])[-1]) }
 		if organ#table#is_separator_line (linum)
 			" -- not a real substitute, just to gather matches
 			" -- it's that or a while loop with matchstr()
-			call substitute(line, separator_delimiter, Addmatch, 'g')
+			"call substitute(line, separator_delimiter, Addmatch, 'g')
 			" -- or
-			"call substitute(line, separator_delimiter, '\=delims->add(submatch(0))', 'g')
+			call substitute(line, sepdelim_pattern, '\=delims->add(submatch(0))', 'g')
 		else
-			call substitute(line, delimiter, Addmatch, 'g')
+			"call substitute(line, delimiter, Addmatch, 'g')
 			" -- or
-			"call substitute(line, delimiter, '\=delims->add(submatch(0))', 'g')
+			call substitute(line, delimiter, '\=delims->add(submatch(0))', 'g')
 		endif
 		eval delimgrid->add(delims)
 		let linum += 1
@@ -211,7 +278,7 @@ fun! organ#table#positions (argdict = {})
 	return positions
 endfun
 
-fun! organ#table#grid (argdict = {})
+fun! organ#table#posgrid (argdict = {})
 	" Positions in all table lines
 	let argdict = a:argdict
 	if has_key (argdict, 'head_linum')
@@ -231,63 +298,6 @@ fun! organ#table#grid (argdict = {})
 		eval grid->add(positions)
 	endfor
 	return grid
-endfun
-
-fun! organ#table#lengthes (grid)
-	" Lengthes of elements in grid
-	let grid = deepcopy(a:grid)
-	return map(grid, { _, v -> len(v)})
-endfun
-
-fun! organ#table#complete (grid, absent = -1)
-	" Complete grid with elements equals to absent
-	let complete = deepcopy(a:grid)
-	let absent = a:absent
-	let absentcell = [absent]
-	let lengthes = organ#table#lengthes (complete)
-	let maxim = max(lengthes)
-	for index in range(len(complete))
-		let add = maxim - lengthes[index]
-		if add > 0
-			let added = absentcell->repeat(add)
-			eval complete[index]->extend(added)
-		endif
-	endfor
-	return complete
-endfun
-
-fun! organ#table#dual (grid)
-	" Dual of positions in all table lines
-	let grid = a:grid
-	" -- outer length
-	let outer_length = len(grid)
-	" -- inner max length
-	let lengthes = organ#table#lengthes (grid)
-	let inner_length = max(lengthes)
-	" -- span
-	let outer_span = range(outer_length)
-	let inner_span = range(inner_length)
-	" -- init dual
-	" can't use repeat() with nested list :
-	" it uses references to the same inner list
-	let dual = copy(inner_span)->map('[]')
-	" -- double loop
-	for inner in inner_span
-		let dualelem = dual[inner]
-		for outer in outer_span
-			if inner < lengthes[outer]
-				eval dualelem->add(grid[outer][inner])
-			endif
-		endfor
-	endfor
-	" -- coda
-	return dual
-endfun
-
-fun! organ#table#maxima (dual)
-	" Maxima of elements in dual
-	let dual = deepcopy(a:dual)
-	return map(dual, { _, v -> max(v)})
 endfun
 
 " ---- align, new TODO
@@ -328,6 +338,44 @@ fun! organ#table#minindent ()
 	return minindent
 endfun
 
+fun! organ#table#add_missing_delims (paragraph)
+	" Add missing columns delimiters
+	let paragraph = a:paragraph
+	let linumlist = paragraph.linumlist
+	let linelist = paragraph.linelist
+	let delimiter = paragraph.delimiter
+	let sepdelim = paragraph.separator_delimiter
+	let delimgrid = paragraph.delimgrid
+	let lengthes = organ#table#lengthes (delimgrid)
+	let maxim = max(lengthes)
+	let rownum = 0
+	for linum in linumlist
+		let width = lengthes[rownum]
+		let add = maxim - width
+		if add > 0
+			let line = linelist[rownum]
+			let delims = delimgrid[rownum]
+			if organ#table#is_separator_line (linum)
+				let addme = sepdelim->repeat(add)
+				let listaddme = [sepdelim]->repeat(add)
+				echo addme listaddme
+				" -- needs the colon for compatibilty
+				let newline = line[:-2] .. addme .. line[-1:]
+				let newdelims = delims[:-2] + listaddme + delims[-1:]
+			else
+				let addme = delimiter->repeat(add)
+				let listaddme = [delimiter]->repeat(add)
+				let newline = line .. addme
+				let newdelims = delims + listaddme
+			endif
+			let linelist[rownum] = newline
+			let delimgrid[rownum] = newdelims
+		endif
+		let rownum += 1
+	endfor
+	return paragraph
+endfun
+
 fun! organ#table#align_cells (paragraph)
 	" Align cells
 	let paragraph = a:paragraph
@@ -351,19 +399,25 @@ fun! organ#table#meta_align (mode = 'normal') range
 	" ---- lines
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
+	let paragraph.pristine = copy(paragraph.linelist)
 	" ---- delimiter pattern
 	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
 		let paragraph.delimiter = organ#table#delimiter ()
-		let paragraph.separator_delimiter = organ#table#separator_delimiter_pattern ()
+		let paragraph.separator_delimiter = organ#table#separator_delimiter ()
+		let paragraph.separator_delimiter_pattern = organ#table#separator_delimiter_pattern ()
 	else
 		let prompt = 'Align following pattern : '
 		let paragraph.delimiter = input(prompt, '')
 		let paragraph.separator_delimiter = paragraph.delimiter
+		let paragraph.separator_delimiter_pattern = paragraph.delimiter
 	endif
-	" ---- grids
+	" ---- delimiters
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
+	let paragraph = organ#table#add_missing_delims(paragraph)
+	" ---- cells
 	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
+	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
 	" ---- coda
@@ -454,7 +508,7 @@ fun! organ#table#add_missing_columns (argdict = {})
 	if has_key (argdict, 'grid')
 		let grid =  argdict.grid
 	else
-		let grid =  organ#table#grid (argdict)
+		let grid =  organ#table#posgrid (argdict)
 		let argdict.grid = grid
 	endif
 	let lengthes = organ#table#lengthes (grid)
@@ -503,7 +557,7 @@ fun! organ#table#align_columns (argdict = {})
 	if has_key (argdict, 'grid')
 		let grid =  argdict.grid
 	else
-		let grid =  organ#table#grid (argdict)
+		let grid =  organ#table#posgrid (argdict)
 		let argdict.grid = grid
 	endif
 	" ---- grid derivates
