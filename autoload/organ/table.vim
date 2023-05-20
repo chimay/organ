@@ -560,14 +560,31 @@ fun! organ#table#update ()
 	endif
 	let position = getcurpos ()
 	let paragraph = {}
+	" ---- head & tail
+	let head_linum = organ#table#head ()
+	let tail_linum = organ#table#tail ()
+	" ---- lines
+	let paragraph.linumlist = range(head_linum, tail_linum)
+	let paragraph.linelist = getline(head_linum, tail_linum)
+	let paragraph.pristine = copy(paragraph.linelist)
+	" ---- indent
+	let paragraph = organ#table#minindent(paragraph)
+	" ---- delimiters
 	let paragraph.delimiter = organ#table#delimiter ()
 	let paragraph.separator_delimiter = organ#table#separator_delimiter ()
 	let paragraph.separator_delimiter_pattern = organ#table#separator_delimiter_pattern ()
-	let paragraph = organ#table#minindent(paragraph)
+	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph = organ#table#add_missing_delims(paragraph)
+	" ---- cells
+	let paragraph.cellgrid = organ#table#cellgrid(paragraph)
+	let paragraph = organ#table#shrink_separator_lines(paragraph)
+	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	let paragraph = organ#table#align_cells (paragraph)
+	" ---- commit
+	call organ#table#commit (paragraph)
+	" ---- coda
 	call setpos('.', position)
-	return argdict
+	return paragraph
 endfun
 
 " ---- navigation
