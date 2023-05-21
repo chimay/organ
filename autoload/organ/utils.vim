@@ -4,6 +4,16 @@
 "
 " Small tools
 
+" ---- script constants
+
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
+" ---- circular
+
 fun! organ#utils#circular_plus (index, length)
 	" Rotate/increase index with modulo
 	return (a:index + 1) % a:length
@@ -18,53 +28,7 @@ fun! organ#utils#circular_minus (index, length)
 	return index
 endfun
 
-fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap', where = 'not-here')
-	" Search flags
-	let course = a:course
-	let move = a:move
-	let wrap = a:wrap
-	let where = a:where
-	let flags = ''
-	if course ==# 'backward'
-		let flags ..= 'b'
-	endif
-	if move ==# 'move'
-		let flags ..= 's'
-	else
-		let flags ..= 'n'
-	endif
-	if wrap ==# 'wrap'
-		let flags ..= 'w'
-	else
-		let flags ..= 'W'
-	endif
-	if where ==# 'accept-here'
-		let flags ..= 'c'
-	endif
-	return flags
-endfun
-
-fun! organ#utils#delete (first, ...)
-	" Delete lines to black hole register
-	let first = a:first
-	if &modifiable == 0
-		echomsg 'organ utils delete : modifiable is off'
-		return 0
-	endif
-	if a:0 > 0
-		let last = a:1
-	else
-		let last = first
-	endif
-	if exists('*deletebufline')
-		return deletebufline('%', first, last)
-	else
-		" delete lines -> underscore _ = no storing register
-		let range = first .. ',' .. last
-		execute 'silent!' range .. 'delete _'
-		return 0
-	endif
-endfun
+" ---- dicts and lists
 
 fun! organ#utils#is_nested_list (argument)
 	" Whether argument is a nested list
@@ -123,6 +87,117 @@ fun! organ#utils#items2values (items)
 	return valist
 endfun
 
+" ---- characters
+
+fun! organ#utils#reverse_keytrans (keystring)
+	" Convert char representation like <c-a> -> 
+	let keystring = a:keystring
+	let angle_pattern = '\m<[^>]\+>'
+	while v:true
+		let match = keystring->matchstr(angle_pattern)
+		if empty(match)
+			break
+		endif
+		execute 'let subst =' '"\<' .. match[1:-2] .. '>"'
+		let keystring = substitute(keystring, match, subst, '')
+	endwhile
+	return keystring
+endfun
+
+" ----- buffer
+
+fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap', where = 'not-here')
+	" Search flags
+	let course = a:course
+	let move = a:move
+	let wrap = a:wrap
+	let where = a:where
+	let flags = ''
+	if course ==# 'backward'
+		let flags ..= 'b'
+	endif
+	if move ==# 'move'
+		let flags ..= 's'
+	else
+		let flags ..= 'n'
+	endif
+	if wrap ==# 'wrap'
+		let flags ..= 'w'
+	else
+		let flags ..= 'W'
+	endif
+	if where ==# 'accept-here'
+		let flags ..= 'c'
+	endif
+	return flags
+endfun
+
+fun! organ#utils#line_split_by_cursor (...)
+	" Returns line split by cursor, before and after
+	if a:0 > 0
+		let line = a:1
+	else
+		let line = getline('.')
+	endif
+	if a:0 > 1
+		let colnum = a:2
+	else
+		let colnum = col('.')
+	endif
+	if colnum <= 1
+		let before = ''
+		let after = line
+	elseif colnum == col('$')
+		let before = line
+		let after = ''
+	else
+		let before = line[:colnum - 2]
+		let after = line[colnum - 1:]
+	endif
+	return [before, after]
+endfun
+
+fun! organ#utils#delete (first, ...)
+	" Delete lines to black hole register
+	let first = a:first
+	if &modifiable == 0
+		echomsg 'organ utils delete : modifiable is off'
+		return 0
+	endif
+	if a:0 > 0
+		let last = a:1
+	else
+		let last = first
+	endif
+	if exists('*deletebufline')
+		return deletebufline('%', first, last)
+	else
+		" delete lines -> underscore _ = no storing register
+		let range = first .. ',' .. last
+		execute 'silent!' range .. 'delete _'
+		return 0
+	endif
+endfun
+
+fun! organ#utils#indent_info (...)
+	" Various info about indent
+	if a:0 > 0
+		let linum = a:1
+	else
+		let linum = line('.')
+	endif
+	let info = {}
+	let line = getline(linum)
+	let indent = line->matchstr(s:indent_pattern)
+	let info.tabstop = &tabstop
+	let info.tabs = indent->count("\t")
+	let info.spaces = indent->count(' ')
+	let info.total = info.spaces + info.tabs * info.tabstop
+	return info
+endfun
+
+" ---- functional
+
 fun! organ#utils#call (function, ...)
 	" Call function depicted as a Funcref or a string
 	" Optional arguments are passed to Fun
@@ -160,44 +235,4 @@ fun! organ#utils#call (function, ...)
 		" simply forward concatened arguments
 		return [Fun] + arguments
 	endif
-endfun
-
-fun! organ#utils#reverse_keytrans (keystring)
-	" Convert char representation like <c-a> -> 
-	let keystring = a:keystring
-	let angle_pattern = '\m<[^>]\+>'
-	while v:true
-		let match = keystring->matchstr(angle_pattern)
-		if empty(match)
-			break
-		endif
-		execute 'let subst =' '"\<' .. match[1:-2] .. '>"'
-		let keystring = substitute(keystring, match, subst, '')
-	endwhile
-	return keystring
-endfun
-
-fun! organ#utils#line_split_by_cursor (...)
-	" Returns line split by cursor, before and after
-	if a:0 > 0
-		let line = a:1
-	else
-		let line = getline('.')
-	endif
-	if a:0 > 1
-		let colnum = a:2
-	else
-		let colnum = col('.')
-	endif
-	if colnum <= 1
-		let before = ''
-		let after = line
-	elseif colnum == col('$')
-		let before = line
-		let after = ''
-	else
-		let before = line[:colnum - 2]
-		let after = line[colnum - 1:]
-	endif
-	return [before, after]
 endfun
