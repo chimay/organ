@@ -896,27 +896,22 @@ fun! organ#table#new_col ()
 	" ---- first col = cellrow[1]
 	let curcolnum = colnum + 1
 	" ---- new column
+	let nextcolnum = curcolnum + 1
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let cellrow = cellgrid[rownum]
 		let delimrow = delimgrid[rownum]
-		let current = cellrow[curcolnum]
-		let newcellrow = cellrow[:curcolnum] + ['']
-		if curcolnum < colmax - 1
-			eval newcellrow->extend(cellrow[curcolnum + 1:])
-		endif
+		eval cellrow->insert('', nextcolnum)
 		if line =~ organ#table#sepline_pattern ()
-			let newdelimrow = [delimrow[0]] + [seplinedelim] + delimrow[1:]
+			eval delimrow->insert(seplinedelim, 1)
 		else
-			let newdelimrow = delimrow + [delim]
+			eval delimrow->insert(delim, 1)
 		endif
-		let cellgrid[rownum] = newcellrow
-		let delimgrid[rownum] = newdelimrow
 	endfor
 	" ---- coda
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
-	call cursor('.', positions[curcolnum] + 2)
+	call cursor('.', positions[curcolnum] + 3)
 	call organ#origami#resume ()
 	return paragraph
 endfun
@@ -930,64 +925,46 @@ endfun
 
 fun! organ#table#delete_col ()
 	" Delete column
-	" Assume the table is aligned
 	call organ#origami#suspend ()
-	let head_linum = organ#table#head ()
-	let tail_linum = organ#table#tail ()
-	let delimiter = organ#table#delimiter ()
-	let sepdelim  = organ#table#sepline_delimiter ()
+	let paragraph = organ#table#update ()
+	let linumlist = paragraph.linumlist
+	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
+	let cellgrid = paragraph.cellgrid
+	let delimgrid = paragraph.delimgrid
+	" ---- patterns
+	let delim = organ#table#delimiter ()
+	let seplinedelim = organ#table#sepline_delimiter ()
+	" ---- current line
 	let positions = organ#table#positions ()
-	let colmax = len(positions)
 	" ---- not enough column delimiters
+	let colmax = len(positions)
 	if colmax <= 1
-		return positions
+		return paragraph
 	endif
 	" ---- current column
 	" ---- between delimiters colnum & colnum + 1
-	let charcol = charcol('.')
+	let cursor = col('.')
 	for colnum in range(colmax - 1)
-		if charcol >= positions[colnum] && charcol <= positions[colnum + 1]
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
 			break
 		endif
 	endfor
-	" ---- lines list
-	let current_linum = line('.')
-	let linelist = getline(head_linum, tail_linum)
-	let lenlinelist = len(linelist)
-	" ---- one column, two delimiters
-	let char_first = positions[colnum]
-	let char_second = positions[colnum + 1]
-	" ---- add new column in all table lines
-	let linum = head_linum
+	" ---- indent = cellrow[0]
+	" ---- first col = cellrow[1]
+	let curcolnum = colnum + 1
+	" ---- new column
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		let byte_first = line->byteidx(char_first - 1) + 1
-		let byte_second = line->byteidx(char_second - 1) + 1
-		if byte_first == 1
-			let before = ''
-			let after = line
-		elseif byte_second == len(line) + 1
-			let before = line
-			let after = ''
-		else
-			let before = line[:byte_first - 2]
-			let after = line[byte_second - 1:]
-		endif
-		let linelist[rownum] = before .. after
-		" -- store cursor column for the end
-		if linum == current_linum
-			let cursor_col = byte_first
-		endif
-		let linum += 1
-	endfor
-	" ---- commit changes to buffer
-	let linum = head_linum
-	for index in range(len(linelist))
-		call setline(linum, linelist[index])
-		let linum += 1
+		let cellrow = cellgrid[rownum]
+		let delimrow = delimgrid[rownum]
+		eval cellrow->remove(curcolnum)
+		eval delimrow->remove(1)
 	endfor
 	" ---- coda
-	call cursor('.', cursor_col)
+	let paragraph = organ#table#rebuild (paragraph)
+	call organ#table#commit (paragraph)
+	call cursor('.', positions[curcolnum] + 3)
 	call organ#origami#resume ()
-	return positions
+	return paragraph
 endfun
