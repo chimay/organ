@@ -140,7 +140,8 @@ endfun
 fun! organ#table#metalen (grid)
 	" Lengthes of each element of grid
 	let grid = deepcopy(a:grid)
-	let Lengthes = { list -> copy(list)->map({ _, v -> strcharlen(v) }) }
+	" ---- count tabs as tabstop chars
+	let Lengthes = { list -> copy(list)->map({ _, v -> strdisplaywidth(v) }) }
 	let Metalen = { _, list -> Lengthes(list) }
 	return map(grid, Metalen)
 endfun
@@ -350,32 +351,27 @@ endfun
 fun! organ#table#minindent (paragraph)
 	" Minimize table indent
 	let paragraph = a:paragraph
-	let spaces = repeat(' ', &tabstop)
 	" ---- eval min indent
 	let linelist = paragraph.linelist
-	let indentlist = []
-	let rownum = 0
-	for line in linelist
-		if line =~ "^\s*\t"
-			let line = substitute(line, "\t", spaces, 'g')
-			let linelist[rownum] = line
-		endif
-		let leading = line->matchstr(s:indent_pattern)
-		let indent = len(leading)
-		eval indentlist->add(indent)
-		let rownum += 1
-	endfor
-	let minindent = min(indentlist)
-	let minlead = repeat(' ', minindent)
+	let lenlinelist = len(linelist)
+	let indentlist = copy(linelist)->map({ _, v -> organ#utils#indentinfo(v) })
+	let totalist = copy(indentlist)->map({ _, v -> v.total })
+	let minindent = min(totalist)
+	let spaces = repeat(' ', minindent)
+	let tabspaces = organ#utils#tabspaces(minindent)
 	" ---- reduce
-	let rownum = 0
-	for line in linelist
-		let indent = indentlist[rownum]
-		if indent > minindent
-			let line = line->substitute(s:indent_pattern, minlead, '')
-			let linelist[rownum] = line
+	for rownum in range(lenlinelist)
+		let indentnum = totalist[rownum]
+		if indentnum == minindent
+			continue
 		endif
-		let rownum += 1
+		let line = linelist[rownum]
+		if indentlist[rownum].tabs == 0
+			let line = line->substitute(s:indent_pattern, spaces, '')
+		else
+			let line = line->substitute(s:indent_pattern, tabspaces, '')
+		endif
+		let linelist[rownum] = line
 	endfor
 	" ---- coda
 	return paragraph
@@ -439,7 +435,7 @@ fun! organ#table#align_cells (paragraph)
 		let cellrow = cellgrid[rownum]
 		for colnum in range(len(cellrow))
 			let content = cellrow[colnum]
-			let add = maxima[colnum] - strcharlen(content)
+			let add = maxima[colnum] - strdisplaywidth(content)
 			if add == 0
 				continue
 			endif

@@ -85,13 +85,12 @@ content ☯ ⛵≤ 🗁  🗎 🌧🌤
          - item 2.3.2
            text
            text
-       * item 2.2
-         some text
-         and more
        * item
          text
          text
-
+       * item 2.2
+         some text
+         and more
 
 content
 
@@ -217,12 +216,12 @@ content
  c  = d  : g  : h ; f ; g   ; hj ; k
  d  : e  ; f  = g = h = ijk = l
 
-| row 1 col 1 | row 1 col 2 | hello | there |
-|-------------+-------------+-------+-------|
-| row 1 col 1 | row 1 col 2 | hello | there |
-| hello       | ROW         | jjj   |       |
-| row 2 col 1 | row 2 col 2 |       |       |
-| aeéè1 col 1 | ðđŋ 1 col 2 | hello |       |
+	 | row 1 col 1 | row 1 col 2 | hello | there |
+	     	|-------------+-------------+-------+-------|
+	  | row 1 col 1 | row 1 col 2 | hello | there |
+		| hello       | ROW         | jjj   |       |
+         | row 2 col 1 | row 2 col 2 |       |       |
+	    | aeéè1 col 1 | ðđŋ 1 col 2 | hello |       |
 
 another
 

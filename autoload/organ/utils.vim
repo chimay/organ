@@ -179,21 +179,40 @@ fun! organ#utils#delete (first, ...)
 	endif
 endfun
 
-fun! organ#utils#indent_info (...)
+fun! organ#utils#indentinfo (...)
 	" Various info about indent
 	if a:0 > 0
-		let linum = a:1
+		let object = a:1
 	else
-		let linum = line('.')
+		let object = line('.')
+	endif
+	if type(object) == v:t_number
+		let linum = object
+		let line = getline(linum)
+	elseif type(object) == v:t_string
+		let line = object
 	endif
 	let info = {}
-	let line = getline(linum)
 	let indent = line->matchstr(s:indent_pattern)
 	let info.tabstop = &tabstop
 	let info.tabs = indent->count("\t")
 	let info.spaces = indent->count(' ')
 	let info.total = info.spaces + info.tabs * info.tabstop
 	return info
+endfun
+
+fun! organ#utils#tabspaces (indentnum, ...)
+	" Indent string with tab & spaces adding up to indentnum
+	let indentnum = a:indentnum
+	if a:0 > 0
+		let tabstop = a:1
+	else
+		let tabstop = &tabstop
+	endif
+	let tabnum = indentnum / tabstop
+	let spacenum = indentnum % tabstop
+	let indentstring = repeat("\t", tabnum) .. repeat(' ', spacenum)
+	return indentstring
 endfun
 
 " ---- functional

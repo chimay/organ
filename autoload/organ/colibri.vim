@@ -188,24 +188,10 @@ fun! organ#colibri#common_indent ()
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
 	let spaces = repeat(' ', &tabstop)
-	" ---- scan all list lines
 	let linelist = getline(first, last)
-	let indentlist = []
-	let linum = first
-	for line in linelist
-		if line =~ "\t"
-			let line = substitute(line, "\t", spaces, 'g')
-			call setline(linum, line)
-		endif
-		let linum += 1
-		if line =~ s:hollow_pattern
-			continue
-		endif
-		let leading = line->matchstr(s:indent_pattern)
-		let indent = len(leading)
-		eval indentlist->add(indent)
-	endfor
-	return min(indentlist)
+	let indentlist = copy(linelist)->map({ _, v -> organ#utils#indentinfo(v) })
+	let totalist = copy(indentlist)->map({ _, v -> v.total })
+	return min(totalist)
 endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
