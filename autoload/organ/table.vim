@@ -231,6 +231,7 @@ fun! organ#table#cellgrid (paragraph)
 	" Grid of cells contents
 	" Use split(string, pattern, keepempty)
 	let paragraph = a:paragraph
+	let is_table = paragraph.is_table
 	let delimiter = paragraph.delimpat
 	let sepdelim_pattern = organ#table#sepline_delimiter_pattern ()
 	let cellgrid = []
@@ -242,11 +243,20 @@ fun! organ#table#cellgrid (paragraph)
 		else
 			let cellrow = line->split(delimiter, v:true)
 		endif
-		let indent = cellrow[0]
+		let first = cellrow[0]
 		eval cellrow->map({ _, v -> trim(v) })
-		let cellrow[0] = indent
-		" -- remove last if empty
-		if empty(cellrow[-1])
+		if is_table
+			" -- first cell is indent
+			let cellrow[0] = first
+		else
+			let cellrow[0] = first->substitute('\s*$', '', '')
+		endif
+		if is_table
+			" -- last cell is spaces or empty
+			if ! empty(cellrow[-1])
+				throw 'organ table cellgrid : last table field is not empty'
+				"return []
+			endif
 			let cellrow = cellrow[:-2]
 		endif
 		" -- add to grid
@@ -286,7 +296,7 @@ fun! organ#table#positions (...)
 	return positions
 endfun
 
-fun! organ#table#charpositions (...)
+fun! organ#table#charpos (...)
 	" Positions in char indexes of the delimiter char
 	" First char of the line = 1
 	if a:0 > 0
@@ -455,6 +465,7 @@ endfun
 fun! organ#table#rebuild (paragraph)
 	" Rebuild lines from paragraph
 	let paragraph = a:paragraph
+	let is_table = paragraph.is_table
 	let linelist = paragraph.linelist
 	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
@@ -469,14 +480,14 @@ fun! organ#table#rebuild (paragraph)
 		let lendelims = len(delimrow)
 		let newline = ''
 		for colnum in range(lencells)
-			if colnum > 0 && is_sep_line
+			if is_sep_line && colnum > 0
 				let postcell = '-'
-			elseif colnum == 0
+			elseif is_table && colnum == 0
 				let postcell = ''
 			else
 				let postcell = ' '
 			endif
-			if colnum < lencells - 1 && is_sep_line
+			if is_sep_line && colnum < lencells - 1
 				let postdelim = '-'
 			elseif colnum == lencells - 1
 				let postdelim = ''
@@ -567,7 +578,7 @@ endfun
 " ---- build paragraph
 
 fun! organ#table#fill (...)
-	" Paragraph dict
+	" FIll paragraph dict
 	if a:0 > 1
 		let head_linum = a:1
 		let tail_linum = a:2
