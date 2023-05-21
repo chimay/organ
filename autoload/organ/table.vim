@@ -201,8 +201,8 @@ endfun
 fun! organ#table#delimgrid (paragraph)
 	" Grid of cells limiters
 	let paragraph = a:paragraph
-	let delimiter = paragraph.delimiter
-	let sepdelim_pattern = paragraph.sepline_delimiter_pattern
+	let delimiter = paragraph.delimpat
+	let sepdelim_pattern = organ#table#sepline_delimiter_pattern ()
 	let delimgrid = []
 	" ---- loop
 	let linum = paragraph.linumlist[0]
@@ -231,8 +231,8 @@ fun! organ#table#cellgrid (paragraph)
 	" Grid of cells contents
 	" Use split(string, pattern, keepempty)
 	let paragraph = a:paragraph
-	let delimiter = paragraph.delimiter
-	let sepdelim_pattern = paragraph.sepline_delimiter_pattern
+	let delimiter = paragraph.delimpat
+	let sepdelim_pattern = organ#table#sepline_delimiter_pattern ()
 	let cellgrid = []
 	" ---- loop
 	let linum = paragraph.linumlist[0]
@@ -376,8 +376,8 @@ fun! organ#table#add_missing_delims (paragraph)
 	let paragraph = a:paragraph
 	let linumlist = paragraph.linumlist
 	let linelist = paragraph.linelist
-	let delimiter = paragraph.delimiter
-	let sepdelim = paragraph.sepline_delimiter
+	let delimiter = paragraph.delimpat
+	let sepdelim = organ#table#sepline_delimiter ()
 	let delimgrid = paragraph.delimgrid
 	" ---- add loop
 	let lengthes = organ#table#lengthes (delimgrid)
@@ -452,14 +452,14 @@ fun! organ#table#align_cells (paragraph)
 	return paragraph
 endfun
 
-fun! organ#table#rebuild_lines (paragraph)
+fun! organ#table#rebuild (paragraph)
 	" Rebuild lines from paragraph
 	let paragraph = a:paragraph
 	let linelist = paragraph.linelist
 	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
 	let delimgrid = paragraph.delimgrid
-	let sepline_pattern = paragraph.sepline_pattern
+	let sepline_pattern = organ#table#sepline_pattern ()
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let is_sep_line = line =~ sepline_pattern
@@ -535,16 +535,10 @@ fun! organ#table#align (mode = 'normal') range
 	" ---- delimiter pattern
 	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
-		let paragraph.delimiter = organ#table#delimiter ()
-		let paragraph.sepline_delimiter = organ#table#sepline_delimiter ()
-		let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
-		let paragraph.sepline_pattern = organ#table#sepline_pattern ()
+		let paragraph.delimpat = organ#table#delimiter ()
 	else
 		let prompt = 'Align following pattern : '
-		let paragraph.delimiter = input(prompt, '')
-		let paragraph.sepline_delimiter = paragraph.delimiter
-		let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
-		let paragraph.sepline_pattern = organ#table#sepline_pattern ()
+		let paragraph.delimpat = input(prompt, '')
 	endif
 	" ---- delimiters
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
@@ -560,7 +554,7 @@ fun! organ#table#align (mode = 'normal') range
 	" ---- align cells
 	let paragraph = organ#table#align_cells (paragraph)
 	" ---- rebuild lines
-	let paragraph = organ#table#rebuild_lines (paragraph)
+	let paragraph = organ#table#rebuild (paragraph)
 	" ---- commit lines to buffer
 	call organ#table#commit (paragraph)
 	" ---- coda
@@ -571,7 +565,7 @@ endfun
 
 " ---- build paragraph
 
-fun! organ#table#build (...)
+fun! organ#table#fill (...)
 	" Paragraph dict
 	if a:0 > 1
 		let head_linum = a:1
@@ -592,10 +586,7 @@ fun! organ#table#build (...)
 	" ---- indent
 	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiters
-	let paragraph.delimiter = organ#table#delimiter ()
-	let paragraph.sepline_delimiter = organ#table#sepline_delimiter ()
-	let paragraph.sepline_delimiter_pattern = organ#table#sepline_delimiter_pattern ()
-	let paragraph.sepline_pattern = organ#table#sepline_pattern ()
+	let paragraph.delimpat = organ#table#delimiter ()
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph = organ#table#add_missing_delims(paragraph)
 	" ---- cells
@@ -616,7 +607,7 @@ fun! organ#table#update (...)
 	endif
 	let position = getcurpos ()
 	" ---- build
-	let paragraph = call('organ#table#build', a:000)
+	let paragraph = call('organ#table#fill', a:000)
 	" ---- commit
 	call organ#table#commit (paragraph)
 	" ---- coda
@@ -780,7 +771,7 @@ fun! organ#table#move_col_left (...)
 		let cellgrid[rownum] = newcellrow
 	endfor
 	" ---- coda
-	let paragraph = organ#table#rebuild_lines (paragraph)
+	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
 	" -- 3 = 2 for spaces and 1 for delim
 	call cursor('.', col('.') - lenprevcol - 3)
@@ -840,7 +831,7 @@ fun! organ#table#move_col_right ()
 		let cellgrid[rownum] = newcellrow
 	endfor
 	" ---- coda
-	let paragraph = organ#table#rebuild_lines (paragraph)
+	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
 	" -- 3 = 2 for spaces and 1 for delim
 	call cursor('.', col('.') + lennextcol + 3)
