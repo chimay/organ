@@ -517,7 +517,6 @@ fun! organ#table#align (mode = 'normal') range
 	call organ#origami#suspend ()
 	let mode = a:mode
 	let position = getcurpos ()
-	let paragraph = {}
 	" ---- head & tail
 	if mode ==# 'visual'
 		let head_linum = a:firstline
@@ -526,6 +525,9 @@ fun! organ#table#align (mode = 'normal') range
 		let head_linum = organ#table#head ()
 		let tail_linum = organ#table#tail ()
 	endif
+	" ---- init
+	let paragraph = {}
+	let paragraph.is_table = organ#table#is_in_table ()
 	" ---- lines
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
@@ -533,7 +535,6 @@ fun! organ#table#align (mode = 'normal') range
 	" ---- indent
 	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiter pattern
-	let paragraph.is_table = organ#table#is_in_table ()
 	if paragraph.is_table
 		let paragraph.delimpat = organ#table#delimiter ()
 	else
@@ -576,9 +577,7 @@ fun! organ#table#fill (...)
 	endif
 	" ---- init
 	let paragraph = {}
-	" ---- head & tail
-	let head_linum = organ#table#head ()
-	let tail_linum = organ#table#tail ()
+	let paragraph.is_table = organ#table#is_in_table ()
 	" ---- lines
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
@@ -594,6 +593,8 @@ fun! organ#table#fill (...)
 	let paragraph = organ#table#shrink_separator_lines(paragraph)
 	let paragraph.lengrid = organ#table#metalen(paragraph.cellgrid)
 	let paragraph = organ#table#align_cells (paragraph)
+	" ---- rebuild lines
+	let paragraph = organ#table#rebuild (paragraph)
 	" ---- coda
 	return paragraph
 endfun
