@@ -748,10 +748,9 @@ fun! organ#table#move_col_left (...)
 	let curlinum = line('.')
 	let currownum = linumlist->index(curlinum)
 	let curcellrow = cellgrid[currownum]
-	let curdelimrow = delimgrid[currownum]
 	let positions = organ#table#positions (curlinum)
 	" ---- two delimiters or less = only one column
-	let colmax = len(curdelimrow)
+	let colmax = len(positions)
 	if colmax <= 2
 		return paragraph
 	endif
@@ -806,10 +805,9 @@ fun! organ#table#move_col_right ()
 	let curlinum = line('.')
 	let currownum = linumlist->index(curlinum)
 	let curcellrow = cellgrid[currownum]
-	let curdelimrow = delimgrid[currownum]
 	let positions = organ#table#positions (curlinum)
 	" ---- two delimiters or less = only one column
-	let colmax = len(curdelimrow)
+	let colmax = len(positions)
 	if colmax <= 2
 		return paragraph
 	endif
