@@ -12,6 +12,12 @@ endif
 let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
 lockvar s:rep_one_char
 
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
 " ---- helpers
 
 fun! organ#bush#indent_item (level, ...)
@@ -23,16 +29,23 @@ fun! organ#bush#indent_item (level, ...)
 		let properties = organ#colibri#properties ()
 	endif
 	let head = properties.linum
-	let itemhead = properties.itemhead
 	let tail = organ#colibri#itemtail ()
+	let itemhead = properties.itemhead
+	let indent = properties.indent
 	let len_prefix = len(properties.prefix)
-	" ---- item head line
-	let shift = organ#colibri#common_indent ()
+	" --- indent number in display width
 	let step = g:organ_config.list.indent_length
-	let spaces = '\m^\s*'
-	let numspaces = shift + step * (level - 1)
-	let indent = repeat(' ', numspaces)
-	let itemhead = substitute(itemhead, spaces, indent, '')
+	let shift = organ#colibri#common_indent ()
+	let indentnum = shift + step * (level - 1)
+	let spaces = repeat(' ', indentnum)
+	let tabspaces = organ#utils#tabspaces(indentnum)
+	let mixed = tabspaces.string
+	" ---- item head line
+	if indent !~ "^\s*\t"
+		let itemhead = itemhead->substitute(s:indent_pattern, spaces, '')
+	else
+		let itemhead = itemhead->substitute(s:indent_pattern, mixed, '')
+	endif
 	let properties.itemhead = itemhead
 	call setline(head, itemhead)
 	" ---- other lines
@@ -40,11 +53,18 @@ fun! organ#bush#indent_item (level, ...)
 		return itemhead
 	endif
 	" -- length prefix + one space
-	let numspaces += len_prefix + 1
-	let indent = repeat(' ', numspaces)
+	let indentnum += len_prefix + 1
+	let spaces = repeat(' ', indentnum)
+	let tabspaces = organ#utils#tabspaces(indent)
+	let mixed = tabspaces.string
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
-		let newline = substitute(line, spaces, indent, '')
+		if line !~ "^\s*\t"
+			let newline = line->substitute(s:indent_pattern, spaces, '')
+		else
+			let newline = line->substitute(s:indent_pattern, mixed, '')
+			echomsg newline
+		endif
 		call setline(linum, newline)
 	endfor
 	return itemhead

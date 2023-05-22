@@ -187,7 +187,6 @@ fun! organ#colibri#common_indent ()
 	" Common indent of current list, in number of spaces
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
-	let spaces = repeat(' ', &tabstop)
 	let linelist = getline(first, last)
 	let indentlist = copy(linelist)->map({ _, v -> organ#utils#indentinfo(v) })
 	let totalist = copy(indentlist)->map({ _, v -> v.total })
@@ -269,16 +268,13 @@ fun! organ#colibri#properties (move = 'dont-move')
 	endif
 	let itemhead = getline(linum)
 	let text = itemhead
-	" ---- tab -> spaces
-	let spaces = repeat(' ', &tabstop)
-	let text = substitute(text, '\t', spaces, 'g')
 	" ---- indent & level
-	let indent = text->matchstr(s:indent_pattern)
-	let numspaces = len(indent)
-	let common_indent = organ#colibri#common_indent ()
-	let numspaces -= common_indent
 	let indent_length = g:organ_config.list.indent_length
-	let level = numspaces / indent_length + 1
+	let common_indent = organ#colibri#common_indent ()
+	let indentinfo = organ#utils#indentinfo (text)
+	let indent = indentinfo.string
+	let total = indentinfo.total
+	let level = (total - common_indent) / indent_length + 1
 	" -- text without indent
 	let text = substitute(text, s:indent_pattern, '', '')
 	" ---- prefix & counter
@@ -506,12 +502,12 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 	endif
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird parent : current headline not found'
+		"echomsg 'organ colibri parent : current headline not found'
 		return linum
 	endif
 	let level = properties.level
 	if level == 1
-		echomsg 'organ bird parent : already at top level'
+		echomsg 'organ colibri parent : already at top level'
 		return linum
 	endif
 	let level -= 1
@@ -519,7 +515,7 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
-		echomsg 'organ bird parent : no parent found'
+		echomsg 'organ colibri parent : no parent found'
 		return linum
 	endif
 	if move ==# 'move'
@@ -538,7 +534,7 @@ fun! organ#colibri#loose_child (move = 'move', wrap = 'wrap')
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	if linum == 0
-		echomsg 'organ bird loose child : current headline not found'
+		echomsg 'organ colibri loose child : current headline not found'
 		return linum
 	endif
 	let level = properties.level + 1
@@ -546,7 +542,7 @@ fun! organ#colibri#loose_child (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
-		echomsg 'organ bird loose child : no child found'
+		echomsg 'organ colibri loose child : no child found'
 		return linum
 	endif
 	if move ==# 'move'
@@ -566,7 +562,7 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	if head_linum == 0 || tail_linum == 0
-		echomsg 'organ bird strict child : headline not found'
+		echomsg 'organ colibri strict child : headline not found'
 		return linum
 	endif
 	let level = subtree.level + 1
@@ -574,7 +570,7 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0 || linum > tail_linum
-		"echomsg 'organ bird strict child : no child found'
+		"echomsg 'organ colibri strict child : no child found'
 		call setpos('.', position)
 		call organ#spiral#cursor ()
 		return 0

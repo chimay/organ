@@ -358,8 +358,8 @@ fun! organ#table#minindent (paragraph)
 	let totalist = copy(indentlist)->map({ _, v -> v.total })
 	let minindent = min(totalist)
 	let spaces = repeat(' ', minindent)
-	let indent = organ#utils#tabspaces(minindent)
-	let tabspaces = indent.string
+	let tabspaces = organ#utils#tabspaces(minindent)
+	let mixed = tabspaces.string
 	" ---- reduce
 	for rownum in range(lenlinelist)
 		let indentnum = totalist[rownum]
@@ -370,7 +370,7 @@ fun! organ#table#minindent (paragraph)
 		if indentlist[rownum].tabs == 0
 			let line = line->substitute(s:indent_pattern, spaces, '')
 		else
-			let line = line->substitute(s:indent_pattern, tabspaces, '')
+			let line = line->substitute(s:indent_pattern, mixed, '')
 		endif
 		let linelist[rownum] = line
 	endfor
