@@ -197,7 +197,7 @@ content
    ab = cd = ef ; f
   c  = d : g : h ; f ; g ; hj ; k
  d    : e ; f = g = h = ijk = l
- = a = b = c =
+ = a = b = c = d = e = f = g = h
 
  a  = b  = c  ; d ; e
  ab = cd = ef ; f

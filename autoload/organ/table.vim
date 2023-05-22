@@ -333,9 +333,10 @@ fun! organ#table#shrink_separator_lines (paragraph)
 	let linelist = paragraph.linelist
 	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
+	let sepline_pattern = organ#table#sepline_pattern ()
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		let is_sep_line = line =~ organ#table#sepline_pattern ()
+		let is_sep_line = line =~ sepline_pattern
 		if ! is_sep_line
 			continue
 		endif
@@ -428,10 +429,11 @@ fun! organ#table#align_cells (paragraph)
 	let lengrid = paragraph.lengrid
 	let dual = organ#table#dual(lengrid)
 	let maxima = organ#table#maxima(dual)
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- double loop
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
-		let is_sep_line = line =~ organ#table#sepline_pattern ()
+		let is_sep_line = line =~ sepline_pattern
 		" -- cells
 		let cellrow = cellgrid[rownum]
 		for colnum in range(len(cellrow))
@@ -874,6 +876,7 @@ fun! organ#table#new_col ()
 	" ---- patterns
 	let delim = organ#table#delimiter ()
 	let seplinedelim = organ#table#sepline_delimiter ()
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- current line
 	let positions = organ#table#positions ()
 	" ---- not enough column delimiters
@@ -899,7 +902,7 @@ fun! organ#table#new_col ()
 		let cellrow = cellgrid[rownum]
 		let delimrow = delimgrid[rownum]
 		eval cellrow->insert('', nextcolnum)
-		if line =~ organ#table#sepline_pattern ()
+		if line =~ sepline_pattern
 			eval delimrow->insert(seplinedelim, 1)
 		else
 			eval delimrow->insert(delim, 1)
