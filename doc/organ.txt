@@ -584,6 +584,7 @@ Completion is available for :
 - template expansion
   + languages of source code block
 - unicode character
+- expression history (insert expression result)
 
 It is intended to work roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
