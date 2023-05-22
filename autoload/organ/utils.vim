@@ -179,6 +179,8 @@ fun! organ#utils#delete (first, ...)
 	endif
 endfun
 
+" ---- indent
+
 fun! organ#utils#indentinfo (...)
 	" Various info about indent
 	if a:0 > 0
@@ -221,6 +223,29 @@ fun! organ#utils#tabspaces (indentnum, ...)
 	let indent.total = indent.spaces + indent.tabs * indent.tabstop
 	let indent.string = repeat("\t", indent.tabs) .. repeat(' ', indent.spaces)
 	return indent
+endfun
+
+fun! organ#utils#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Pattern of indent between minlevel and maxlevel
+	let min = (a:minlevel - 1) * &tabstop
+	let max = (a:maxlevel - 1) * &tabstop
+	" ---- pattern
+	let pattern = '\m'
+	let tabnum = 0
+	while v:true
+		let pattern ..= '^\t\{' .. tabnum .. '}'
+		let pattern ..= ' \{' .. min .. ',' .. max .. '}\S'
+		let tabnum += 1
+		let min -= &tabstop
+		let max -= &tabstop
+		let min = max([min, 0])
+		if max >= 0
+			let pattern ..= '\|'
+		else
+			break
+		endif
+	endwhile
+	return pattern
 endfun
 
 " ---- functional

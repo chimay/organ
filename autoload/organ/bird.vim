@@ -44,32 +44,8 @@ lockvar s:tags_pattern
 
 " ---- indent helpers
 
-fun! organ#bird#level_indent_line_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Pattern of level headline between minlevel and maxlevel, def by indent
-	" ---- min & max num spaces
-	let min = (a:minlevel - 1) * &tabstop
-	let max = (a:maxlevel - 1) * &tabstop
-	" ---- pattern
-	let pattern = '\m'
-	let tabnum = 0
-	while v:true
-		let pattern ..= '^\t\{' .. tabnum .. '}'
-		let pattern ..= ' \{' .. min .. ',' .. max .. '}\S'
-		let tabnum += 1
-		let min -= &tabstop
-		let max -= &tabstop
-		let min = max([min, 0])
-		if max >= 0
-			let pattern ..= '\|'
-		else
-			break
-		endif
-	endwhile
-	return pattern
-endfun
-
 fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Pattern of level frontier between minlevel and maxlevel, def by indent
+	" Pattern of level between minlevel and maxlevel, for headline defined by indent
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if &tabstop == &shiftwidth
@@ -86,6 +62,7 @@ fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
 		let mixed = v:false
 	else
 		let mixed = v:true
+		echomsg 'organ bird level indent pattern : mixed indent not supported'
 	endif
 	" ---- uniform indent
 	if &tabstop == &shiftwidth || &expandtab == 1
