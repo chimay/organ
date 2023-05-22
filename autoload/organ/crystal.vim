@@ -4,18 +4,6 @@
 "
 " Internal Constants made crystal clear
 
-" ---- filetypes with repeated one char heading
-
-if exists('s:filetypes_repeated_one_char_heading')
-	unlockvar! s:filetypes_repeated_one_char_heading
-endif
-let s:filetypes_repeated_one_char_heading = [
-	\ 'org',
-	\ 'markdown',
-	\ 'asciidoc',
-	\]
-lockvar! s:filetypes_repeated_one_char_heading
-
 " ---- golden ratio
 
 if exists('s:golden_ratio')
@@ -24,27 +12,6 @@ endif
 let s:golden_ratio = 1.618034
 "let s:golden_ratio = (1 + sqrt(5)) / 2
 lockvar! s:golden_ratio
-
-" ---- separators
-
-if exists('s:separator_level')
-	unlockvar! s:separator_level
-endif
-let s:separator_level = ' ⧽ '
-lockvar! s:separator_level
-
-if exists('s:separator_field')
-	unlockvar! s:separator_field
-endif
-let s:separator_field = ' │ '
-lockvar! s:separator_field
-
-if exists('s:separator_field_bar')
-	unlockvar! s:separator_field_bar
-endif
-" digraph : in insert mode : ctrl-k vv -> │ != usual | == <bar>
-let s:separator_field_bar = '│'
-lockvar! s:separator_field_bar
 
 " ---- patterns
 
@@ -77,6 +44,47 @@ if exists('s:pattern_vowels')
 endif
 let s:pattern_vowels = '[[=a=][=e=][=i=][=o=][=u=][=y=]]'
 lockvar! s:pattern_vowels
+
+" ---- maximum heading or list item level
+
+if exists('s:maximum_level')
+	unlockvar! s:maximum_level
+endif
+let s:maximum_level = 30
+lockvar! s:maximum_level
+
+" ---- filetypes with repeated one char heading
+
+if exists('s:filetypes_repeated_one_char_heading')
+	unlockvar! s:filetypes_repeated_one_char_heading
+endif
+let s:filetypes_repeated_one_char_heading = [
+	\ 'org',
+	\ 'markdown',
+	\ 'asciidoc',
+	\]
+lockvar! s:filetypes_repeated_one_char_heading
+
+" ---- separators
+
+if exists('s:separator_level')
+	unlockvar! s:separator_level
+endif
+let s:separator_level = ' ⧽ '
+lockvar! s:separator_level
+
+if exists('s:separator_field')
+	unlockvar! s:separator_field
+endif
+let s:separator_field = ' │ '
+lockvar! s:separator_field
+
+if exists('s:separator_field_bar')
+	unlockvar! s:separator_field_bar
+endif
+" digraph : in insert mode : ctrl-k vv -> │ != usual | == <bar>
+let s:separator_field_bar = '│'
+lockvar! s:separator_field_bar
 
 " ---- structure templates
 

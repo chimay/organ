@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:maxlevel')
+	unlockvar s:maxlevel
+endif
+let s:maxlevel = organ#crystal#fetch('maximum/level')
+lockvar s:maxlevel
+
 if exists('s:rep_one_char')
 	unlockvar s:rep_one_char
 endif
@@ -38,8 +44,32 @@ lockvar s:tags_pattern
 
 " ---- indent helpers
 
-fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 30)
-	" Pattern of level between minlevel and maxlevel, for headline defined by indent
+fun! organ#bird#level_indent_line_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Pattern of level headline between minlevel and maxlevel, def by indent
+	" ---- min & max num spaces
+	let min = (a:minlevel - 1) * &tabstop
+	let max = (a:maxlevel - 1) * &tabstop
+	" ---- pattern
+	let pattern = '\m'
+	let tabnum = 0
+	while v:true
+		let pattern ..= '^\t\{' .. tabnum .. '}'
+		let pattern ..= ' \{' .. min .. ',' .. max .. '}\S'
+		let tabnum += 1
+		let min -= &tabstop
+		let max -= &tabstop
+		let min = max([min, 0])
+		if max >= 0
+			let pattern ..= '\|'
+		else
+			break
+		endif
+	endwhile
+	return pattern
+endfun
+
+fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Pattern of level frontier between minlevel and maxlevel, def by indent
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if &tabstop == &shiftwidth
@@ -47,11 +77,15 @@ fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 30)
 		let char = "\t"
 		let min = minlevel
 		let max = maxlevel
+		let mixed = v:false
 	elseif &expandtab == 1
 		" -- assume the user wants only spaces
 		let char = ' '
 		let min = shift * minlevel
 		let max = shift * maxlevel
+		let mixed = v:false
+	else
+		let mixed = v:true
 	endif
 	" ---- uniform indent
 	if &tabstop == &shiftwidth || &expandtab == 1
@@ -116,7 +150,7 @@ fun! organ#bird#generic_pattern ()
 	endif
 endfun
 
-fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
+fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel

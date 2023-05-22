@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:maxlevel')
+	unlockvar s:maxlevel
+endif
+let s:maxlevel = organ#crystal#fetch('maximum/level')
+lockvar s:maxlevel
+
 if exists('s:indent_pattern')
 	unlockvar s:indent_pattern
 endif
@@ -195,7 +201,7 @@ fun! organ#colibri#common_indent ()
 	return min(totalist)
 endfun
 
-fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Item head pattern of level between minlevel and maxlevel
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		let filekey = 'default'
@@ -230,7 +236,8 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 		let tabnum += 1
 		let min -= &tabstop
 		let max -= &tabstop
-		if min >= 0
+		let min = max([min, 0])
+		if max >= 0
 			let pattern ..= '\|'
 		else
 			break

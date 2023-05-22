@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:maxlevel')
+	unlockvar s:maxlevel
+endif
+let s:maxlevel = organ#crystal#fetch('maximum/level')
+lockvar s:maxlevel
+
 if exists('s:level_separ')
 	unlockvar s:level_separ
 endif
@@ -39,7 +45,7 @@ endfun
 
 " ---- headlines
 
-fun! organ#perspective#headlines (minlevel = 1, maxlevel = 30)
+fun! organ#perspective#headlines (minlevel = 1, maxlevel = s:maxlevel)
 	" List of paths
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
