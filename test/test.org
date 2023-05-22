@@ -30,12 +30,12 @@ content
   + [X] item 1.2
 	+ item
       again
-      * item [2/3]
+      1) item [2/3]
         1. item
         2. [ ] item
         3. [X] TODO item
         4. [X] item
-      1) item
+      2) item
   + [X] item 2
   + [X] item 2.1
   + [X] item 2.2 [0/1]
@@ -62,12 +62,12 @@ content
       2. [ ] item 2.3.2
          bla bla
       3. [ ] item 2.3.3
-1. [ ] item 3 [1/1]
+0. [ ] item 3 [1/1]
   1. item
-  2. [X] item
+  1. [X] item
     1) TODO item
-    2) item
-    3) item [0/1]
+    1) item
+    1) item [0/1]
       1. [ ] item 3
 		1) item
 

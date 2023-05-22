@@ -27,10 +27,12 @@ fun! organ#colibri#generic_pattern ()
 	else
 		let filekey = &filetype
 	endif
+	" ---- prefixes
 	let unordered = g:organ_config.list.unordered[filekey]
 	let ordered = g:organ_config.list.ordered[filekey]
 	let unordered = unordered->join('')
 	let ordered = ordered->join('')
+	" ---- pattern
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype ==# 'org'
@@ -195,28 +197,45 @@ endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 	" Item head pattern of level between minlevel and maxlevel
-	if empty(&filetype)
-		echomsg 'organ colibri level pattern : filetype not supported'
-		return ''
+	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
+		let filekey = 'default'
+	else
+		let filekey = &filetype
 	endif
+	" ---- min & max num spaces
 	let indent_length = g:organ_config.list.indent_length
 	let min = (a:minlevel - 1) * indent_length
 	let max = (a:maxlevel - 1) * indent_length
 	let shift = organ#colibri#common_indent ()
 	let min += shift
 	let max += shift
+	" ---- prefixes
 	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
-		let unordered = g:organ_config.list.unordered[&filetype]
-		let ordered = g:organ_config.list.ordered[&filetype]
+		let unordered = g:organ_config.list.unordered[filekey]
+		let ordered = g:organ_config.list.ordered[filekey]
 	else
 		let unordered = g:organ_config.list.unordered.default
 		let ordered = g:organ_config.list.ordered.default
 	endif
 	let unordered = unordered->join('')
 	let ordered = ordered->join('')
-	let pattern = '\m^ \{' .. min .. ',' .. max .. '}'
-	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
-	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
+	" ---- pattern
+	let pattern = '\m'
+	let tabnum = 0
+	while v:true
+		let pattern ..= '^\t\{' .. tabnum .. '}'
+		let pattern ..= ' \{' .. min .. ',' .. max .. '}'
+		let pattern ..= '\%([' .. unordered .. ']\s\+\|'
+		let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
+		let tabnum += 1
+		let min -= &tabstop
+		let max -= &tabstop
+		if min >= 0
+			let pattern ..= '\|'
+		else
+			break
+		endif
+	endwhile
 	if &filetype ==# 'org'
 		let pattern ..= '\&^[^*]'
 		return pattern
@@ -502,7 +521,7 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 	endif
 	let linum = properties.linum
 	if linum == 0
-		"echomsg 'organ colibri parent : current headline not found'
+		echomsg 'organ colibri parent : current headline not found'
 		return linum
 	endif
 	let level = properties.level

@@ -38,31 +38,6 @@ lockvar s:tags_pattern
 
 " ---- indent helpers
 
-fun! organ#bird#tabspaces (...)
-	" Number of tabs and spaces
-	" Optional argument : line number
-	if a:0 > 0
-		let linum = a:1
-	else
-		let linum = line('.')
-	endif
-	let line = getline(linum)
-	let leading = line->matchstr(s:indent_pattern)
-	" ---- \t doesnt work here
-	let tabs = leading->count("\t")
-	let spaces = leading->count(' ')
-	return [tabs, spaces]
-endfun
-
-fun! organ#bird#equiv_numspaces (...)
-	" Equivalent in number of spaces from spaces and tabs
-	" Optional argument : line number
-	let [tabs, spaces] = call ('organ#bird#tabspaces', a:000)
-	let shift = shiftwidth ()
-	let equiv = shift * tabs + spaces
-	return equiv
-endfun
-
 fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = 30)
 	" Pattern of level between minlevel and maxlevel, for headline defined by indent
 	let minlevel = a:minlevel
@@ -103,9 +78,9 @@ fun! organ#bird#is_on_indent_headline ()
 	if linum == 1
 		return v:true
 	endif
-	let previous = organ#bird#equiv_numspaces (linum - 1)
-	let current = organ#bird#equiv_numspaces ()
-	return previous < current
+	let previous = organ#utils#indentinfo (linum - 1)
+	let current = organ#utils#indentinfo ()
+	return previous.total < current.total
 endfun
 
 " ---- helpers
