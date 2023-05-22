@@ -54,6 +54,7 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	" Pipe | in word means logical or
 	" unused argument is for compatibility with filter()
 	let wordlist = copy(a:wordlist)
+	let value = a:value
 	eval wordlist->map({ _, val -> substitute(val, '\m|', '\\|', 'g') })
 	let match = v:true
 	if g:organ_config.completion.vocalize > 0
@@ -61,12 +62,12 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	endif
 	for word in wordlist
 		if word !~ '\m^!'
-			if a:value !~ word
+			if value !~ word
 				let match = v:false
 				break
 			endif
 		else
-			if a:value =~ word[1:]
+			if value =~ word[1:]
 				let match = v:false
 				break
 			endif
@@ -79,8 +80,13 @@ endfun
 
 fun! organ#kyusu#pour (wordlist, list)
 	" Return elements of list matching words of wordlist
-	let list = deepcopy(a:list)
-	let Matches = function('organ#kyusu#steep', [a:wordlist])
+	let wordlist = a:wordlist
+	let list = a:list
+	if g:organ_config.completion.fuzzy > 0
+		return list->matchfuzzy(join(wordlist))
+	endif
+	let list = deepcopy(list)
+	let Matches = function('organ#kyusu#steep', [wordlist])
 	let candidates = filter(list, Matches)
 	return candidates
 endfun

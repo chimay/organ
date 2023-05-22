@@ -248,9 +248,12 @@ if ! exists("g:organ_loaded")
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- number of evaluated expressions to keep in history (default)
   let g:organ_config.expr.keep = 30
-  " ---- whether to add vowels patterns between chars in completion
+  " ---- whether to enable vowels-fuzzy completion
   " ---- default : 0
   let g:organ_config.completion.vocalize = 1
+  " ---- whether to enable full fuzzy completion
+  " ---- default : 0
+  let g:organ_config.completion.fuzzy = 1
   " ---- custom maps
   nmap <c-cr> <plug>(organ-meta-return)
   imap <c-cr> <plug>(organ-meta-return)
@@ -619,9 +622,12 @@ It is intended to work roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
 fact, it works exactly as in [wheel](https://github.com/chimay/wheel).
 
-If `g:wheel_config.completion.vocalize` is greater than 0, the plugin adds
+If `g:organ_config.completion.vocalize` is greater than 0, the plugin adds
 vowels patterns between the chars you enter, to enable a kind of vowels-fuzzy
 completion.
+
+If `g:organ_config.completion.fuzzy` is greater than 0, full fuzzy
+completion is enabled.
 
 For further details, please refer to the
 [completion page](https://github.com/chimay/wheel/wiki/completion)
