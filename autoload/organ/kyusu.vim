@@ -24,7 +24,29 @@ endif
 let s:field_separ = organ#crystal#fetch('separator/field')
 lockvar s:field_separ
 
+if exists('s:vowels')
+	unlockvar s:vowels
+endif
+let s:vowels = organ#crystal#fetch('pattern/vowels')
+lockvar s:vowels
+
 " ---- helpers
+
+fun! organ#kyusu#vocalize(word)
+	" Add vowels patterns between chars
+	let word = a:word
+	let charlist = word->split('\zs')
+	let inter = s:vowels .. '*'
+	let vocalize = []
+	for index in range(len(charlist) - 1)
+		let char = charlist[index]
+		eval vocalize->add(char)
+		eval vocalize->add(inter)
+	endfor
+	eval vocalize->add(charlist[-1])
+	let vocalize = vocalize->join('')
+	return vocalize
+endfun
 
 fun! organ#kyusu#steep (wordlist, unused, value)
 	" Whether value matches all words of wordlist
@@ -34,6 +56,9 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	let wordlist = copy(a:wordlist)
 	eval wordlist->map({ _, val -> substitute(val, '\m|', '\\|', 'g') })
 	let match = v:true
+	if g:organ_config.completion.vocalize > 0
+		eval wordlist->map({ _, val -> organ#kyusu#vocalize(val) })
+	endif
 	for word in wordlist
 		if word !~ '\m^!'
 			if a:value !~ word
@@ -50,6 +75,16 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	return match
 endfun
 
+" ---- prompt completion
+
+fun! organ#kyusu#pour (wordlist, list)
+	" Return elements of list matching words of wordlist
+	let list = deepcopy(a:list)
+	let Matches = function('organ#kyusu#steep', [a:wordlist])
+	let candidates = filter(list, Matches)
+	return candidates
+endfun
+
 " ---- not current headline path, for tree moveto
 
 fun! organ#kyusu#not_current_path (current, unused_key, value)
@@ -60,14 +95,4 @@ fun! organ#kyusu#not_current_path (current, unused_key, value)
 	let value = split(value, s:level_separ)
 	let notme = current != value
 	return notme
-endfun
-
-" ---- prompt completion
-
-fun! organ#kyusu#pour (wordlist, list)
-	" Return elements of list matching words of wordlist
-	let list = deepcopy(a:list)
-	let Matches = function('organ#kyusu#steep', [a:wordlist])
-	let candidates = filter(list, Matches)
-	return candidates
 endfun

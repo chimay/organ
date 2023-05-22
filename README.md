@@ -199,6 +199,7 @@ if ! exists("g:organ_loaded")
   let g:organ_config.links = {}
   let g:organ_config.templates = {}
   let g:organ_config.expr = {}
+  let g:organ_config.completion = {}
   " ---- enable for every file if > 0
   let g:organ_config.everywhere = 0
   " ---- enable speed keys on first char of headlines and list items
@@ -247,10 +248,13 @@ if ! exists("g:organ_loaded")
   let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
   " ---- number of evaluated expressions to keep in history (default)
   let g:organ_config.expr.keep = 30
+  " ---- whether to add vowels patterns between chars in completion
+  " ---- default : 0
+  let g:organ_config.completion.vocalize = 1
   " ---- custom maps
   nmap <c-cr> <plug>(organ-meta-return)
   imap <c-cr> <plug>(organ-meta-return)
-  nnoremap <backspace> :Organ<space>
+  nnoremap <space>o :<c-u>Organ<space>
 endif
 ```
 
@@ -596,7 +600,7 @@ Completion is available for subcommands.
 I suggest you map it to a convenient key. Example :
 
 ```vim
-nnoremap <backspace> :Organ<space>
+nnoremap <space>o :<c-u>Organ<space>
 ```
 
 # Prompt completion
@@ -613,9 +617,15 @@ Completion is available for :
 
 It is intended to work roughly as with the combo org-goto and helm in
 Emacs. A space is interpreted as a logical and, a `|` as a logical or. In
-fact, it works exactly as in [wheel](https://github.com/chimay/wheel). For
-further details, please refer to the
-[completion page](https://github.com/chimay/wheel/wiki/completion) on the wheel wiki.
+fact, it works exactly as in [wheel](https://github.com/chimay/wheel).
+
+If `g:wheel_config.completion.vocalize` is greater than 0, the plugin adds
+vowels patterns between the chars you enter, to enable a kind of vowels-fuzzy
+completion.
+
+For further details, please refer to the
+[completion page](https://github.com/chimay/wheel/wiki/completion)
+on the wheel wiki.
 
 # Autocommands
 

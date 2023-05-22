@@ -192,13 +192,18 @@ fun! organ#utils#indentinfo (...)
 	elseif type(object) == v:t_string
 		let line = object
 	endif
-	let info = {}
-	let indent = line->matchstr(s:indent_pattern)
-	let info.tabstop = &tabstop
-	let info.tabs = indent->count("\t")
-	let info.spaces = indent->count(' ')
-	let info.total = info.spaces + info.tabs * info.tabstop
-	return info
+	if a:0 > 1
+		let tabstop = a:2
+	else
+		let tabstop = &tabstop
+	endif
+	let indent = {}
+	let indent.tabstop = tabstop
+	let indent.string = line->matchstr(s:indent_pattern)
+	let indent.tabs = indent.string->count("\t")
+	let indent.spaces = indent.string->count(' ')
+	let indent.total = indent.spaces + indent.tabs * indent.tabstop
+	return indent
 endfun
 
 fun! organ#utils#tabspaces (indentnum, ...)
@@ -209,10 +214,13 @@ fun! organ#utils#tabspaces (indentnum, ...)
 	else
 		let tabstop = &tabstop
 	endif
-	let tabnum = indentnum / tabstop
-	let spacenum = indentnum % tabstop
-	let indentstring = repeat("\t", tabnum) .. repeat(' ', spacenum)
-	return indentstring
+	let indent = {}
+	let indent.tabstop = tabstop
+	let indent.tabs = indentnum / tabstop
+	let indent.spaces = indentnum % tabstop
+	let indent.total = indent.spaces + indent.tabs * indent.tabstop
+	let indent.string = repeat("\t", indent.tabs) .. repeat(' ', indent.spaces)
+	return indent
 endfun
 
 " ---- functional

@@ -132,6 +132,13 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.expr, 'keep')
 		let g:organ_config.expr.keep = 30
 	endif
+	" ---- completion
+	if ! has_key(g:organ_config, 'completion')
+		let g:organ_config.completion = {}
+	endif
+	if ! has_key(g:organ_config.completion, 'vocalize')
+		let g:organ_config.completion.vocalize = 0
+	endif
 endfun
 
 fun! organ#void#foundation ()

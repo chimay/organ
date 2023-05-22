@@ -358,7 +358,8 @@ fun! organ#table#minindent (paragraph)
 	let totalist = copy(indentlist)->map({ _, v -> v.total })
 	let minindent = min(totalist)
 	let spaces = repeat(' ', minindent)
-	let tabspaces = organ#utils#tabspaces(minindent)
+	let indent = organ#utils#tabspaces(minindent)
+	let tabspaces = indent.string
 	" ---- reduce
 	for rownum in range(lenlinelist)
 		let indentnum = totalist[rownum]
