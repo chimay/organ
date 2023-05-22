@@ -67,7 +67,7 @@ fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" ---- uniform indent
 	if &tabstop == &shiftwidth || &expandtab == 1
 		let shift = shiftwidth ()
-		let pattern = '\m^\%('
+		let pattern = '\m^'
 		for level in range(minlevel, maxlevel)
 			let prev_level = level - 1
 			let pattern ..= char .. '\{' .. prev_level .. '}'
@@ -78,7 +78,6 @@ fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
 				let pattern ..= '\|'
 			endif
 		endfor
-		let pattern ..= '\)'
 		return pattern
 	endif
 endfun
