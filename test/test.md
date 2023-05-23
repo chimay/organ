@@ -121,15 +121,15 @@ content
 
 content
 
-## part 3.1
+## part 3.1                                                 :misc:dance:
 
 content
 
-## part 3.2
+## part 3.2                                                      :dance:
 
 content
 
-## part 3.3
+## part 3.3                                                :music:dance:
 
 content
 

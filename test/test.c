@@ -25,11 +25,11 @@ int a = 2;
 
 int a = 2;
 
-/* fun 2.2 {{{2 */
+/* fun 2.2 {{{2                                                       :fun: */
 
 int a = 2;
 
-/* fun 2.3 {{{2 */
+/* fun 2.3 {{{2                                                  :fun:misc: */
 
 int a = 2;
 
