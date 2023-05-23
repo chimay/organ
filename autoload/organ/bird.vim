@@ -48,38 +48,38 @@ fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Pattern of level between minlevel and maxlevel, for headline defined by indent
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if &tabstop == &shiftwidth
-		" -- assume the user wants only tabs
-		let char = "\t"
-		let min = minlevel
-		let max = maxlevel
+	" ---- indent options
+	let tabstop = &tabstop
+	let shiftwidth = shiftwidth ()
+	" ---- mix of spaces and tabs ?
+	let mixed = v:true
+	if &expandtab
 		let mixed = v:false
-	elseif &expandtab == 1
-		" -- assume the user wants only spaces
-		let char = ' '
-		let min = shift * minlevel
-		let max = shift * maxlevel
-		let mixed = v:false
-	else
-		let mixed = v:true
-		echomsg 'organ bird level indent pattern : mixed indent not supported'
 	endif
-	" ---- uniform indent
-	if &tabstop == &shiftwidth || &expandtab == 1
-		let shift = shiftwidth ()
-		let pattern = '\m^'
-		for level in range(minlevel, maxlevel)
-			let prev_level = level - 1
-			let pattern ..= char .. '\{' .. prev_level .. '}'
-			let pattern ..= '\S.*\n\zs'
-			let pattern ..= char .. '\{' .. level .. '}'
-			let pattern ..= '\S'
-			if level < maxlevel
-				let pattern ..= '\|'
-			endif
-		endfor
-		return pattern
-	endif
+	" ---- pattern
+	let first_indentnum = (minlevel - 1) * shiftwidth
+	let second_indentnum = first_indentnum + shiftwidth
+	let pattern = '\m'
+	for level in range(minlevel, maxlevel)
+		let first_tabs = first_indentnum / tabstop
+		let first_spaces = first_indentnum % tabstop
+		let second_tabs = second_indentnum / tabstop
+		let second_spaces = second_indentnum % tabstop
+		let pattern ..= '^\%( \{' .. first_indentnum .. '}\|'
+		let pattern ..= '\t\{' .. first_tabs .. '}'
+		let pattern ..= ' \{' .. first_spaces .. '}\)'
+		let pattern ..= '\S.*\n\zs'
+		let pattern ..= '\%(^ \{' .. second_indentnum .. '}\|'
+		let pattern ..= '\t\{' .. second_tabs .. '}'
+		let pattern ..= ' \{' .. second_spaces .. '}\)'
+		let pattern ..= '\S'
+		if level < maxlevel
+			let pattern ..= '\|'
+		endif
+		let first_indentnum += shiftwidth
+		let second_indentnum += shiftwidth
+	endfor
+	return pattern
 endfun
 
 fun! organ#bird#is_on_indent_headline ()
@@ -117,7 +117,6 @@ fun! organ#bird#generic_pattern ()
 	elseif &foldmethod ==# 'indent'
 		return '\m^\([ \t]*\)\S.*\n\zs\1[ \t]'
 	else
-		"throw 'organ bird generic pattern : not supported'
 		" -- never matches
 		" -- other solutions :
 		" -- \m^a\&^[^a]
@@ -155,12 +154,11 @@ endfun
 
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
-	if s:rep_one_char->index(&filetype) >= 0 || &foldmethod ==# 'marker'
-		let line = getline('.')
-		return line =~ organ#bird#generic_pattern ()
-	elseif &foldmethod ==# 'indent'
+	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
 		return organ#bird#is_on_indent_headline ()
 	endif
+	let line = getline('.')
+	return line =~ organ#bird#generic_pattern ()
 endfun
 
 fun! organ#bird#headline (move = 'dont-move')
