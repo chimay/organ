@@ -80,6 +80,37 @@ fun! organ#origami#folding ()
 	endif
 endfun
 
+" ---- foldmarker headline
+
+fun! organ#origami#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Headline foldmarker pattern of level between minlevel and maxlevel
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	let marker = split(&foldmarker, ',')[0]
+	let pattern = '\m' .. marker .. '\%('
+	for level in range(minlevel, maxlevel)
+		let pattern ..= level
+		if level < maxlevel
+			let pattern ..= '\|'
+		endif
+	endfor
+	let pattern ..= '\)'
+	return pattern
+endfun
+
+fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Foldmarker subtree pattern tail of level between minlevel and maxlevel
+	let marker = split(&foldmarker, ',')[0]
+	let pattern = '\m' .. marker .. '\%('
+	for level in range(minlevel, maxlevel)
+		let pattern ..= level
+		if level < maxlevel
+			let pattern ..= '\|'
+		endif
+	endfor
+	let pattern ..= '\)'
+endfun
+
 " ---- suspend & resume during heavy functions that does not need it
 
 fun! organ#origami#suspend ()

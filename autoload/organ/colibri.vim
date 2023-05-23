@@ -179,6 +179,7 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	if linum == 0
 		let linum = final
 		if move ==# 'move'
+			mark '
 			call cursor(linum, 1)
 		endif
 		return linum
@@ -186,6 +187,7 @@ fun! organ#colibri#itemtail (move = 'dont-move')
 	let linum -= 1
 	let linum = min([linum, final])
 	if move ==# 'move'
+		mark '
 		call cursor(linum, 1)
 	endif
 	return linum
@@ -434,6 +436,7 @@ fun! organ#colibri#previous (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -458,6 +461,7 @@ fun! organ#colibri#next (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -483,6 +487,7 @@ fun! organ#colibri#backward (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(itemhead_pattern, flags)
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -506,6 +511,7 @@ fun! organ#colibri#forward (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(itemhead_pattern, flags)
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -544,6 +550,7 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 		return linum
 	endif
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -571,6 +578,7 @@ fun! organ#colibri#loose_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)
@@ -601,6 +609,7 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		normal! zv
 	else
 		call setpos('.', position)

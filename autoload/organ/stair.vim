@@ -80,7 +80,7 @@ fun! organ#stair#tabspaces (indentnum, ...)
 	return indent
 endfun
 
-fun! organ#stair#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#stair#basic_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Pattern of indent between minlevel and maxlevel
 	let min = (a:minlevel - 1) * &tabstop
 	let max = (a:maxlevel - 1) * &tabstop
@@ -121,7 +121,7 @@ fun! organ#stair#is_on_headline ()
 	return current.total < next.total
 endfun
 
-fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#stair#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Headline indent pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
@@ -160,7 +160,7 @@ fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 endfun
 
 fun! organ#stair#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Headline indent pattern of level between minlevel and maxlevel
+	" Indent subtree pattern tail of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	" ---- indent options

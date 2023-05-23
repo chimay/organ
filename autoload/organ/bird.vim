@@ -79,26 +79,18 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if organ#stair#is_indent_headline_file ()
-		return organ#stair#headline_level_pattern (minlevel, maxlevel)
-	endif
-	if s:rep_one_char->index(&filetype) >= 0
+		return organ#stair#level_pattern (minlevel, maxlevel)
+	elseif &foldmethod ==# 'marker'
+		return organ#origami#level_pattern (minlevel, maxlevel)
+	elseif s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
 		let pattern ..= minlevel .. ',' .. maxlevel .. '}'
 		let pattern ..= '[^' .. char .. ']'
-	else
-		let marker = split(&foldmarker, ',')[0]
-		let pattern = '\m' .. marker .. '\%('
-		for level in range(minlevel, maxlevel)
-			if level < maxlevel
-				let pattern ..= level .. '\|'
-			else
-				let pattern ..= level
-			endif
-		endfor
-		let pattern ..= '\)'
+		return pattern
 	endif
-	return pattern
+	" -- never matches
+	return '\m^$\&^.$'
 endfun
 
 fun! organ#bird#is_on_headline ()
@@ -248,11 +240,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let level = properties.level
 	let position =  getcurpos ()
 	call cursor('.', col('$'))
-	if organ#stair#is_indent_headline_file ()
-		let tail_pattern = organ#stair#subtree_tail_level_pattern (1, level)
-	else
-		let tail_pattern = organ#bird#level_pattern (1, level)
-	endif
+	let tail_pattern = organ#bird#level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(tail_pattern, flags)
 	if forward_linum == 0
@@ -317,6 +305,7 @@ fun! organ#bird#previous (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -340,6 +329,7 @@ fun! organ#bird#next (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -368,6 +358,7 @@ fun! organ#bird#backward (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -394,6 +385,7 @@ fun! organ#bird#forward (move = 'move', wrap = 'wrap')
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -434,6 +426,7 @@ fun! organ#bird#parent (move = 'move', wrap = 'wrap', ...)
 		return linum
 	endif
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -463,6 +456,7 @@ fun! organ#bird#loose_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
@@ -495,6 +489,7 @@ fun! organ#bird#strict_child (move = 'move', wrap = 'wrap')
 		return 0
 	endif
 	if move ==# 'move'
+		mark '
 		call cursor('.', 1)
 		normal! zv
 		call organ#spiral#cursor ()
