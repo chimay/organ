@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:tags_pattern')
+	unlockvar s:tags_pattern
+endif
+let s:tags_pattern = organ#crystal#fetch('pattern/headline/tag')
+lockvar s:tags_pattern
+
 if exists('s:maxlevel')
 	unlockvar s:maxlevel
 endif
@@ -71,28 +77,39 @@ endfun
 fun! organ#perspective#tags ()
 	" List of tags defined on #+tags & headlines :tag:tag:...:
 	let position = getcurpos ()
-	" ---- #+tags lines
-	let runme = 'global /\m\c^#+tags:/print'
-	let output = execute(runme)
-	let linelist = split(output, "\n")
 	let returnlist = []
-	for elem in linelist
-		let list = elem->split(' ')
-		let list = list[2:]
-		eval list->map({ _, v -> substitute(v, '\m([a-zA-Z])$', '', '')})
-		eval returnlist->extend(list)
-	endfor
+	" ---- #+tags lines
+	if &filetype ==# 'org'
+		let runme = 'global /\m\c^#+tags:/print'
+		let output = execute(runme)
+		let linelist = split(output, "\n")
+		for elem in linelist
+			let list = elem->split(' ')
+			let list = list[2:]
+			eval list->map({ _, v -> substitute(v, '\m([a-zA-Z])$', '', '')})
+			eval returnlist->extend(list)
+		endfor
+	endif
 	" ---- tags on headlines
-	let tags_pattern = '\m^\S\+.*\s\+\zs:\%([^:]\+:\)\+$'
+	let comlist = split(&commentstring, '%s')
+	if len(comlist) >= 2
+		let endcom = comlist[1]->escape('*/')
+		let tags_pattern = s:tags_pattern .. '\s*\%(' .. endcom .. '\)\?$'
+	else
+		let tags_pattern = s:tags_pattern .. '$'
+	endif
 	let runme = 'global /' .. tags_pattern .. '/print'
 	let output = execute(runme)
 	let linelist = split(output, "\n")
 	for elem in linelist
 		let fields = split(elem, ' ')
-		let tagstring = fields[-1]
-		let list = tagstring[1:-2]->split(':')
-		eval returnlist->extend(list)
+		eval fields->filter({ _, v -> v =~ '^:[[:alnum:]:]\+:$' })
+		for tagstring in fields
+			let list = tagstring[1:-2]->split(':')
+			eval returnlist->extend(list)
+		endfor
 	endfor
+	eval returnlist->sort()->uniq()
 	" ---- coda
 	call setpos('.', position)
 	return returnlist

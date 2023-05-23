@@ -16,11 +16,12 @@ int a = 2;
 
 int a = 2;
 
+
 /* fun group 2 {{{1 */
 
 int a = 2;
 
-/* TODO fun 2.1 {{{2                                                 :misc: */
+/* fun 2.1  {{{2                                             :misc: */
 
 int a = 2;
 

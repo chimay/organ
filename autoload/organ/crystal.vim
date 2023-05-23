@@ -36,7 +36,7 @@ lockvar! s:pattern_angle
 if exists('s:pattern_headline_tag')
 	unlockvar! s:pattern_headline_tag
 endif
-let s:pattern_headline_tag = '\m:\%([^:]\+:\)\+$'
+let s:pattern_headline_tag = '\m:\%([^:]\+:\)\+'
 lockvar! s:pattern_headline_tag
 
 if exists('s:pattern_vowels')
