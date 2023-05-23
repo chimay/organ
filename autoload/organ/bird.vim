@@ -80,14 +80,14 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	let maxlevel = a:maxlevel
 	if organ#stair#is_indent_headline_file ()
 		return organ#stair#level_pattern (minlevel, maxlevel)
-	elseif &foldmethod ==# 'marker'
-		return organ#origami#level_pattern (minlevel, maxlevel)
 	elseif s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
 		let pattern ..= minlevel .. ',' .. maxlevel .. '}'
 		let pattern ..= '[^' .. char .. ']'
 		return pattern
+	elseif &foldmethod ==# 'marker'
+		return organ#origami#level_pattern (minlevel, maxlevel)
 	endif
 	" -- never matches
 	return '\m^$\&^.$'

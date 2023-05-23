@@ -106,7 +106,7 @@ endfun
 " --- indent headlines
 
 fun! organ#stair#is_indent_headline_file ()
-	" Whether headlines are indent defined
+	" Whether headlines are indent defined in current file
 	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
 endfun
 

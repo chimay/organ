@@ -100,8 +100,17 @@ endfun
 
 fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Foldmarker subtree pattern tail of level between minlevel and maxlevel
-	let marker = split(&foldmarker, ',')[0]
-	let pattern = '\m' .. marker .. '\%('
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	let markerlist = split(&foldmarker, ',')
+	let pattern = '\m' .. markerlist[0] .. '\%('
+	for level in range(minlevel, maxlevel)
+		let pattern ..= level
+		if level < maxlevel
+			let pattern ..= '\|'
+		endif
+	endfor
+	let pattern ..= '\)\|' .. markerlist[1] .. '\%('
 	for level in range(minlevel, maxlevel)
 		let pattern ..= level
 		if level < maxlevel
@@ -109,6 +118,7 @@ fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlev
 		endif
 	endfor
 	let pattern ..= '\)'
+	return pattern
 endfun
 
 " ---- suspend & resume during heavy functions that does not need it
