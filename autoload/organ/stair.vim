@@ -203,6 +203,7 @@ fun! organ#stair#subtree_tail (properties)
 	let linum = properties.linum
 	let level = properties.level
 	call cursor(linum, 1)
+	call cursor('.', col('$'))
 	let tail_pattern = organ#stair#subtree_tail_level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(tail_pattern, flags)
