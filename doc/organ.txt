@@ -29,19 +29,6 @@ folded file. It is primarily focused on editing these documents with
 ease and agility.
 
 ------------------------------------------------------------------------------
-COMPATIBILITY				*organ-introduction-compatibility*
-
-Organ supports :
-
-- org files
-- markdown
-- asciidoc : headings only
-- folded files with markers
-- indent folded files : basic navigation only
-
-It is written in vimscript (VimL) and compatible with both Vim and Neovim.
-
-------------------------------------------------------------------------------
 FEATURES		    			*organ-introduction-features*
 
 - folding based on headings in org and markdown files
@@ -95,6 +82,22 @@ FEATURES		    			*organ-introduction-features*
   + asciidoc or asciidoctor
   + view exported document
 - convert headings and links org <-> markdown
+
+------------------------------------------------------------------------------
+COMPATIBILITY				*organ-introduction-compatibility*
+
+Organ supports :
+
+- org files
+- markdown
+- folded files with markers
+- asciidoc : headings only
+- indent folded files
+  + basic navigation
+  + subtree selection, yank & delete
+  + promote & demote subtree
+
+It is written in vimscript (VimL) and compatible with both Vim and Neovim.
 
 ------------------------------------------------------------------------------
 DIFFERENCES WITH STANDARD ORG MODE	    *organ-introduction-differences*

@@ -55,18 +55,6 @@ Headline completion, todo, links, list, table :
 
 See also the [organ-multimedia repository](https://github.com/chimay/organ-multimedia).
 
-## Compatibilty
-
-Organ supports :
-
-- org files
-- markdown
-- asciidoc : headings only
-- folded files with markers
-- indent folded files : basic navigation only
-
-It is written in vimscript and is compatible with both Vim and Neovim.
-
 ## Features
 
 - folding based on headings in org and markdown files
@@ -120,6 +108,21 @@ It is written in vimscript and is compatible with both Vim and Neovim.
   + asciidoc or asciidoctor
   + view exported document
 - convert headings and links org <-> markdown
+
+## Compatibilty
+
+Organ supports :
+
+- org files
+- markdown
+- folded files with markers
+- indent folded files
+  + basic navigation
+  + subtree selection, yank & delete
+  + promote & demote subtree
+- asciidoc : headings only
+
+It is written in vimscript and is compatible with both Vim and Neovim.
 
 ## Differences with standard orgmode
 

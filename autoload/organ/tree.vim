@@ -217,7 +217,7 @@ fun! organ#tree#promote (context = 'alone')
 	let headline = properties.headline
 	if s:rep_one_char->index(&filetype) >= 0
 		let headline = headline[1:]
-	else
+	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		let level = organ#bird#foldlevel ()
 		let old = marker .. level
@@ -249,7 +249,7 @@ fun! organ#tree#demote (context = 'alone')
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let headline = char .. headline
-	else
+	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		let level = organ#bird#foldlevel ()
 		let old = marker .. level
@@ -271,6 +271,11 @@ endfun
 
 fun! organ#tree#promote_subtree ()
 	" Promote subtree
+	if organ#stair#is_indent_headline_file ()
+		call organ#tree#select_subtree ()
+		normal! <
+		return line('.')
+	endif
 	let position = getcurpos ()
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
@@ -300,6 +305,11 @@ endfun
 
 fun! organ#tree#demote_subtree ()
 	" Demote subtree
+	if organ#stair#is_indent_headline_file ()
+		call organ#tree#select_subtree ()
+		normal! >
+		return line('.')
+	endif
 	let position = getcurpos ()
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum

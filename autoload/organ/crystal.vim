@@ -248,6 +248,20 @@ let s:export_formats_asciidoctor = [
 	\]
 lockvar! s:export_formats_asciidoctor
 
+" ---- waterproof functions in indent headline files
+
+if exists('s:waterproof_indent')
+	unlockvar! s:waterproof_indent
+endif
+let s:waterproof_indent = [
+	\ 'select_subtree',
+	\ 'yank_subtree',
+	\ 'delete_subtree',
+	\ 'promote_subtree',
+	\ 'demote_subtree',
+	\]
+lockvar! s:waterproof_indent
+
 " ---- public interface
 
 fun! organ#crystal#fetch (varname, conversion = 'no-conversion')

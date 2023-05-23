@@ -19,6 +19,12 @@ endif
 let s:speedkeys = organ#geode#fetch('speedkeys', 'dict')
 lockvar s:speedkeys
 
+if exists('s:waterproof_indent')
+	unlockvar s:waterproof_indent
+endif
+let s:waterproof_indent = organ#crystal#fetch('waterproof/indent')
+lockvar s:waterproof_indent
+
 " ---- helpers
 
 fun! organ#nest#is_on_headline_first_char ()
@@ -33,6 +39,14 @@ fun! organ#nest#is_on_itemhead_first_char ()
 	let first_char = col('.') == 1
 	let itemhead = organ#colibri#is_on_itemhead ()
 	return first_char && itemhead
+endfun
+
+fun! organ#nest#waterproof_indent (function)
+	" Whether function is ok with indent headlines
+	let function = a:function
+	let waterproof = ! organ#stair#is_indent_headline_file ()
+	let waterproof = waterproof || s:waterproof_indent->index(function) >= 0
+	return waterproof
 endfun
 
 " ---- generic
@@ -57,11 +71,11 @@ endfun
 
 fun! organ#nest#oper (function, ...)
 	" Choose to apply headline or list operation function
-	if organ#stair#is_indent_headline_file ()
+	let function = a:function
+	if ! organ#nest#waterproof_indent(function)
 		echomsg 'organ nest oper : not supported for indent folds'
 		return v:false
 	endif
-	let function = a:function
 	if organ#colibri#is_in_list ()
 		if a:0 > 0
 			return call('organ#bush#' .. function, a:000)
@@ -211,6 +225,10 @@ fun! organ#nest#meta_up ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#move_subtree_backward ()
 	else
+		if ! organ#nest#waterproof_indent('subtree_backward')
+			echomsg 'organ nest oper : not supported for indent folds'
+			return v:false
+		endif
 		return organ#tree#move_subtree_backward ()
 	endif
 endfun
@@ -222,6 +240,10 @@ fun! organ#nest#meta_down ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#move_subtree_forward ()
 	else
+		if ! organ#nest#waterproof_indent('subtree_forward')
+			echomsg 'organ nest oper : not supported for indent folds'
+			return v:false
+		endif
 		return organ#tree#move_subtree_forward ()
 	endif
 endfun
