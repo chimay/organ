@@ -91,11 +91,11 @@ Organ supports :
 - org files
 - markdown
 - folded files with markers
-- asciidoc : headings only
 - indent folded files
   + basic navigation
   + subtree selection, yank & delete
   + promote & demote subtree
+- asciidoc : headings only
 
 It is written in vimscript (VimL) and compatible with both Vim and Neovim.
 
