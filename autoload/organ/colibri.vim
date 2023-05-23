@@ -203,18 +203,17 @@ endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Item head pattern of level between minlevel and maxlevel
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	" ---- filetype
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		let filekey = 'default'
 	else
 		let filekey = &filetype
 	endif
-	" ---- min & max num spaces
+	" ---- indent
 	let indent_length = g:organ_config.list.indent_length
-	let min = (a:minlevel - 1) * indent_length
-	let max = (a:maxlevel - 1) * indent_length
-	let shift = organ#colibri#common_indent ()
-	let min += shift
-	let max += shift
+	let base = organ#colibri#common_indent ()
 	" ---- prefixes
 	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
 		let unordered = g:organ_config.list.unordered[filekey]
@@ -226,23 +225,22 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	let unordered = unordered->join('')
 	let ordered = ordered->join('')
 	" ---- pattern
-	let pattern = '\m'
-	let tabnum = 0
-	while v:true
-		let pattern ..= '^\t\{' .. tabnum .. '}'
-		let pattern ..= ' \{' .. min .. ',' .. max .. '}'
-		let pattern ..= '\%([' .. unordered .. ']\s\+\|'
-		let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
-		let tabnum += 1
-		let min -= &tabstop
-		let max -= &tabstop
-		let min = max([min, 0])
-		if max >= 0
+	let indentnum = (minlevel - 1) * indent_length + base
+	let pattern = '\m\%('
+	for level in range(minlevel, maxlevel)
+		let tabs = indentnum / &tabstop
+		let spaces = indentnum % &tabstop
+		let pattern ..= ' \{' .. indentnum .. '}\|'
+		let pattern ..= '^\t\{' .. tabs .. '}'
+		let pattern ..= ' \{' .. spaces .. '}'
+		if level < maxlevel
 			let pattern ..= '\|'
-		else
-			break
 		endif
-	endwhile
+		let indentnum += indent_length
+	endfor
+	let pattern ..= '\)'
+	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
+	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype ==# 'org'
 		let pattern ..= '\&^[^*]'
 		return pattern
