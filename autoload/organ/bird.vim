@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:indent_pattern')
+	unlockvar s:indent_pattern
+endif
+let s:indent_pattern = organ#crystal#fetch('pattern/indent')
+lockvar s:indent_pattern
+
 if exists('s:maxlevel')
 	unlockvar s:maxlevel
 endif
@@ -182,6 +188,7 @@ fun! organ#bird#properties (move = 'dont-move')
 		let indentinfo = organ#stair#info (title)
 		let levelstring = indentinfo.string
 		let level = indentinfo.level + 1
+		let title = substitute(title, s:indent_pattern, '', '')
 	endif
 	" ---- todo status
 	let found = v:false
@@ -234,6 +241,10 @@ fun! organ#bird#subtree (move = 'dont-move')
 			\ todo : '',
 			\}
 	endif
+	" ---- sync with properties
+	let subtree = properties
+	let subtree.head_linum = properties.linum
+	" ---- find tail
 	let level = properties.level
 	let position =  getcurpos ()
 	call cursor('.', col('$'))
@@ -249,8 +260,6 @@ fun! organ#bird#subtree (move = 'dont-move')
 		mark '
 		call cursor(head_linum, 1)
 	endif
-	let subtree = properties
-	let subtree.head_linum = properties.linum
 	let subtree.tail_linum = tail_linum
 	if move !=  'move'
 		call setpos('.', position)

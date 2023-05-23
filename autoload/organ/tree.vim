@@ -532,7 +532,9 @@ fun! organ#tree#tag ()
 	if tag[-1:] ==# ':'
 		let tag = tag[:-2]
 	endif
-	echomsg tag
+	if empty(tag)
+		return properties.headline
+	endif
 	" ---- tag list
 	let index = taglist->index(tag)
 	if index < 0

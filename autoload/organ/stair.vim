@@ -99,6 +99,17 @@ endfun
 
 " --- indent headlines
 
+fun! organ#stair#is_on_headline ()
+	" Whether current line is an indent headline
+	let linum = line('.')
+	if linum == 1
+		return v:true
+	endif
+	let current = organ#stair#info ()
+	let next = organ#stair#info (linum + 1)
+	return current.total < next.total
+endfun
+
 fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Headline indent pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
@@ -120,12 +131,12 @@ fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 		let first_spaces = first_indentnum % tabstop
 		let second_tabs = second_indentnum / tabstop
 		let second_spaces = second_indentnum % tabstop
-		let pattern ..= '^\%( \{' .. first_indentnum .. '}\|'
+		let pattern ..= '^\%(^ \{' .. first_indentnum .. '}\|'
 		let pattern ..= '^\t\{' .. first_tabs .. '}'
 		let pattern ..= ' \{' .. first_spaces .. '}\)\ze'
 		let pattern ..= '\S.*\n'
 		let pattern ..= '\%(^ \{' .. second_indentnum .. '}\|'
-		let pattern ..= '\t\{' .. second_tabs .. '}'
+		let pattern ..= '^\t\{' .. second_tabs .. '}'
 		let pattern ..= ' \{' .. second_spaces .. '}\)'
 		let pattern ..= '\S'
 		if level < maxlevel
@@ -135,15 +146,4 @@ fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 		let second_indentnum += shiftwidth
 	endfor
 	return pattern
-endfun
-
-fun! organ#stair#is_on_headline ()
-	" Whether current line is an indent headline
-	let linum = line('.')
-	if linum == 1
-		return v:true
-	endif
-	let current = organ#stair#info ()
-	let next = organ#stair#info (linum + 1)
-	return current.total < next.total
 endfun

@@ -18,6 +18,14 @@ content
 
 content
 
+*** chapter 1.2.1
+
+content
+
+*** chapter 1.2.2
+
+content
+
 ** TODO part 1.3                                            :unix:linux:
 
 [[file:test.md::*chapter 3.3.2][desc]]
