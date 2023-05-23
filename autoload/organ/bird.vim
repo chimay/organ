@@ -12,12 +12,6 @@ endif
 let s:indent_pattern = organ#crystal#fetch('pattern/indent')
 lockvar s:indent_pattern
 
-if exists('s:maxlevel')
-	unlockvar s:maxlevel
-endif
-let s:maxlevel = organ#crystal#fetch('maximum/level')
-lockvar s:maxlevel
-
 if exists('s:rep_one_char')
 	unlockvar s:rep_one_char
 endif
@@ -74,7 +68,7 @@ fun! organ#bird#generic_pattern ()
 	endif
 endfun
 
-fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel

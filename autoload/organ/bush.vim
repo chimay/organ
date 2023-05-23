@@ -6,12 +6,6 @@
 
 " ---- script constants
 
-if exists('s:maxlevel')
-	unlockvar s:maxlevel
-endif
-let s:maxlevel = organ#crystal#fetch('maximum/level')
-lockvar s:maxlevel
-
 if exists('s:rep_one_char')
 	unlockvar s:rep_one_char
 endif
@@ -76,7 +70,7 @@ fun! organ#bush#indent_item (level, ...)
 	return itemhead
 endfun
 
-fun! organ#bush#update_counters (maxlevel = s:maxlevel)
+fun! organ#bush#update_counters (maxlevel = 30)
 	" Update counters in ordered list
 	let maxlevel = a:maxlevel
 	let length = maxlevel
@@ -294,7 +288,7 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 	return newtodo
 endfun
 
-fun! organ#bush#update_ratios (maxlevel = s:maxlevel)
+fun! organ#bush#update_ratios (maxlevel = 30)
 	" Update ratios of [X] checked boxes in parent
 	let maxlevel = a:maxlevel
 	let position = getcurpos ()

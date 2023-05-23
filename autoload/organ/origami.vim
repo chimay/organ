@@ -95,7 +95,7 @@ fun! organ#origami#is_marker_headline_file ()
 	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'marker'
 endfun
 
-fun! organ#origami#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#origami#level_pattern (minlevel = 1, maxlevel = 30)
 	" Foldmarker headline pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
@@ -111,7 +111,7 @@ fun! organ#origami#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	return pattern
 endfun
 
-fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = 30)
 	" Foldmarker subtree tail pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel

@@ -6,12 +6,6 @@
 
 " ---- script constants
 
-if exists('s:maxlevel')
-	unlockvar s:maxlevel
-endif
-let s:maxlevel = organ#crystal#fetch('maximum/level')
-lockvar s:maxlevel
-
 if exists('s:indent_pattern')
 	unlockvar s:indent_pattern
 endif
@@ -203,7 +197,7 @@ fun! organ#colibri#common_indent ()
 	return min(totalist)
 endfun
 
-fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 	" Item head pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
