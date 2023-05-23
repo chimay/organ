@@ -214,9 +214,29 @@ fun! organ#bird#properties (move = 'dont-move')
 	return properties
 endfun
 
+fun! organ#bird#subtree_tail (properties)
+	" Tail linum of current subtree
+	let properties = a:properties
+	if organ#stair#is_indent_headline_file ()
+		return organ#stair#subtree_tail (properties)
+	elseif organ#origami#is_marker_headline_file ()
+		return organ#origami#subtree_tail (properties)
+	endif
+	call cursor('.', col('$'))
+	let level = properties.level
+	let tail_pattern = organ#bird#level_pattern (1, level)
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let forward_linum = search(tail_pattern, flags)
+	if forward_linum == 0
+		return line('$')
+	endif
+	return forward_linum - 1
+endfun
+
 fun! organ#bird#subtree (move = 'dont-move')
 	" Range & properties of current subtree
 	let move = a:move
+	let position =  getcurpos ()
 	let properties = organ#bird#properties (move)
 	let head_linum = properties.linum
 	if head_linum == 0
@@ -238,24 +258,11 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let subtree.head_linum = properties.linum
 	" ---- find tail
 	let level = properties.level
-	let position =  getcurpos ()
-	call cursor('.', col('$'))
-	let tail_pattern = organ#bird#level_pattern (1, level)
-	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(tail_pattern, flags)
-	if forward_linum == 0
-		let tail_linum = line('$')
-	elseif organ#stair#is_indent_headline_file ()
-		let tail_linum = forward_linum
-	else
-		let tail_linum = forward_linum - 1
-	endif
+	let subtree.tail_linum = organ#bird#subtree_tail (properties)
 	if move ==# 'move'
 		mark '
 		call cursor(head_linum, 1)
-	endif
-	let subtree.tail_linum = tail_linum
-	if move !=  'move'
+	else
 		call setpos('.', position)
 	endif
 	return subtree

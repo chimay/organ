@@ -4,6 +4,14 @@
 "
 " Folding
 
+" ---- script constants
+
+if exists('s:rep_one_char')
+	unlockvar s:rep_one_char
+endif
+let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+lockvar s:rep_one_char
+
 " ---- orgmode
 
 fun! organ#origami#orgmode (linum)
@@ -82,8 +90,13 @@ endfun
 
 " ---- foldmarker headline
 
+fun! organ#origami#is_marker_headline_file ()
+	" Whether headlines are indent defined in current file
+	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'marker'
+endfun
+
 fun! organ#origami#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Headline foldmarker pattern of level between minlevel and maxlevel
+	" Foldmarker headline pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	let marker = split(&foldmarker, ',')[0]
@@ -99,7 +112,7 @@ fun! organ#origami#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 endfun
 
 fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Foldmarker subtree pattern tail of level between minlevel and maxlevel
+	" Foldmarker subtree tail pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	let markerlist = split(&foldmarker, ',')
@@ -119,6 +132,25 @@ fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlev
 	endfor
 	let pattern ..= '\)'
 	return pattern
+endfun
+
+fun! organ#origami#subtree_tail (properties)
+	" Tail linum of foldmarker subtree
+	let properties = a:properties
+	let level = properties.level
+	let markerlist = split(&foldmarker, ',')
+	call cursor('.', col('$'))
+	let tail_pattern = organ#origami#subtree_tail_level_pattern (1, level)
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let forward_linum = search(tail_pattern, flags)
+	if forward_linum == 0
+		return line('$')
+	endif
+	let line = getline(forward_linum)
+	if line =~ markerlist[1]
+		return forward_linum
+	endif
+	return forward_linum - 1
 endfun
 
 " ---- suspend & resume during heavy functions that does not need it

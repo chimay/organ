@@ -122,7 +122,7 @@ fun! organ#stair#is_on_headline ()
 endfun
 
 fun! organ#stair#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Headline indent pattern of level between minlevel and maxlevel
+	" Indent headline pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	" ---- indent options
@@ -160,7 +160,7 @@ fun! organ#stair#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 endfun
 
 fun! organ#stair#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Indent subtree pattern tail of level between minlevel and maxlevel
+	" Indent subtree tail pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	" ---- indent options
@@ -195,4 +195,19 @@ fun! organ#stair#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel
 		let second_indentnum += shiftwidth
 	endfor
 	return pattern
+endfun
+
+fun! organ#stair#subtree_tail (properties)
+	" Tail linum of indent subtree
+	let properties = a:properties
+	let linum = properties.linum
+	let level = properties.level
+	call cursor(linum, 1)
+	let tail_pattern = organ#stair#subtree_tail_level_pattern (1, level)
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let forward_linum = search(tail_pattern, flags)
+	if forward_linum == 0
+		return line('$')
+	endif
+	return forward_linum
 endfun
