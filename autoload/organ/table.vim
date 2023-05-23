@@ -355,11 +355,11 @@ fun! organ#table#minindent (paragraph)
 	" ---- eval min indent
 	let linelist = paragraph.linelist
 	let lenlinelist = len(linelist)
-	let indentlist = copy(linelist)->map({ _, v -> organ#utils#indentinfo(v) })
+	let indentlist = copy(linelist)->map({ _, v -> organ#stair#info(v) })
 	let totalist = copy(indentlist)->map({ _, v -> v.total })
 	let minindent = min(totalist)
 	let spaces = repeat(' ', minindent)
-	let tabspaces = organ#utils#tabspaces(minindent)
+	let tabspaces = organ#stair#tabspaces(minindent)
 	let mixed = tabspaces.string
 	" ---- reduce
 	for rownum in range(lenlinelist)

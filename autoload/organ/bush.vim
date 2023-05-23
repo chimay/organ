@@ -44,7 +44,7 @@ fun! organ#bush#indent_item (level, ...)
 	let shift = organ#colibri#common_indent ()
 	let indentnum = shift + step * (level - 1)
 	let spaces = repeat(' ', indentnum)
-	let tabspaces = organ#utils#tabspaces(indentnum)
+	let tabspaces = organ#stair#tabspaces(indentnum)
 	let mixed = tabspaces.string
 	" ---- item head line
 	if indent !~ "^\s*\t"
@@ -61,7 +61,7 @@ fun! organ#bush#indent_item (level, ...)
 	" -- length prefix + one space
 	let indentnum += len_prefix + 1
 	let spaces = repeat(' ', indentnum)
-	let tabspaces = organ#utils#tabspaces(indent)
+	let tabspaces = organ#stair#tabspaces(indent)
 	let mixed = tabspaces.string
 	for linum in range(head + 1, tail)
 		let line = getline(linum)

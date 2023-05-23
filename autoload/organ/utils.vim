@@ -4,14 +4,6 @@
 "
 " Small tools
 
-" ---- script constants
-
-if exists('s:indent_pattern')
-	unlockvar s:indent_pattern
-endif
-let s:indent_pattern = organ#crystal#fetch('pattern/indent')
-lockvar s:indent_pattern
-
 " ---- circular
 
 fun! organ#utils#circular_plus (index, length)
@@ -177,75 +169,6 @@ fun! organ#utils#delete (first, ...)
 		execute 'silent!' range .. 'delete _'
 		return 0
 	endif
-endfun
-
-" ---- indent
-
-fun! organ#utils#indentinfo (...)
-	" Various info about indent
-	if a:0 > 0
-		let object = a:1
-	else
-		let object = line('.')
-	endif
-	if type(object) == v:t_number
-		let linum = object
-		let line = getline(linum)
-	elseif type(object) == v:t_string
-		let line = object
-	endif
-	if a:0 > 1
-		let tabstop = a:2
-	else
-		let tabstop = &tabstop
-	endif
-	let indent = {}
-	let indent.tabstop = tabstop
-	let indent.string = line->matchstr(s:indent_pattern)
-	let indent.tabs = indent.string->count("\t")
-	let indent.spaces = indent.string->count(' ')
-	let indent.total = indent.spaces + indent.tabs * indent.tabstop
-	return indent
-endfun
-
-fun! organ#utils#tabspaces (indentnum, ...)
-	" Indent string with tab & spaces adding up to indentnum
-	let indentnum = a:indentnum
-	if a:0 > 0
-		let tabstop = a:1
-	else
-		let tabstop = &tabstop
-	endif
-	let indent = {}
-	let indent.tabstop = tabstop
-	let indent.tabs = indentnum / tabstop
-	let indent.spaces = indentnum % tabstop
-	let indent.total = indent.spaces + indent.tabs * indent.tabstop
-	let indent.string = repeat("\t", indent.tabs) .. repeat(' ', indent.spaces)
-	return indent
-endfun
-
-fun! organ#utils#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Pattern of indent between minlevel and maxlevel
-	let min = (a:minlevel - 1) * &tabstop
-	let max = (a:maxlevel - 1) * &tabstop
-	" ---- pattern
-	let pattern = '\m'
-	let tabnum = 0
-	while v:true
-		let pattern ..= '^\t\{' .. tabnum .. '}'
-		let pattern ..= ' \{' .. min .. ',' .. max .. '}\S'
-		let tabnum += 1
-		let min -= &tabstop
-		let max -= &tabstop
-		let min = max([min, 0])
-		if max >= 0
-			let pattern ..= '\|'
-		else
-			break
-		endif
-	endwhile
-	return pattern
 endfun
 
 " ---- functional

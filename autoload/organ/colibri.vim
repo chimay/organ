@@ -196,7 +196,7 @@ fun! organ#colibri#common_indent ()
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
 	let linelist = getline(first, last)
-	let indentlist = copy(linelist)->map({ _, v -> organ#utils#indentinfo(v) })
+	let indentlist = copy(linelist)->map({ _, v -> organ#stair#info(v) })
 	let totalist = copy(indentlist)->map({ _, v -> v.total })
 	return min(totalist)
 endfun
@@ -231,7 +231,7 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	for level in range(minlevel, maxlevel)
 		let tabs = indentnum / tabstop
 		let spaces = indentnum % tabstop
-		let pattern ..= ' \{' .. indentnum .. '}\|'
+		let pattern ..= '^ \{' .. indentnum .. '}\|'
 		let pattern ..= '^\t\{' .. tabs .. '}'
 		let pattern ..= ' \{' .. spaces .. '}'
 		if level < maxlevel
@@ -296,7 +296,7 @@ fun! organ#colibri#properties (move = 'dont-move')
 	" ---- indent & level
 	let indent_length = g:organ_config.list.indent_length
 	let common_indent = organ#colibri#common_indent ()
-	let indentinfo = organ#utils#indentinfo (text)
+	let indentinfo = organ#stair#info (text)
 	let indent = indentinfo.string
 	let total = indentinfo.total
 	let level = (total - common_indent) / indent_length + 1

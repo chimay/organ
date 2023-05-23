@@ -30,68 +30,11 @@ endif
 let s:field_separ = organ#crystal#fetch('separator/field')
 lockvar s:field_separ
 
-if exists('s:indent_pattern')
-	unlockvar s:indent_pattern
-endif
-let s:indent_pattern = organ#crystal#fetch('pattern/indent')
-lockvar s:indent_pattern
-
 if exists('s:tags_pattern')
 	unlockvar s:tags_pattern
 endif
 let s:tags_pattern = organ#crystal#fetch('pattern/headline/tag')
 lockvar s:tags_pattern
-
-" ---- indent helpers
-
-fun! organ#bird#level_indent_pattern (minlevel = 1, maxlevel = s:maxlevel)
-	" Pattern of level between minlevel and maxlevel, for headline defined by indent
-	let minlevel = a:minlevel
-	let maxlevel = a:maxlevel
-	" ---- indent options
-	let tabstop = &tabstop
-	let shiftwidth = shiftwidth ()
-	" ---- mix of spaces and tabs ?
-	let mixed = v:true
-	if &expandtab
-		let mixed = v:false
-	endif
-	" ---- pattern
-	let first_indentnum = (minlevel - 1) * shiftwidth
-	let second_indentnum = first_indentnum + shiftwidth
-	let pattern = '\m'
-	for level in range(minlevel, maxlevel)
-		let first_tabs = first_indentnum / tabstop
-		let first_spaces = first_indentnum % tabstop
-		let second_tabs = second_indentnum / tabstop
-		let second_spaces = second_indentnum % tabstop
-		let pattern ..= '^\%( \{' .. first_indentnum .. '}\|'
-		let pattern ..= '\t\{' .. first_tabs .. '}'
-		let pattern ..= ' \{' .. first_spaces .. '}\)'
-		let pattern ..= '\S.*\n\zs'
-		let pattern ..= '\%(^ \{' .. second_indentnum .. '}\|'
-		let pattern ..= '\t\{' .. second_tabs .. '}'
-		let pattern ..= ' \{' .. second_spaces .. '}\)'
-		let pattern ..= '\S'
-		if level < maxlevel
-			let pattern ..= '\|'
-		endif
-		let first_indentnum += shiftwidth
-		let second_indentnum += shiftwidth
-	endfor
-	return pattern
-endfun
-
-fun! organ#bird#is_on_indent_headline ()
-	" Whether current line is an headline defined by indent
-	let linum = line('.')
-	if linum == 1
-		return v:true
-	endif
-	let previous = organ#utils#indentinfo (linum - 1)
-	let current = organ#utils#indentinfo ()
-	return previous.total < current.total
-endfun
 
 " ---- helpers
 
@@ -115,7 +58,7 @@ fun! organ#bird#generic_pattern ()
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
 	elseif &foldmethod ==# 'indent'
-		return '\m^\([ \t]*\)\S.*\n\zs\1[ \t]'
+		return '\m^\([ \t]*\)\ze\S.*\n\1[ \t]'
 	else
 		" -- never matches
 		" -- other solutions :
@@ -130,7 +73,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
 	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
-		return organ#bird#level_indent_pattern (minlevel, maxlevel)
+		return organ#stair#headline_level_pattern (minlevel, maxlevel)
 	endif
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
@@ -155,7 +98,7 @@ endfun
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
 	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
-		return organ#bird#is_on_indent_headline ()
+		return organ#stair#is_on_headline ()
 	endif
 	let line = getline('.')
 	return line =~ organ#bird#generic_pattern ()
@@ -229,12 +172,16 @@ fun! organ#bird#properties (move = 'dont-move')
 		let levelstring = title->matchstr(levelstring_pattern)
 		let level = len(levelstring)
 		let title = title[level + 1:]
-	else
+	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		let levelstring_pattern = '\m' .. marker .. '[0-9]\+'
 		let levelstring = title->matchstr(levelstring_pattern)
 		let level = organ#bird#foldlevel ()
 		let title = substitute(title, levelstring_pattern, '', '')
+	elseif &foldmethod ==# 'indent'
+		let indentinfo = organ#stair#info (title)
+		let levelstring = indentinfo.string
+		let level = indentinfo.level + 1
 	endif
 	" ---- todo status
 	let found = v:false
