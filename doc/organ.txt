@@ -670,28 +670,29 @@ of the modules within them.
 
 | File              | Description                                        |
 | ----------------- | -------------------------------------------------- |
-| bird.vim          | Navigation in headings hierarchy                   |
-| bush.vim          | Operations on lists hierarchy                      |
-| calligraphy.vim   | Unicode characters                                 |
-| centre.vim        | Commands & mappings                                |
-| colibri.vim       | Navigation in lists hierarchy                      |
-| complete.vim      | Completion functions                               |
-| crystal.vim       | Internal constants                                 |
-| diadem.vim        | Internal constants for meta command                |
-| geode.vim         | Internal constants for plugs & maps                |
-| kyusu.vim         | Filters for prompt & dedicated buffers             |
-| nest.vim          | Navigation & operations on generic hierrachy       |
-| origami.vim       | Folding                                            |
+| bird.vim          | navigation in headings hierarchy                   |
+| bush.vim          | operations on lists hierarchy                      |
+| calligraphy.vim   | unicode characters                                 |
+| centre.vim        | commands & mappings                                |
+| colibri.vim       | navigation in lists hierarchy                      |
+| complete.vim      | completion functions                               |
+| crystal.vim       | internal constants                                 |
+| diadem.vim        | internal constants for meta command                |
+| geode.vim         | internal constants for plugs & maps                |
+| kyusu.vim         | filters for prompt & dedicated buffers             |
+| nest.vim          | navigation & operations on generic hierrachy       |
+| origami.vim       | folding                                            |
 | perspective.vim   | content generators for prompt                      |
 | pipe.vim          | export using pandoc or emacs                       |
 | seed.vim          | structure templates (kind of lightweight snippets) |
-| spiral.vim        | Golden ratio                                       |
+| spiral.vim        | golden ratio                                       |
+| stair.vim         | indent helpers                                     |
 | table.vim         | tables                                             |
-| tree.vim          | Operations on headings hierarchy                   |
-| unicode.vim       | Unicode characters lists                           |
-| utils.vim         | Small utils                                        |
-| vine.vim          | Link management                                    |
-| void.vim          | Initiaze & reset variables                         |
+| tree.vim          | operations on headings hierarchy                   |
+| unicode.vim       | unicode characters lists                           |
+| utils.vim         | small utils                                        |
+| vine.vim          | link management                                    |
+| void.vim          | initiaze & reset variables                         |
 
 Ftplugin~
 

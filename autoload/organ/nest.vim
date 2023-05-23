@@ -57,7 +57,7 @@ endfun
 
 fun! organ#nest#oper (function, ...)
 	" Choose to apply headline or list operation function
-	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
+	if organ#stair#is_indent_headline_file ()
 		echomsg 'organ nest oper : not supported for indent folds'
 		return v:false
 	endif

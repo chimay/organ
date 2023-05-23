@@ -12,6 +12,12 @@ endif
 let s:indent_pattern = organ#crystal#fetch('pattern/indent')
 lockvar s:indent_pattern
 
+if exists('s:rep_one_char')
+	unlockvar s:rep_one_char
+endif
+let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
+lockvar s:rep_one_char
+
 " ---- generic
 
 fun! organ#stair#info (...)
@@ -99,6 +105,11 @@ endfun
 
 " --- indent headlines
 
+fun! organ#stair#is_indent_headline_file ()
+	" Whether headlines are indent defined
+	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
+endfun
+
 fun! organ#stair#is_on_headline ()
 	" Whether current line is an indent headline
 	let linum = line('.')
@@ -138,6 +149,44 @@ fun! organ#stair#headline_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 		let pattern ..= '\%(^ \{' .. second_indentnum .. '}\|'
 		let pattern ..= '^\t\{' .. second_tabs .. '}'
 		let pattern ..= ' \{' .. second_spaces .. '}\)'
+		let pattern ..= '\S'
+		if level < maxlevel
+			let pattern ..= '\|'
+		endif
+		let first_indentnum += shiftwidth
+		let second_indentnum += shiftwidth
+	endfor
+	return pattern
+endfun
+
+fun! organ#stair#subtree_tail_level_pattern (minlevel = 1, maxlevel = s:maxlevel)
+	" Headline indent pattern of level between minlevel and maxlevel
+	let minlevel = a:minlevel
+	let maxlevel = a:maxlevel
+	" ---- indent options
+	let tabstop = &tabstop
+	let shiftwidth = shiftwidth ()
+	" ---- mix of spaces and tabs ?
+	let mixed = v:true
+	if &expandtab
+		let mixed = v:false
+	endif
+	" ---- pattern
+	let first_indentnum = minlevel * shiftwidth
+	let second_indentnum = first_indentnum - shiftwidth
+	let pattern = '\m'
+	for level in range(minlevel, maxlevel)
+		let first_tabs = first_indentnum / tabstop
+		let first_spaces = first_indentnum % tabstop
+		let second_tabs = second_indentnum / tabstop
+		let second_spaces = second_indentnum % tabstop
+		let pattern ..= '^\%(^ \{' .. first_indentnum .. '}\|'
+		let pattern ..= '^\t\{' .. first_tabs .. '}'
+		let pattern ..= ' \{' .. first_spaces .. '}\)'
+		let pattern ..= '\S.*\n'
+		let pattern ..= '\%(^ \{' .. second_indentnum .. '}\|'
+		let pattern ..= '^\t\{' .. second_tabs .. '}'
+		let pattern ..= ' \{' .. second_spaces .. '}\)\zs'
 		let pattern ..= '\S'
 		if level < maxlevel
 			let pattern ..= '\|'

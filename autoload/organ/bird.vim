@@ -78,7 +78,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = s:maxlevel)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
+	if organ#stair#is_indent_headline_file ()
 		return organ#stair#headline_level_pattern (minlevel, maxlevel)
 	endif
 	if s:rep_one_char->index(&filetype) >= 0
@@ -103,7 +103,7 @@ endfun
 
 fun! organ#bird#is_on_headline ()
 	" Whether current line is an headline
-	if s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'indent'
+	if organ#stair#is_indent_headline_file ()
 		return organ#stair#is_on_headline ()
 	endif
 	let line = getline('.')
@@ -248,11 +248,17 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let level = properties.level
 	let position =  getcurpos ()
 	call cursor('.', col('$'))
-	let headline_pattern = organ#bird#level_pattern (1, level)
+	if organ#stair#is_indent_headline_file ()
+		let tail_pattern = organ#stair#subtree_tail_level_pattern (1, level)
+	else
+		let tail_pattern = organ#bird#level_pattern (1, level)
+	endif
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(headline_pattern, flags)
+	let forward_linum = search(tail_pattern, flags)
 	if forward_linum == 0
 		let tail_linum = line('$')
+	elseif organ#stair#is_indent_headline_file ()
+		let tail_linum = forward_linum
 	else
 		let tail_linum = forward_linum - 1
 	endif

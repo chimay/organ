@@ -7,6 +7,11 @@ int a = 2;
 
 int a = 2;
 
+(void *) function (int a)
+{
+	float a = 2.3;
+}
+
 /* fun 1.2 {{{2 */
 
 int a = 2;
