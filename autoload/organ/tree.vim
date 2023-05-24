@@ -455,6 +455,7 @@ fun! organ#tree#move_subtree_forward ()
 			call cursor(upper_linum, 1)
 			call cursor('.', col('$'))
 			let headline_pattern = organ#bird#generic_pattern ()
+			let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 			let anyhead_forward = search(headline_pattern, flags)
 			if anyhead_forward > 0
 				let target = anyhead_forward - 1
