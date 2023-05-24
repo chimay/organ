@@ -17,6 +17,7 @@ intro {{{1
 - item 3
   + item 3.1
 
+
 book 1 {{{1
 
 | row 1 col 1      | row 1 col 2 | hello |
@@ -157,6 +158,8 @@ chapter 2.4.2 {{{3
 
 content
 
+
+
 book 3 {{{1
 
 content
@@ -284,6 +287,26 @@ content text
   + item 2.4
 - item 3
 
+
+
+
+part 1 {{{2
+
+two
+
+}}}2
+
+part 2 {{{2
+
+one
+
+}}}2
+
+part 3 {{{2
+
+three
+
+}}}2
 
 conclusion {{{1
 

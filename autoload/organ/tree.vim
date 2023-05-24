@@ -396,7 +396,8 @@ fun! organ#tree#move_subtree_backward ()
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	if getline(new_tail) =~ '\m\S'
+	let endmarker = split(&foldmarker, ',')[1]
+	if getline(new_tail) =~ '\m^\S\&\%(^.*' .. endmarker .. '\)\@!'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
@@ -483,7 +484,8 @@ fun! organ#tree#move_subtree_forward ()
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	if getline(new_tail) =~ '\m\S'
+	let endmarker = split(&foldmarker, ',')[1]
+	if getline(new_tail) =~ '\m^\S\&\%(^.*' .. endmarker .. '\)\@!'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
