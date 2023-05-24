@@ -57,7 +57,7 @@ lockvar s:level_2_insert_maps
 " ---- script variables
 
 if ! exists('s:mapstore')
-	let s:mapstore = {}
+	let s:mapstore = #{ normal : {}, visual : {}, insert : {} }
 endif
 
 " ---- commands
@@ -87,10 +87,10 @@ endfun
 fun! organ#centre#storemaps ()
 	" Store prexisting maps on speed keys
 	" ---- run it only once
-	if ! empty(s:mapstore)
+	if ! empty(s:mapstore.normal)
 		return s:mapstore
 	endif
-	" ---- store
+	" ---- normal maps
 	for key in keys(s:speedkeys)
 		let maparg = maparg(key, 'n', v:false, v:true)
 		if empty(maparg)
@@ -99,7 +99,29 @@ fun! organ#centre#storemaps ()
 		if key =~ '\m^<[^>]\+>$'
 			let key = tolower(key)
 		endif
-		let s:mapstore[key] = maparg
+		let s:mapstore.normal[key] = maparg
+	endfor
+	" ---- visual maps
+	for key in keys(s:speedkeys)
+		let maparg = maparg(key, 'v', v:false, v:true)
+		if empty(maparg)
+			continue
+		endif
+		if key =~ '\m^<[^>]\+>$'
+			let key = tolower(key)
+		endif
+		let s:mapstore.visual[key] = maparg
+	endfor
+	" ---- insert maps
+	for key in keys(s:speedkeys)
+		let maparg = maparg(key, 'i', v:false, v:true)
+		if empty(maparg)
+			continue
+		endif
+		if key =~ '\m^<[^>]\+>$'
+			let key = tolower(key)
+		endif
+		let s:mapstore.insert[key] = maparg
 	endfor
 	" ---- make sure it is not modified
 	lockvar s:mapstore
@@ -113,13 +135,18 @@ fun! organ#centre#mapstore (...)
 		return s:mapstore
 	endif
 	let key = a:1
+	if a:0 > 1
+		let mode = a:2
+	else
+		let mode = 'normal'
+	endif
 	if key =~ '\m^<[^>]\+>$'
 		let key = tolower(key)
 	endif
-	if empty(key) || ! has_key(s:mapstore, key)
+	if empty(key) || ! has_key(s:mapstore[mode], key)
 		return {}
 	endif
-	return s:mapstore[key]
+	return s:mapstore[mode][key]
 endfun
 
 " ---- speed keys

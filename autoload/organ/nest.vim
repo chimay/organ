@@ -95,19 +95,20 @@ endfun
 
 fun! organ#nest#speed_help ()
 	" Speed key on headlines first char
-	echomsg 'h : help            | <pageup> : previous    | <home> : backward (= level)'
-	echomsg 'w : where ?         | <pagedown> : next      | <end> : forward (= level)'
+	echomsg '<f1> : help         | <pageup> : previous    | <home> : backward (= level)'
+	echomsg 'i : info            | <pagedown> : next      | <end> : forward (= level)'
 	echomsg '+ : parent          | - : loose child        | _ : strict child'
 	echomsg 'h : go to heading   | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
 	echomsg 's : select subtree  | Y : yank subtree       | D : delete subtree'
-	echomsg '<del> : promote     | <ins> : demote         | e : pandoc export'
-	echomsg 'H : promote subtree | L : demote subtree     | E : emacs export'
+	echomsg '<del> : promote     | <ins> : demote         | e : export'
+	echomsg 'H : promote subtree | L : demote subtree     | E : alter export'
 	echomsg 'U : move sub back   | D : move sub forward   | M : move subtree to heading'
 endfun
 
-fun! organ#nest#speed (key)
+fun! organ#nest#speed (key, mode = 'normal')
 	" Speed key on headlines first char
 	let key = a:key
+	let mode = a:mode
 	let keytrans = key->keytrans()
 	if keytrans =~ '\m^<[^>]\+>$'
 		let keytrans = tolower(keytrans)
@@ -123,7 +124,7 @@ fun! organ#nest#speed (key)
 	endif
 	" ------ elsewhere
 	" ---- mapped key
-	let maparg = organ#centre#mapstore(keytrans)
+	let maparg = organ#centre#mapstore(keytrans, mode)
 	if ! empty(maparg)
 		let rhs = maparg.rhs
 		let rhs = organ#utils#reverse_keytrans(rhs)
@@ -170,8 +171,9 @@ endfun
 
 " ---- tab
 
-fun! organ#nest#tab ()
+fun! organ#nest#tab (mode = 'normal')
 	" For <tab> map
+	let mode = a:mode
 	if organ#nest#is_on_headline_first_char ()
 		return organ#bird#cycle_current_fold ()
 	elseif organ#nest#is_on_itemhead_first_char ()
@@ -179,18 +181,19 @@ fun! organ#nest#tab ()
 	elseif organ#table#is_in_table ()
 		return organ#table#next_cell ()
 	else
-		return organ#nest#speed ("\<tab>")
+		return organ#nest#speed ("\<tab>", mode)
 	endif
 endfun
 
-fun! organ#nest#shift_tab ()
+fun! organ#nest#shift_tab (mode = 'normal')
 	" For <s-tab> map
+	let mode = a:mode
 	if organ#nest#is_on_headline_first_char ()
 		return organ#bird#cycle_all_folds ()
 	elseif organ#table#is_in_table ()
 		return organ#table#previous_cell ()
 	else
-		return organ#nest#speed ("\<s-tab>")
+		return organ#nest#speed ("\<s-tab>", mode)
 	endif
 endfun
 
