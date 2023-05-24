@@ -87,7 +87,7 @@ fun! organ#perspective#tags ()
 	" ---- tags on headlines
 	let comlist = split(&commentstring, '%s')
 	if len(comlist) >= 2
-		let endcom = comlist[1]->escape('*/')
+		let endcom = comlist[1]->escape('.*')
 		let tags_pattern = s:tags_pattern .. '\s*\%(' .. endcom .. '\)\?$'
 	else
 		let tags_pattern = s:tags_pattern .. '$'

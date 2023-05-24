@@ -343,6 +343,7 @@ fun! organ#tree#move_subtree_backward ()
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
 	let level = subtree.level
+	let last_linum = line('$')
 	" ---- find same level and upper level targets candidates
 	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
@@ -378,7 +379,6 @@ fun! organ#tree#move_subtree_backward ()
 			let target = cursor_target - 1
 		endif
 	else
-		let last_linum = line('$')
 		if getline(last_linum) != ''
 			call append(last_linum, '')
 			let last_linum += 1
@@ -391,13 +391,13 @@ fun! organ#tree#move_subtree_backward ()
 	execute range .. 'move' target
 	" ---- check blank lines
 	let before_head = cursor_target - 1
-	if getline(before_head) =~ '\m\S'
+	if before_head > 0 && getline(before_head) =~ '\m\S'
 		call append(before_head, '')
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	let endmarker = split(&foldmarker, ',')[1]
-	if getline(new_tail) =~ '\m^\S\&\%(^.*' .. endmarker .. '\)\@!'
+	let after_tail = new_tail + 1
+	if after_tail <= last_linum && getline(new_tail) =~ '\m^\S' && getline(after_tail) =~ '\m^\S'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
@@ -417,6 +417,7 @@ fun! organ#tree#move_subtree_forward ()
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
 	let level = subtree.level
+	let last_linum = line('$')
 	" ---- find same level targets candidates
 	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'wrap')
@@ -465,7 +466,6 @@ fun! organ#tree#move_subtree_forward ()
 			let cursor_target = target - spread
 		endif
 	else
-		let last_linum = line('$')
 		if getline(last_linum) != ''
 			call append(last_linum, '')
 			let tail_linum += 1
@@ -480,13 +480,13 @@ fun! organ#tree#move_subtree_forward ()
 	execute range .. 'move' target
 	" ---- check blank lines
 	let before_head = cursor_target - 1
-	if getline(before_head) =~ '\m\S'
+	if before_head > 0 && getline(before_head) =~ '\m\S'
 		call append(before_head, '')
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	let endmarker = split(&foldmarker, ',')[1]
-	if getline(new_tail) =~ '\m^\S\&\%(^.*' .. endmarker .. '\)\@!'
+	let after_tail = new_tail + 1
+	if after_tail <= last_linum && getline(new_tail) =~ '\m^\S' && getline(after_tail) =~ '\m^\S'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
