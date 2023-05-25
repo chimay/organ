@@ -415,6 +415,7 @@ fun! organ#tree#move_subtree_backward ()
 		endif
 		let cursor_target = target - spread
 	endif
+	" ---- endmarker case TODO
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
@@ -510,6 +511,7 @@ fun! organ#tree#move_subtree_forward ()
 		endif
 		let cursor_target = target + 1
 	endif
+	" ---- endmarker case TODO
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
@@ -552,6 +554,7 @@ fun! organ#tree#moveto ()
 	call cursor(linum, 1)
 	let subtree = organ#bird#subtree ()
 	let target = subtree.tail_linum
+	" ---- endmarker case TODO
 	" ---- move
 	execute range .. 'move' target
 	if target < head_linum

@@ -616,6 +616,7 @@ Completion is available for :
 - meta-command subcommands
 - full path of headlines (goto, move to)
 - adding a new link
+  + clipboard content
   + stored links
   + file tree in current directory
   + links protocols
