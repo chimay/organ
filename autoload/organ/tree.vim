@@ -493,14 +493,22 @@ fun! organ#tree#move_subtree_forward ()
 	" ---- plain forward or wrapped backward ?
 	let forward = nearest > cursor_linum
 	if ! forward
-		if level == 1
-			let target = 1
-		endif
 		if getline(last_linum) != s:hollow_pattern
 			call append(last_linum, '')
 			let tail_linum += 1
 		endif
-		let cursor_target = target + spread
+		if level == 1
+			call cursor(1, 1)
+			let headline_pattern = organ#bird#generic_pattern ()
+			let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+			let anyhead_forward = search(headline_pattern, flags)
+			if anyhead_forward > 0
+				let target = anyhead_forward - 1
+			else
+				let target = line('$')
+			endif
+		endif
+		let cursor_target = target + 1
 	endif
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
