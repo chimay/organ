@@ -9,8 +9,6 @@ book 2 {{{1
 
 content 2
 
-}}}1
-
 part 2.1 {{{2
 
 content
@@ -25,11 +23,11 @@ chapter 2.2.1 {{{3
 
 content
 
- }}}3
+}}}3
 
 }}}2
 
-
+}}}1
 
 book 3 {{{1
 

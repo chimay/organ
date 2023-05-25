@@ -266,7 +266,7 @@ fun! organ#bird#subtree (move = 'dont-move')
 	return subtree
 endfun
 
-fun! organ#bird#nearest (one, two, direction = 1)
+fun! organ#bird#nearest (one, two, direction = 1, ...)
 	" Nearest line number when folling direction, with wrap allowed
 	" direction : 1 = forward, -1 = backward
 	" if one or two == 0 : assuming not found, and return the other
@@ -274,6 +274,11 @@ fun! organ#bird#nearest (one, two, direction = 1)
 	let one = a:one
 	let two = a:two
 	let direction = a:direction
+	if a:0 > 0
+		let cursor = a:1
+	else
+		let cursor = line('.')
+	endif
 	if one == 0 && two == 0
 		return 0
 	endif
@@ -283,7 +288,6 @@ fun! organ#bird#nearest (one, two, direction = 1)
 	if two == 0
 		return one
 	endif
-	let cursor = line('.')
 	let product = (one - cursor) * (two - cursor) * direction
 	if product >= 0
 		return min([one, two])
