@@ -344,14 +344,21 @@ fun! organ#tree#move_subtree_backward ()
 	let spread = tail_linum - head_linum
 	let level = subtree.level
 	let last_linum = line('$')
-	" ---- find same level and upper level targets candidates
+	" ---- find same level targets candidates
 	let same_pattern = organ#bird#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
 	let same_linum = search(same_pattern, flags)
+	" ---- find upper level targets candidates
 	if level >= 2
 		let upper_level = level - 1
 		let upper_pattern = organ#bird#level_pattern (upper_level, upper_level)
+		" -- two times
+		" -- first to find the current parent
+		" -- second to find the previous parent
+		let middle_linum = search(upper_pattern, flags)
+		call cursor(middle_linum, 1)
 		let upper_linum = search(upper_pattern, flags)
+		call cursor(cursor_linum, 1)
 	else
 		let upper_linum = 0
 	endif
@@ -371,12 +378,22 @@ fun! organ#tree#move_subtree_backward ()
 	let backward = nearest < cursor_linum
 	if backward
 		if same_linum == nearest
-			let cursor_target = same_linum
-			let target = cursor_target - 1
+			" -- same_linum == nearest
+			if same_linum > middle_linum
+				let cursor_target = same_linum
+				let target = cursor_target - 1
+			else
+				call cursor(same_linum, 1)
+				let same_subtree = organ#bird#subtree ()
+				let target = same_subtree.tail_linum
+				let cursor_target = target + 1
+			endif
 		else
-			" upper_linum == nearest
-			let cursor_target = upper_linum
-			let target = cursor_target - 1
+			" -- upper_linum == nearest
+			call cursor(upper_linum, 1)
+			let upper_subtree = organ#bird#subtree ()
+			let target = upper_subtree.tail_linum
+			let cursor_target = target + 1
 		endif
 	else
 		if getline(last_linum) != ''
