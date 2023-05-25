@@ -6,6 +6,12 @@
 
 " ---- script constants
 
+if exists('s:hollow_pattern')
+	unlockvar s:hollow_pattern
+endif
+let s:hollow_pattern = organ#crystal#fetch('pattern/line/hollow')
+lockvar s:hollow_pattern
+
 if exists('s:rep_one_char')
 	unlockvar s:rep_one_char
 endif
@@ -98,10 +104,28 @@ endfun
 fun! organ#origami#is_endmarker_fold (...)
 	" Whether current subtree has an end marker
 	if a:0 > 0
-		let level = organ#bird#properties ().level
-	else
 		let level = a:1
+	else
+		let level = organ#bird#properties ().level
 	endif
+	if s:rep_one_char->index(&filetype) >= 0 || &foldmethod ==# 'indent'
+		return v:false
+	endif
+	let tail_linum = organ#origami#subtree_tail (level)
+	let markerlist = split(&foldmarker, ',')
+	let tail_line = getline(tail_linum)
+	if tail_line =~ markerlist[1]
+		return v:true
+	endif
+	if tail_linum == 1
+		return v:false
+	endif
+	let prev_linum = tail_linum - 1
+	let prev_line = getline(prev_linum)
+	if tail_line ==# s:hollow_pattern && prev_line =~ markerlist[1]
+		return v:true
+	endif
+	return v:false
 endfun
 
 fun! organ#origami#level_pattern (minlevel = 1, maxlevel = 30)
@@ -165,7 +189,7 @@ fun! organ#origami#subtree_tail (...)
 	let line = getline(forward_linum)
 	if line =~ markerlist[1]
 		let next_line = getline(forward_linum + 1)
-		if next_line ==# ''
+		if next_line ==# s:hollow_pattern
 			return forward_linum + 1
 		else
 			return forward_linum
