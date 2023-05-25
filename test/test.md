@@ -191,8 +191,6 @@ text
   1. item 2.1
   2. item 2.2
 
-
-
 #### section 3.3.1.1
 
 content

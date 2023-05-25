@@ -12,10 +12,10 @@ int a = 2;
 	float a = 2.3;
 }
 
+
 /* fun 1.2 {{{2 */
 
 int a = 2;
-
 
 /* fun group 2 {{{1 */
 

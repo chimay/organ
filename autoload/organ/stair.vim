@@ -197,9 +197,13 @@ fun! organ#stair#subtree_tail_level_pattern (minlevel = 1, maxlevel = 30)
 	return pattern
 endfun
 
-fun! organ#stair#subtree_tail (properties)
+fun! organ#stair#subtree_tail (...)
 	" Tail linum of indent subtree
-	let properties = a:properties
+	if a:0 > 0
+		let properties = organ#bird#properties ()
+	else
+		let properties = a:1
+	endif
 	let linum = properties.linum
 	let level = properties.level
 	call cursor(linum, 1)

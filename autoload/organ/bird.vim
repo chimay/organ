@@ -57,11 +57,13 @@ fun! organ#bird#generic_pattern ()
 	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
+	elseif &foldmethod ==# 'indent'
+		return '\m^\([ \t]*\)\ze\S.*\n\1[ \t]'
 	endif
-	" -- never matches
-	" -- other solutions :
-	" -- \m^a\&^[^a]
-	" -- \m^a\&^a\@!
+	" ---- default : never matches
+	" ---- other solutions
+	" ----   - \m^a\&^[^a]
+	" ----   - \m^a\&^a\@!
 	return '\m^$\&^.$'
 endfun
 
@@ -205,12 +207,16 @@ fun! organ#bird#properties (move = 'dont-move')
 	return properties
 endfun
 
-fun! organ#bird#subtree_tail (properties)
+fun! organ#bird#subtree_tail (...)
 	" Tail linum of current subtree
-	let properties = a:properties
+	if a:0 > 0
+		let properties = organ#bird#properties ()
+	else
+		let properties = a:1
+	endif
+	let level = properties.level
 	if s:rep_one_char->index(&filetype) >= 0
 		call cursor('.', col('$'))
-		let level = properties.level
 		let tail_pattern = organ#bird#level_pattern (1, level)
 		let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 		let forward_linum = search(tail_pattern, flags)
@@ -219,7 +225,7 @@ fun! organ#bird#subtree_tail (properties)
 		endif
 		return forward_linum - 1
 	elseif &foldmethod ==# 'marker'
-		return organ#origami#subtree_tail (properties)
+		return organ#origami#subtree_tail (level)
 	elseif &foldmethod ==# 'indent'
 		return organ#stair#subtree_tail (properties)
 	endif
@@ -250,7 +256,6 @@ fun! organ#bird#subtree (move = 'dont-move')
 	let subtree = properties
 	let subtree.head_linum = properties.linum
 	" ---- find tail
-	let level = properties.level
 	let subtree.tail_linum = organ#bird#subtree_tail (properties)
 	if move ==# 'move'
 		mark '

@@ -95,6 +95,15 @@ fun! organ#origami#is_marker_headline_file ()
 	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'marker'
 endfun
 
+fun! organ#origami#is_endmarker_fold (...)
+	" Whether current subtree has an end marker
+	if a:0 > 0
+		let level = organ#bird#properties ().level
+	else
+		let level = a:1
+	endif
+endfun
+
 fun! organ#origami#level_pattern (minlevel = 1, maxlevel = 30)
 	" Foldmarker headline pattern, level between minlevel and maxlevel
 	let minlevel = a:minlevel
@@ -134,10 +143,13 @@ fun! organ#origami#subtree_tail_level_pattern (minlevel = 1, maxlevel = 30)
 	return pattern
 endfun
 
-fun! organ#origami#subtree_tail (properties)
+fun! organ#origami#subtree_tail (...)
 	" Tail linum of foldmarker subtree
-	let properties = a:properties
-	let level = properties.level
+	if a:0 > 0
+		let level = organ#bird#properties ().level
+	else
+		let level = a:1
+	endif
 	let last_linum = line('$')
 	let markerlist = split(&foldmarker, ',')
 	call cursor('.', col('$'))
