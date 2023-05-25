@@ -138,17 +138,26 @@ fun! organ#origami#subtree_tail (properties)
 	" Tail linum of foldmarker subtree
 	let properties = a:properties
 	let level = properties.level
+	let last_linum = line('$')
 	let markerlist = split(&foldmarker, ',')
 	call cursor('.', col('$'))
 	let tail_pattern = organ#origami#subtree_tail_level_pattern (1, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(tail_pattern, flags)
 	if forward_linum == 0
-		return line('$')
+		return last_linum
+	endif
+	if forward_linum == last_linum
+		return forward_linum
 	endif
 	let line = getline(forward_linum)
 	if line =~ markerlist[1]
-		return forward_linum
+		let next_line = getline(forward_linum + 1)
+		if next_line ==# ''
+			return forward_linum + 1
+		else
+			return forward_linum
+		endif
 	endif
 	return forward_linum - 1
 endfun

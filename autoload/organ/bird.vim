@@ -57,24 +57,19 @@ fun! organ#bird#generic_pattern ()
 	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
-	elseif &foldmethod ==# 'indent'
-		return '\m^\([ \t]*\)\ze\S.*\n\1[ \t]'
-	else
-		" -- never matches
-		" -- other solutions :
-		" -- \m^a\&^[^a]
-		" -- \m^a\&^a\@!
-		return '\m^$\&^.$'
 	endif
+	" -- never matches
+	" -- other solutions :
+	" -- \m^a\&^[^a]
+	" -- \m^a\&^a\@!
+	return '\m^$\&^.$'
 endfun
 
 fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
 	" Headline pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
-	if organ#stair#is_indent_headline_file ()
-		return organ#stair#level_pattern (minlevel, maxlevel)
-	elseif s:rep_one_char->index(&filetype) >= 0
+	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
 		let pattern ..= minlevel .. ',' .. maxlevel .. '}'
@@ -82,6 +77,8 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
 		return pattern
 	elseif &foldmethod ==# 'marker'
 		return organ#origami#level_pattern (minlevel, maxlevel)
+	elseif &foldmethod ==# 'indent'
+		return organ#stair#level_pattern (minlevel, maxlevel)
 	endif
 	" -- never matches
 	return '\m^$\&^.$'
@@ -211,20 +208,22 @@ endfun
 fun! organ#bird#subtree_tail (properties)
 	" Tail linum of current subtree
 	let properties = a:properties
-	if organ#stair#is_indent_headline_file ()
-		return organ#stair#subtree_tail (properties)
-	elseif organ#origami#is_marker_headline_file ()
+	if s:rep_one_char->index(&filetype) >= 0
+		call cursor('.', col('$'))
+		let level = properties.level
+		let tail_pattern = organ#bird#level_pattern (1, level)
+		let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+		let forward_linum = search(tail_pattern, flags)
+		if forward_linum == 0
+			return line('$')
+		endif
+		return forward_linum - 1
+	elseif &foldmethod ==# 'marker'
 		return organ#origami#subtree_tail (properties)
+	elseif &foldmethod ==# 'indent'
+		return organ#stair#subtree_tail (properties)
 	endif
-	call cursor('.', col('$'))
-	let level = properties.level
-	let tail_pattern = organ#bird#level_pattern (1, level)
-	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(tail_pattern, flags)
-	if forward_linum == 0
-		return line('$')
-	endif
-	return forward_linum - 1
+	return 0
 endfun
 
 fun! organ#bird#subtree (move = 'dont-move')

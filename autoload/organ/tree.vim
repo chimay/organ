@@ -396,8 +396,7 @@ fun! organ#tree#move_subtree_backward ()
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	let after_tail = new_tail + 1
-	if after_tail <= last_linum && getline(new_tail) =~ '\m^\S' && getline(after_tail) =~ '\m^\S'
+	if getline(new_tail) =~ '\m^\S'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
@@ -485,8 +484,7 @@ fun! organ#tree#move_subtree_forward ()
 		let cursor_target += 1
 	endif
 	let new_tail = cursor_target + spread
-	let after_tail = new_tail + 1
-	if after_tail <= last_linum && getline(new_tail) =~ '\m^\S' && getline(after_tail) =~ '\m^\S'
+	if getline(new_tail) =~ '\m^\S'
 		call append(new_tail, '')
 	endif
 	if getline('$') ==# ''
