@@ -12,6 +12,12 @@ endif
 let s:indent_pattern = organ#crystal#fetch('pattern/indent')
 lockvar s:indent_pattern
 
+if exists('s:filechar')
+	unlockvar s:filechar
+endif
+let s:filechar = organ#crystal#fetch('filetypes/heading/char', 'dict')
+lockvar s:filechar
+
 if exists('s:rep_one_char')
 	unlockvar s:rep_one_char
 endif
@@ -40,13 +46,7 @@ lockvar s:tags_pattern
 
 fun! organ#bird#char ()
 	" Headline char
-	if &filetype ==# 'org'
-		return '*'
-	elseif &filetype ==# 'markdown'
-		return '#'
-	elseif &filetype ==# 'asciidoc'
-		return '='
-	endif
+	return s:filechar[&filetype]
 endfun
 
 fun! organ#bird#generic_pattern ()

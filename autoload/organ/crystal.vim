@@ -55,6 +55,17 @@ lockvar! s:maximum_level
 
 " ---- filetypes with repeated one char heading
 
+if exists('s:filetypes_heading_char')
+	unlockvar! s:filetypes_heading_char
+endif
+let s:filetypes_heading_char = [
+	\ ['org', '*'],
+	\ ['markdown', '#'],
+	\ ['asciidoc', '='],
+	\ ['vimwiki', '='],
+	\]
+lockvar! s:filetypes_heading_char
+
 if exists('s:filetypes_repeated_one_char_heading')
 	unlockvar! s:filetypes_repeated_one_char_heading
 endif
@@ -62,6 +73,7 @@ let s:filetypes_repeated_one_char_heading = [
 	\ 'org',
 	\ 'markdown',
 	\ 'asciidoc',
+	\ 'vimwiki',
 	\]
 lockvar! s:filetypes_repeated_one_char_heading
 

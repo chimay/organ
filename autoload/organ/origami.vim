@@ -66,6 +66,22 @@ fun! organ#origami#asciidoc (linum)
 	return '='
 endfun
 
+" ---- vimwiki
+
+fun! organ#origami#vimwiki (linum)
+	" Vimwiki folding expression
+	let content = getline(a:linum)
+	let begin = '\m^=\{'
+	let end = '} '
+	for level in range(1, 9)
+		let pattern = begin .. level .. end
+		if content =~ pattern
+			return '>' .. level
+		endif
+	endfor
+	return '='
+endfun
+
 " ---- generic
 
 fun! organ#origami#folding_text ()
@@ -91,6 +107,8 @@ fun! organ#origami#folding ()
 		setlocal foldexpr=organ#origami#markdown(v:lnum)
 	elseif &filetype ==# 'asciidoc'
 		setlocal foldexpr=organ#origami#asciidoc(v:lnum)
+	elseif &filetype ==# 'vimwiki'
+		setlocal foldexpr=organ#origami#vimwiki(v:lnum)
 	endif
 endfun
 
