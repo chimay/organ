@@ -254,9 +254,12 @@ if ! exists("g:organ_loaded")
   " ---- whether to enable vowels-fuzzy completion
   " ---- default : 0
   let g:organ_config.completion.vocalize = 1
+  " ---- whether to enable word-fuzzy completion
+  " ---- default : 0
+  let g:organ_config.completion.wordize = 1
   " ---- whether to enable full fuzzy completion
   " ---- default : 0
-  let g:organ_config.completion.fuzzy = 1
+  let g:organ_config.completion.fuzzy = 0
   " ---- custom maps
   nmap <c-cr> <plug>(organ-meta-return)
   imap <c-cr> <plug>(organ-meta-return)
@@ -632,6 +635,10 @@ fact, it works exactly as in [wheel](https://github.com/chimay/wheel).
 If `g:organ_config.completion.vocalize` is greater than 0, the plugin adds
 vowels patterns between the chars you enter, to enable a kind of vowels-fuzzy
 completion.
+
+If `g:wheel_config.completion.wordize` is greater than 0, the plugin
+adds word-characters patterns between the chars you enter, to enable
+a kind of word-fuzzy completion.
 
 If `g:organ_config.completion.fuzzy` is greater than 0, full fuzzy
 completion is enabled.

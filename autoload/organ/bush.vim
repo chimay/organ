@@ -613,14 +613,14 @@ fun! organ#bush#promote (context = 'alone')
 	call organ#bush#update_prefix (-1, properties)
 	" ---- update counters
 	if context ==# 'alone'
-		call organ#bush#update_counters ()
-		call organ#bush#update_ratios ()
 		if col('.') > 1
 			let step = g:organ_config.list.indent_length
 			if ! is_cursor_at_eol
 				call cursor('.', col('.') - step)
 			endif
 		endif
+		call organ#bush#update_counters ()
+		call organ#bush#update_ratios ()
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -643,12 +643,12 @@ fun! organ#bush#demote (context = 'alone')
 	call organ#bush#update_prefix (1, properties)
 	" ---- update counters
 	if context ==# 'alone'
-		call organ#bush#update_counters ()
-		call organ#bush#update_ratios ()
 		if col('.') > 1
 			let step = g:organ_config.list.indent_length
 			call cursor('.', col('.') + step)
 		endif
+		call organ#bush#update_counters ()
+		call organ#bush#update_ratios ()
 		call organ#origami#resume ()
 	endif
 	" ---- coda

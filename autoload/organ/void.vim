@@ -139,6 +139,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.completion, 'vocalize')
 		let g:organ_config.completion.vocalize = 0
 	endif
+	if ! has_key(g:organ_config.completion, 'wordize')
+		let g:organ_config.completion.wordize = 0
+	endif
 	if ! has_key(g:organ_config.completion, 'fuzzy')
 		let g:organ_config.completion.fuzzy = 0
 	endif
