@@ -37,14 +37,14 @@ content
 0. [@0] item 1 [1/2]
   + [ ] item 1.1
   + [X] item 1.2
-	1. item
+    1. item
+	2. item
        again
       1) item [2/3]
         1. item
         2. [ ] item
         3. [X] TODO item
         4. [X] item
-    2. item
 1. item [2/3]
   + [ ] item 3
 	1) item

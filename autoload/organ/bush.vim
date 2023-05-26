@@ -680,13 +680,13 @@ fun! organ#bush#promote_subtree ()
 			break
 		endif
 	endwhile
-	call organ#bush#update_counters ()
-	call organ#bush#update_ratios ()
 	call setpos('.', position)
 	if col('.') > 1
 		let step = g:organ_config.list.indent_length
 		call cursor('.', col('.') - step)
 	endif
+	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	call organ#origami#resume ()
 	return linum
 endfun
@@ -709,13 +709,13 @@ fun! organ#bush#demote_subtree ()
 			break
 		endif
 	endwhile
-	call organ#bush#update_counters ()
-	call organ#bush#update_ratios ()
 	call setpos('.', position)
 	if col('.') > 1
 		let step = g:organ_config.list.indent_length
 		call cursor('.', col('.') + step)
 	endif
+	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	call organ#origami#resume ()
 	return linum
 endfun
