@@ -37,8 +37,8 @@ content
 0. [@0] item 1 [1/2]
   + [ ] item 1.1
   + [X] item 1.2
-    1. item
-	2. item
+    2. item
+	3. item
        again
       1) item [2/3]
         1. item
@@ -63,26 +63,23 @@ content
  text
 
 0. [@0] [X] item 1 [1/1]
-  1. [X] item 2 [0/3]
-    3) [@3] [ ] item 2.1
-    4) [ ] item 2.3
-    5) item
-    6) item
-    7) [ ] item 2.2
-    8) item [0/3]
-      1. [ ] item 2.3.1
-      2. [ ] item 2.3.2
-         bla bla
-      3. [ ] item 2.3.3
+  1. [X] item 2 [0/2]
+    1) [ ] item 2.1
+    2) [ ] item 2.2
 1. [ ] item 3 [1/1]
   1. item
-  2. [X] item
+  2. [X] item [0/1]
     1) TODO item
-    2) item
-    3) item [0/1]
+    2) item 2.3 [0/2]
+      1. [ ] item 2.3.2
+         bla bla
+      2. [ ] item 2.3.3
+    3) item
+    4) [ ] item 2.2
+    5) item [0/1]
       1. [ ] item 3
 		1) item
-    4) item [0/1]
+    6) item [0/1]
       1. [ ] item 3
         1) item
 

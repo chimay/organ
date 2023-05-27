@@ -202,10 +202,10 @@ fun! organ#bush#set_prefix (prefix, ...)
 	return newitem
 endfun
 
-fun! organ#bush#update_prefix (direction = 1, ...)
+fun! organ#bush#update_prefix (direction = 0, ...)
 	" Set prefix to the one used by same level neighbours in same subtree
 	" If alone in level, just rotate prefix following promote/demote direction
-	" direction : 1 = right = next, -1 = left = previous
+	" direction : 1 = right = next, -1 = left = previous, 0 = don't rotate
 	let direction = a:direction
 	if a:0 > 0
 		let properties = a:1
@@ -235,6 +235,7 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 	call cursor('.', 1)
 	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
 	call cursor('.', col('$'))
+	let prefix = ''
 	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
 	if linum_back > 0 && linum_back != linum && linum_back >= first
 		call cursor(linum_back, 1)
@@ -244,12 +245,14 @@ fun! organ#bush#update_prefix (direction = 1, ...)
 		call cursor(linum_forth, 1)
 		let neighbour = organ#colibri#properties ()
 		let prefix = neighbour.prefix
-	else
+	elseif direction != 0
 		" --- alone of level in subtree
 		let prefix = organ#bush#rotate_prefix (direction, properties, 'same-kind')
 	endif
 	let level = properties.level
-	call organ#bush#set_prefix (prefix, properties)
+	if ! empty(prefix)
+		call organ#bush#set_prefix (prefix, properties)
+	endif
 	" ---- coda
 	call setpos('.', position)
 	return properties
@@ -735,11 +738,19 @@ fun! organ#bush#move_subtree_backward ()
 	let same_pattern = organ#colibri#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('backward', 'dont-move', 'wrap')
 	let same_linum = search(same_pattern, flags)
+	" ---- find upper level targets candidates
 	if level >= 2
 		let upper_level = level - 1
 		let upper_pattern = organ#colibri#level_pattern (upper_level, upper_level)
+		" -- two times
+		" -- first to find the current parent
+		" -- second to find the previous parent
+		let middle_linum = search(upper_pattern, flags)
+		call cursor(middle_linum, 1)
 		let upper_linum = search(upper_pattern, flags)
+		call cursor(cursor_linum, 1)
 	else
+		let middle_linum = 0
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
@@ -753,16 +764,30 @@ fun! organ#bush#move_subtree_backward ()
 		echomsg 'organ bush move subtree backward : nothing to do'
 		return 0
 	endif
-	" ---- plain backward or wrapped backward ?
-	" ---- if plain backward, same or upper level ?
-	let backward = nearest < cursor_linum
-	if backward
-		let cursor_target = nearest
-		let target = cursor_target - 1
+	" ---- same or upper level ?
+	if same_linum == nearest
+		" -- same_linum == nearest
+		if same_linum == organ#bird#nearest(same_linum, middle_linum, -1)
+			" no upper level between
+			let cursor_target = same_linum
+			let target = cursor_target - 1
+		else
+			" upper level between
+			call cursor(same_linum, 1)
+			let same_subtree = organ#colibri#subtree ()
+			let target = same_subtree.tail_linum
+			let cursor_target = target + 1
+		endif
 	else
-		call cursor(nearest, 1)
-		let same_subtree = organ#colibri#subtree ()
-		let target = same_subtree.tail_linum
+		" -- upper_linum == nearest
+		call cursor(upper_linum, 1)
+		let upper_subtree = organ#colibri#subtree ()
+		let target = upper_subtree.tail_linum
+		let cursor_target = target + 1
+	endif
+	" ---- plain backward or wrapped forward ?
+	let backward = nearest < cursor_linum
+	if ! backward
 		let cursor_target = target - spread
 	endif
 	" ---- move subtree
@@ -770,7 +795,9 @@ fun! organ#bush#move_subtree_backward ()
 	execute range .. 'move' target
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
+	call organ#bush#update_prefix ()
 	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	return cursor_target
 endfun
 
@@ -787,6 +814,7 @@ fun! organ#bush#move_subtree_forward ()
 	let same_pattern = organ#colibri#level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'wrap')
 	let same_linum = search(same_pattern, flags)
+	" ---- find upper level targets candidates
 	if level >= 2
 		let upper_level = level - 1
 		let upper_pattern = organ#colibri#level_pattern (upper_level, upper_level)
@@ -805,36 +833,36 @@ fun! organ#bush#move_subtree_forward ()
 		echomsg 'organ bush move subtree forward : nothing to do'
 		return 0
 	endif
-	" ---- plain forward or wrapped forward ?
-	" ---- if plain forward, same or upper level ?
-	let forward = nearest > cursor_linum
-	if forward
-		if same_linum == nearest
-			call cursor(same_linum, 1)
-			let same_subtree = organ#colibri#subtree ()
-			let target = same_subtree.tail_linum
-			let cursor_target = target - spread
-		else
-			" upper_linum == nearest
-			call cursor(upper_linum, 1)
-			let itemhead_pattern = organ#colibri#generic_pattern ()
-			let anyhead_forward = search(itemhead_pattern, flags)
-			if anyhead_forward > 0
-				let target = anyhead_forward - 1
-			else
-				let target = line('$')
-			endif
-			let cursor_target = target - spread
-		endif
+	" ---- same or upper level ?
+	if same_linum == nearest
+		call cursor(same_linum, 1)
+		let same_subtree = organ#colibri#subtree ()
+		let target = same_subtree.tail_linum
+		let cursor_target = target - spread
 	else
-		let cursor_target = nearest
-		let target = cursor_target - 1
+		" upper_linum == nearest
+		call cursor(upper_linum, 1)
+		let itemhead_pattern = organ#colibri#generic_pattern ()
+		let anyhead_forward = search(itemhead_pattern, flags)
+		if anyhead_forward > 0
+			let target = anyhead_forward - 1
+		else
+			let target = line('$')
+		endif
+		let cursor_target = target - spread
+	endif
+	" ---- plain forward or wrapped backward ?
+	let forward = nearest > cursor_linum
+	if ! forward
+		let cursor_target = target + 1
 	endif
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
+	call organ#bush#update_prefix ()
 	call organ#bush#update_counters ()
+	call organ#bush#update_ratios ()
 	return cursor_target
 endfun

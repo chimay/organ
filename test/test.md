@@ -11,9 +11,7 @@ meta data
   + item 2.3
     - item 2.3.1
     - item 2.3.2
-      text
-      more
-
+      bla bla
   + item 2.4
 - item 3
   + item 3.1
@@ -142,12 +140,6 @@ content
   + item 2.1
   + item 2.2
 
-  + item 2.3
-    - item 2.3.1
-    - item 2.3.2
-      text
-      more
-
   + item 2.4
 
 ### chapter 3.3.1
@@ -166,14 +158,6 @@ content
      - item 2
        + item 2.1
        + item 2.2
-
-       + item 2.3
-         + item 2.3.1
-         + item 2.3.2
-           text
-           more
-
-       + item 2.4
      - item 3
 
 content
@@ -182,10 +166,6 @@ content
    2. item 2
      1. item 2.1
      2. item 2.2
-
-     3. item 2.3
-       1. item 2.3.1
-       2. item 2.3.2
 
 text
 
@@ -233,19 +213,10 @@ content
 content text
 
 - item 1
-  1. item 2.3
-    1. item 2.3.1
-    2. item 2.3.2
-       bla bla
 - item 2
   + item 2.1
   + item 2.2
 
-  + item 2.3
-    - item 2.3.1
-    - item 2.3.2
-      text
-      more
-
   + item 2.4
 - item 3
+
