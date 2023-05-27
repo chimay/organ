@@ -679,31 +679,32 @@ Autoload~
 Here is a list of files in `autoload/organ/`, and a brief description
 of the modules within them.
 
-| File              | Description                                        |
-| ----------------- | -------------------------------------------------- |
-| bird.vim          | navigation in headings hierarchy                   |
-| bush.vim          | operations on lists hierarchy                      |
-| calligraphy.vim   | unicode characters                                 |
-| centre.vim        | commands & mappings                                |
-| colibri.vim       | navigation in lists hierarchy                      |
-| complete.vim      | completion functions                               |
-| crystal.vim       | internal constants                                 |
-| diadem.vim        | internal constants for meta command                |
-| geode.vim         | internal constants for plugs & maps                |
-| kyusu.vim         | filters for prompt & dedicated buffers             |
-| nest.vim          | navigation & operations on generic hierrachy       |
-| origami.vim       | folding                                            |
-| perspective.vim   | content generators for prompt                      |
-| pipe.vim          | export using pandoc or emacs                       |
-| seed.vim          | structure templates (kind of lightweight snippets) |
-| spiral.vim        | golden ratio                                       |
-| stair.vim         | indent helpers                                     |
-| table.vim         | tables                                             |
-| tree.vim          | operations on headings hierarchy                   |
-| unicode.vim       | unicode characters lists                           |
-| utils.vim         | small utils                                        |
-| vine.vim          | link management                                    |
-| void.vim          | initiaze & reset variables                         |
+| File            | Description                                        |
+|-----------------|----------------------------------------------------|
+| abacus.vim      | evaluate vim or python expression                  |
+| bird.vim        | navigation in headings hierarchy                   |
+| bush.vim        | operations on lists hierarchy                      |
+| calligraphy.vim | unicode characters                                 |
+| centre.vim      | commands & mappings                                |
+| colibri.vim     | navigation in lists hierarchy                      |
+| complete.vim    | completion functions                               |
+| crystal.vim     | internal constants                                 |
+| diadem.vim      | internal constants for meta command                |
+| geode.vim       | internal constants for plugs & maps                |
+| kyusu.vim       | filters for prompt & dedicated buffers             |
+| nest.vim        | navigation & operations on generic hierrachy       |
+| origami.vim     | folding                                            |
+| perspective.vim | content generators for prompt                      |
+| pipe.vim        | export using pandoc or emacs                       |
+| seed.vim        | structure templates (kind of lightweight snippets) |
+| spiral.vim      | golden ratio                                       |
+| stair.vim       | indent helpers                                     |
+| table.vim       | tables                                             |
+| tree.vim        | operations on headings hierarchy                   |
+| unicode.vim     | unicode characters lists                           |
+| utils.vim       | small utils                                        |
+| vine.vim        | link management                                    |
+| void.vim        | initiaze & reset variables                         |
 
 Ftplugin~
 
