@@ -69,12 +69,7 @@ lockvar! s:filetypes_heading_char
 if exists('s:filetypes_repeated_one_char_heading')
 	unlockvar! s:filetypes_repeated_one_char_heading
 endif
-let s:filetypes_repeated_one_char_heading = [
-	\ 'org',
-	\ 'markdown',
-	\ 'asciidoc',
-	\ 'vimwiki',
-	\]
+let s:filetypes_repeated_one_char_heading = deepcopy(s:filetypes_heading_char)->map({ _, v -> v[0] })
 lockvar! s:filetypes_repeated_one_char_heading
 
 " ---- separators

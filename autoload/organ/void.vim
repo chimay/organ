@@ -72,8 +72,11 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list.unordered, 'markdown')
 		let g:organ_config.list.unordered.markdown = ['-', '+']
 	endif
+	if ! has_key(g:organ_config.list.unordered, 'vimwiki')
+		let g:organ_config.list.unordered.vimwiki = ['-', '+', '*']
+	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
-		let g:organ_config.list.unordered.default = ['-', '+','*']
+		let g:organ_config.list.unordered.asciidoc = ['-', '+','*']
 	endif
 	" -- ordered chars
 	if ! has_key(g:organ_config.list, 'counter_start')
@@ -92,8 +95,11 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.list.ordered, 'markdown')
 		let g:organ_config.list.ordered.markdown = ['.']
 	endif
+	if ! has_key(g:organ_config.list.ordered, 'vimwiki')
+		let g:organ_config.list.ordered.vimwiki = ['.', ')']
+	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
-		let g:organ_config.list.ordered.default = ['.']
+		let g:organ_config.list.ordered.asciidoc = ['.']
 	endif
 	" ---- links
 	if ! has_key(g:organ_config, 'links')
