@@ -249,9 +249,14 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 	return pattern
 endfun
 
-fun! organ#colibri#properties (move = 'dont-move')
+fun! organ#colibri#properties (move = 'dont-move', ...)
 	" Properties of current list item
 	let move = a:move
+	if a:0 > 0
+		let common_indent = a:1
+	else
+		let common_indent = organ#colibri#common_indent ()
+	endif
 	if ! organ#colibri#is_in_list ()
 		echomsg 'organ colibri properties : not in a list'
 		return #{
@@ -295,7 +300,6 @@ fun! organ#colibri#properties (move = 'dont-move')
 	let text = itemhead
 	" ---- indent & level
 	let indent_length = g:organ_config.list.indent_length
-	let common_indent = organ#colibri#common_indent ()
 	let indentinfo = organ#stair#info (text)
 	let indent = indentinfo.string
 	let total = indentinfo.total

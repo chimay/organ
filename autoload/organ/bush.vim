@@ -28,10 +28,10 @@ fun! organ#bush#indent_item (level, ...)
 	else
 		let properties = organ#colibri#properties ()
 	endif
-	if has_key(properties, 'base')
-		let base = properties.base
+	if has_key(properties, 'common_indent')
+		let common_indent = properties.common_indent
 	else
-		let base = organ#colibri#common_indent ()
+		let common_indent = organ#colibri#common_indent ()
 	endif
 	let head = properties.linum
 	let tail = organ#colibri#itemtail ()
@@ -40,7 +40,7 @@ fun! organ#bush#indent_item (level, ...)
 	let len_prefix = len(properties.prefix)
 	" --- indent number in display width
 	let step = g:organ_config.list.indent_length
-	let indentnum = base + step * (level - 1)
+	let indentnum = common_indent + step * (level - 1)
 	let spaces = repeat(' ', indentnum)
 	let tabspaces = organ#stair#tabspaces(indentnum)
 	let mixed = tabspaces.string
@@ -74,9 +74,18 @@ fun! organ#bush#indent_item (level, ...)
 	return itemhead
 endfun
 
-fun! organ#bush#update_counters (maxlevel = 30)
+fun! organ#bush#update_counters (...)
 	" Update counters in ordered list
-	let maxlevel = a:maxlevel
+	if a:0 > 0
+		let common_indent = a:1
+	else
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	if a:0 > 1
+		let maxlevel = a:2
+	else
+		let maxlevel = 30
+	endif
 	let length = maxlevel
 	let global_counter_start = g:organ_config.list.counter_start
 	let position = getcurpos ()
@@ -97,7 +106,7 @@ fun! organ#bush#update_counters (maxlevel = 30)
 		if linum > last
 			break
 		endif
-		let properties = organ#colibri#properties ()
+		let properties = organ#colibri#properties ('dont-move', common_indent)
 		let counter = properties.counter
 		if counter < 0
 			let linum = search(itemhead_pattern, flags)
@@ -299,9 +308,18 @@ fun! organ#bush#rotate_todo (direction = 1, ...)
 	return newtodo
 endfun
 
-fun! organ#bush#update_ratios (maxlevel = 30)
+fun! organ#bush#update_ratios (...)
 	" Update ratios of [X] checked boxes in parent
-	let maxlevel = a:maxlevel
+	if a:0 > 0
+		let common_indent = a:1
+	else
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	if a:0 > 1
+		let maxlevel = a:2
+	else
+		let maxlevel = 30
+	endif
 	let position = getcurpos ()
 	let length = maxlevel
 	let linumlist = []
@@ -324,7 +342,7 @@ fun! organ#bush#update_ratios (maxlevel = 30)
 			break
 		endif
 		eval linumlist->add(linum)
-		let properties = organ#colibri#properties ()
+		let properties = organ#colibri#properties ('dont-move', common_indent)
 		" -- lastlinumlist
 		let level = properties.level
 		let levelindex = level - 1
@@ -608,14 +626,14 @@ fun! organ#bush#promote (context = 'alone', ...)
 		call organ#origami#suspend ()
 	endif
 	if a:0 > 0
-		let base = a:1
+		let common_indent = a:1
 	else
-		let base = organ#colibri#common_indent ()
+		let common_indent = organ#colibri#common_indent ()
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
-	let properties.base = base
+	let properties.common_indent = common_indent
 	" ---  do nothing if top level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
@@ -651,14 +669,14 @@ fun! organ#bush#demote (context = 'alone', ...)
 		call organ#origami#suspend ()
 	endif
 	if a:0 > 0
-		let base = a:1
+		let common_indent = a:1
 	else
-		let base = organ#colibri#common_indent ()
+		let common_indent = organ#colibri#common_indent ()
 	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
-	let properties.base = base
+	let properties.common_indent = common_indent
 	" --- adjust indent
 	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
 	let properties.level += 1
@@ -695,10 +713,10 @@ fun! organ#bush#promote_subtree ()
 		echomsg 'organ bush promote subtree : already at top level'
 		return 0
 	endif
-	let base = organ#colibri#common_indent ()
+	let common_indent = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#promote ('batch', base)
+		let linum = organ#bush#promote ('batch', common_indent)
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
@@ -709,8 +727,8 @@ fun! organ#bush#promote_subtree ()
 		let step = g:organ_config.list.indent_length
 		call cursor('.', col('.') - step)
 	endif
-	call organ#bush#update_counters ()
-	call organ#bush#update_ratios ()
+	call organ#bush#update_counters (common_indent)
+	call organ#bush#update_ratios (common_indent)
 	call organ#origami#resume ()
 	return linum
 endfun
@@ -725,10 +743,10 @@ fun! organ#bush#demote_subtree ()
 		echomsg 'organ bush demote subtree : itemhead not found'
 		return 0
 	endif
-	let base = organ#colibri#common_indent ()
+	let common_indent = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#demote ('batch', base)
+		let linum = organ#bush#demote ('batch', common_indent)
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
@@ -739,8 +757,8 @@ fun! organ#bush#demote_subtree ()
 		let step = g:organ_config.list.indent_length
 		call cursor('.', col('.') + step)
 	endif
-	call organ#bush#update_counters ()
-	call organ#bush#update_ratios ()
+	call organ#bush#update_counters (common_indent)
+	call organ#bush#update_ratios (common_indent)
 	call organ#origami#resume ()
 	return linum
 endfun
