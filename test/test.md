@@ -5,14 +5,14 @@ meta data
 
 - item 1
 - item 2
-  + item 2.1
-  + item 2.2
+  1. item 2.1
+  2. item 2.2
 
-  + item 2.3
-  + item 2.3.1
+  3. item 2.3
+  4. item 2.3.1
     - item 2.3.2
       bla bla
-  + item 2.4
+  5. item 2.4
 - item 3
   + item 3.1
 

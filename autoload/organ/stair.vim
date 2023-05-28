@@ -55,6 +55,23 @@ fun! organ#stair#info (...)
 	return indent
 endfun
 
+fun! organ#stair#indentlen (line, ...)
+	" Indent length in spaces
+	" For organ#colibri#common_indent
+	let line = a:line
+	if a:0 > 0
+		let tabstop = a:1
+	else
+		let tabstop = &tabstop
+	endif
+	let indent = {}
+	let string = line->matchstr(s:indent_pattern)
+	let tabs = string->count("\t")
+	let spaces = string->count(' ')
+	let length = tabs * tabstop + spaces
+	return length
+endfun
+
 fun! organ#stair#tabspaces (indentnum, ...)
 	" Indent string with tab & spaces adding up to indentnum
 	let indentnum = a:indentnum

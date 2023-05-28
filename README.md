@@ -228,9 +228,11 @@ if ! exists("g:organ_loaded")
   " ---- number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
   " ---- items chars in unordered list (default)
-  let g:organ_config.list.unordered = #{ org : ['-', '+', '*'], markdown : ['-', '+']}
+  let g:organ_config.list.unordered.org = ['-', '+', '*']
+  let g:organ_config.list.unordered.markdown = ['-', '+']
   " ---- items chars in ordered list (default)
-  let g:organ_config.list.ordered = #{ org : ['.', ')'], markdown : ['.']}
+  let g:organ_config.list.ordered.org = ['.', ')']
+  let g:organ_config.list.ordered.markdown = ['.']
   " ---- first item counter in an ordered list
   " ---- must be >= 0, default 1
   let g:organ_config.list.counter_start = 1

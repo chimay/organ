@@ -33,6 +33,11 @@ fun! organ#colibri#generic_pattern ()
 	let unordered = unordered->join('')
 	let ordered = ordered->join('')
 	" ---- pattern
+	if &filetype == 'asciidoc'
+		let pattern = '\m\%(^\s*[' .. unordered .. ']\|'
+		let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\)'
+		return pattern
+	endif
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
 	if &filetype ==# 'org'
@@ -192,9 +197,8 @@ fun! organ#colibri#common_indent ()
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
 	let linelist = getline(first, last)
-	let indentlist = copy(linelist)->map({ _, v -> organ#stair#info(v) })
-	let totalist = copy(indentlist)->map({ _, v -> v.total })
-	return min(totalist)
+	let indentlenlist = copy(linelist)->map({ _, v -> organ#stair#indentlen(v) })
+	return min(indentlenlist)
 endfun
 
 fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)

@@ -28,6 +28,11 @@ fun! organ#bush#indent_item (level, ...)
 	else
 		let properties = organ#colibri#properties ()
 	endif
+	if has_key(properties, 'base')
+		let base = properties.base
+	else
+		let base = organ#colibri#common_indent ()
+	endif
 	let head = properties.linum
 	let tail = organ#colibri#itemtail ()
 	let itemhead = properties.itemhead
@@ -35,8 +40,7 @@ fun! organ#bush#indent_item (level, ...)
 	let len_prefix = len(properties.prefix)
 	" --- indent number in display width
 	let step = g:organ_config.list.indent_length
-	let shift = organ#colibri#common_indent ()
-	let indentnum = shift + step * (level - 1)
+	let indentnum = base + step * (level - 1)
 	let spaces = repeat(' ', indentnum)
 	let tabspaces = organ#stair#tabspaces(indentnum)
 	let mixed = tabspaces.string
@@ -116,8 +120,11 @@ fun! organ#bush#update_counters (maxlevel = 30)
 		endif
 		let count = counterlist[countindex]
 		let line = properties.itemhead
-		let newline = substitute(line, counter_pattern, count, '')
-		call setline(linum, newline)
+		let current_counter = properties.counter
+		if current_counter != count
+			let newline = substitute(line, counter_pattern, count, '')
+			call setline(linum, newline)
+		endif
 		let linum = search(itemhead_pattern, flags)
 	endwhile
 	call setpos('.', position)
@@ -196,10 +203,11 @@ fun! organ#bush#set_prefix (prefix, ...)
 	let prefix_pattern = '\m^\s*\zs\S\+'
 	let newitem = substitute(itemhead, prefix_pattern, prefix, '')
 	let properties.itemhead = newitem
+	let properties.prefix = prefix
 	call setline(linum, newitem)
 	" ---- indent all item line(s)
 	call organ#bush#indent_item (level)
-	return newitem
+	return properties
 endfun
 
 fun! organ#bush#update_prefix (direction = 0, ...)
@@ -593,15 +601,21 @@ endfun
 
 " -- current only
 
-fun! organ#bush#promote (context = 'alone')
+fun! organ#bush#promote (context = 'alone', ...)
 	" Promote list item
 	let context = a:context
 	if context ==# 'alone'
 		call organ#origami#suspend ()
 	endif
+	if a:0 > 0
+		let base = a:1
+	else
+		let base = organ#colibri#common_indent ()
+	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
+	let properties.base = base
 	" ---  do nothing if top level
 	if level == 1
 		echomsg 'organ bush promote : already at top level'
@@ -630,15 +644,21 @@ fun! organ#bush#promote (context = 'alone')
 	return linum
 endfun
 
-fun! organ#bush#demote (context = 'alone')
+fun! organ#bush#demote (context = 'alone', ...)
 	" Demote list item
 	let context = a:context
 	if context ==# 'alone'
 		call organ#origami#suspend ()
 	endif
+	if a:0 > 0
+		let base = a:1
+	else
+		let base = organ#colibri#common_indent ()
+	endif
 	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	let level = properties.level
+	let properties.base = base
 	" --- adjust indent
 	let properties.itemhead = organ#bush#indent_item (level + 1, properties)
 	let properties.level += 1
@@ -675,9 +695,10 @@ fun! organ#bush#promote_subtree ()
 		echomsg 'organ bush promote subtree : already at top level'
 		return 0
 	endif
+	let base = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#promote ('batch')
+		let linum = organ#bush#promote ('batch', base)
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
@@ -704,9 +725,10 @@ fun! organ#bush#demote_subtree ()
 		echomsg 'organ bush demote subtree : itemhead not found'
 		return 0
 	endif
+	let base = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
-		let linum = organ#bush#demote ('batch')
+		let linum = organ#bush#demote ('batch', base)
 		let linum = organ#colibri#next ('move', 'dont-wrap')
 		if linum > tail_linum || linum == 0
 			break
