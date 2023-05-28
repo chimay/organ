@@ -542,7 +542,8 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	call organ#origami#suspend ()
 	let direction = a:direction
 	let position = getcurpos ()
-	let properties = organ#colibri#properties ()
+	let common_indent = organ#colibri#common_indent ()
+	let properties = organ#colibri#properties (common_indent)
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
@@ -561,11 +562,10 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	endif
 	" ---- rotate prefix
 	let newprefix = organ#bush#rotate_prefix (direction, properties)
-	echomsg first last newprefix
 	" ---- loop
 	call cursor(first, 1)
 	while v:true
-		let properties = organ#colibri#properties ()
+		let properties = organ#colibri#properties (common_indent)
 		if level == properties.level
 			call organ#bush#set_prefix (newprefix, properties)
 		endif
@@ -637,7 +637,7 @@ fun! organ#bush#promote (context = 'alone', ...)
 	else
 		let common_indent = organ#colibri#common_indent ()
 	endif
-	let properties = organ#colibri#properties ()
+	let properties = organ#colibri#properties (common_indent)
 	let linum = properties.linum
 	let level = properties.level
 	let properties.common_indent = common_indent
@@ -661,8 +661,8 @@ fun! organ#bush#promote (context = 'alone', ...)
 				call cursor('.', col('.') - step)
 			endif
 		endif
-		call organ#bush#update_counters ()
-		call organ#bush#update_ratios ()
+		call organ#bush#update_counters (common_indent)
+		call organ#bush#update_ratios (common_indent)
 		call organ#origami#resume ()
 	endif
 	" ---- coda
@@ -680,7 +680,7 @@ fun! organ#bush#demote (context = 'alone', ...)
 	else
 		let common_indent = organ#colibri#common_indent ()
 	endif
-	let properties = organ#colibri#properties ()
+	let properties = organ#colibri#properties (common_indent)
 	let linum = properties.linum
 	let level = properties.level
 	let properties.common_indent = common_indent
@@ -695,8 +695,8 @@ fun! organ#bush#demote (context = 'alone', ...)
 			let step = g:organ_config.list.indent_length
 			call cursor('.', col('.') + step)
 		endif
-		call organ#bush#update_counters ()
-		call organ#bush#update_ratios ()
+		call organ#bush#update_counters (common_indent)
+		call organ#bush#update_ratios (common_indent)
 		call organ#origami#resume ()
 	endif
 	" ---- coda
