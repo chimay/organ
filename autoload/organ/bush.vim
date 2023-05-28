@@ -215,7 +215,7 @@ fun! organ#bush#set_prefix (prefix, ...)
 	let properties.prefix = prefix
 	call setline(linum, newitem)
 	" ---- indent all item line(s)
-	call organ#bush#indent_item (level)
+	call organ#bush#indent_item (level, properties)
 	return properties
 endfun
 
@@ -229,13 +229,18 @@ fun! organ#bush#update_prefix (direction = 0, ...)
 	else
 		let properties = organ#colibri#properties ()
 	endif
+	if has_key(properties, 'common_indent')
+		let common_indent = properties.common_indent
+	else
+		let common_indent = organ#colibri#common_indent ()
+	endif
 	let position = getcurpos ()
 	let linum = properties.linum
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
 		let parent_linum = organ#colibri#parent ('move', 'dont-wrap')
-		let subtree = organ#colibri#subtree ()
+		let subtree = organ#colibri#subtree ('dont-move', common_indent)
 		let first = subtree.head_linum
 		let last = subtree.tail_linum
 		call setpos('.', position)
@@ -256,22 +261,24 @@ fun! organ#bush#update_prefix (direction = 0, ...)
 	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
 	if linum_back > 0 && linum_back != linum && linum_back >= first
 		call cursor(linum_back, 1)
-		let neighbour = organ#colibri#properties ()
+		let neighbour = organ#colibri#properties ('dont-move', common_indent)
 		let prefix = neighbour.prefix
 	elseif linum_forth > 0 && linum_forth != linum && linum_forth <= last
 		call cursor(linum_forth, 1)
-		let neighbour = organ#colibri#properties ()
+		let neighbour = organ#colibri#properties ('dont-move', common_indent)
 		let prefix = neighbour.prefix
 	elseif direction != 0
 		" --- alone of level in subtree
 		let prefix = organ#bush#rotate_prefix (direction, properties, 'same-kind')
 	endif
+	" ---- prefix
+	call setpos('.', position)
+	" ---- update prefix
 	let level = properties.level
 	if ! empty(prefix)
-		call organ#bush#set_prefix (prefix, properties)
+		let properties = organ#bush#set_prefix (prefix, properties)
 	endif
 	" ---- coda
-	call setpos('.', position)
 	return properties
 endfun
 
@@ -702,7 +709,8 @@ fun! organ#bush#promote_subtree ()
 	" Promote list item subtree
 	call organ#origami#suspend ()
 	let position = getcurpos ()
-	let subtree = organ#colibri#subtree ()
+	let common_indent = organ#colibri#common_indent ()
+	let subtree = organ#colibri#subtree ('dont-move', common_indent)
 	let head_linum = subtree.head_linum
 	if head_linum == 0
 		echomsg 'organ bush promote subtree : itemhead not found'
@@ -713,7 +721,6 @@ fun! organ#bush#promote_subtree ()
 		echomsg 'organ bush promote subtree : already at top level'
 		return 0
 	endif
-	let common_indent = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
 		let linum = organ#bush#promote ('batch', common_indent)
@@ -737,13 +744,13 @@ fun! organ#bush#demote_subtree ()
 	" Demote list item subtree
 	call organ#origami#suspend ()
 	let position = getcurpos ()
-	let subtree = organ#colibri#subtree ()
+	let common_indent = organ#colibri#common_indent ()
+	let subtree = organ#colibri#subtree ('dont-move', common_indent)
 	let head_linum = subtree.head_linum
 	if head_linum == 0
 		echomsg 'organ bush demote subtree : itemhead not found'
 		return 0
 	endif
-	let common_indent = organ#colibri#common_indent ()
 	let tail_linum = subtree.tail_linum
 	while v:true
 		let linum = organ#bush#demote ('batch', common_indent)

@@ -97,13 +97,13 @@ content ☯ ⛵≤ 🗁  🗎 🌧🌤
    - item 2
      + item 2.1
        * item 2.3
-         - item 2.3.1
+           - item 2.3.1
          - item 2.3.2
            text
            text
-       * item
-         text
-         text
+         - item
+           text
+           text
        * item 2.2
          some text
          and more

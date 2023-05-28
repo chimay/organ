@@ -384,10 +384,9 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 	return properties
 endfun
 
-fun! organ#colibri#subtree (move = 'dont-move')
+fun! organ#colibri#subtree (...)
 	" Range & properties of current list subtree
-	let move = a:move
-	let properties = organ#colibri#properties (move)
+	let properties = call('organ#colibri#properties', a:000)
 	let head_linum = properties.linum
 	if head_linum == 0
 		echomsg 'organ colibri subtree : itemhead not found'
