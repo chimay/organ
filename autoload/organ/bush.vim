@@ -844,9 +844,9 @@ fun! organ#bush#move_subtree_backward ()
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
 	let common_indent = organ#colibri#common_indent ()
-	call organ#bush#update_prefix (common_indent)
+	call organ#bush#update_prefix ()
 	call organ#bush#update_counters (common_indent)
-	call organ#bush#update_ratios ()
+	call organ#bush#update_ratios (common_indent)
 	return cursor_target
 endfun
 
@@ -911,8 +911,8 @@ fun! organ#bush#move_subtree_forward ()
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
 	let common_indent = organ#colibri#common_indent ()
-	call organ#bush#update_prefix (common_indent)
+	call organ#bush#update_prefix ()
 	call organ#bush#update_counters (common_indent)
-	call organ#bush#update_ratios ()
+	call organ#bush#update_ratios (common_indent)
 	return cursor_target
 endfun
