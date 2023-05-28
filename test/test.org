@@ -96,21 +96,21 @@ content ☯ ⛵≤ 🗁  🗎 🌧🌤
        * [X] check box
    - item 2
      + item 2.1
-       * item 2.3
-         - item 2.3.1
-         - item 2.3.2
-           text
-           text
-         - item
-           text
-           text
-       * item 2.2
-         some text
-         and more
+     + item 2.2
+       some text
+       and more
+     + item 2.3
+       * item 2.3.1
+       * item 2.3.2
+         text
+         text
+       * item
+         text
+         text
 
 content
 
-   1. item 1
+   1. item 1 [0/1]
    2. item 2
      1) item 2.1
      2) item 2.2

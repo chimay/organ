@@ -197,6 +197,7 @@ fun! organ#colibri#common_indent ()
 	let first = organ#colibri#list_start ()
 	let last =  organ#colibri#list_end ()
 	let linelist = getline(first, last)
+	eval linelist->filter({ _, v -> v !~ s:hollow_pattern })
 	let indentlenlist = copy(linelist)->map({ _, v -> organ#stair#indentlen(v) })
 	return min(indentlenlist)
 endfun
