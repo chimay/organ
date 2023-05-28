@@ -28,10 +28,11 @@ fun! organ#bush#indent_item (level, ...)
 	else
 		let properties = organ#colibri#properties ()
 	endif
-	if has_key(properties, 'common_indent')
+	if properties.common_indent >= 0
 		let common_indent = properties.common_indent
 	else
 		let common_indent = organ#colibri#common_indent ()
+		let properties.common_indent = common_indent
 	endif
 	let head = properties.linum
 	let tail = organ#colibri#itemtail ()
@@ -256,10 +257,10 @@ fun! organ#bush#update_prefix (direction = 0, ...)
 	" ---- potential neighbours
 	call organ#colibri#itemhead ('move')
 	call cursor('.', 1)
-	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap')
+	let linum_back = organ#colibri#backward ('dont-move', 'dont-wrap', properties)
 	call cursor('.', col('$'))
 	let prefix = ''
-	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap')
+	let linum_forth = organ#colibri#forward ('dont-move', 'dont-wrap', properties)
 	if linum_back > 0 && linum_back != linum && linum_back >= first
 		call cursor(linum_back, 1)
 		let neighbour = organ#colibri#properties ('dont-move', common_indent)
@@ -844,7 +845,7 @@ fun! organ#bush#move_subtree_backward ()
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
 	let common_indent = organ#colibri#common_indent ()
-	call organ#bush#update_prefix ()
+	call organ#bush#update_prefix (0, subtree)
 	call organ#bush#update_counters (common_indent)
 	call organ#bush#update_ratios (common_indent)
 	return cursor_target
@@ -911,7 +912,7 @@ fun! organ#bush#move_subtree_forward ()
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
 	let common_indent = organ#colibri#common_indent ()
-	call organ#bush#update_prefix ()
+	call organ#bush#update_prefix (0, subtree)
 	call organ#bush#update_counters (common_indent)
 	call organ#bush#update_ratios (common_indent)
 	return cursor_target

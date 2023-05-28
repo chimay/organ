@@ -201,10 +201,18 @@ fun! organ#colibri#common_indent ()
 	return min(indentlenlist)
 endfun
 
-fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
+fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30, ...)
 	" Item head pattern of level between minlevel and maxlevel
 	let minlevel = a:minlevel
 	let maxlevel = a:maxlevel
+	if a:0 > 0
+		let common_indent = a:1
+		if common_indent < 0
+			let common_indent = organ#colibri#common_indent ()
+		endif
+	else
+		let common_indent = organ#colibri#common_indent ()
+	endif
 	" ---- filetype
 	if empty(&filetype) || keys(g:organ_config.list.unordered)->index(&filetype) < 0
 		let filekey = 'default'
@@ -213,7 +221,6 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30)
 	endif
 	" ---- indent
 	let indent_length = g:organ_config.list.indent_length
-	let common_indent = organ#colibri#common_indent ()
 	let tabstop = &tabstop
 	" ---- prefixes
 	if keys(g:organ_config.list.unordered)->index(&filetype) >= 0
@@ -263,6 +270,7 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 			\ linum : 0,
 			\ itemhead : '',
 			\ indent : '',
+			\ common_indent : -1,
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
@@ -283,6 +291,7 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 			\ linum : 0,
 			\ itemhead : '',
 			\ indent : '',
+			\ common_indent : -1,
 			\ level : 1,
 			\ prefix : '',
 			\ counter : -1,
@@ -370,6 +379,7 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 			\ itemhead : itemhead,
 			\ level : level,
 			\ indent : indent,
+			\ common_indent : common_indent,
 			\ prefix : prefix,
 			\ counter : counter,
 			\ counterstartstring : counterstartstring,
@@ -404,7 +414,11 @@ fun! organ#colibri#subtree (...)
 			\}
 	endif
 	let level = properties.level
-	let itemhead_pattern = organ#colibri#level_pattern (1, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let itemhead_pattern = organ#colibri#level_pattern (1, level, common_indent)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
 	let forward_linum = search(itemhead_pattern, flags)
 	let final = organ#colibri#list_end ()
@@ -472,19 +486,27 @@ endfun
 
 " ---- backward, forward
 
-fun! organ#colibri#backward (move = 'move', wrap = 'wrap')
+fun! organ#colibri#backward (move = 'move', wrap = 'wrap', ...)
 	" Backward item of same level
 	let move = a:move
 	let wrap = a:wrap
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
 	let position = getcurpos ()
-	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ colibri backward : item not found'
 		return linum
 	endif
 	let level = properties.level
-	let itemhead_pattern = organ#colibri#level_pattern (level, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let itemhead_pattern = organ#colibri#level_pattern (level, level, common_indent)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(itemhead_pattern, flags)
 	if move ==# 'move'
@@ -496,19 +518,27 @@ fun! organ#colibri#backward (move = 'move', wrap = 'wrap')
 	return linum
 endfun
 
-fun! organ#colibri#forward (move = 'move', wrap = 'wrap')
+fun! organ#colibri#forward (move = 'move', wrap = 'wrap', ...)
 	" Forward item of same level
 	let move = a:move
 	let wrap = a:wrap
+	if a:0 > 0
+		let properties = a:1
+	else
+		let properties = organ#colibri#properties ()
+	endif
 	let position = getcurpos ()
-	let properties = organ#colibri#properties ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ colibri forward : item not found'
 		return linum
 	endif
 	let level = properties.level
-	let itemhead_pattern = organ#colibri#level_pattern (level, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let itemhead_pattern = organ#colibri#level_pattern (level, level, common_indent)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(itemhead_pattern, flags)
 	if move ==# 'move'
@@ -526,12 +556,12 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 	" Parent headline, ie first headline of level - 1, backward
 	let move = a:move
 	let wrap = a:wrap
-	let position = getcurpos ()
 	if a:0 > 0
 		let properties = a:1
 	else
 		let properties = organ#colibri#properties ()
 	endif
+	let position = getcurpos ()
 	let linum = properties.linum
 	if linum == 0
 		echomsg 'organ colibri parent : current headline not found'
@@ -543,7 +573,11 @@ fun! organ#colibri#parent (move = 'move', wrap = 'wrap', ...)
 		return linum
 	endif
 	let level -= 1
-	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let headline_pattern = organ#colibri#level_pattern (level, level, common_indent)
 	let flags = organ#utils#search_flags ('backward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
@@ -571,7 +605,11 @@ fun! organ#colibri#loose_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = properties.level + 1
-	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let headline_pattern = organ#colibri#level_pattern (level, level, common_indent)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0
@@ -600,7 +638,11 @@ fun! organ#colibri#strict_child (move = 'move', wrap = 'wrap')
 		return linum
 	endif
 	let level = subtree.level + 1
-	let headline_pattern = organ#colibri#level_pattern (level, level)
+	let common_indent = properties.common_indent
+	if common_indent < 0
+		let common_indent = organ#colibri#common_indent ()
+	endif
+	let headline_pattern = organ#colibri#level_pattern (level, level, common_indent)
 	let flags = organ#utils#search_flags ('forward', move, wrap)
 	let linum = search(headline_pattern, flags)
 	if linum == 0 || linum > tail_linum

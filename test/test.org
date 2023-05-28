@@ -90,10 +90,10 @@ content
 content ☯ ⛵≤ 🗁  🗎 🌧🌤
 
    - item 1 [0/1]
-     + [ ] item 1.1
-     + item 1.2 [2/2]
-       * [X] check box
+     + [ ] item 1.1 [1/1]
        * [X] checkbox
+     + item 1.2 [1/1]
+       * [X] check box
    - item 2
      + item 2.1
        * item 2.3
