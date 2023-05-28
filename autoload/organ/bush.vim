@@ -67,9 +67,10 @@ fun! organ#bush#indent_item (level, ...)
 			let newline = line->substitute(s:indent_pattern, spaces, '')
 		else
 			let newline = line->substitute(s:indent_pattern, mixed, '')
-			echomsg newline
 		endif
-		call setline(linum, newline)
+		if line != newline
+			call setline(linum, newline)
+		endif
 	endfor
 	return itemhead
 endfun
@@ -842,8 +843,9 @@ fun! organ#bush#move_subtree_backward ()
 	execute range .. 'move' target
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
-	call organ#bush#update_prefix ()
-	call organ#bush#update_counters ()
+	let common_indent = organ#colibri#common_indent ()
+	call organ#bush#update_prefix (common_indent)
+	call organ#bush#update_counters (common_indent)
 	call organ#bush#update_ratios ()
 	return cursor_target
 endfun
@@ -908,8 +910,9 @@ fun! organ#bush#move_subtree_forward ()
 	execute range .. 'move' target
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
-	call organ#bush#update_prefix ()
-	call organ#bush#update_counters ()
+	let common_indent = organ#colibri#common_indent ()
+	call organ#bush#update_prefix (common_indent)
+	call organ#bush#update_counters (common_indent)
 	call organ#bush#update_ratios ()
 	return cursor_target
 endfun
