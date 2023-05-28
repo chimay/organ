@@ -680,7 +680,7 @@ Here is a list of files in `autoload/organ/`, and a brief description
 of the modules within them.
 
 | File            | Description                                        |
-|-----------------|----------------------------------------------------|
+| --------------- | -------------------------------------------------- |
 | abacus.vim      | evaluate vim or python expression                  |
 | bird.vim        | navigation in headings hierarchy                   |
 | bush.vim        | operations on lists hierarchy                      |

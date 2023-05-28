@@ -32,7 +32,7 @@ fun! organ#void#config ()
 		let g:organ_config.speedkeys = 0
 	endif
 	if ! has_key(g:organ_config, 'previous')
-		let g:organ_config.prefix = '<M-p>'
+		let g:organ_config.previous = '<M-p>'
 	endif
 	if ! has_key(g:organ_config, 'prefix')
 		let g:organ_config.prefix = '<M-o>'
