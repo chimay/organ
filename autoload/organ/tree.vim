@@ -409,10 +409,6 @@ fun! organ#tree#move_subtree_backward ()
 		if level == 1
 			let target = last_linum
 		endif
-		if getline(last_linum) != s:hollow_pattern
-			call append(last_linum, '')
-			let last_linum += 1
-		endif
 		let cursor_target = target - spread
 	endif
 	" ---- endmarker case
@@ -512,10 +508,6 @@ fun! organ#tree#move_subtree_forward ()
 	" ---- plain forward or wrapped backward ?
 	let forward = nearest > cursor_linum
 	if ! forward
-		if getline(last_linum) != s:hollow_pattern
-			call append(last_linum, '')
-			let tail_linum += 1
-		endif
 		if level == 1
 			call cursor(1, 1)
 			let headline_pattern = organ#bird#generic_pattern ()
@@ -549,6 +541,7 @@ fun! organ#tree#move_subtree_forward ()
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
+	echomsg range .. 'move' target
 	" ---- check blank lines
 	let before_head = cursor_target - 1
 	if before_head > 0 && getline(before_head) =~ '\m\S'
