@@ -122,7 +122,6 @@ chapter 1.4.4 {{{3
 
 content
 
-
 book 2 {{{1
 
 content
@@ -287,6 +286,5 @@ content text
 
   + item 2.4
 - item 3
-
 
 text
