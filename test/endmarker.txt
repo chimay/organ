@@ -3,18 +3,6 @@ book 1 {{{1
 
 content 1
 
-}}}1
-
-book 2 {{{1
-
-content 2
-
-part 2.1 {{{2
-
-content
-
-}}}2
-
 part 2.2 {{{2
 
 content
@@ -24,6 +12,18 @@ chapter 2.2.1 {{{3
 content
 
 }}}3
+
+}}}2
+
+}}}1
+
+book 2 {{{1
+
+content 2
+
+part 2.1 {{{2
+
+content
 
 }}}2
 

@@ -415,10 +415,24 @@ fun! organ#tree#move_subtree_backward ()
 		endif
 		let cursor_target = target - spread
 	endif
-	" ---- endmarker case TODO
-	"let cursor_level = foldlevel(cursor_linum)
-	"let target_level = foldlevel(target)
-	"let cursor_target_level = foldlevel(cursor_target)
+	" ---- endmarker case
+	if organ#origami#is_marker_headline_file ()
+		let cursor_level = foldlevel(cursor_linum)
+		let target_level = foldlevel(target)
+		echomsg target target_level cursor_linum cursor_level
+		if target_level < cursor_level - 1
+			call cursor(target, 1)
+			let endmarker_pattern = organ#origami#endmarker_level_pattern (upper_level, upper_level)
+			let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
+			let markernum = search(endmarker_pattern, flags)
+			if markernum > 0
+				let delta = target - (markernum - 1)
+				let target -= delta
+				let cursor_target -= delta
+			endif
+			"call cursor(cursor_target, 1)
+		endif
+	endif
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
@@ -516,7 +530,23 @@ fun! organ#tree#move_subtree_forward ()
 		endif
 		let cursor_target = target + 1
 	endif
-	" ---- endmarker case TODO
+	" ---- endmarker case
+	if organ#origami#is_marker_headline_file ()
+		let cursor_level = foldlevel(cursor_linum)
+		let target_level = foldlevel(target)
+		if target_level < cursor_level - 1
+			call cursor(target, 1)
+			let endmarker_pattern = organ#origami#endmarker_level_pattern (upper_level, upper_level)
+			let flags = organ#utils#search_flags ('backward', 'dont-move', 'dont-wrap')
+			let markernum = search(endmarker_pattern, flags)
+			if markernum > 0
+				let delta = target - (markernum - 1)
+				let target -= delta
+				let cursor_target -= delta
+			endif
+			"call cursor(cursor_target, 1)
+		endif
+	endif
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
