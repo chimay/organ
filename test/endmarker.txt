@@ -15,17 +15,17 @@ content
 
 }}}1
 
-part 2.2 {{{3
+part 2.2 {{{2
 
 content
 
-chapter 2.2.1 {{{4
+chapter 2.2.1 {{{3
 
 content
-
-}}}4
 
 }}}3
+
+}}}2
 
 }}}1
 

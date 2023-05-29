@@ -601,6 +601,8 @@ fun! organ#tree#moveto ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let range = head_linum .. ',' .. tail_linum
+	let level = subtree.level
+	let upper_level = level - 1
 	" ---- find target subtree
 	let prompt = 'Move current subtree to : '
 	let complete = 'customlist,organ#complete#headline_same_level_or_parent'
@@ -613,7 +615,21 @@ fun! organ#tree#moveto ()
 	call cursor(linum, 1)
 	let subtree = organ#bird#subtree ()
 	let target = subtree.tail_linum
-	" ---- endmarker case TODO
+	" ---- endmarker case
+	if level > 1 && organ#origami#is_marker_headline_file ()
+		let endmarker_pattern = organ#origami#endmarker_level_pattern (upper_level, upper_level)
+		let target_line = getline(target)
+		if target > 1
+			let prev_target_line = getline(target - 1)
+		endif
+		if target_line =~ endmarker_pattern
+			let delta = 1
+			let target -= delta
+		elseif target > 1 && prev_target_line =~ endmarker_pattern
+			let delta = 2
+			let target -= delta
+		endif
+	endif
 	" ---- move
 	execute range .. 'move' target
 	if target < head_linum
