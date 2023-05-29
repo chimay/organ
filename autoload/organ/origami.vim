@@ -115,7 +115,7 @@ endfun
 " ---- foldmarker headline
 
 fun! organ#origami#is_marker_headline_file ()
-	" Whether headlines are indent defined in current file
+	" Whether headlines are marker defined in current file
 	return s:rep_one_char->index(&filetype) < 0 && &foldmethod ==# 'marker'
 endfun
 
@@ -153,6 +153,7 @@ endfun
 
 fun! organ#origami#subtree_tail_level_pattern (level)
 	" Foldmarker subtree tail pattern
+	" A heading fold ends by either another subtree or an endmarker
 	let level = a:level
 	let pattern = organ#origami#level_pattern (1, level)
 	let pattern ..= '\|' .. organ#origami#endmarker_level_pattern (level, level)
@@ -170,11 +171,11 @@ fun! organ#origami#endmarker (...)
 	call cursor('.', col('$'))
 	let endmarker_pattern = organ#origami#endmarker_level_pattern (level, level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(endmarker_pattern, flags)
-	if forward_linum == 0
+	let tail_linum = search(endmarker_pattern, flags)
+	if tail_linum == 0
 		return -1
 	endif
-	return forward_linum
+	return tail_linum
 endfun
 
 fun! organ#origami#subtree_tail (...)
@@ -189,23 +190,23 @@ fun! organ#origami#subtree_tail (...)
 	call cursor('.', col('$'))
 	let tail_pattern = organ#origami#subtree_tail_level_pattern (level)
 	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
-	let forward_linum = search(tail_pattern, flags)
-	if forward_linum == 0
+	let tail_linum = search(tail_pattern, flags)
+	if tail_linum == 0
 		return last_linum
 	endif
-	if forward_linum == last_linum
-		return forward_linum
+	if tail_linum == last_linum
+		return tail_linum
 	endif
-	let line = getline(forward_linum)
+	let line = getline(tail_linum)
 	if line =~ marker
-		let next_line = getline(forward_linum + 1)
+		let next_line = getline(tail_linum + 1)
 		if next_line =~ s:hollow_pattern
-			return forward_linum + 1
+			return tail_linum + 1
 		else
-			return forward_linum
+			return tail_linum
 		endif
 	endif
-	return forward_linum - 1
+	return tail_linum - 1
 endfun
 
 fun! organ#origami#is_endmarker_fold (...)
@@ -218,18 +219,15 @@ fun! organ#origami#is_endmarker_fold (...)
 	if s:rep_one_char->index(&filetype) >= 0 || &foldmethod ==# 'indent'
 		return v:false
 	endif
-	let tail_linum = organ#origami#subtree_tail (level)
+	let tail_pattern = organ#origami#subtree_tail_level_pattern (level)
+	let flags = organ#utils#search_flags ('forward', 'dont-move', 'dont-wrap')
+	let tail_linum = search(tail_pattern, flags)
+	if tail_linum == 0
+		return v:false
+	endif
 	let marker = split(&foldmarker, ',')[1]
 	let tail_line = getline(tail_linum)
 	if tail_line =~ marker
-		return v:true
-	endif
-	if tail_linum == 1
-		return v:false
-	endif
-	let prev_linum = tail_linum - 1
-	let prev_line = getline(prev_linum)
-	if tail_line ==# s:hollow_pattern && prev_line =~ marker
 		return v:true
 	endif
 	return v:false
