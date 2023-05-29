@@ -29,10 +29,30 @@ int a = 2;
 
 int a = 2;
 
+/* fun 2.4 {{{2 */
+
+int a = 2;
+
 /* fun 2.3 {{{2                                                  :fun:misc: */
 
 int a = 2;
 
-/* fun 2.4 {{{2 */
+/* fun group 3 {{{1 */
+
+int a = 2;
+
+/* fun 3.1  {{{2                                             :misc: */
+
+int a = 2;
+
+/* fun 3.2 {{{2                                                       :fun: */
+
+int a = 2;
+
+/* fun 3.4 {{{2 */
+
+int a = 2;
+
+/* fun 3.3 {{{2                                                  :fun:misc: */
 
 int a = 2;

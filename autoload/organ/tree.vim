@@ -212,67 +212,97 @@ fun! organ#tree#promote (context = 'alone')
 	" Promote heading
 	let context = a:context
 	let position = getcurpos ()
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	if linum == 0
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	if head_linum == 0
 		echomsg 'organ tree promote heading : headline not found'
 		return 0
 	endif
-	if properties.level == 1
+	if subtree.level == 1
 		echomsg 'organ tree promote heading : already at top level'
 		return 0
 	endif
-	let headline = properties.headline
+	let headline = subtree.headline
 	if s:rep_one_char->index(&filetype) >= 0
 		let headline = headline[1:]
 	elseif &foldmethod ==# 'marker'
-		let marker = split(&foldmarker, ',')[0]
+		let markerlist = split(&foldmarker, ',')
+		let marker = markerlist[0]
+		let endmarker = markerlist[1]
 		let level = organ#bird#foldlevel ()
 		let old = marker .. level
 		let new = marker .. string(level - 1)
 		let headline = substitute(headline, old, new, '')
+		let endmarker_pattern = organ#origami#endmarker_level_pattern (level, level)
+		let endnum = 0
+		if getline(tail_linum) =~ endmarker_pattern
+			let endnum = tail_linum
+		elseif tail_linum > 1 && getline(tail_linum - 1) =~ endmarker_pattern
+			let endnum = tail_linum - 1
+		endif
+		let endline = getline(endnum)
+		let old = endmarker .. level
+		let new = endmarker .. string(level - 1)
+		let endline = substitute(endline, old, new, '')
+		call setline(endnum, endline)
 	endif
-	call setline(linum, headline)
+	call setline(head_linum, headline)
 	if context ==# 'alone'
 		call setpos('.', position)
-		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
+		if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
 			call cursor('.', col('.') - 1)
 		endif
 	endif
-	return linum
+	return head_linum
 endfun
 
 fun! organ#tree#demote (context = 'alone')
 	" Demote heading
 	let context = a:context
 	let position = getcurpos ()
-	let properties = organ#bird#properties ()
-	let linum = properties.linum
-	if linum == 0
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	if head_linum == 0
 		echomsg 'organ tree demote heading : headline not found'
 		return 0
 	endif
-	let headline = properties.headline
+	let headline = subtree.headline
 	let filetype = &filetype
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let headline = char .. headline
 	elseif &foldmethod ==# 'marker'
-		let marker = split(&foldmarker, ',')[0]
+		let markerlist = split(&foldmarker, ',')
+		let marker = markerlist[0]
+		let endmarker = markerlist[1]
 		let level = organ#bird#foldlevel ()
 		let old = marker .. level
 		let new = marker .. string(level + 1)
 		let headline = substitute(headline, old, new, '')
+		let endmarker_pattern = organ#origami#endmarker_level_pattern (level, level)
+		let endnum = 0
+		if getline(tail_linum) =~ endmarker_pattern
+			let endnum = tail_linum
+		elseif tail_linum > 1 && getline(tail_linum - 1) =~ endmarker_pattern
+			let endnum = tail_linum - 1
+		endif
+		let endline = getline(endnum)
+		let old = endmarker .. level
+		let new = endmarker .. string(level + 1)
+		let endline = substitute(endline, old, new, '')
+		call setline(endnum, endline)
 	endif
-	call setline(linum, headline)
+	call setline(head_linum, headline)
 	if context ==# 'alone'
 		call setpos('.', position)
-		if s:rep_one_char->index(&filetype) >= 0 && linum == line('.') && col('.') > 1
+		if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
 			call cursor('.', col('.') + 1)
 		endif
 		normal! zv
 	endif
-	return linum
+	return head_linum
 endfun
 
 " -- subtree
