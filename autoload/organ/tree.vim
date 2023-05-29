@@ -372,7 +372,7 @@ fun! organ#tree#move_subtree_backward ()
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (same_linum, upper_linum, -1)
+	let nearest = organ#bird#nearest (-1, same_linum, upper_linum)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree backward : not found'
@@ -385,7 +385,7 @@ fun! organ#tree#move_subtree_backward ()
 	" ---- same or upper level ?
 	if same_linum == nearest
 		" -- same_linum == nearest
-		if same_linum == organ#bird#nearest(same_linum, middle_linum, -1)
+		if same_linum == organ#bird#nearest(-1, same_linum, middle_linum)
 			" no upper level between
 			let cursor_target = same_linum
 			let target = cursor_target - 1
@@ -416,6 +416,9 @@ fun! organ#tree#move_subtree_backward ()
 		let cursor_target = target - spread
 	endif
 	" ---- endmarker case TODO
+	"let cursor_level = foldlevel(cursor_linum)
+	"let target_level = foldlevel(target)
+	"let cursor_target_level = foldlevel(cursor_target)
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
@@ -434,6 +437,8 @@ fun! organ#tree#move_subtree_backward ()
 	endif
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
+	normal! zv
+	call organ#spiral#cursor ()
 	return cursor_target
 endfun
 
@@ -460,7 +465,7 @@ fun! organ#tree#move_subtree_forward ()
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (same_linum, upper_linum, 1)
+	let nearest = organ#bird#nearest (1, same_linum, upper_linum)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree forward : not found'
@@ -530,6 +535,8 @@ fun! organ#tree#move_subtree_forward ()
 	endif
 	" --- move cursor to the new heading place
 	call cursor(cursor_target, 1)
+	normal! zv
+	call organ#spiral#cursor ()
 	return cursor_target
 endfun
 
@@ -564,6 +571,8 @@ fun! organ#tree#moveto ()
 		let new_place = target - spread
 		call cursor(new_place, 1)
 	endif
+	normal! zv
+	call organ#spiral#cursor ()
 	return target
 endfun
 
