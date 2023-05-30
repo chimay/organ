@@ -692,6 +692,8 @@ fun! organ#table#cell_end ()
 	return [linum, colnum]
 endfun
 
+" ---- select
+
 fun! organ#table#select_cell ()
 	" Select cell content
 	normal! v
@@ -699,6 +701,28 @@ fun! organ#table#select_cell ()
 	normal! o
 	let linum = organ#table#cell_end ()
 	return linum
+endfun
+
+" ---- duplicate above cell content to current one
+
+fun! organ#table#duplicate ()
+	" Duplicate above cell content to current one
+	let paragraph = organ#table#update ()
+	let linumlist = paragraph.linumlist
+	let cellgrid = paragraph.cellgrid
+	" ---- cursor
+	let curlinum = line('.')
+	let curcolnum = col('.')
+	let currownum = linumlist->index(curlinum)
+	let positions = organ#table#positions (curlinum)
+	" ---- we need at least a table row above
+	if currownum <= 0
+		return paragraph
+	endif
+	" ---- above row
+	let above_index = currownum - 1
+	let above = cellgrid[above_index]
+	echomsg above
 endfun
 
 " ---- move rows & cols

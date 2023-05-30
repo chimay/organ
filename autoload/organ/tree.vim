@@ -375,12 +375,12 @@ endfun
 fun! organ#tree#move_subtree_backward ()
 	" Move subtree backward
 	call cursor('.', 1)
-	let cursor_linum = line('.')
+	let curlinum = line('.')
 	let subtree = organ#bird#subtree ('move')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
-	let depth = cursor_linum - head_linum
+	let depth = curlinum - head_linum
 	let level = subtree.level
 	let last_linum = line('$')
 	" ---- find same level targets candidates
@@ -397,28 +397,28 @@ fun! organ#tree#move_subtree_backward ()
 		let middle_linum = search(upper_pattern, flags)
 		call cursor(middle_linum, 1)
 		let upper_linum = search(upper_pattern, flags)
-		"call cursor(cursor_linum, 1)
+		"call cursor(curlinum, 1)
 	else
 		let middle_linum = 0
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, -1)
+	let nearest = organ#bird#nearest (curlinum, same_linum, upper_linum, -1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree backward : not found'
 		return 0
 	endif
-	if nearest == cursor_linum
+	if nearest == curlinum
 		echomsg 'organ tree move subtree backward : nothing to do'
 		return 0
 	endif
 	" ---- plain backward or wrapped forward ?
-	let backward = nearest < cursor_linum
+	let backward = nearest < curlinum
 	" ---- same or upper level ?
 	if same_linum == nearest
 		" -- same_linum == nearest
-		if same_linum == organ#bird#nearest(cursor_linum, same_linum, middle_linum, -1)
+		if same_linum == organ#bird#nearest(curlinum, same_linum, middle_linum, -1)
 			" no upper level between
 			let target = same_linum - 1
 		else
@@ -483,12 +483,12 @@ endfun
 fun! organ#tree#move_subtree_forward ()
 	" Move subtree forward
 	call cursor('.', col('$'))
-	let cursor_linum = line('.')
+	let curlinum = line('.')
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
-	let depth = cursor_linum - head_linum
+	let depth = curlinum - head_linum
 	let level = subtree.level
 	let last_linum = line('$')
 	" ---- find same level targets candidates
@@ -504,18 +504,18 @@ fun! organ#tree#move_subtree_forward ()
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, 1)
+	let nearest = organ#bird#nearest (curlinum, same_linum, upper_linum, 1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree forward : not found'
 		return 0
 	endif
-	if nearest == cursor_linum
+	if nearest == curlinum
 		echomsg 'organ tree move subtree forward : nothing to do'
 		return 0
 	endif
 	" ---- plain forward or wrapped backward ?
-	let forward = nearest > cursor_linum
+	let forward = nearest > curlinum
 	" ---- same or upper level ?
 	if same_linum == nearest
 		" -- same_linum == nearest
@@ -596,11 +596,11 @@ fun! organ#tree#moveto ()
 	" Move current subtree to another one
 	" ---- range of current subtree
 	let subtree = organ#bird#subtree ()
-	let cursor_linum = line('.')
+	let curlinum = line('.')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
-	let depth = cursor_linum - head_linum
+	let depth = curlinum - head_linum
 	let level = subtree.level
 	let upper_level = level - 1
 	" ---- find target subtree
@@ -649,11 +649,11 @@ fun! organ#tree#copyto ()
 	" Copy current subtree to another one
 	" ---- range of current subtree
 	let subtree = organ#bird#subtree ()
-	let cursor_linum = line('.')
+	let curlinum = line('.')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
-	let depth = cursor_linum - head_linum
+	let depth = curlinum - head_linum
 	let level = subtree.level
 	let upper_level = level - 1
 	" ---- find target subtree
