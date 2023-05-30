@@ -201,7 +201,6 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefixless_plugs = {}
   let g:organ_config.list = {}
   let g:organ_config.links = {}
-  let g:organ_config.templates = {}
   let g:organ_config.expr = {}
   let g:organ_config.completion = {}
   " ---- enable for every file if > 0
@@ -228,24 +227,8 @@ if ! exists("g:organ_loaded")
   " let g:organ_config.prefixless_plugs.insert = []
   " ---- number of spaces to indent lists (default)
   let g:organ_config.list.indent_length = 2
-  " ---- items chars in unordered list (default)
-  let g:organ_config.list.unordered.org = ['-', '+', '*']
-  let g:organ_config.list.unordered.markdown = ['-', '+']
-  " ---- items chars in ordered list (default)
-  let g:organ_config.list.ordered.org = ['.', ')']
-  let g:organ_config.list.ordered.markdown = ['.']
-  " ---- first item counter in an ordered list
-  " ---- must be >= 0, default 1
-  let g:organ_config.list.counter_start = 1
   " ---- number of stored links to keep in history (default)
   let g:organ_config.links.keep = 5
-  " ---- shortcuts to expand templates
-  " ---- examples from default settings
-  " ---- run :echo g:organ_config.templates to see all
-  " -- #+begin_center bloc
-  let g:organ_config.templates['<c'] = 'center'
-  " -- #+include: line
-  let g:organ_config.templates['+i'] = 'include'
   " ---- todo keywoard cycle
   " ---- default : todo : TODO - DONE - none
   " ---- no need to add none to the list

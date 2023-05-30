@@ -114,6 +114,9 @@ fun! organ#seed#source (...)
 	elseif &filetype ==# 'markdown'
 		let open = '```' .. lang
 		let close = '```'
+	elseif &filetype ==# 'vimwiki'
+		let open = '{{{' .. lang
+		let close = '}}}'
 	endif
 	let linum = line('.')
 	call setline(linum, open)

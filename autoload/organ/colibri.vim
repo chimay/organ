@@ -320,7 +320,7 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 	let prefix_pattern = '\m^\s*\zs\S\+'
 	let prefix = text->matchstr(prefix_pattern)
 	if len(prefix) > 1
-		let counter = str2nr(prefix[:-2])
+		let counter = str2nr(prefix->matchstr('[0-9]\+'))
 	else
 		let counter = -1
 	endif
