@@ -30,6 +30,12 @@ fun! organ#vine#template (url, desc = '')
 		else
 			let link = '[' .. desc .. '](' .. url .. ')'
 		endif
+	elseif &filetype ==# 'vimwiki'
+		if empty(desc)
+			let link = '[[' .. url .. ']]'
+		else
+			let link = '[[' .. url .. '|' .. desc .. ']]'
+		endif
 	else
 		if empty(desc)
 			let link = '[[' .. url .. ']]'
@@ -84,6 +90,9 @@ fun! organ#vine#generic_pattern ()
 	elseif &filetype ==# 'markdown'
 		let pattern = '\m<[^>]\+>\|'
 		let pattern ..= '\[[^\]]\+\]([^)]\+)'
+	elseif &filetype ==# 'vimwiki'
+		let pattern = '\m\[\[[^|\]]\+\]\]\|'
+		let pattern ..= '\[\[[^|\]]\+|[^|\]]\+\]\]'
 	else
 		let pattern = '\m\[\[[^\]]\+\]\]\|'
 		let pattern ..= '\[\[[^\]]\+\]\[[^\]]\+\]\]'
@@ -144,6 +153,13 @@ fun! organ#vine#url (link)
 		let url = link->matchstr(pattern)
 		if empty(url)
 			let pattern = '\m\[[^\]]\+\](\zs[^)]\+\ze)'
+			let url = link->matchstr(pattern)
+		endif
+	elseif &filetype ==# 'vimwiki'
+		let pattern = '\m\[\[\zs[^|\]]\+\ze\]\]'
+		let url = link->matchstr(pattern)
+		if empty(url)
+			let pattern = '\m\[\[\zs[^|\]]\+\ze|[^|\]]\+\]\]'
 			let url = link->matchstr(pattern)
 		endif
 	else
