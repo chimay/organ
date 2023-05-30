@@ -592,8 +592,7 @@ is available.
 
 # Meta-command
 
-The `:Organ` meta-command gives you access to almost all the plugin
-features :
+The `:Organ` meta-command gives you access to all the plugin features :
 
 ```vim
 :Organ subcommand
@@ -604,6 +603,13 @@ Examples :
 ```vim
 :Organ store-url
 :Organ export-with-pandoc
+```
+
+Some less-used features, like copying a subtree to another place, are
+only available via this command :
+
+```vim
+:Organ copy-subtree-to
 ```
 
 Completion is available for subcommands.

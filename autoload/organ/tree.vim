@@ -596,9 +596,11 @@ fun! organ#tree#moveto ()
 	" Move current subtree to another one
 	" ---- range of current subtree
 	let subtree = organ#bird#subtree ()
+	let cursor_linum = line('.')
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
-	let range = head_linum .. ',' .. tail_linum
+	let spread = tail_linum - head_linum
+	let depth = cursor_linum - head_linum
 	let level = subtree.level
 	let upper_level = level - 1
 	" ---- find target subtree
@@ -627,14 +629,70 @@ fun! organ#tree#moveto ()
 		endif
 	endif
 	" ---- move
+	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
-	if target < head_linum
-		call cursor(target + 1, 1)
+	" ---- new head, cursor
+	if target > head_linum
+		let new_headnum = target - spread
 	else
-		let spread = tail_linum - head_linum
-		let new_place = target - spread
-		call cursor(new_place, 1)
+		let new_headnum = target + 1
 	endif
+	let cursor_target = new_headnum + depth
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
+	normal! zv
+	call organ#spiral#cursor ()
+	return target
+endfun
+
+fun! organ#tree#copyto ()
+	" Copy current subtree to another one
+	" ---- range of current subtree
+	let subtree = organ#bird#subtree ()
+	let cursor_linum = line('.')
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let spread = tail_linum - head_linum
+	let depth = cursor_linum - head_linum
+	let level = subtree.level
+	let upper_level = level - 1
+	" ---- find target subtree
+	let prompt = 'Copy current subtree to : '
+	let complete = 'customlist,organ#complete#headline_same_level_or_parent'
+	let record = input(prompt, '', complete)
+	if empty(record)
+		return -1
+	endif
+	let fields = split(record, s:field_separ)
+	let linum = str2nr(fields[0])
+	call cursor(linum, 1)
+	let subtree = organ#bird#subtree ()
+	let target = subtree.tail_linum
+	" ---- endmarker case
+	if level > 1 && organ#origami#is_marker_headline_file ()
+		let endmarker_pattern = organ#origami#endmarker_level_pattern (upper_level, upper_level)
+		let target_line = getline(target)
+		if target > 1
+			let prev_target_line = getline(target - 1)
+		endif
+		if target_line =~ endmarker_pattern
+			let target -= 1
+		elseif target > 1 && prev_target_line =~ endmarker_pattern
+			let target -= 2
+		endif
+	endif
+	" ---- copy
+	let range = head_linum .. ',' .. tail_linum
+	execute range .. 'copy' target
+	" ---- new head, cursor
+	if target > head_linum
+		let new_headnum = target - spread
+	else
+		let new_headnum = target + 1
+	endif
+	let cursor_target = new_headnum + depth
+	" --- move cursor to the new heading place
+	call cursor(cursor_target, 1)
 	normal! zv
 	call organ#spiral#cursor ()
 	return target
