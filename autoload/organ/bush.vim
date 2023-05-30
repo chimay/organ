@@ -60,7 +60,7 @@ fun! organ#bush#indent_item (level, ...)
 	" -- length prefix + one space
 	let indentnum += len_prefix + 1
 	let spaces = repeat(' ', indentnum)
-	let tabspaces = organ#stair#tabspaces(indent)
+	let tabspaces = organ#stair#tabspaces(indentnum)
 	let mixed = tabspaces.string
 	for linum in range(head + 1, tail)
 		let line = getline(linum)
@@ -273,7 +273,7 @@ fun! organ#bush#update_prefix (direction = 0, ...)
 		" --- alone of level in subtree
 		let prefix = organ#bush#rotate_prefix (direction, properties, 'same-kind')
 	endif
-	" ---- prefix
+	" ---- restore position
 	call setpos('.', position)
 	" ---- update prefix
 	let level = properties.level
@@ -545,7 +545,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	let direction = a:direction
 	let position = getcurpos ()
 	let common_indent = organ#colibri#common_indent ()
-	let properties = organ#colibri#properties (common_indent)
+	let properties = organ#colibri#properties ('dont-move', common_indent)
 	let level = properties.level
 	" ---- find boundaries
 	if level > 1
@@ -567,7 +567,7 @@ fun! organ#bush#cycle_prefix (direction = 1)
 	" ---- loop
 	call cursor(first, 1)
 	while v:true
-		let properties = organ#colibri#properties (common_indent)
+		let properties = organ#colibri#properties ('dont-move', common_indent)
 		if level == properties.level
 			call organ#bush#set_prefix (newprefix, properties)
 		endif
@@ -639,7 +639,7 @@ fun! organ#bush#promote (context = 'alone', ...)
 	else
 		let common_indent = organ#colibri#common_indent ()
 	endif
-	let properties = organ#colibri#properties (common_indent)
+	let properties = organ#colibri#properties ('dont-move', common_indent)
 	let linum = properties.linum
 	let level = properties.level
 	let properties.common_indent = common_indent
@@ -682,7 +682,7 @@ fun! organ#bush#demote (context = 'alone', ...)
 	else
 		let common_indent = organ#colibri#common_indent ()
 	endif
-	let properties = organ#colibri#properties (common_indent)
+	let properties = organ#colibri#properties ('dont-move', common_indent)
 	let linum = properties.linum
 	let level = properties.level
 	let properties.common_indent = common_indent
@@ -782,6 +782,7 @@ fun! organ#bush#move_subtree_backward ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
+	let depth = cursor_linum - head_linum
 	let level = subtree.level
 	" ---- find same level and upper level targets candidates
 	let same_pattern = organ#colibri#level_pattern (level, level)
@@ -797,13 +798,13 @@ fun! organ#bush#move_subtree_backward ()
 		let middle_linum = search(upper_pattern, flags)
 		call cursor(middle_linum, 1)
 		let upper_linum = search(upper_pattern, flags)
-		call cursor(cursor_linum, 1)
+		"call cursor(cursor_linum, 1)
 	else
 		let middle_linum = 0
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (same_linum, upper_linum, -1)
+	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, -1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ bush move subtree backward : not found'
@@ -813,29 +814,34 @@ fun! organ#bush#move_subtree_backward ()
 		echomsg 'organ bush move subtree backward : nothing to do'
 		return 0
 	endif
+	" ---- plain backward or wrapped forward ?
+	let backward = nearest < cursor_linum
 	" ---- same or upper level ?
 	if same_linum == nearest
 		" -- same_linum == nearest
-		if same_linum == organ#bird#nearest(same_linum, middle_linum, -1)
+		if same_linum == organ#bird#nearest(cursor_linum, same_linum, middle_linum, -1)
 			" no upper level between
-			let cursor_target = same_linum
-			let target = cursor_target - 1
+			let target = same_linum - 1
 		else
 			" upper level between
 			call cursor(same_linum, 1)
 			let same_subtree = organ#colibri#subtree ()
 			let target = same_subtree.tail_linum
-			let cursor_target = target + 1
 		endif
 	else
 		" -- upper_linum == nearest
 		call cursor(upper_linum, 1)
 		let upper_subtree = organ#colibri#subtree ()
 		let target = upper_subtree.tail_linum
-		let cursor_target = target + 1
 	endif
+	" ---- new head, cursor
+	if backward
+		let new_headnum = target + 1
+	else
+		let new_headnum = target - spread
+	endif
+	let cursor_target = new_headnum + depth
 	" ---- plain backward or wrapped forward ?
-	let backward = nearest < cursor_linum
 	if ! backward
 		let cursor_target = target - spread
 	endif
@@ -859,6 +865,7 @@ fun! organ#bush#move_subtree_forward ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
+	let depth = cursor_linum - head_linum
 	let level = subtree.level
 	" ---- find same level and upper level targets candidates
 	let same_pattern = organ#colibri#level_pattern (level, level)
@@ -873,7 +880,7 @@ fun! organ#bush#move_subtree_forward ()
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (same_linum, upper_linum, 1)
+	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, 1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ bush move subtree forward : not found'
@@ -883,15 +890,17 @@ fun! organ#bush#move_subtree_forward ()
 		echomsg 'organ bush move subtree forward : nothing to do'
 		return 0
 	endif
+	" ---- plain forward or wrapped backward ?
+	let forward = nearest > cursor_linum
 	" ---- same or upper level ?
 	if same_linum == nearest
 		call cursor(same_linum, 1)
 		let same_subtree = organ#colibri#subtree ()
 		let target = same_subtree.tail_linum
-		let cursor_target = target - spread
 	else
 		" upper_linum == nearest
 		call cursor(upper_linum, 1)
+		call cursor('.', col('$'))
 		let itemhead_pattern = organ#colibri#generic_pattern ()
 		let anyhead_forward = search(itemhead_pattern, flags)
 		if anyhead_forward > 0
@@ -899,13 +908,14 @@ fun! organ#bush#move_subtree_forward ()
 		else
 			let target = line('$')
 		endif
-		let cursor_target = target - spread
 	endif
-	" ---- plain forward or wrapped backward ?
-	let forward = nearest > cursor_linum
-	if ! forward
-		let cursor_target = target + 1
+	" ---- new head, cursor
+	if forward
+		let new_headnum = target - spread
+	else
+		let new_headnum = target + 1
 	endif
+	let cursor_target = new_headnum + depth
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target

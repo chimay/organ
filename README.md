@@ -120,7 +120,8 @@ Organ supports :
   + basic navigation
   + subtree selection, yank & delete
   + promote & demote subtree
-- asciidoc : headings only
+- asciidoc
+-
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 
