@@ -12,6 +12,12 @@ endif
 let s:indent_pattern = organ#crystal#fetch('pattern/indent')
 lockvar s:indent_pattern
 
+if exists('s:hollow_pattern')
+	unlockvar s:hollow_pattern
+endif
+let s:hollow_pattern = organ#crystal#fetch('pattern/line/hollow')
+lockvar s:hollow_pattern
+
 " ---- helpers
 
 " -- patterns
@@ -707,22 +713,59 @@ endfun
 
 fun! organ#table#duplicate ()
 	" Duplicate above cell content to current one
+	call organ#origami#suspend ()
 	let paragraph = organ#table#update ()
 	let linumlist = paragraph.linumlist
+	let linelist = paragraph.linelist
 	let cellgrid = paragraph.cellgrid
 	" ---- cursor
 	let curlinum = line('.')
-	let curcolnum = col('.')
+	let cursorcol = col('.')
 	let currownum = linumlist->index(curlinum)
+	let curcellrow = cellgrid[currownum]
 	let positions = organ#table#positions (curlinum)
+	let colmax = len(positions)
+	" ---- patterns
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- we need at least a table row above
 	if currownum <= 0
 		return paragraph
 	endif
+	" ---- current column
+	" ---- between delimiters colnum & colnum + 1
+	let cursor = col('.')
+	for colnum in range(colmax - 1)
+		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
+			break
+		endif
+	endfor
+	" -- indent = cellrow[0]
+	" -- first col = cellrow[1]
+	let curcolnum = colnum + 1
 	" ---- above row
-	let above_index = currownum - 1
-	let above = cellgrid[above_index]
-	echomsg above
+	let above_rownum = currownum - 1
+	while v:true
+		if linelist[above_rownum] !~ sepline_pattern
+			break
+		endif
+		if above_rownum == 0
+			return paragraph
+		endif
+		let above_rownum -= 1
+	endwhile
+	let aboverow = cellgrid[above_rownum]
+	" ---- (above row, same col) content -> (current row, current col)
+	let content = aboverow[curcolnum]
+	if content =~ s:hollow_pattern
+		return paragraph
+	endif
+	let cellgrid[currownum][curcolnum] = content
+	" ---- sync paragraph -> table
+	let paragraph = organ#table#rebuild (paragraph)
+	call organ#table#commit (paragraph)
+	" ---- coda
+	call organ#origami#resume ()
+	return paragraph
 endfun
 
 " ---- move rows & cols
@@ -768,8 +811,8 @@ fun! organ#table#move_col_left (...)
 	let currownum = linumlist->index(curlinum)
 	let curcellrow = cellgrid[currownum]
 	let positions = organ#table#positions (curlinum)
-	" ---- two delimiters or less = only one column
 	let colmax = len(positions)
+	" ---- two delimiters or less = only one column
 	if colmax <= 2
 		return paragraph
 	endif
@@ -781,8 +824,8 @@ fun! organ#table#move_col_left (...)
 			break
 		endif
 	endfor
-	" ---- indent = cellrow[0]
-	" ---- first col = cellrow[1]
+	" -- indent = cellrow[0]
+	" -- first col = cellrow[1]
 	let curcolnum = colnum + 1
 	" ---- can't move further left
 	if curcolnum == 1
@@ -822,8 +865,8 @@ fun! organ#table#move_col_right ()
 	let currownum = linumlist->index(curlinum)
 	let curcellrow = cellgrid[currownum]
 	let positions = organ#table#positions (curlinum)
-	" ---- two delimiters or less = only one column
 	let colmax = len(positions)
+	" ---- two delimiters or less = only one column
 	if colmax <= 2
 		return paragraph
 	endif
@@ -835,8 +878,8 @@ fun! organ#table#move_col_right ()
 			break
 		endif
 	endfor
-	" ---- indent = cellrow[0]
-	" ---- first col = cellrow[1]
+	" -- indent = cellrow[0]
+	" -- first col = cellrow[1]
 	let curcolnum = colnum + 1
 	" ---- can't move further right
 	if curcolnum == colmax - 1

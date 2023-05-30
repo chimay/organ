@@ -269,7 +269,7 @@ chapter 3.4.3 {{{3
 content text
 
 - item 1
-  1. item 2.3
+  + item 2.3
     1. item 2.3.1
     2. item 2.3.2
        bla bla

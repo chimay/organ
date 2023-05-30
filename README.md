@@ -276,41 +276,41 @@ nmap <c-n> <plug>(organ-next)
 
 Here is a complete list :
 
-| Plugs                              | Heading or list item      | Table              |
-|------------------------------------|---------------------------|--------------------|
-| `<plug>`(organ-previous)           | previous heading or item  |                    |
-| `<plug>`(organ-next)               | next heading or item      |                    |
-| `<plug>`(organ-backward)           | previous, same level      |                    |
-| `<plug>`(organ-forward)            | next, same level          |                    |
-| `<plug>`(organ-parent)             | parent heading or item    |                    |
-| `<plug>`(organ-loose-child)        | loose child               |                    |
-| `<plug>`(organ-strict-child)       | strict child              |                    |
-| `<plug>`(organ-info)               | full heading path         |                    |
-| `<plug>`(organ-goto-headline)      | go to headline, with comp |                    |
-| `<plug>`(organ-cycle-fold)         | cycle current fold        |                    |
-| `<plug>`(organ-cycle-all-folds)    | cycle all folds           |                    |
-| `<plug>`(organ-select-subtree)     | select subtree            |                    |
-| `<plug>`(organ-yank-subtree)       | yank subtree              |                    |
-| `<plug>`(organ-delete-subtree)     | delete subtree            |                    |
-| `<plug>`(organ-meta-return)        | new heading or item       | new row            |
-| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row            |
-| `<plug>`(organ-tab)                |                           | go to next cell    |
-| `<plug>`(organ-shift-tab)          |                           | go to prev cell    |
-| `<plug>`(organ-meta-left)          | promote                   | move column left   |
-| `<plug>`(organ-meta-right)         | demote                    | move column right  |
-| `<plug>`(organ-meta-up)            | move heading or item up   | move row up        |
-| `<plug>`(organ-meta-down)          | move heading or item down | move row down      |
-| `<plug>`(organ-shift-left)         | cycle item prefix left    | go to cell begin   |
-| `<plug>`(organ-shift-right)        | cycle item prefix right   | go to cell end     |
-| `<plug>`(organ-shift-up)           | cycle todo keyword left   |                    |
-| `<plug>`(organ-shift-down)         | cycle todo keyword right  | select cell        |
-| `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column      |
-| `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column     |
-| `<plug>`(organ-meta-shift-up)      |                           | delete row         |
-| `<plug>`(organ-meta-shift-down)    |                           | add new row        |
-| `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                    |
-| `<plug>`(organ-align)              |                           | align table        |
-| `<plug>`(organ-new-separator-line) |                           | add separator line |
+| Plugs                              | Heading or list item      | Table                  |
+|------------------------------------|---------------------------|------------------------|
+| `<plug>`(organ-previous)           | previous heading or item  |                        |
+| `<plug>`(organ-next)               | next heading or item      |                        |
+| `<plug>`(organ-backward)           | previous, same level      |                        |
+| `<plug>`(organ-forward)            | next, same level          |                        |
+| `<plug>`(organ-parent)             | parent heading or item    |                        |
+| `<plug>`(organ-loose-child)        | loose child               |                        |
+| `<plug>`(organ-strict-child)       | strict child              |                        |
+| `<plug>`(organ-info)               | full heading path         |                        |
+| `<plug>`(organ-goto-headline)      | go to headline, with comp |                        |
+| `<plug>`(organ-cycle-fold)         | cycle current fold        |                        |
+| `<plug>`(organ-cycle-all-folds)    | cycle all folds           |                        |
+| `<plug>`(organ-select-subtree)     | select subtree            |                        |
+| `<plug>`(organ-yank-subtree)       | yank subtree              |                        |
+| `<plug>`(organ-delete-subtree)     | delete subtree            |                        |
+| `<plug>`(organ-meta-return)        | new heading or item       | new row                |
+| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row                |
+| `<plug>`(organ-tab)                |                           | go to next cell        |
+| `<plug>`(organ-shift-tab)          |                           | go to prev cell        |
+| `<plug>`(organ-meta-left)          | promote                   | move column left       |
+| `<plug>`(organ-meta-right)         | demote                    | move column right      |
+| `<plug>`(organ-meta-up)            | move heading or item up   | move row up            |
+| `<plug>`(organ-meta-down)          | move heading or item down | move row down          |
+| `<plug>`(organ-shift-left)         | cycle item prefix left    | go to cell begin       |
+| `<plug>`(organ-shift-right)        | cycle item prefix right   | go to cell end         |
+| `<plug>`(organ-shift-up)           | cycle todo keyword left   | copy above -> cur cell |
+| `<plug>`(organ-shift-down)         | cycle todo keyword right  | select cell            |
+| `<plug>`(organ-meta-shift-left)    | promote subtree           | delete column          |
+| `<plug>`(organ-meta-shift-right)   | demote subtree            | add new column         |
+| `<plug>`(organ-meta-shift-up)      |                           | delete row             |
+| `<plug>`(organ-meta-shift-down)    |                           | add new row            |
+| `<plug>`(organ-move-subtree-to)    | move subtree, prompt comp |                        |
+| `<plug>`(organ-align)              |                           | align table            |
+| `<plug>`(organ-new-separator-line) |                           | add separator line     |
 
 | Plugs                            | Operation                         |
 |----------------------------------|-----------------------------------|
@@ -412,32 +412,32 @@ value in your init file, these bindings become available :
 
 Some of them are context sensitive :
 
-| Map           | Heading               | List               | Table             |
-|---------------|-----------------------|--------------------|-------------------|
-| `<M-p>`       | previous heading      | previous item      |                   |
-| `<M-n>`       | next heading          | next item          |                   |
-| `<M-b>`       | prev head, same level | prev item, = level |                   |
-| `<M-f>`       | next head, same level | next item, = level |                   |
-| `<M-u>`       | parent heading        | parent item        |                   |
-| `<M-l>`       | child heading, loose  | child item, loose  |                   |
-| `<M-S-l>`     | child heading, strict | child item, strict |                   |
-| `<M-v>`       | select subtree        | select subtree     |                   |
-| `<M-y>`       | yank subtree          | yank subtree       |                   |
-| `<M-S-x>`     | delete subtree        | delete subtree     |                   |
-| `<M-CR>`      | new headline          | new item           | new row           |
-| `<S-CR>`      | new headline          | new checkbox item  | new row           |
-| `<M-left>`    | promote               | promote            | move column left  |
-| `<M-right>`   | demote                | demote             | move column right |
-| `<M-up>`      | move subtree up       | move subtree up    | move row up       |
-| `<M-down>`    | move subtree down     | move subtree down  | move row down     |
-| `<S-left>`    |                       | cycle prefix left  | go to cell begin  |
-| `<S-right>`   |                       | cycle prefix right | go to cell end    |
-| `<S-up>`      | cycle todo left       | cycle todo left    |                   |
-| `<S-down>`    | cycle todo right      | cycle todo right   | select cell       |
-| `<M-S-left>`  | promote subtree       | promote subtree    | new column        |
-| `<M-S-right>` | demote subtree        | demote subtree     | delete column     |
-| `<M-S-up>`    |                       |                    | delete row        |
-| `<M-S-down>`  |                       |                    | new row           |
+| Map           | Heading               | List               | Table                  |
+|---------------|-----------------------|--------------------|------------------------|
+| `<M-p>`       | previous heading      | previous item      |                        |
+| `<M-n>`       | next heading          | next item          |                        |
+| `<M-b>`       | prev head, same level | prev item, = level |                        |
+| `<M-f>`       | next head, same level | next item, = level |                        |
+| `<M-u>`       | parent heading        | parent item        |                        |
+| `<M-l>`       | child heading, loose  | child item, loose  |                        |
+| `<M-S-l>`     | child heading, strict | child item, strict |                        |
+| `<M-v>`       | select subtree        | select subtree     |                        |
+| `<M-y>`       | yank subtree          | yank subtree       |                        |
+| `<M-S-x>`     | delete subtree        | delete subtree     |                        |
+| `<M-CR>`      | new headline          | new item           | new row                |
+| `<S-CR>`      | new headline          | new checkbox item  | new row                |
+| `<M-left>`    | promote               | promote            | move column left       |
+| `<M-right>`   | demote                | demote             | move column right      |
+| `<M-up>`      | move subtree up       | move subtree up    | move row up            |
+| `<M-down>`    | move subtree down     | move subtree down  | move row down          |
+| `<S-left>`    |                       | cycle prefix left  | go to cell begin       |
+| `<S-right>`   |                       | cycle prefix right | go to cell end         |
+| `<S-up>`      | cycle todo left       | cycle todo left    | copy above -> cur cell |
+| `<S-down>`    | cycle todo right      | cycle todo right   | select cell            |
+| `<M-S-left>`  | promote subtree       | promote subtree    | new column             |
+| `<M-S-right>` | demote subtree        | demote subtree     | delete column          |
+| `<M-S-up>`    |                       |                    | delete row             |
+| `<M-S-down>`  |                       |                    | new row                |
 
 Note that most table operations expect an aligned table. So, if it's
 not, you have to align it before juggling with rows & cols.

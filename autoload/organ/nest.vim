@@ -276,6 +276,7 @@ endfun
 fun! organ#nest#shift_up ()
 	" For <s-up> map
 	if organ#table#is_in_table ()
+		return organ#table#duplicate ()
 	elseif organ#colibri#is_in_list ()
 		return organ#bush#cycle_todo (-1)
 	else
