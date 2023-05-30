@@ -331,6 +331,70 @@ fun! organ#table#charpos (...)
 	return positions
 endfun
 
+" -- cursor
+
+fun! organ#table#cursor_rowcol (paragraph)
+	" Cursor row & col in table
+	let paragraph = a:paragraph
+	let is_table = paragraph.is_table
+	let linumlist = paragraph.linumlist
+	" ---- cursor
+	let curlinum = line('.')
+	let cursorcol = col('.')
+	" ---- patterns
+	if organ#table#is_separator_line (curlinum)
+		let delimpat = organ#table#sepline_delimiter_pattern ()
+	else
+		let delimpat = paragraph.delimpat
+	endif
+	" ---- current row
+	let currownum = linumlist->index(curlinum)
+	" ---- delimiter positions
+	let positions = organ#table#positions (curlinum, delimpat)
+	let colmax = len(positions)
+	" ---- current column
+	if cursorcol < positions[0]
+		let colnum = 0
+	elseif cursorcol > positions[-1]
+		let colnum = colmax
+	else
+		for colnum in range(1, colmax - 1)
+			if cursorcol >= positions[colnum - 1] && cursorcol <= positions[colnum]
+				break
+			endif
+		endfor
+	endif
+	let curcolnum = colnum
+	return [currownum, curcolnum]
+endfun
+
+fun! organ#table#adapt_cursor (paragraph)
+	" Adapt cursor position to row & col registered in paragraph
+	let paragraph = a:paragraph
+	let linumlist = paragraph.linumlist
+	let currownum = paragraph.currownum
+	let curcolnum = paragraph.curcolnum
+	let curlinum = linumlist[currownum]
+	" ---- patterns
+	if organ#table#is_separator_line (curlinum)
+		let delimpat = organ#table#sepline_delimiter_pattern ()
+	else
+		let delimpat = paragraph.delimpat
+	endif
+	" ---- delimiters positions
+	let positions = organ#table#positions (curlinum, delimpat)
+	" ---- cursor column
+	if curcolnum == 0
+		let cursorcol = 0
+	else
+		let cursorcol = positions[curcolnum - 1] + 3
+	endif
+	" ---- move cursor
+	call cursor(curlinum, cursorcol)
+	" ---- coda
+	return paragraph
+endfun
+
 " ---- align
 
 fun! organ#table#shrink_separator_lines (paragraph)
@@ -532,7 +596,11 @@ fun! organ#table#align (mode = 'normal') range
 	" Align table or paragraph
 	call organ#origami#suspend ()
 	let mode = a:mode
-	let position = getcurpos ()
+	" ---- init
+	let paragraph = {}
+	let paragraph.is_table = organ#table#is_in_table ()
+	" ---- cursor position
+	let paragraph.position = getcurpos ()
 	" ---- head & tail
 	if mode ==# 'visual'
 		let head_linum = a:firstline
@@ -541,15 +609,10 @@ fun! organ#table#align (mode = 'normal') range
 		let head_linum = organ#table#head ()
 		let tail_linum = organ#table#tail ()
 	endif
-	" ---- init
-	let paragraph = {}
-	let paragraph.is_table = organ#table#is_in_table ()
 	" ---- lines
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
 	let paragraph.pristine = copy(paragraph.linelist)
-	" ---- indent
-	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiter pattern
 	if paragraph.is_table
 		let paragraph.delimpat = organ#table#delimiter ()
@@ -557,6 +620,12 @@ fun! organ#table#align (mode = 'normal') range
 		let prompt = 'Align following pattern : '
 		let paragraph.delimpat = input(prompt, '')
 	endif
+	" ---- cursor row & col in table
+	let [currownum, curcolnum] = organ#table#cursor_rowcol (paragraph)
+	let paragraph.currownum = currownum
+	let paragraph.curcolnum = curcolnum
+	" ---- indent
+	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiters
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	if paragraph.is_table
@@ -574,8 +643,9 @@ fun! organ#table#align (mode = 'normal') range
 	let paragraph = organ#table#rebuild (paragraph)
 	" ---- commit lines to buffer
 	call organ#table#commit (paragraph)
+	" ---- adapt cursor position
+	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
-	call setpos('.', position)
 	call organ#origami#resume ()
 	return paragraph
 endfun
@@ -598,10 +668,15 @@ fun! organ#table#fill (...)
 	let paragraph.linumlist = range(head_linum, tail_linum)
 	let paragraph.linelist = getline(head_linum, tail_linum)
 	let paragraph.pristine = copy(paragraph.linelist)
+	" ---- delimiter pattern
+	let paragraph.delimpat = organ#table#delimiter ()
+	" ---- cursor row & col in table
+	let [currownum, curcolnum] = organ#table#cursor_rowcol (paragraph)
+	let paragraph.currownum = currownum
+	let paragraph.curcolnum = curcolnum
 	" ---- indent
 	let paragraph = organ#table#minindent(paragraph)
 	" ---- delimiters
-	let paragraph.delimpat = organ#table#delimiter ()
 	let paragraph.delimgrid = organ#table#delimgrid(paragraph)
 	let paragraph = organ#table#add_missing_delims(paragraph)
 	" ---- cells
@@ -627,8 +702,9 @@ fun! organ#table#update (...)
 	let paragraph = call('organ#table#fill', a:000)
 	" ---- commit
 	call organ#table#commit (paragraph)
+	" ---- adapt cursor position
+	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
-	call setpos('.', position)
 	return paragraph
 endfun
 
