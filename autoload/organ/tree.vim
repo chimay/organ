@@ -380,6 +380,7 @@ fun! organ#tree#move_subtree_backward ()
 	let head_linum = subtree.head_linum
 	let tail_linum = subtree.tail_linum
 	let spread = tail_linum - head_linum
+	let depth = cursor_linum - head_linum
 	let level = subtree.level
 	let last_linum = line('$')
 	" ---- find same level targets candidates
@@ -396,13 +397,13 @@ fun! organ#tree#move_subtree_backward ()
 		let middle_linum = search(upper_pattern, flags)
 		call cursor(middle_linum, 1)
 		let upper_linum = search(upper_pattern, flags)
-		call cursor(cursor_linum, 1)
+		"call cursor(cursor_linum, 1)
 	else
 		let middle_linum = 0
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (-1, same_linum, upper_linum)
+	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, -1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree backward : not found'
@@ -412,62 +413,60 @@ fun! organ#tree#move_subtree_backward ()
 		echomsg 'organ tree move subtree backward : nothing to do'
 		return 0
 	endif
+	" ---- plain backward or wrapped forward ?
+	let backward = nearest < cursor_linum
 	" ---- same or upper level ?
 	if same_linum == nearest
 		" -- same_linum == nearest
-		if same_linum == organ#bird#nearest(-1, same_linum, middle_linum)
+		if same_linum == organ#bird#nearest(cursor_linum, same_linum, middle_linum, -1)
 			" no upper level between
-			let cursor_target = same_linum
-			let target = cursor_target - 1
+			let target = same_linum - 1
 		else
 			" upper level between
 			call cursor(same_linum, 1)
 			let same_subtree = organ#bird#subtree ()
 			let target = same_subtree.tail_linum
-			let cursor_target = target + 1
 		endif
 	else
 		" -- upper_linum == nearest
 		call cursor(upper_linum, 1)
 		let upper_subtree = organ#bird#subtree ()
 		let target = upper_subtree.tail_linum
-		let cursor_target = target + 1
 	endif
-	" ---- plain backward or wrapped forward ?
-	let backward = nearest < cursor_linum
-	if ! backward
-		if level == 1
-			let target = last_linum
-		endif
-		let cursor_target = target - spread
+	" ---- forward level 1
+	if ! backward && level == 1
+		let target = last_linum
 	endif
 	" ---- endmarker case
 	if level > 1 && organ#origami#is_marker_headline_file ()
 		let endmarker_pattern = organ#origami#endmarker_level_pattern (upper_level, upper_level)
 		let target_line = getline(target)
-		if target > 1
-			let prev_target_line = getline(target - 1)
-		endif
 		if target_line =~ endmarker_pattern
-			let delta = 1
-			let target -= delta
-			let cursor_target -= delta
-		elseif target > 1 && prev_target_line =~ endmarker_pattern
-			let delta = 2
-			let target -= delta
-			let cursor_target -= delta
+			let target -= 1
+		elseif target > 1
+			let prev_target_line = getline(target - 1)
+			if prev_target_line =~ endmarker_pattern
+				let target -= 2
+			endif
 		endif
 	endif
+	" ---- new head, cursor
+	if backward
+		let new_headnum = target + 1
+	else
+		let new_headnum = target - spread
+	endif
+	let cursor_target = new_headnum + depth
 	" ---- move subtree
 	let range = head_linum .. ',' .. tail_linum
 	execute range .. 'move' target
 	" ---- check blank lines
-	let before_head = cursor_target - 1
+	let before_head = new_headnum - 1
 	if before_head > 0 && getline(before_head) =~ '\m\S'
 		call append(before_head, '')
 		let cursor_target += 1
 	endif
-	let new_tail = cursor_target + spread
+	let new_tail = new_headnum + spread
 	if getline(new_tail) =~ '\m^\S'
 		call append(new_tail, '')
 	endif
@@ -478,7 +477,7 @@ fun! organ#tree#move_subtree_backward ()
 	call cursor(cursor_target, 1)
 	normal! zv
 	call organ#spiral#cursor ()
-	return cursor_target
+	return new_headnum
 endfun
 
 fun! organ#tree#move_subtree_forward ()
@@ -504,7 +503,7 @@ fun! organ#tree#move_subtree_forward ()
 		let upper_linum = 0
 	endif
 	" ---- nearest candidate
-	let nearest = organ#bird#nearest (1, same_linum, upper_linum)
+	let nearest = organ#bird#nearest (cursor_linum, same_linum, upper_linum, 1)
 	if nearest == 0
 		" both linum == 0
 		echomsg 'organ tree move subtree forward : not found'
@@ -623,11 +622,9 @@ fun! organ#tree#moveto ()
 			let prev_target_line = getline(target - 1)
 		endif
 		if target_line =~ endmarker_pattern
-			let delta = 1
-			let target -= delta
+			let target -= 1
 		elseif target > 1 && prev_target_line =~ endmarker_pattern
-			let delta = 2
-			let target -= delta
+			let target -= 2
 		endif
 	endif
 	" ---- move
