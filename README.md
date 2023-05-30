@@ -85,12 +85,14 @@ See also the [organ-multimedia repository](https://github.com/chimay/organ-multi
   + inside of table : align columns
     - also works with multibyte characters
   + outside of table : align following a pattern
+  + go to next or previous cell
+  + go to beginning or end of cell
+  + duplicate above cell content to current one
+  + select cell content
   + add new row, colum
   + delete row, colum
   + move row up or down
   + move column left or right
-  + go to next or previous cell
-  + go to beginning or end of cell
 - links
   + store url at cursor
   + create link with url completion
