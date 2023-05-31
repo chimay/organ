@@ -426,6 +426,23 @@ fun! organ#table#adapt_cursor (paragraph)
 	return paragraph
 endfun
 
+fun! organ#table#adapt_localshift (oldshift, oldcont, newcont)
+	" Adapt local cell shift from old to new content
+	let oldshift = a:oldshift
+	let oldcont = a:oldcont
+	let newcont = a:newcont
+	let charnum = oldcont->charidx(oldshift)
+	if charnum < 0
+		return len(newcont)
+	endif
+	let newshift = newcont->byteidx(charnum)
+	if newshift < 0
+		return len(newcont)
+	endif
+	echomsg oldshift charnum newshift
+	return newshift
+endfun
+
 " ---- align
 
 fun! organ#table#shrink_separator_lines (paragraph)
@@ -741,6 +758,8 @@ fun! organ#table#previous_cell ()
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
+	" ---- departure cell content
+	let oldcont = cellgrid[currownum][curcolnum]
 	" ---- row & col
 	if curcolnum <= 1
 		if currownum == 0
@@ -752,6 +771,12 @@ fun! organ#table#previous_cell ()
 		let curcolnum = colmax
 	endif
 	let curcolnum -= 1
+	" ---- arrival cell content
+	let newcont = cellgrid[currownum][curcolnum]
+	" ---- adapt localshift in case of unicode long chars
+	let oldshift = cursor.table.localshift
+	let newshift = organ#table#adapt_localshift (oldshift, oldcont, newcont)
+	let cursor.table.localshift = newshift
 	" -- adapt cursor
 	let cursor.table.row = currownum
 	let cursor.table.col = curcolnum
@@ -768,6 +793,8 @@ fun! organ#table#next_cell ()
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
+	" ---- departure cell content
+	let oldcont = cellgrid[currownum][curcolnum]
 	" ---- row & col
 	let curcellrow = cellgrid[currownum]
 	let colmax = len(curcellrow)
@@ -779,6 +806,12 @@ fun! organ#table#next_cell ()
 		let curcolnum = 0
 	endif
 	let curcolnum += 1
+	" ---- arrival cell content
+	let newcont = cellgrid[currownum][curcolnum]
+	" ---- adapt localshift in case of unicode long chars
+	let oldshift = cursor.table.localshift
+	let newshift = organ#table#adapt_localshift (oldshift, oldcont, newcont)
+	let cursor.table.localshift = newshift
 	" -- adapt cursor
 	let cursor.table.row = currownum
 	let cursor.table.col = curcolnum
@@ -876,21 +909,16 @@ fun! organ#table#duplicate ()
 	endwhile
 	let aboverow = cellgrid[above_rownum]
 	" ---- (above row, same col) content -> (current row, current col)
-	let old_content = cellgrid[currownum][curcolnum]
-	let new_content = aboverow[curcolnum]
-	if new_content =~ s:hollow_pattern
+	let oldcont = cellgrid[currownum][curcolnum]
+	let newcont = aboverow[curcolnum]
+	if newcont =~ s:hollow_pattern
 		return paragraph
 	endif
-	let cellgrid[currownum][curcolnum] = new_content
+	let cellgrid[currownum][curcolnum] = newcont
 	" ---- adapt localshift in case of unicode long chars
-	let old_localshift = cursor.table.localshift
-	let charnum = old_content->charidx(old_localshift)
-	let new_localshift = new_content->byteidx(charnum)
-	if new_localshift >= 0
-		let cursor.table.localshift = new_localshift
-	else
-		let cursor.table.localshift = len(new_content)
-	endif
+	let oldshift = cursor.table.localshift
+	let newshift = organ#table#adapt_localshift (oldshift, oldcont, newcont)
+	let cursor.table.localshift = newshift
 	" ---- sync paragraph -> table
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
