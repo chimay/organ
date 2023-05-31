@@ -367,6 +367,9 @@ fun! organ#table#cursor (paragraph)
 	" ---- current row
 	let cursor.table.row = linumlist->index(curlinum)
 	" ---- current column
+	" -- note : in tables :
+	" --   + indent = cellrow[0]
+	" --   + first col = cellrow[1]
 	if cursorcolindex < positions[0]
 		let cursor.table.col = 0
 		let indent = organ#stair#info ()
@@ -816,29 +819,17 @@ fun! organ#table#duplicate ()
 	let linelist = paragraph.linelist
 	let cellgrid = paragraph.cellgrid
 	" ---- cursor
-	let curlinum = line('.')
-	let cursorcol = col('.')
-	let currownum = linumlist->index(curlinum)
-	let curcellrow = cellgrid[currownum]
-	let positions = organ#table#positions (curlinum)
-	let colmax = len(positions)
-	" ---- patterns
-	let sepline_pattern = organ#table#sepline_pattern ()
+	let cursor = paragraph.cursor
+	let curlinum = cursor.buffer.linum
+	let cursorcol = cursor.buffer.colnum
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
 	" ---- we need at least a table row above
 	if currownum <= 0
 		return paragraph
 	endif
-	" ---- current column
-	" ---- between delimiters colnum & colnum + 1
-	let cursor = col('.')
-	for colnum in range(colmax - 1)
-		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
-			break
-		endif
-	endfor
-	" -- indent = cellrow[0]
-	" -- first col = cellrow[1]
-	let curcolnum = colnum + 1
+	" ---- patterns
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- above row
 	let above_rownum = currownum - 1
 	while v:true
@@ -852,14 +843,25 @@ fun! organ#table#duplicate ()
 	endwhile
 	let aboverow = cellgrid[above_rownum]
 	" ---- (above row, same col) content -> (current row, current col)
-	let content = aboverow[curcolnum]
-	if content =~ s:hollow_pattern
+	let old_content = cellgrid[currownum][curcolnum]
+	let new_content = aboverow[curcolnum]
+	if new_content =~ s:hollow_pattern
 		return paragraph
 	endif
-	let cellgrid[currownum][curcolnum] = content
+	let cellgrid[currownum][curcolnum] = new_content
+	" ---- adapt localshift in case of unicode long chars
+	let old_localshift = cursor.table.localshift
+	let charnum = old_content->charidx(old_localshift)
+	let new_localshift = new_content->byteidx(charnum)
+	if new_localshift >= 0
+		let cursor.table.localshift = new_localshift
+	else
+		let cursor.table.localshift = len(new_content)
+	endif
 	" ---- sync paragraph -> table
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
+	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
 	call organ#origami#resume ()
 	return paragraph
