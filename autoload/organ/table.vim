@@ -755,10 +755,13 @@ fun! organ#table#previous_cell ()
 	" Go to previous cell
 	let paragraph = organ#table#update ()
 	let cellgrid = paragraph.cellgrid
+	let linelist = paragraph.linelist
 	" ---- cursor
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
+	" ---- patterns
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- departure cell content
 	let oldcont = cellgrid[currownum][curcolnum]
 	" ---- row & col
@@ -766,7 +769,17 @@ fun! organ#table#previous_cell ()
 		if currownum == 0
 			return paragraph
 		endif
-		let currownum -= 1
+		let above_rownum = currownum - 1
+		while v:true
+			if linelist[above_rownum] !~ sepline_pattern
+				break
+			endif
+			if above_rownum == 0
+				return paragraph
+			endif
+			let above_rownum -= 1
+		endwhile
+		let currownum = above_rownum
 		let curcellrow = cellgrid[currownum]
 		let colmax = len(curcellrow)
 		let curcolnum = colmax
@@ -795,6 +808,8 @@ fun! organ#table#next_cell ()
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
+	" ---- patterns
+	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- departure cell content
 	let oldcont = cellgrid[currownum][curcolnum]
 	" ---- row & col
@@ -804,6 +819,16 @@ fun! organ#table#next_cell ()
 		if currownum == len(linelist) - 1
 			return paragraph
 		endif
+		let above_rownum = currownum - 1
+		while v:true
+			if linelist[above_rownum] !~ sepline_pattern
+				break
+			endif
+			if above_rownum == 0
+				return paragraph
+			endif
+			let above_rownum -= 1
+		endwhile
 		let currownum += 1
 		let curcolnum = 0
 	endif

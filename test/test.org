@@ -239,7 +239,7 @@ content
  |                 |             |       |
  | row 2 col 1     | row 2 col 2 |       |
  |-----------------+-------------+-------|
- | aeéè1 col 1     | ðđŋ 1 col 2 | hello |
+ | row 2 col 1     | ðđŋ 1 col 2 | hello |
  | row 3 col 1 max | uù 3 col 2  |       |
  |-----------------+-------------+-------|
  | row 1 col 1     | row 1 col 2 | hello |
