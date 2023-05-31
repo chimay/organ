@@ -762,12 +762,29 @@ endfun
 
 fun! organ#table#next_cell ()
 	" Go to next cell
-	call organ#table#update ()
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\s\{0,1}\zs.\ze'
-	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-	let linum = search(pattern, flags)
-	return linum
+	let paragraph = organ#table#update ()
+	let linelist = paragraph.linelist
+	let cellgrid = paragraph.cellgrid
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	" ---- row & col
+	let curcellrow = cellgrid[currownum]
+	let colmax = len(curcellrow)
+	if curcolnum >= colmax - 1
+		if currownum == len(linelist) - 1
+			return paragraph
+		endif
+		let currownum += 1
+		let curcolnum = 0
+	endif
+	let curcolnum += 1
+	" -- adapt cursor
+	let cursor.table.row = currownum
+	let cursor.table.col = curcolnum
+	call organ#table#adapt_cursor (paragraph)
+	" ---- coda
+	return paragraph
 endfun
 
 fun! organ#table#cell_begin ()
