@@ -146,7 +146,7 @@ endfun
 fun! organ#table#metalen (grid)
 	" Lengthes of each element of grid
 	let grid = deepcopy(a:grid)
-	" ---- count tabs as tabstop chars
+	" ---- count tabs as tabstop chars, and multibyte char as one
 	let Lengthes = { list -> copy(list)->map({ _, v -> strdisplaywidth(v) }) }
 	let Metalen = { _, list -> Lengthes(list) }
 	return map(grid, Metalen)
@@ -836,7 +836,7 @@ fun! organ#table#next_cell ()
 	let curcolnum += 1
 	" ---- arrival cell content
 	let newcont = cellgrid[currownum][curcolnum]
-	" ---- adapt localshift in case of unicode long chars
+	" ---- adapt localshift in case of multibyte chars
 	let oldshift = cursor.table.localshift
 	let newshift = organ#table#adapt_localshift (oldshift, oldcont, newcont)
 	let cursor.table.localshift = newshift
