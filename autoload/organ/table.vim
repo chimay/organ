@@ -912,15 +912,16 @@ fun! organ#table#move_col_left (...)
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
 	let curcellrow = cellgrid[currownum]
-	" ---- can't move further left
-	if curcolnum <= 1
-		return paragraph
-	endif
+	" ---- we need at least two columns
 	" ---- curcellrow contains :
 	" ----   + 1 indent cell
 	" ----   + row cells
 	let colmax = len(curcellrow) - 1
 	if colmax <= 1
+		return paragraph
+	endif
+	" ---- can't move further left
+	if curcolnum <= 1
 		return paragraph
 	endif
 	" ---- exchange columns
@@ -933,7 +934,7 @@ fun! organ#table#move_col_left (...)
 		let newcellrow[curcolnum] = previous
 		let cellgrid[rownum] = newcellrow
 	endfor
-	" ---- coda
+	" ---- sync paragraph -> table
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
 	" -- adapt cursor
@@ -952,33 +953,25 @@ fun! organ#table#move_col_right ()
 	let linelist = paragraph.linelist
 	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
-	" ---- current line
-	let curlinum = line('.')
-	let currownum = linumlist->index(curlinum)
+	" ---- cursor
+	let cursor = paragraph.cursor
+	let curlinum = cursor.buffer.linum
+	let cursorcol = cursor.buffer.colnum
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
 	let curcellrow = cellgrid[currownum]
-	let positions = organ#table#positions (curlinum)
-	let colmax = len(positions)
-	" ---- two delimiters or less = only one column
-	if colmax <= 2
+	" ---- we need at least two columns
+	" ---- curcellrow contains :
+	" ----   + 1 indent cell
+	" ----   + row cells
+	let colmax = len(curcellrow) - 1
+	if colmax <= 1
 		return paragraph
 	endif
-	" ---- current column
-	" ---- between delimiters colnum & colnum + 1
-	let cursor = col('.')
-	for colnum in range(colmax - 1)
-		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
-			break
-		endif
-	endfor
-	" -- indent = cellrow[0]
-	" -- first col = cellrow[1]
-	let curcolnum = colnum + 1
 	" ---- can't move further right
-	if curcolnum == colmax - 1
+	if curcolnum == colmax
 		return paragraph
 	endif
-	" ---- next col length
-	let lennextcol = len(curcellrow[curcolnum + 1])
 	" ---- exchange columns
 	for rownum in range(lenlinelist)
 		let cellrow = cellgrid[rownum]
@@ -991,12 +984,12 @@ fun! organ#table#move_col_right ()
 		let newcellrow[curcolnum + 1] = current
 		let cellgrid[rownum] = newcellrow
 	endfor
-	" ---- coda
+	" ---- sync paragraph -> table
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
-	" -- 3 = 2 for spaces and 1 for delim
-	call cursor('.', col('.') + lennextcol + 3)
-	call organ#origami#resume ()
+	" -- adapt cursor
+	let cursor.table.col += 1
+	call organ#table#adapt_cursor (paragraph)
 	return paragraph
 endfun
 
