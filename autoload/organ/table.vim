@@ -803,6 +803,7 @@ fun! organ#table#next_cell ()
 	" Go to next cell
 	let paragraph = organ#table#update ()
 	let linelist = paragraph.linelist
+	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
 	" ---- cursor
 	let cursor = paragraph.cursor
@@ -819,17 +820,17 @@ fun! organ#table#next_cell ()
 		if currownum == len(linelist) - 1
 			return paragraph
 		endif
-		let above_rownum = currownum - 1
+		let below_rownum = currownum + 1
 		while v:true
-			if linelist[above_rownum] !~ sepline_pattern
+			if linelist[below_rownum] !~ sepline_pattern
 				break
 			endif
-			if above_rownum == 0
+			if below_rownum == lenlinelist - 1
 				return paragraph
 			endif
-			let above_rownum -= 1
+			let below_rownum += 1
 		endwhile
-		let currownum += 1
+		let currownum = below_rownum
 		let curcolnum = 0
 	endif
 	let curcolnum += 1
