@@ -1034,8 +1034,6 @@ fun! organ#table#new_col ()
 	let delim = organ#table#delimiter ()
 	let seplinedelim = organ#table#sepline_delimiter ()
 	let sepline_pattern = organ#table#sepline_pattern ()
-	" ---- current line
-	let positions = organ#table#positions ()
 	" ---- we need at least one column
 	" ---- curcellrow contains :
 	" ----   + 1 indent cell
@@ -1062,7 +1060,7 @@ fun! organ#table#new_col ()
 	call organ#table#commit (paragraph)
 	" -- adapt cursor
 	let cursor.table.col += 1
-	let cursor.table.localshift = 1
+	let cursor.table.localshift = 2
 	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
 	call organ#origami#resume ()
@@ -1085,28 +1083,23 @@ fun! organ#table#delete_col ()
 	let lenlinelist = len(linelist)
 	let cellgrid = paragraph.cellgrid
 	let delimgrid = paragraph.delimgrid
+	" ---- cursor
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	let curcellrow = cellgrid[currownum]
 	" ---- patterns
 	let delim = organ#table#delimiter ()
 	let seplinedelim = organ#table#sepline_delimiter ()
-	" ---- current line
-	let positions = organ#table#positions ()
-	" ---- not enough column delimiters
-	let colmax = len(positions)
+	" ---- we need at least one column
+	" ---- curcellrow contains :
+	" ----   + 1 indent cell
+	" ----   + row cells
+	let colmax = len(curcellrow)
 	if colmax <= 1
 		return paragraph
 	endif
-	" ---- current column
-	" ---- between delimiters colnum & colnum + 1
-	let cursor = col('.')
-	for colnum in range(colmax - 1)
-		if cursor >= positions[colnum] && cursor <= positions[colnum + 1]
-			break
-		endif
-	endfor
-	" ---- indent = cellrow[0]
-	" ---- first col = cellrow[1]
-	let curcolnum = colnum + 1
-	" ---- new column
+	" ---- delete column
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let cellrow = cellgrid[rownum]
@@ -1114,10 +1107,14 @@ fun! organ#table#delete_col ()
 		eval cellrow->remove(curcolnum)
 		eval delimrow->remove(1)
 	endfor
-	" ---- coda
+	" ---- sync paragraph -> table
 	let paragraph = organ#table#rebuild (paragraph)
 	call organ#table#commit (paragraph)
-	call cursor('.', positions[curcolnum] + 3)
+	" -- adapt cursor
+	let cursor.table.col = max([curcolnum - 1, 0])
+	let cursor.table.localshift = 2
+	call organ#table#adapt_cursor (paragraph)
+	" ---- coda
 	call organ#origami#resume ()
 	return paragraph
 endfun
