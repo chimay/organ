@@ -20,6 +20,18 @@ fun! organ#utils#circular_minus (index, length)
 	return index
 endfun
 
+" ---- lists
+
+fun! organ#utils#is_inside (element, list)
+	" Whether element is in list
+	let index = a:list->index(a:element)
+	if index >= 0
+		return v:true
+	else
+		return v:false
+	endif
+endfun
+
 " ---- dicts and lists
 
 fun! organ#utils#is_nested_list (argument)

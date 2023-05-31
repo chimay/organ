@@ -203,7 +203,7 @@ fun! organ#table#complete (grid, absent = -1)
 	return complete
 endfun
 
-" -- align
+" -- grid, align
 
 fun! organ#table#delimgrid (paragraph)
 	" Grid of cells limiters
@@ -272,6 +272,10 @@ fun! organ#table#cellgrid (paragraph)
 	endfor
 	" ---- coda
 	return cellgrid
+endfun
+
+fun! organ#table#size (paragraph)
+	" Size of table in paragraph
 endfun
 
 " -- positions
@@ -380,7 +384,6 @@ fun! organ#table#cursor (paragraph)
 			endif
 		endfor
 	endif
-	echomsg cursor
 	return cursor
 endfun
 
@@ -388,9 +391,10 @@ fun! organ#table#adapt_cursor (paragraph)
 	" Adapt cursor position to row & col registered in paragraph
 	let paragraph = a:paragraph
 	let linumlist = paragraph.linumlist
-	let currownum = paragraph.cursor.table.row
-	let curcolnum = paragraph.cursor.table.col
-	let localshift = paragraph.cursor.table.localshift
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	let localshift = cursor.table.localshift
 	" ---- cursor buffer line
 	let curlinum = linumlist[currownum]
 	" ---- patterns
@@ -411,6 +415,10 @@ fun! organ#table#adapt_cursor (paragraph)
 	endif
 	" ---- move cursor
 	call cursor(curlinum, cursorcol)
+	" ---- update paragraph fields
+	let cursor.buffer.linum = curlinum
+	let cursor.buffer.colnum = cursorcol
+	let cursor.buffer.position = getcurpos ()
 	" ---- coda
 	return paragraph
 endfun
