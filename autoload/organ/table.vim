@@ -755,6 +755,7 @@ fun! organ#table#previous_cell ()
 	" Go to previous cell
 	let paragraph = organ#table#update ()
 	let cellgrid = paragraph.cellgrid
+	" ---- cursor
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
@@ -790,6 +791,7 @@ fun! organ#table#next_cell ()
 	let paragraph = organ#table#update ()
 	let linelist = paragraph.linelist
 	let cellgrid = paragraph.cellgrid
+	" ---- cursor
 	let cursor = paragraph.cursor
 	let currownum = cursor.table.row
 	let curcolnum = cursor.table.col
@@ -822,46 +824,67 @@ endfun
 
 fun! organ#table#cell_begin ()
 	" Go to cell beginning
-	let position = getcurpos ()
-	let delimiter = organ#table#delimiter ()
-	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
-	" ---- delimiter
-	let linum_delim = search(delimiter, flags)
-	let colnum_delim = col('.')
-	call setpos('.', position)
-	" ---- cell begin
-	let pattern = '\m' .. delimiter .. '\s*\zs[^ |]\ze'
-	let linum = search(pattern, flags)
-	let colnum = col('.')
-	" ---- empty cell
-	if linum < linum_delim || colnum < colnum_delim
-		call setpos('.', position)
-		return [linum, colnum]
+	let paragraph = organ#table#update ()
+	let cellgrid = paragraph.cellgrid
+	" ---- cursor
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	let curcellrow = cellgrid[currownum]
+	" ---- we need at least one column
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
+	let colmax = len(curcellrow)
+	if colmax <= 1
+		return paragraph
 	endif
+	" ---- border case
+	if curcolnum == 0
+		let cursor.table.col = 1
+	endif
+	if curcolnum == colmax
+		let cursor.table.col -= 1
+	endif
+	" ---- local shift
+	let cursor.table.localshift = 2
+	" ---- apply
+	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
-	return [linum, colnum]
+	return paragraph
 endfun
 
 fun! organ#table#cell_end ()
 	" Go to cell end
-	let position = getcurpos ()
-	let delimiter = organ#table#delimiter ()
-	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
-	" ---- delimiter
-	let linum_delim = search(delimiter, flags)
-	let colnum_delim = col('.')
-	call setpos('.', position)
-	" ---- cell end
-	let pattern = '\m\zs[^ |]\ze\s*' .. delimiter
-	let linum = search(pattern, flags)
-	let colnum = col('.')
-	" ---- empty cell
-	if linum > linum_delim || colnum > colnum_delim
-		call setpos('.', position)
-		return [linum, colnum]
+	let paragraph = organ#table#update ()
+	let cellgrid = paragraph.cellgrid
+	" ---- cursor
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	let curcellrow = cellgrid[currownum]
+	" ---- we need at least one column
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
+	let colmax = len(curcellrow)
+	if colmax <= 1
+		return paragraph
 	endif
+	" ---- border case
+	if curcolnum == 0
+		let cursor.table.col = 1
+	endif
+	if curcolnum == colmax
+		let cursor.table.col -= 1
+	endif
+	" ---- local shift
+	let content = curcellrow[curcolnum]
+	let cursor.table.localshift = len(content) + 1
+	" ---- apply
+	call organ#table#adapt_cursor (paragraph)
 	" ---- coda
-	return [linum, colnum]
+	return paragraph
 endfun
 
 " ---- select
@@ -974,9 +997,9 @@ fun! organ#table#move_col_left (...)
 	let curcolnum = cursor.table.col
 	let curcellrow = cellgrid[currownum]
 	" ---- we need at least two columns
-	" ---- curcellrow contains :
-	" ----   + 1 indent cell
-	" ----   + row cells
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
 	let colmax = len(curcellrow)
 	if colmax <= 3
 		return paragraph
@@ -1022,9 +1045,9 @@ fun! organ#table#move_col_right ()
 	let curcolnum = cursor.table.col
 	let curcellrow = cellgrid[currownum]
 	" ---- we need at least two columns
-	" ---- curcellrow contains :
-	" ----   + 1 indent cell
-	" ----   + row cells
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
 	let colmax = len(curcellrow)
 	if colmax < 3
 		return paragraph
@@ -1096,9 +1119,9 @@ fun! organ#table#new_col ()
 	let seplinedelim = organ#table#sepline_delimiter ()
 	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- we need at least one column
-	" ---- curcellrow contains :
-	" ----   + 1 indent cell
-	" ----   + row cells
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
 	let colmax = len(curcellrow)
 	if colmax < 2
 		return paragraph
@@ -1157,9 +1180,9 @@ fun! organ#table#delete_col ()
 	let delim = organ#table#delimiter ()
 	let seplinedelim = organ#table#sepline_delimiter ()
 	" ---- we need at least one column
-	" ---- curcellrow contains :
-	" ----   + 1 indent cell
-	" ----   + row cells
+	" -- curcellrow contains :
+	" --   + 1 indent cell
+	" --   + row cells
 	let colmax = len(curcellrow)
 	if colmax <= 1
 		return paragraph
