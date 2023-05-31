@@ -208,6 +208,7 @@ content
 
  a  = b = c ; d ; e
    ab = cd = ef ; f
+       abc = c
   c  = d : g : h ; f ; g ; hj ; k
  d    : e ; f = g = h = ijk = l
  = a = b = c = d = e = f = g = h
