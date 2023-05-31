@@ -202,7 +202,7 @@ content
 
 [[file:test.txt::*part 2.4][stored url]]
 
-*** chapter 3.3.1
+***** chapter 3.3.1
 
 content
 
@@ -475,11 +475,11 @@ content
 
 text
 
-**** section 3.3.1.1
+****** section 3.3.1.1
 
 content
 
-**** section 3.3.1.2
+****** section 3.3.1.2
 
 content
 

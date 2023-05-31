@@ -734,22 +734,38 @@ endfun
 
 " ---- navigation
 
+fun! organ#table#previous_cell ()
+	" Go to previous cell
+	let paragraph = organ#table#update ()
+	let cellgrid = paragraph.cellgrid
+	let cursor = paragraph.cursor
+	let currownum = cursor.table.row
+	let curcolnum = cursor.table.col
+	" ---- row & col
+	if curcolnum <= 1
+		if currownum == 0
+			return paragraph
+		endif
+		let currownum -= 1
+		let curcellrow = cellgrid[currownum]
+		let colmax = len(curcellrow)
+		let curcolnum = colmax
+	endif
+	let curcolnum -= 1
+	" -- adapt cursor
+	let cursor.table.row = currownum
+	let cursor.table.col = curcolnum
+	call organ#table#adapt_cursor (paragraph)
+	" ---- coda
+	return paragraph
+endfun
+
 fun! organ#table#next_cell ()
 	" Go to next cell
 	call organ#table#update ()
 	let delimiter = organ#table#delimiter ()
 	let pattern = '\m' .. delimiter .. '\s\{0,1}\zs.\ze'
 	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-	let linum = search(pattern, flags)
-	return linum
-endfun
-
-fun! organ#table#previous_cell ()
-	" Go to previous cell
-	call organ#table#update ()
-	let delimiter = organ#table#delimiter ()
-	let pattern = '\m' .. delimiter .. '\s\{0,1}\zs.\ze'
-	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap')
 	let linum = search(pattern, flags)
 	return linum
 endfun
@@ -917,7 +933,7 @@ fun! organ#table#move_col_left (...)
 	" ----   + 1 indent cell
 	" ----   + row cells
 	let colmax = len(curcellrow)
-	if colmax <= 2
+	if colmax <= 3
 		return paragraph
 	endif
 	" ---- can't move further left
@@ -965,7 +981,7 @@ fun! organ#table#move_col_right ()
 	" ----   + 1 indent cell
 	" ----   + row cells
 	let colmax = len(curcellrow)
-	if colmax <= 2
+	if colmax < 3
 		return paragraph
 	endif
 	" ---- can't move further right
@@ -1039,19 +1055,23 @@ fun! organ#table#new_col ()
 	" ----   + 1 indent cell
 	" ----   + row cells
 	let colmax = len(curcellrow)
-	if colmax <= 1
+	if colmax < 2
 		return paragraph
 	endif
 	" ---- new column
+	if curcolnum == colmax
+		let curcolnum -= 1
+	endif
 	let nextcolnum = curcolnum + 1
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let cellrow = cellgrid[rownum]
 		let delimrow = delimgrid[rownum]
-		eval cellrow->insert('', nextcolnum)
 		if line =~ sepline_pattern
+			eval cellrow->insert('-', nextcolnum)
 			eval delimrow->insert(seplinedelim, 1)
 		else
+			eval cellrow->insert(' ', nextcolnum)
 			eval delimrow->insert(delim, 1)
 		endif
 	endfor
@@ -1100,6 +1120,9 @@ fun! organ#table#delete_col ()
 		return paragraph
 	endif
 	" ---- delete column
+	if curcolnum == colmax
+		let curcolnum -= 1
+	endif
 	for rownum in range(lenlinelist)
 		let line = linelist[rownum]
 		let cellrow = cellgrid[rownum]
