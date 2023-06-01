@@ -203,6 +203,8 @@ if ! exists("g:organ_loaded")
   let g:organ_config.prefixless_plugs = {}
   let g:organ_config.completion = {}
   let g:organ_config.list = {}
+  let g:organ_config.list.unordered = {}
+  let g:organ_config.list.ordered = {}
   let g:organ_config.links = {}
   let g:organ_config.templates = {}
   let g:organ_config.expr = {}
@@ -243,9 +245,11 @@ if ! exists("g:organ_loaded")
   " ---- items chars in unordered list (default)
   let g:organ_config.list.unordered.org = ['-', '+', '*']
   let g:organ_config.list.unordered.markdown = ['-', '+']
+  let g:organ_config.list.unordered.asciidoc = ['*', '**', '***']
   " ---- items chars in ordered list (default)
   let g:organ_config.list.ordered.org = ['.', ')']
   let g:organ_config.list.ordered.markdown = ['.']
+  let g:organ_config.list.ordered.asciidoc = ['.', '..', '...']
   " ---- first item counter in an ordered list
   " ---- must be >= 0, default 1
   let g:organ_config.list.counter_start = 1
