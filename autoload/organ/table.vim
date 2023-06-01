@@ -146,7 +146,7 @@ endfun
 fun! organ#table#metalen (grid)
 	" Lengthes of each element of grid
 	let grid = deepcopy(a:grid)
-	" ---- count tabs as tabstop chars, and multibyte char as one
+	" ---- count tabs as 'tabstop' chars, and multibyte char as one
 	let Lengthes = { list -> copy(list)->map({ _, v -> strdisplaywidth(v) }) }
 	let Metalen = { _, list -> Lengthes(list) }
 	return map(grid, Metalen)
