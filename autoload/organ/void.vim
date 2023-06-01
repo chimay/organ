@@ -73,7 +73,17 @@ fun! organ#void#config ()
 		let g:organ_config.list.unordered.markdown = ['-', '+']
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
-		let g:organ_config.list.unordered.asciidoc = ['-', '+', '*']
+		let g:organ_config.list.unordered.asciidoc = [
+			\ '-',
+			\ '+',
+			\ '*',
+			\ '--',
+			\ '++',
+			\ '**',
+			\ '---',
+			\ '+++',
+			\ '***',
+			\ ]
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'vimwiki')
 		let g:organ_config.list.unordered.vimwiki = ['-', '+', '*']
@@ -96,7 +106,17 @@ fun! organ#void#config ()
 		let g:organ_config.list.ordered.markdown = ['.']
 	endif
 	if ! has_key(g:organ_config.list.ordered, 'asciidoc')
-		let g:organ_config.list.ordered.asciidoc = ['.']
+		let g:organ_config.list.ordered.asciidoc = [
+			\ '.',
+			\ '..',
+			\ '...',
+			\ '....',
+			\ '.....',
+			\ '......',
+			\ '.......',
+			\ '........',
+			\ '.........',
+			\ ]
 	endif
 	if ! has_key(g:organ_config.list.ordered, 'vimwiki')
 		let g:organ_config.list.ordered.vimwiki = ['.', ')']
