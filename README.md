@@ -238,7 +238,7 @@ if ! exists("g:organ_loaded")
   " ---- whether to enable full fuzzy completion
   " ---- default : 0
   let g:organ_config.completion.fuzzy = 0
-  " ---- number of spaces to indent lists (default)
+    " ---- number of spaces to indent each list level (default)
   let g:organ_config.list.indent_length = 2
   " ---- number of stored links to keep in history (default)
   let g:organ_config.links.keep = 5

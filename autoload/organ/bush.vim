@@ -110,16 +110,16 @@ fun! organ#bush#update_counters (...)
 		endif
 		let properties = organ#colibri#properties ('dont-move', common_indent)
 		let counter = properties.counter
-		if counter < 0
-			let linum = search(itemhead_pattern, flags)
-			continue
-		endif
 		let level = properties.level
 		let counterstart = properties.counterstart
 		let countindex = level - 1
 		for index in range(countindex + 1, length - 1)
 			let counterlist[index] = -1
 		endfor
+		if counter < 0
+			let linum = search(itemhead_pattern, flags)
+			continue
+		endif
 		if counterstart >= 0
 			let counterlist[countindex] = counterstart
 		else
@@ -177,9 +177,9 @@ fun! organ#bush#rotate_prefix (direction = 1, ...)
 	else
 		throw 'organ bush rotate prefix : unknown prefix'
 	endif
-	" ---- no * if no indent
+	" ---- no * if no indent on org files
 	let indent = properties.indent
-	if indent ==# ''
+	if indent ==# '' && filekey == 'org'
 		let starindex = prefixlist->index('*')
 		if starindex > 0
 			eval prefixlist->remove(starindex)
