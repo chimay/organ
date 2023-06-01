@@ -74,15 +74,15 @@ fun! organ#void#config ()
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'asciidoc')
 		let g:organ_config.list.unordered.asciidoc = [
-			\ '-',
-			\ '+',
 			\ '*',
-			\ '--',
-			\ '++',
 			\ '**',
-			\ '---',
-			\ '+++',
 			\ '***',
+			\ '****',
+			\ '*****',
+			\ '******',
+			\ '*******',
+			\ '********',
+			\ '*********',
 			\ ]
 	endif
 	if ! has_key(g:organ_config.list.unordered, 'vimwiki')
