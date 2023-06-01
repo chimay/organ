@@ -246,7 +246,7 @@ if ! exists("g:organ_loaded")
   " ---- default : todo : TODO - DONE - none
   " ---- no need to add none to the list
   let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
-  " ---- add a template trigger & expasion
+  " ---- add/overwrite a template trigger & expansion
   " ---- to see the default ones, run :echo organ#crystal#fetch('templates/expansions')
   " -- #+begin_mystuff ... #+end_mystuff bloc
   let g:organ_config.templates['<m'] = 'mystuff'

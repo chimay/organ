@@ -18,7 +18,7 @@ if exists('s:templates')
 	unlockvar s:templates
 endif
 let s:templates = organ#crystal#fetch('templates/expansions', 'dict')
-eval s:templates->extend(g:organ_config.templates)
+eval s:templates->extend(g:organ_config.templates, 'force')
 lockvar s:templates
 
 " ---- generic
