@@ -68,10 +68,6 @@ fun! organ#centre#meta (subcommand)
 	" ---- subcommands without argument
 	let action_dict = organ#utils#items2dict(s:subcommands_actions)
 	let action = action_dict[subcommand]
-	if action ==# 'organ#void#nope'
-		echomsg 'organ centre meta-command : this action need a third argument'
-		return v:false
-	endif
 	return organ#utils#call(action)
 endfun
 

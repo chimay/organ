@@ -95,6 +95,31 @@ lockvar! s:separator_field_bar
 
 " ---- structure templates
 
+if exists('s:templates_expansions')
+	unlockvar! s:templates_expansions
+endif
+let s:templates_expansions = [
+	\ [ '<C' , 'comment' ],
+	\ [ '<E' , 'export'  ],
+	\ [ '<c' , 'center'  ],
+	\ [ '<e' , 'example' ],
+	\ [ '<q' , 'quote'   ],
+	\ [ '<s' , 'src'     ],
+	\ [ '<v' , 'verse'   ],
+	\ [ '+A' , 'author'  ],
+	\ [ '+E' , 'email'   ],
+	\ [ '+I' , 'index'   ],
+	\ [ '+T' , 'toc'     ],
+	\ [ '+i' , 'include' ],
+	\ [ '+h' , 'html'    ],
+	\ [ '+l' , 'latex'   ],
+	\ [ '+o' , 'options' ],
+	\ [ '+s' , 'startup' ],
+	\ [ '+t' , 'tags'    ],
+	\ [ ':s' , 'section' ],
+	\]
+lockvar! s:templates_expansions
+
 if exists('s:templates_languages')
 	unlockvar! s:templates_languages
 endif

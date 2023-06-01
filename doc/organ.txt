@@ -148,44 +148,35 @@ Here is a complete example, cherrypick what you need : >
   if ! exists("g:organ_loaded")
     " ---- DONT FORGET TO INITIALIZE DICTS BEFORE USING THEM
     let g:organ_config = {}
+    let g:organ_config.prefixless_plugs = {}
+    let g:organ_config.completion = {}
     let g:organ_config.list = {}
     let g:organ_config.links = {}
+    let g:organ_config.templates = {}
     let g:organ_config.expr = {}
-    let g:organ_config.complete = {}
     " ---- enable for every file if > 0
+    " ---- default : 0
     let g:organ_config.everywhere = 0
     " ---- enable speed keys on first char of headlines and list items
+    " ---- default : 0
     let g:organ_config.speedkeys = 1
     " ---- key to trigger <plug>(organ-previous)
     " ---- and go where speedkeys are available
     " ---- examples : <m-p> (default), [z
     let g:organ_config.previous = '<m-p>'
-    " ---- choose your mappings prefix
+    " ---- choose your mappings prefix (default)
     let g:organ_config.prefix = '<m-o>'
     " ---- enable prefixless maps
     let g:organ_config.prefixless = 1
     " ---- prefixless maps in these modes (default)
     " ---- possible values : normal, visual, insert
-    " ---- visual maps are defined only when significant
     let g:organ_config.prefixless_modes = ['normal', 'visual', 'insert']
     " ---- enable only the prefixless maps you want
     " ---- leave a list empty to enable all plugs in the mode
     " ---- see the output of :map <plug>(organ- to see available plugs
     " let g:organ_config.prefixless_plugs.normal = ['organ-backward', 'organ-forward']
-  " let g:organ_config.prefixless_plugs.visual = []
-  " let g:organ_config.prefixless_plugs.insert = []
-    " ---- number of spaces to indent lists (default)
-    let g:organ_config.list.indent_length = 2
-    " ---- number of stored links to keep in history (default)
-    let g:organ_config.links.keep = 5
-    " ---- todo keywoard cycle
-    " ---- default : todo : TODO - DONE - none
-    " ---- no need to add none to the list
-    let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
-    " ---- timestamp format
-    let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
-    " ---- number of evaluated expressions to keep in history (default)
-    let g:organ_config.expr.keep = 30
+    " let g:organ_config.prefixless_plugs.visual = []
+    " let g:organ_config.prefixless_plugs.insert = []
     " ---- whether to enable vowels-fuzzy completion
     " ---- default : 0
     let g:organ_config.completion.vocalize = 1
@@ -195,8 +186,27 @@ Here is a complete example, cherrypick what you need : >
     " ---- whether to enable full fuzzy completion
     " ---- default : 0
     let g:organ_config.completion.fuzzy = 0
+    " ---- number of spaces to indent lists (default)
+    let g:organ_config.list.indent_length = 2
+    " ---- number of stored links to keep in history (default)
+    let g:organ_config.links.keep = 5
+    " ---- todo keywoard cycle
+    " ---- default : todo : TODO - DONE - none
+    " ---- no need to add none to the list
+    let g:organ_config.todo_cycle = ['TODO', 'IN PROGRESS', 'ALMOST DONE', 'DONE']
+    " ---- add a template trigger & expasion
+    " ---- to see the default ones, run :echo organ#crystal#fetch('templates/expansions')
+    " -- #+begin_mystuff ... #+end_mystuff bloc
+    let g:organ_config.templates['<m'] = 'mystuff'
+    " -- #+mystuff: line
+    let g:organ_config.templates['+m'] = 'mystuff'
+    " ---- timestamp format
+    let g:organ_config.timestamp_format = '<%Y-%m-%d %a %H:%M>'
+    " ---- number of evaluated expressions to keep in history (default)
+    let g:organ_config.expr.keep = 30
     " ---- custom maps
-    nmap <c-cr> <plug>(organ-new)
+    nmap <c-cr> <plug>(organ-meta-return)
+    imap <c-cr> <plug>(organ-meta-return)
     nnoremap <space>o :<c-u>Organ<space>
   endif
 <

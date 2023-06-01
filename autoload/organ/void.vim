@@ -110,26 +110,7 @@ fun! organ#void#config ()
 	endif
 	" ---- structure templates
 	if ! has_key(g:organ_config, 'templates')
-		let g:organ_config.templates = {
-					\ '<C' : 'comment',
-					\ '<E' : 'export',
-					\ '<c' : 'center',
-					\ '<e' : 'example',
-					\ '<q' : 'quote',
-					\ '<s' : 'src',
-					\ '<v' : 'verse',
-					\ '+A' : 'author',
-					\ '+E' : 'email',
-					\ '+I' : 'index',
-					\ '+T' : 'toc',
-					\ '+i' : 'include',
-					\ '+h' : 'html',
-					\ '+l' : 'latex',
-					\ '+o' : 'options',
-					\ '+s' : 'startup',
-					\ '+t' : 'tags',
-					\ ':s' : 'section',
-					\}
+		let g:organ_config.templates = {}
 	endif
 	" ---- expressions
 	if ! has_key(g:organ_config, 'expr')

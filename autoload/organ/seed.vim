@@ -14,6 +14,13 @@ endif
 let s:rep_one_char = organ#crystal#fetch('filetypes/repeated_one_char_heading')
 lockvar s:rep_one_char
 
+if exists('s:templates')
+	unlockvar s:templates
+endif
+let s:templates = organ#crystal#fetch('templates/expansions', 'dict')
+eval s:templates->extend(g:organ_config.templates)
+lockvar s:templates
+
 " ---- generic
 
 fun! organ#seed#expand ()
@@ -42,9 +49,8 @@ fun! organ#seed#angle (trigger)
 	if trigger ==# '<s'
 		return organ#seed#source ()
 	endif
-	let templates = g:organ_config.templates
-	if has_key(templates, trigger)
-		let suffix = templates[trigger]
+	if has_key(s:templates, trigger)
+		let suffix = s:templates[trigger]
 		let open = '#+begin_' .. suffix
 		let close = '#+end_' .. suffix
 		let linum = line('.')
@@ -63,9 +69,8 @@ fun! organ#seed#plus (trigger)
 	" Expand plus shortcut at current line
 	" #+something: <cursor>
 	let trigger = a:trigger
-	let templates = g:organ_config.templates
-	if has_key(templates, trigger)
-		let suffix = templates[trigger]
+	if has_key(s:templates, trigger)
+		let suffix = s:templates[trigger]
 		let newline = '#+' .. suffix .. ': '
 		let linum = line('.')
 		call setline(linum, newline)
@@ -78,9 +83,8 @@ endfun
 fun! organ#seed#colon (trigger)
 	" Expand colon shortcut at current line
 	let trigger = a:trigger
-	let templates = g:organ_config.templates
-	if has_key(templates, trigger)
-		let keyword = templates[trigger]
+	if has_key(s:templates, trigger)
+		let keyword = s:templates[trigger]
 		return organ#seed#colon_{keyword} ()
 	endif
 	return ''
