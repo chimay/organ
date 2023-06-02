@@ -175,7 +175,7 @@ fun! organ#nest#tab (mode = 'normal')
 	" For <tab> map
 	let mode = a:mode
 	if organ#nest#is_on_headline_first_char ()
-		return organ#bird#cycle_current_fold ()
+		return organ#origami#cycle_current_fold ()
 	elseif organ#nest#is_on_itemhead_first_char ()
 		return organ#bush#toggle_checkbox ()
 	elseif organ#table#is_in_table ()
@@ -189,7 +189,7 @@ fun! organ#nest#shift_tab (mode = 'normal')
 	" For <s-tab> map
 	let mode = a:mode
 	if organ#nest#is_on_headline_first_char ()
-		return organ#bird#cycle_all_folds ()
+		return organ#origami#cycle_all_folds ()
 	elseif organ#table#is_in_table ()
 		return organ#table#previous_cell ()
 	else

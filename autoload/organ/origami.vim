@@ -112,6 +112,56 @@ fun! organ#origami#folding ()
 	endif
 endfun
 
+" ---- cycle visibility
+
+fun! organ#origami#cycle_current_fold ()
+	" Cycle current fold visibility
+	let position = getcurpos ()
+	" ---- current subtree
+	let subtree = organ#bird#subtree ()
+	let head_linum = subtree.head_linum
+	let tail_linum = subtree.tail_linum
+	let range = head_linum .. ',' .. tail_linum
+	let level = subtree.level
+	" ---- folds closed ?
+	let current_closed = foldclosed('.')
+	let linum_child = organ#bird#strict_child ('dont-move')
+	if linum_child == 0
+		let child_closed = -1
+	else
+		let child_closed = foldclosed(linum_child)
+	endif
+	" ---- cycle
+	if current_closed > 0 && child_closed > 0
+		normal! zo
+		"execute range .. 'foldopen'
+	elseif current_closed < 0 && child_closed > 0
+		execute range .. 'foldopen!'
+	elseif current_closed > 0 && child_closed < 0
+		execute range .. 'foldopen!'
+	else
+		execute range .. 'foldclose!'
+		for iter in range(1, level - 1)
+			normal! zo
+		endfor
+	endif
+endfun
+
+fun! organ#origami#cycle_all_folds ()
+	" Cycle folds visibility in all file
+	" ---- max fold level of all file
+	"let line_range = range(1, line('$'))
+	"let max_foldlevel = max(map(line_range, { n -> foldlevel(n) }))
+	" ---- cycle
+	if &foldlevel == 0
+		setlocal foldlevel=1
+	elseif &foldlevel == 1
+		setlocal foldlevel=10
+	else
+		setlocal foldlevel=0
+	endif
+endfun
+
 " ---- foldmarker headline
 
 fun! organ#origami#is_marker_headline_file ()

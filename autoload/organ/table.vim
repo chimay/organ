@@ -71,8 +71,6 @@ fun! organ#table#sepline_pattern ()
 	endif
 	let pattern = '\m^\s*|[-+|]*[-+]\+[-+|]*|\s*$'
 	return pattern
-	" -- never matches
-	"return '\m^$\&^.$'
 endfun
 
 fun! organ#table#outside_pattern ()
