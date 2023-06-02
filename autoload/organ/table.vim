@@ -68,10 +68,9 @@ fun! organ#table#sepline_pattern ()
 	elseif &filetype ==# 'markdown'
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
-	else
-		let pattern = '\m^\s*|[-+|]*[-+]\+[-+|]*|\s*$'
-		return pattern
 	endif
+	let pattern = '\m^\s*|[-+|]*[-+]\+[-+|]*|\s*$'
+	return pattern
 	" -- never matches
 	"return '\m^$\&^.$'
 endfun
