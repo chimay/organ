@@ -131,15 +131,20 @@ fun! organ#origami#cycle_current_fold ()
 	else
 		let child_closed = foldclosed(linum_child)
 	endif
+	" ---- booleans
+	let is_current_closed = current_closed > 0
+	let is_child_closed = child_closed > 0
+	echo is_current_closed is_child_closed
 	" ---- cycle
-	if current_closed > 0 && child_closed > 0
-		normal! zo
-		"execute range .. 'foldopen'
-	elseif current_closed < 0 && child_closed > 0
+	if is_current_closed && is_child_closed
+		"normal! zo
+		execute range .. 'foldopen'
+	elseif ! is_current_closed && is_child_closed
 		execute range .. 'foldopen!'
-	elseif current_closed > 0 && child_closed < 0
+	elseif is_current_closed && ! is_child_closed
 		execute range .. 'foldopen!'
 	else
+		" -- none close
 		execute range .. 'foldclose!'
 		for iter in range(1, level - 1)
 			normal! zo
