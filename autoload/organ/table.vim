@@ -916,8 +916,12 @@ fun! organ#table#select_cell ()
 	" Select cell content
 	normal! v
 	let linum = organ#table#cell_begin ()
+	let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap', 'accept-here')
+	let linum = search('\S', flags)
 	normal! o
 	let linum = organ#table#cell_end ()
+	let flags = organ#utils#search_flags ('backward', 'move', 'dont-wrap', 'accept-here')
+	let linum = search('\S', flags)
 	return linum
 endfun
 
