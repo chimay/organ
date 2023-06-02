@@ -116,7 +116,6 @@ endfun
 
 fun! organ#origami#cycle_current_fold ()
 	" Cycle current fold visibility
-	let position = getcurpos ()
 	" ---- current subtree
 	let subtree = organ#bird#subtree ()
 	let head_linum = subtree.head_linum
