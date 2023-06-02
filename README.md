@@ -242,11 +242,11 @@ if ! exists("g:organ_loaded")
   let g:organ_config.completion.fuzzy = 0
     " ---- number of spaces to indent each list level (default)
   let g:organ_config.list.indent_length = 2
-  " ---- items chars in unordered list (default)
+  " ---- items chars in unordered list
   let g:organ_config.list.unordered.org = ['-', '+', '*']
   let g:organ_config.list.unordered.markdown = ['-', '+']
   let g:organ_config.list.unordered.asciidoc = ['*', '**', '***']
-  " ---- items chars in ordered list (default)
+  " ---- items chars in ordered list
   let g:organ_config.list.ordered.org = ['.', ')']
   let g:organ_config.list.ordered.markdown = ['.']
   let g:organ_config.list.ordered.asciidoc = ['.', '..', '...']

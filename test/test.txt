@@ -19,6 +19,35 @@ intro {{{1
 
 book 1 {{{1
 
+ a  = b = c ; d ; e
+   ab = cd = ef ; f
+       abc = c
+  c  = d : g : h ; f ; g ; hj ; k
+ d    : e ; f = g = h = ijk = l
+ = a = b = c = d = e = f = g = h
+
+ a   = b  = c  ; d ; e
+ ab  = cd = ef ; f
+ abc = c
+ c   = d  : g  : h ; f ; g   ; hj ; k
+ d   : e  ; f  = g = h = ijk = l
+     = a  = b  = c = d = e   = f  = g = h
+
+  | row 1 col 1 | row 1 col 2 | hello |
+   |-+-|
+	  |
+ | row 2 col 1  | row 2 col 2   |
+  |-+-+-|
+   | row 3 col 1 max    | uù 3 col 2   |
+  |-|
+ | aeéè1 col 1 | ðđŋ 1 col 2 | hello |
+ | row 1 col 1 | row 1 col 2 | hello |
+  | row 1 col 1 | row 1 col 2 |
+     | toto | 2.5 |
+     | 1 | 3 |
+    | - |
+  | row 1 col 1 | row 1 col 2 |
+
 | row 1 col 1      | row 1 col 2 | hello |
 |------------------+-------------+-------|
 |                  |             |       |

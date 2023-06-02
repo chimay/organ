@@ -69,7 +69,7 @@ fun! organ#table#sepline_pattern ()
 		let pattern = '\m^\s*|[-:]\+|\%([-:]*|\)*\s*$'
 		return pattern
 	else
-		let pattern = '\m^\s*|[-+| ]*[-+]\+[-+| ]*|\s*$'
+		let pattern = '\m^\s*|[-+|]*[-+]\+[-+|]*|\s*$'
 		return pattern
 	endif
 	" -- never matches
