@@ -146,7 +146,8 @@ fun! organ#origami#cycle_current_fold ()
 		" -- none close
 		execute range .. 'foldclose!'
 		for iter in range(1, level - 1)
-			normal! zo
+			"normal! zo
+			execute range .. 'foldopen'
 		endfor
 	endif
 endfun
@@ -160,7 +161,7 @@ fun! organ#origami#cycle_all_folds ()
 	if &foldlevel == 0
 		setlocal foldlevel=1
 	elseif &foldlevel == 1
-		setlocal foldlevel=10
+		setlocal foldlevel=30
 	else
 		setlocal foldlevel=0
 	endif
