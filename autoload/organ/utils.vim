@@ -117,7 +117,7 @@ fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap',
 	let wrap = a:wrap
 	let where = a:where
 	let flags = ''
-	if course ==# 'backward'
+	if course ==# 'backward' || course ==# 'back'
 		let flags ..= 'b'
 	endif
 	if move ==# 'move'
@@ -130,7 +130,7 @@ fun! organ#utils#search_flags (course = 'forward', move = 'move', wrap = 'wrap',
 	else
 		let flags ..= 'W'
 	endif
-	if where ==# 'accept-here'
+	if where ==# 'accept-here' || where ==# 'ok-here'
 		let flags ..= 'c'
 	endif
 	return flags
