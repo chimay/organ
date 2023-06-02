@@ -134,7 +134,6 @@ fun! organ#origami#cycle_current_fold ()
 	" ---- booleans
 	let is_current_closed = current_closed > 0
 	let is_child_closed = child_closed > 0
-	echo is_current_closed is_child_closed
 	" ---- cycle
 	if is_current_closed && is_child_closed
 		"normal! zo
