@@ -72,7 +72,7 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	let wordlist = copy(a:wordlist)
 	let value = a:value
 	if g:organ_config.completion.wordize > 0
-		eval wordlist->map({ _, val -> wheel#kyusu#wordize(val) })
+		eval wordlist->map({ _, val -> organ#kyusu#wordize(val) })
 	elseif g:organ_config.completion.vocalize > 0
 		eval wordlist->map({ _, val -> organ#kyusu#vocalize(val) })
 	endif
@@ -94,6 +94,51 @@ fun! organ#kyusu#steep (wordlist, unused, value)
 	return match
 endfun
 
+fun! organ#kyusu#infuse (wordlist, unused, value)
+	" Whether value matches all words of wordlist
+	" Also returns score & value
+	" Word beginning by a ! means logical not
+	" Pipe | in word means logical or
+	" unused argument is for compatibility with filter()
+	let wordlist = copy(a:wordlist)
+	let value = a:value
+	" ---- options
+	if g:organ_config.completion.wordize > 0
+		eval wordlist->map({ _, val -> organ#kyusu#wordize(val) })
+	elseif g:organ_config.completion.vocalize > 0
+		eval wordlist->map({ _, val -> organ#kyusu#vocalize(val) })
+	endif
+	" --- logical or
+	eval wordlist->map({ _, val -> substitute(val, '|', '\\|', 'g') })
+	" ---- loop
+	let match = v:true
+	let score = 360
+	for word in wordlist
+		let matchstring = ''
+		" -- logical not
+		if word =~ '\m^!'
+			if value =~ word[1:]
+				let match = v:false
+				break
+			endif
+			continue
+		endif
+		" -- no match
+		if value !~ word
+			let match = v:false
+			break
+		endif
+		" -- match
+		let matchstring = value->matchstr(word)
+		let score -= len(matchstring)
+		let score -= len(value)
+		if word[0] !=# '^' && value =~ '^' .. word
+			let score += 30
+		endif
+	endfor
+	return [match, score, value]
+endfun
+
 " ---- prompt completion
 
 fun! organ#kyusu#pour (wordlist, list)
@@ -109,6 +154,26 @@ fun! organ#kyusu#pour (wordlist, list)
 	let list = deepcopy(list)
 	let Matches = function('organ#kyusu#steep', [wordlist])
 	let candidates = filter(list, Matches)
+	return candidates
+endfun
+
+fun! organ#kyusu#stream (wordlist, list)
+	" Return elements of list matching words of wordlist
+	let wordlist = a:wordlist
+	let list = a:list
+	if g:organ_config.completion.fuzzy > 0
+		if empty(wordlist)
+			return list
+		endif
+		return list->matchfuzzy(join(wordlist))
+	endif
+	let list = deepcopy(list)
+	let Matches = function('organ#kyusu#infuse', [wordlist])
+	let candidates = map(list, Matches)
+	eval candidates->filter({ _, v -> v[0] })
+	eval candidates->map({ _, v -> v[1:2] })
+	eval candidates->sort({ a, b -> organ#chain#reverse_compare(a[0], b[0]) })
+	eval candidates->map({ _, v -> v[1] })
 	return candidates
 endfun
 

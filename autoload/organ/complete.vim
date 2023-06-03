@@ -10,7 +10,7 @@
 " if needed, it has to be done
 " in the function body
 "
-" Note : kyusu#pour makes a deepcopy of the list before
+" Note : kyusu#stream makes a deepcopy of the list before
 " processing, no need to do it here
 
 " ---- script constants
@@ -69,7 +69,7 @@ fun! organ#complete#headline (arglead, cmdline, cursorpos)
 	" Complete full headline path
 	let choices = organ#perspective#headlines ()
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 fun! organ#complete#headline_same_level_or_parent (arglead, cmdline, cursorpos)
@@ -79,7 +79,7 @@ fun! organ#complete#headline_same_level_or_parent (arglead, cmdline, cursorpos)
 	let level = properties.level
 	let choices = organ#perspective#headlines (level - 1, level)
 	let wordlist = split(a:cmdline)
-	let headlines = organ#kyusu#pour(wordlist, choices)
+	let headlines = organ#kyusu#stream(wordlist, choices)
 	let current = organ#bird#path ()
 	let Matches = function('organ#kyusu#not_current_path', [current])
 	eval headlines->filter(Matches)
@@ -92,7 +92,7 @@ fun! organ#complete#tag (arglead, cmdline, cursorpos)
 	" Complete tags defined on #+tags & :tag:tag:...:
 	let choices = organ#perspective#tags ()
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- structure templates
@@ -101,7 +101,7 @@ fun! organ#complete#templates_lang (arglead, cmdline, cursorpos)
 	" Complete language for src bloc
 	let choices = s:src_langs
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- links
@@ -120,7 +120,7 @@ fun! organ#complete#url (arglead, cmdline, cursorpos)
 	let tree = glob('**', v:true, v:true)
 	let choices = registers + urls + tree + s:url_prefixes
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- expressions to evaluate
@@ -129,14 +129,14 @@ fun! organ#complete#vim_expression (arglead, cmdline, cursorpos)
 	" Complete expression
 	let choices = g:ORGAN_STOPS.expr.vim
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 fun! organ#complete#python_expression (arglead, cmdline, cursorpos)
 	" Complete expression
 	let choices = g:ORGAN_STOPS.expr.python
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- unicode characters
@@ -145,7 +145,7 @@ fun! organ#complete#unicode (arglead, cmdline, cursorpos)
 	" Complete unicode characters
 	let choices = organ#perspective#unicode ()
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- export
@@ -154,7 +154,7 @@ fun! organ#complete#pandoc_formats (arglead, cmdline, cursorpos)
 	" Complete supported pandoc output formats
 	let choices = s:pandoc_formats
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
@@ -162,21 +162,21 @@ fun! organ#complete#emacs_formats (arglead, cmdline, cursorpos)
 	let choices = s:emacs_formats
 	echomsg s:emacs_formats
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 fun! organ#complete#asciidoc_formats (arglead, cmdline, cursorpos)
 	" Complete supported asciidoc output formats
 	let choices = s:asciidoc_formats
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 fun! organ#complete#asciidoctor_formats (arglead, cmdline, cursorpos)
 	" Complete supported asciidoctor output formats
 	let choices = s:asciidoctor_formats
 	let wordlist = split(a:cmdline)
-	return organ#kyusu#pour(wordlist, choices)
+	return organ#kyusu#stream(wordlist, choices)
 endfun
 
 " ---- meta command
@@ -207,7 +207,7 @@ fun! organ#complete#meta_command (arglead, cmdline, cursorpos)
 		return subcommands
 	endif
 	if length == 2 && ! blank
-		return organ#kyusu#pour(last_list, subcommands)
+		return organ#kyusu#stream(last_list, subcommands)
 	endif
 	let subcommand = wordlist[1]
 	return []
