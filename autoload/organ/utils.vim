@@ -32,6 +32,21 @@ fun! organ#utils#is_inside (element, list)
 	endif
 endfun
 
+" ---- sort
+
+fun! organ#utils#reverse_compare (first, second)
+	" Reverse compare arguments ; used to sort in descending order
+	let first = a:first
+	let second = a:second
+	if first > second
+		return -1
+	elseif first == second
+		return 0
+	else
+		return 1
+	endif
+endfun
+
 " ---- dicts and lists
 
 fun! organ#utils#is_nested_list (argument)
