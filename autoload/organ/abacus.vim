@@ -23,7 +23,6 @@ fun! organ#abacus#eval_vim ()
 	if keep > 0
 		let store = store[:keep - 1]
 	endif
-	let g:ORGAN_STOPS.expr.vim = store
 	" ---- result
 	let result = string(eval(expression))
 	" ---- add result to default register
@@ -58,7 +57,6 @@ fun! organ#abacus#eval_python ()
 	if keep > 0
 		let store = store[:keep - 1]
 	endif
-	let g:ORGAN_STOPS.expr.python = store
 	" ---- result
 	let runme = "python3 print(" .. expression .. ")"
 	let result = execute(runme)

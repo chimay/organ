@@ -159,6 +159,7 @@ endfun
 
 fun! organ#kyusu#stream (wordlist, list)
 	" Return elements of list matching words of wordlist
+	" Sorted by score
 	let wordlist = a:wordlist
 	let list = a:list
 	if g:organ_config.completion.fuzzy > 0
