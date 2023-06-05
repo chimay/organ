@@ -1101,6 +1101,8 @@ fun! organ#table#move_col_right ()
 	" -- adapt cursor
 	let cursor.table.col += 1
 	call organ#table#adapt_cursor (paragraph)
+	" ---- coda
+	call organ#origami#resume ()
 	return paragraph
 endfun
 
