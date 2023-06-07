@@ -178,6 +178,7 @@ fun! organ#void#enable ()
 	" To be used on filetype triggers
 	call organ#void#standardize ()
 	call organ#centre#cables ()
+	call organ#origami#folding ()
 endfun
 
 fun! organ#void#init ()

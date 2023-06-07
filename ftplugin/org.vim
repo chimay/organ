@@ -8,4 +8,3 @@ endif
 let b:did_organ_ftplugin = 1
 
 call organ#void#enable ()
-call organ#origami#folding ()

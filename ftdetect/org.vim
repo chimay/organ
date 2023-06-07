@@ -1,3 +1,3 @@
 " vim: set ft=vim fdm=indent iskeyword&:
 
-autocmd BufNewFile,BufRead *.org set filetype=org
+autocmd BufNewFile,BufRead *.org setlocal filetype=org

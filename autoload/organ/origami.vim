@@ -99,8 +99,6 @@ endfun
 
 fun! organ#origami#folding ()
 	" Generic folding
-	setlocal foldmethod=expr
-	setlocal foldtext=organ#origami#folding_text()
 	if &filetype ==# 'org'
 		setlocal foldexpr=organ#origami#orgmode(v:lnum)
 	elseif &filetype ==# 'markdown'
@@ -109,7 +107,12 @@ fun! organ#origami#folding ()
 		setlocal foldexpr=organ#origami#asciidoc(v:lnum)
 	elseif &filetype ==# 'vimwiki'
 		setlocal foldexpr=organ#origami#vimwiki(v:lnum)
+	else
+		return v:false
 	endif
+	setlocal foldmethod=expr
+	setlocal foldtext=organ#origami#folding_text()
+	return v:true
 endfun
 
 " ---- cycle visibility
