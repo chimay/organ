@@ -760,7 +760,13 @@ fun! organ#table#previous_cell ()
 	" ---- patterns
 	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- departure cell content
-	let oldcont = cellgrid[currownum][curcolnum]
+	let curcellrow = cellgrid[currownum]
+	let colmax = len(curcellrow)
+	if curcolnum == colmax
+		let oldcont = ''
+	else
+		let oldcont = curcellrow[curcolnum]
+	endif
 	" ---- row & col
 	if curcolnum <= 1
 		if currownum == 0
@@ -809,7 +815,13 @@ fun! organ#table#next_cell ()
 	" ---- patterns
 	let sepline_pattern = organ#table#sepline_pattern ()
 	" ---- departure cell content
-	let oldcont = cellgrid[currownum][curcolnum]
+	let curcellrow = cellgrid[currownum]
+	let colmax = len(curcellrow)
+	if curcolnum == colmax
+		let oldcont = ''
+	else
+		let oldcont = curcellrow[curcolnum]
+	endif
 	" ---- row & col
 	let curcellrow = cellgrid[currownum]
 	let colmax = len(curcellrow)
@@ -896,9 +908,11 @@ fun! organ#table#cell_end ()
 	endif
 	" ---- border case
 	if curcolnum == 0
+		let curcolnum = 1
 		let cursor.table.col = 1
 	endif
 	if curcolnum == colmax
+		let curcolnum -= 1
 		let cursor.table.col -= 1
 	endif
 	" ---- local shift
