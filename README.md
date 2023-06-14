@@ -123,7 +123,6 @@ Organ supports :
   + subtree selection, yank & delete
   + promote & demote subtree
 - asciidoc
--
 
 It is written in vimscript and is compatible with both Vim and Neovim.
 
