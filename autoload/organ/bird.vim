@@ -178,7 +178,7 @@ fun! organ#bird#properties (move = 'dont-move')
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle
-		let todo_pattern = '\m\<' .. todo .. '\>'
+		let todo_pattern = '\m\C\<' .. todo .. '\>'
 		if title =~ todo_pattern
 			let title = substitute(title, todo, '', '')
 			let found = v:true

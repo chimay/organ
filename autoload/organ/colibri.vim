@@ -351,7 +351,7 @@ fun! organ#colibri#properties (move = 'dont-move', ...)
 	" ---- todo status
 	let found = v:false
 	for todo in g:organ_config.todo_cycle
-		let todo_pattern = '\m^\s*' .. todo
+		let todo_pattern = '\m\C^\s*\<' .. todo .. '\>'
 		if text =~ todo_pattern
 			let text = substitute(text, todo, '', '')
 			let found = v:true
