@@ -239,6 +239,8 @@ if ! exists("g:organ_loaded")
   " ---- whether to enable full fuzzy completion
   " ---- default : 0
   let g:organ_config.completion.fuzzy = 0
+  " ---- whether to sort completion results by scores (default)
+  let g:organ_config.completion.scores = 0
     " ---- number of spaces to indent each list level (default)
   let g:organ_config.list.indent_length = 2
   " ---- items chars in unordered list

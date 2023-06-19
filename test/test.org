@@ -34,8 +34,6 @@ content
 
 content
 
-progress
-
 0. [@0] item 1 [1/2]
   + [ ] item 1.1
   + [X] item 1.2

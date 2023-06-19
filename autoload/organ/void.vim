@@ -152,6 +152,9 @@ fun! organ#void#config ()
 	if ! has_key(g:organ_config.completion, 'fuzzy')
 		let g:organ_config.completion.fuzzy = 0
 	endif
+	if ! has_key(g:organ_config.completion, 'scores')
+		let g:organ_config.completion.scores = 0
+	endif
 endfun
 
 fun! organ#void#foundation ()

@@ -188,6 +188,8 @@ Here is a complete example, cherrypick what you need : >
     " ---- whether to enable full fuzzy completion
     " ---- default : 0
     let g:organ_config.completion.fuzzy = 0
+    " ---- whether to sort completion results by scores (default)
+    let g:organ_config.completion.scores = 0
     " ---- number of spaces to indent each list level (default)
     let g:organ_config.list.indent_length = 2
     " ---- items chars in unordered list
@@ -613,6 +615,9 @@ completion.
 If `g:wheel_config.completion.wordize` is greater than 0, the plugin
 adds word-characters patterns between the chars you enter, to enable
 a kind of word-fuzzy completion.
+
+If `g:organ_config.completion.scores` is greater than 0, scores are computed,
+and matching results are sorted accordingly.
 
 If `g:organ_config.completion.fuzzy` is greater than 0, full fuzzy
 completion  is enabled.
