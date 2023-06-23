@@ -53,7 +53,7 @@ fun! organ#bird#generic_pattern ()
 	" Generic headline pattern
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
-		return '\m^[' .. char .. ']\+'
+		return '\m^[' .. char .. ']\+ '
 	elseif &foldmethod ==# 'marker'
 		let marker = split(&foldmarker, ',')[0]
 		return '\m' .. marker .. '[0-9]\+'
