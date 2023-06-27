@@ -85,15 +85,27 @@ fun! organ#stair#tabspaces (indentnum, ...)
 	else
 		let shiftwidth = shiftwidth ()
 	endif
-	let indent = {}
-	let indent.tabstop = tabstop
-	let indent.shiftwidth = shiftwidth
-	let indent.tabs = indentnum / tabstop
-	let indent.spaces = indentnum % tabstop
-	let indent.total = indentnum
-	let indent.level = indent.total / shiftwidth
-	let indent.remainder = indent.total % shiftwidth
-	let indent.string = repeat("\t", indent.tabs) .. repeat(' ', indent.spaces)
+	if &expandtab == 0
+		let indent = {}
+		let indent.tabstop = tabstop
+		let indent.shiftwidth = shiftwidth
+		let indent.tabs = indentnum / tabstop
+		let indent.spaces = indentnum % tabstop
+		let indent.total = indentnum
+		let indent.level = indent.total / shiftwidth
+		let indent.remainder = indent.total % shiftwidth
+		let indent.string = repeat("\t", indent.tabs) .. repeat(' ', indent.spaces)
+	else
+		let indent = {}
+		let indent.tabstop = tabstop
+		let indent.shiftwidth = shiftwidth
+		let indent.tabs = 0
+		let indent.spaces = indentnum
+		let indent.total = indentnum
+		let indent.level = indent.total / shiftwidth
+		let indent.remainder = indent.total % shiftwidth
+		let indent.string = repeat(' ', indent.spaces)
+	endif
 	return indent
 endfun
 
