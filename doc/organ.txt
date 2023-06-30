@@ -374,6 +374,7 @@ PREFIXLESS					*organ-bindings-prefixless*
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
 value in your init file, these bindings become available :
 
+- `<M-!>`      : enable organ in current buffer
 - `<M-i>`      : info  : full headings path (chapter, section, subsection, ...)
 - `<M-h>`      : go to headline, with prompt completion of full headings path
 - `<M-z>`      : cycle current fold visibility (like an improved `za`)

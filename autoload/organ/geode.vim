@@ -49,6 +49,7 @@ if exists('s:plugs_normal')
 	unlockvar! s:plugs_normal
 endif
 let s:plugs_normal = [
+	\ [ 'organ-enable'             , 'organ#void#enable()'               ] ,
 	\ [ 'organ-previous'           , "organ#nest#navig('previous')"      ] ,
 	\ [ 'organ-next'               , "organ#nest#navig('next')"          ] ,
 	\ [ 'organ-backward'           , "organ#nest#navig('backward')"      ] ,
@@ -167,6 +168,7 @@ if exists('s:maps_normal')
 	unlockvar! s:maps_normal
 endif
 let s:maps_normal = [
+	\ [ '<m-!>'       , 'organ-enable'             ] ,
 	\ [ '<m-p>'       , 'organ-previous'           ] ,
 	\ [ '<m-n>'       , 'organ-next'               ] ,
 	\ [ '<m-b>'       , 'organ-backward'           ] ,

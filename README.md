@@ -302,6 +302,7 @@ Here is a complete list :
 
 | Plugs                              | Heading or list item      | Table                  |
 |------------------------------------|---------------------------|------------------------|
+| `<plug>`(organ-enable)             | enable in current buffer  |                        |
 | `<plug>`(organ-previous)           | previous heading or item  |                        |
 | `<plug>`(organ-next)               | next heading or item      |                        |
 | `<plug>`(organ-backward)           | previous, same level      |                        |
@@ -412,6 +413,7 @@ it's always defined, regardless of the prefixless setting. You can use
 If you set the `g:organ_config.prefixless` variable to a greater-than-zero
 value in your init file, these bindings become available :
 
+- `<M-!>`      : enable organ in current buffer
 - `<M-i>`      : info  : full headings path (chapter, section, subsection, ...)
 - `<M-h>`      : go to headline, with prompt completion of full headings path
 - `<M-z>`      : cycle current fold visibility (like an improved `za`)
