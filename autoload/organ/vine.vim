@@ -268,6 +268,7 @@ fun! organ#vine#previous ()
 	let link_pattern = organ#vine#generic_pattern ()
 	let flags = organ#utils#search_flags ('backward', 'move', 'wrap')
 	let linum = search(link_pattern, flags)
+	normal! zv
 	return linum
 endfun
 
@@ -276,6 +277,7 @@ fun! organ#vine#next ()
 	let link_pattern = organ#vine#generic_pattern ()
 	let flags = organ#utils#search_flags ('forward', 'move', 'wrap')
 	let linum = search(link_pattern, flags)
+	normal! zv
 	return linum
 endfun
 
