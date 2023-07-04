@@ -75,7 +75,7 @@ fun! organ#bird#level_pattern (minlevel = 1, maxlevel = 30)
 		let char = organ#bird#char ()
 		let pattern = '\m^[' .. char .. ']\{'
 		let pattern ..= minlevel .. ',' .. maxlevel .. '}'
-		let pattern ..= '[^' .. char .. ']'
+		let pattern ..= ' [^' .. char .. ']'
 		return pattern
 	elseif &foldmethod ==# 'marker'
 		return organ#origami#level_pattern (minlevel, maxlevel)
