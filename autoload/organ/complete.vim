@@ -118,6 +118,7 @@ fun! organ#complete#url (arglead, cmdline, cursorpos)
 		endif
 	endfor
 	let tree = glob('**', v:true, v:true)
+	eval tree->map({ _, v -> 'file:' .. v })
 	let choices = registers + urls + tree + s:url_prefixes
 	let wordlist = split(a:cmdline)
 	return organ#kyusu#pour(wordlist, choices)

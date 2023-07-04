@@ -56,26 +56,19 @@ fun! organ#vine#relative (target)
 	let target_list = split(target, '/')
 	let current_list = split(current, '/')
 	let length = len(target_list)
-	let index = -1
+	let index = 0
 	while v:true
-		if index >= length - 2
-			break
+		if index == length
+			return ''
 		endif
-		if target_list[:index + 1] != current_list[:index + 1]
+		if target_list[:index] != current_list[:index]
 			break
 		endif
 		let index += 1
 	endwhile
-	if index < 0
-		let common = []
-	elseif index == length
-		let common = target_list
-	else
-		let common = target_list[:index]
-	endif
-	let target_list = target_list[index + 1:]
+	let target_list = target_list[index:]
 	let target = join(target_list, '/')
-	let current_list = current_list[index + 1:]
+	let current_list = current_list[index:]
 	let numparents = len(current_list) - 1
 	let parents = repeat('../', numparents)
 	let target = parents .. target
@@ -180,6 +173,7 @@ fun! organ#vine#store ()
 	let properties = organ#bird#properties ()
 	let linum = properties.linum
 	let iden = ''
+	let heading = ''
 	let last_linum = line('$')
 	if linum + 2 <= last_linum
 		let next_line = getline(linum + 1)
@@ -191,15 +185,20 @@ fun! organ#vine#store ()
 	endif
 	let bufname = expand('%')
 	let file = fnamemodify(bufname, ':p')
-	if empty(iden)
-		let section = '*' .. properties.title
+	if ! empty(iden)
+		let iden = '#' .. iden
 	else
-		let section = '#' .. iden
+		let heading = '*' .. properties.title
 	endif
-	let url = 'file:' .. file .. '::' .. section
+	if ! empty(iden)
+		let url = 'file:' .. file .. '::' .. iden
+	else
+		let url = 'file:' .. file .. '::' .. heading
+	endif
 	let urldict = #{
 				\ file : file,
-				\ section : section,
+				\ iden : iden,
+				\ heading : heading,
 				\ url : url,
 				\}
 	let store = g:ORGAN_STOPS.urls
@@ -227,7 +226,16 @@ fun! organ#vine#urlist ()
 	for elem in urls
 		eval urlist->add(elem.url)
 		let file = organ#vine#relative (elem.file)
-		let relative_url = 'file:' .. file .. '::' .. elem.section
+		if ! empty(elem.iden)
+			let place = elem.iden
+		else
+			let place = elem.heading
+		endif
+		if empty(file)
+			let relative_url = place
+		else
+			let relative_url = 'file:' .. file .. '::' .. place
+		endif
 		eval urlist->add(relative_url)
 	endfor
 	return urlist
@@ -280,39 +288,56 @@ fun! organ#vine#goto ()
 		echomsg 'organ vine goto : no link under or near cursor'
 		return {}
 	endif
+	" ---- init
 	let url = organ#vine#url (link)
-	" ---- file & dir
-	let file = substitute(url, '\m^file:', '', '')
-	let file = substitute(file, '\m::[^:]\+$', '', '')
-	let file = substitute(file, '\m::#.\+$', '', '')
-	let folder = expand('%:p:h')
-	" ---- section & iden
-	let section = url->matchstr('\m::\zs[^:]\+$')[1:]
+	let file = ''
 	let iden = ''
-	if empty(section)
+	let heading = ''
+	" ---- extract fields
+	if url !~ '\m^file:'
+		" -- no file
+		if url =~ '\m^#'
+			let iden = url[1:]
+		elseif url =~ '\m^\*'
+			let heading = url[1:]
+		else
+			echomsg 'organ vine goto : unknown link format for iden/heading'
+		endif
+	else
+		" -- file & dir
+		let file = substitute(url, '\m^file:', '', '')
+		let file = substitute(file, '\m::[^:]\+$', '', '')
 		let file = substitute(file, '\m::#.\+$', '', '')
+		let folder = expand('%:p:h')
+		" -- iden
 		let iden = url->matchstr('\m::#\zs.\+$')
+		" -- heading
+		if empty(iden)
+			let heading = url->matchstr('\m::\*\zs.\+$')
+		endif
 	endif
 	" ---- go there
-	execute 'lcd' folder
-	execute 'edit' file
-	if ! empty(section)
+	if ! empty(file)
+		execute 'lcd' folder
+		execute 'edit' file
+	endif
+	if ! empty(iden)
 		call cursor(1, 1)
 		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-		let linum = search(section, flags)
+		let searchme = '\c:custom_id: ' .. iden
+		let linum = search(searchme, flags)
 	else
 		call cursor(1, 1)
 		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-		let searchme = ':custom_id: ' .. iden
-		let linum = search(searchme, flags)
+		let linum = search(heading, flags)
 	endif
 	normal! zv
 	" ---- coda
 	let dict = #{
 			\ url : url,
 			\ file : file,
-			\ section : section,
 			\ iden : iden,
+			\ heading : heading,
 			\}
 	return dict
 endfun
