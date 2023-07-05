@@ -328,7 +328,7 @@ fun! organ#vine#goto ()
 		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 		let searchme = '\c:custom_id: ' .. iden
 		let linum = search(searchme, flags)
-	else
+	elseif ! empty(heading)
 		call cursor(1, 1)
 		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
 		let linum = search(heading, flags)
