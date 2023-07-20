@@ -364,13 +364,15 @@ endfun
 " ---- conversion org <-> markdown
 
 fun! organ#nest#org2markdown ()
-	" Convert headlines & links org -> markdown
+	" Convert headlines, links & table org -> markdown
 	call organ#tree#org2markdown ()
 	call organ#vine#org2markdown ()
+	call organ#table#org2markdown ()
 endfun
 
 fun! organ#nest#markdown2org ()
-	" Convert headlines & links markdown -> org
+	" Convert headlines, links & table markdown -> org
 	call organ#tree#markdown2org ()
 	call organ#vine#markdown2org ()
+	call organ#table#markdown2org ()
 endfun

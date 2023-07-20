@@ -28,7 +28,7 @@ let s:speedkeys = [
     \ [ 'Y'          , "organ#nest#oper('yank_subtree')"          ] ,
     \ [ 'X'          , "organ#nest#oper('delete_subtree')"        ] ,
     \ [ '<del>'      , "organ#nest#oper('promote')"               ] ,
-    \ [ '<ins>'      , "organ#nest#oper('demote')"                ] ,
+    \ [ '<insert>'   , "organ#nest#oper('demote')"                ] ,
     \ [ 'H'          , "organ#nest#oper('promote_subtree')"       ] ,
     \ [ 'L'          , "organ#nest#oper('demote_subtree')"        ] ,
     \ [ 'U'          , "organ#nest#oper('move_subtree_backward')" ] ,

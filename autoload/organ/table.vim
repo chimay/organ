@@ -1257,3 +1257,15 @@ fun! organ#table#delete_col ()
 	call organ#origami#resume ()
 	return paragraph
 endfun
+
+" ---- convert org <-> markdown
+
+fun! organ#table#org2markdown ()
+	" Convert org table to markdown
+	global /^\s*|-\+\%(+-\+\)\+|\s*$/substitute/+/|/g
+endfun
+
+fun! organ#table#markdown2org ()
+	" Convert markdown table to org
+	global /^\s*\%(|-\+\)\+|\s*$/substitute/-\+\zs|\ze-\+/+/g
+endfun
