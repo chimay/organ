@@ -759,7 +759,7 @@ fun! organ#tree#org2markdown ()
 		let runme = 'silent! %substitute/' .. pattern .. '/#/g'
 		let output = execute(runme)
 	endfor
-	silent! %substitute/^\*/#/g
+	silent! %substitute/^\*\ze#* /#/g
 endfun
 
 fun! organ#tree#markdown2org ()
@@ -771,5 +771,5 @@ fun! organ#tree#markdown2org ()
 		let runme = 'silent! %substitute/' .. pattern .. '/*/g'
 		let output = execute(runme)
 	endfor
-	silent! %substitute/^#/*/g
+	silent! %substitute/^#\ze\** /*/g
 endfun
