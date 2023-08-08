@@ -1133,7 +1133,12 @@ fun! organ#table#new_row ()
 	let newrow = '| |'
 	call append('.', newrow)
 	let paragraph = organ#table#update()
-	call cursor(linum + 1, col('.'))
+	" ---- cursor
+	let cursor = paragraph.cursor
+	let cursor.table.row += 1
+	let cursor.table.col = 1
+	call organ#table#adapt_cursor (paragraph)
+	"call cursor(linum + 1, col('.'))
 	return paragraph
 endfun
 
