@@ -357,7 +357,7 @@ endfun
 fun! organ#vine#markdown2org ()
 	" Convert markdown links to org
 	" ---- links without description
-	silent! %substitute/<\([^>]*[^/]\)>/[[\1]]/g
+	silent! %substitute/<\([^>]\+\)>/[[\1]]/g
 	" ---- links with description
 	silent! %substitute/\[\([^]]\+\)\](\([^)]\+\))/[[\2][\1]]/g
 endfun

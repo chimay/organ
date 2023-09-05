@@ -104,7 +104,9 @@ if exists('s:plugs_visual')
 	unlockvar! s:plugs_visual
 endif
 let s:plugs_visual = [
-	\ [ 'organ-align'       , "organ#table#align('visual')" ] ,
+	\ [ 'organ-align'       , "organ#table#align('visual')" ]  ,
+	\ [ 'organ-shift-left'  , 'organ#nest#shift_left()'     ]  ,
+	\ [ 'organ-shift-right' , 'organ#nest#shift_right()'    ]  ,
 	\ ]
 lockvar! s:plugs_visual
 
@@ -223,8 +225,10 @@ if exists('s:maps_visual')
 	unlockvar! s:maps_visual
 endif
 let s:maps_visual = [
-			\ [ '<m-a>'     , 'organ-align'       ] ,
-			\]
+	\ [ '<m-a>'     , 'organ-align'       ]  ,
+	\ [ '<s-left>'  , 'organ-shift-left'  ]  ,
+	\ [ '<s-right>' , 'organ-shift-right' ]  ,
+	\]
 lockvar! s:maps_visual
 
 if exists('s:maps_insert')
