@@ -250,9 +250,11 @@ fun! organ#tree#promote (context = 'alone')
 	call setline(head_linum, headline)
 	if context ==# 'alone'
 		call setpos('.', position)
-		if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
-			call cursor('.', col('.') - 1)
-		endif
+		" -- goes back too far in some cases (why ?)
+		" -- not really necessary in others
+		"if s:rep_one_char->index(&filetype) >= 0 && head_linum == line('.') && col('.') > 1
+			"call cursor('.', col('.') - 1)
+		"endif
 	endif
 	return head_linum
 endfun
