@@ -116,23 +116,44 @@ fun! organ#bird#foldlevel (move = 'dont-move')
 	return foldlevel(linum)
 endfun
 
+fun! organ#bird#default_properties ()
+	" Default properties of current headline
+	" ---- commentstring
+	let commentstrings = []
+	if s:rep_one_char->index(&filetype) < 0 && ! empty(&commentstring)
+		let commentstrings = split(&commentstring, '%s')
+	endif
+	" ---- levelstring, level & title
+	if s:rep_one_char->index(&filetype) >= 0
+		let levelstring = organ#bird#char ()
+	elseif &foldmethod ==# 'marker'
+		let marker = split(&foldmarker, ',')[0]
+		let levelstring = marker .. '1'
+	elseif &foldmethod ==# 'indent'
+		let levelstring = ''
+	endif
+	" ---- coda
+	let properties = #{
+				\ linum : 0,
+				\ headline : '',
+				\ commentstrings : commentstrings,
+				\ levelstring : levelstring,
+				\ level : 1,
+				\ todo : '',
+				\ title : '',
+				\ tagstring : '',
+				\ tags : [],
+				\}
+	return properties
+endfun
+
 fun! organ#bird#properties (move = 'dont-move')
 	" Properties of current headline
 	let move = a:move
 	let linum = organ#bird#headline (move)
 	if linum == 0
 		echomsg 'organ bird properties : headline not found'
-		return #{
-			\ linum : 0,
-			\ headline : '',
-			\ commentstrings : [],
-			\ levelstring : '',
-			\ level : 1,
-			\ todo : '',
-			\ title : '',
-			\ tagstring : '',
-			\ tags : [],
-			\}
+		return organ#bird#default_properties ()
 	endif
 	let headline = getline(linum)
 	let title = headline
@@ -156,7 +177,7 @@ fun! organ#bird#properties (move = 'dont-move')
 			let title = substitute(title, comstr_pattern, '', '')
 		endif
 	endif
-	" ---- level & title
+	" ---- levelstring, level & title
 	if s:rep_one_char->index(&filetype) >= 0
 		let char = organ#bird#char ()
 		let levelstring_pattern = '\m^[' .. char .. ']\+'
