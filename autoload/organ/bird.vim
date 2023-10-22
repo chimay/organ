@@ -121,7 +121,7 @@ fun! organ#bird#default_properties ()
 	" ---- commentstring
 	let commentstrings = []
 	if s:rep_one_char->index(&filetype) < 0 && ! empty(&commentstring)
-		let commentstrings = split(&commentstring, '%s')
+		let commentstrings = split(&commentstring, '\s*%s\s*')
 	endif
 	" ---- levelstring, level & title
 	if s:rep_one_char->index(&filetype) >= 0
@@ -160,7 +160,7 @@ fun! organ#bird#properties (move = 'dont-move')
 	" ---- commentstring
 	let commentstrings = []
 	if s:rep_one_char->index(&filetype) < 0 && ! empty(&commentstring)
-		let comlist = split(&commentstring, '%s')
+		let comlist = split(&commentstring, '\s*%s\s*')
 		let lencomlist = len(comlist)
 		if lencomlist >= 1
 			let comstr_pattern = '\m^' .. comlist[0]

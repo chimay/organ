@@ -131,6 +131,11 @@ fun! organ#nest#speed (key, mode = 'normal')
 		if v:count > 0
 			let rhs = rhs->repeat(v:count)
 		endif
+		" -- expr map
+		if maparg.expr > 0
+			let rhs = eval(rhs)
+		endif
+		" -- feed
 		call feedkeys(rhs)
 		return 'normal-mapped-' .. keytrans
 	endif
