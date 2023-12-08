@@ -370,7 +370,7 @@ or a list item line. Here is a complete list :
 - `-`          : lower, child heading, loosely speaking
 - `_`          : lower, child heading, strictly speaking
 - `i`          : info : full headings path (part, chapter, section, subsection, ...)
-- `h`          : go to headline, with prompt completion of full headings path
+- `<space>`    : go to headline, with prompt completion of full headings path
 - `s`          : select subtree
 - `Y`          : yank subtree
 - `X`          : delete subtree

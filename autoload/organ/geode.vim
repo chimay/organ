@@ -21,7 +21,7 @@ let s:speedkeys = [
     \ [ '<kplus>'    , "organ#nest#navig('parent')"               ] ,
     \ [ '<kminus>'   , "organ#nest#navig('loose_child')"          ] ,
     \ [ 'i'          , 'organ#bird#info'                          ] ,
-    \ [ 'h'          , 'organ#bird#goto'                          ] ,
+    \ [ '<space>'    , 'organ#bird#goto'                          ] ,
     \ [ '<tab>'      , 'organ#nest#tab'                           ] ,
     \ [ '<s-tab>'    , 'organ#nest#shift_tab'                     ] ,
     \ [ 's'          , "organ#nest#oper('select_subtree')"        ] ,
