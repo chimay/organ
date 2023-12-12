@@ -129,11 +129,10 @@ fun! organ#bush#update_counters (...)
 				let counterlist[countindex] += 1
 			endif
 		endif
-		let count = counterlist[countindex]
+		let newcount = counterlist[countindex]
 		let line = properties.itemhead
-		let current_counter = properties.counter
-		if current_counter != count
-			let newline = substitute(line, counter_pattern, count, '')
+		if newcount != counter
+			let newline = substitute(line, counter_pattern, newcount, '')
 			call setline(linum, newline)
 		endif
 		let linum = search(itemhead_pattern, flags)

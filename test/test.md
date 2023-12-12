@@ -148,16 +148,16 @@ content
 ## part 3.3                                                :music:dance:
 
 - item 1
-- item 2 [1/2]
-  1. item 2.1
-  2. item 2.2
-  3. [ ] item 2.3
-  4. [X] item 2.3.1 [1/1]
-    - item 2.3.2
+- item 2 [0/2]
+  0. item 2.1
+  0. item 2.2
+  0. [ ] item 2.3
+  0. [ ] item 2.3.1 [2/2]
+    - [X] item 2.3.2
       bla bla
     - [X] item 2.4
 - item 3
-  1. item 3.1
+  0. item 3.1
 
 content
 

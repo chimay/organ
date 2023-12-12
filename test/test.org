@@ -93,12 +93,12 @@ content ☯ ⛵≤ 🗁  🗎 🌧🌤
        * [X] checkbox
        * [X] check box
    - item 2 [0/1]
-     + item 2.1
-     + [ ] item 1.1
-     + item 2.2
-       some text
-       and more
-     + item 2.3
+     1. item 2.1
+     2. [ ] item 1.1
+     3. item 2.2
+        some text
+        and more
+     4. item 2.3
        * item 2.3.1
        * item 2.3.2
          text
