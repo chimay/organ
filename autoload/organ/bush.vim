@@ -435,6 +435,10 @@ fun! organ#bush#rebuild (properties = {}, mode = 'apply')
 	endif
 	" ---- line
 	let line = indent .. prefix .. counterstartstring .. checkboxstring .. todo .. text .. ratiostring
+	" ---- trim last space if needed
+	if line[-1:] == ' '
+		let line = line[:-2]
+	endif
 	" ---- apply
 	if mode ==# 'apply'
 		call setline(linum, line)
