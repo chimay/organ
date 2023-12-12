@@ -95,14 +95,14 @@ endfun
 
 fun! organ#nest#speed_help ()
 	" Speed key on headlines first char
-	echomsg '<f1> : help         | <pageup> : previous    | <home> : backward (= level)'
-	echomsg 'i : info            | <pagedown> : next      | <end> : forward (= level)'
-	echomsg '+ : parent          | - : loose child        | _ : strict child'
-	echomsg 'h : go to heading   | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
-	echomsg 's : select subtree  | Y : yank subtree       | X : delete subtree'
-	echomsg '<del> : promote     | <ins> : demote         | e : export'
-	echomsg 'H : promote subtree | L : demote subtree     | E : alter export'
-	echomsg 'U : move sub back   | D : move sub forward   | M : move subtree to heading'
+	echomsg '<f1> : help             | <pageup> : previous    | <home> : backward (= level)'
+	echomsg 'i : info                | <pagedown> : next      | <end> : forward (= level)'
+	echomsg '+ : parent              | - : loose child        | _ : strict child'
+	echomsg '<space> : go to heading | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
+	echomsg 's : select subtree      | Y : yank subtree       | X : delete subtree'
+	echomsg '<del> : promote         | <ins> : demote         | e : export'
+	echomsg 'H : promote subtree     | L : demote subtree     | E : alter export'
+	echomsg 'U : move sub back       | D : move sub forward   | M : move subtree to heading'
 endfun
 
 fun! organ#nest#speed (key, mode = 'normal')
