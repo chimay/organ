@@ -249,6 +249,21 @@ content
  | -               |             |       |
  | row 1 col 1     | row 1 col 2 |       |
 
+ | row 1 col 1     | hello |
+ |-----------------+-------|
+ |                 |       |
+ | row 2 col 1     |       |
+ |-----------------+-------|
+ | row 2 col 1     | hello |
+ | row 3 col 1 max |       |
+ |-----------------+-------|
+ | row 1 col 1     | hello |
+ | row 1 col 1     |       |
+ | toto            |       |
+ |               1 |       |
+ | -               |       |
+ | row 1 col 1     |       |
+
 	 | row 1 col 1 | row 1 col 2 | hello | there |
 	     	|-------------+-------------+-------+-------|
 	  | row 1 col 1 | row 1 col 2 | hello | there |

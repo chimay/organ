@@ -1047,7 +1047,7 @@ fun! organ#table#move_col_left (...)
 	" --   + 1 indent cell
 	" --   + row cells
 	let colmax = len(curcellrow)
-	if colmax <= 3
+	if colmax < 3
 		return paragraph
 	endif
 	" ---- can't move further left
