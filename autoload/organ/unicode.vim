@@ -3,6 +3,12 @@
 " Unicode
 "
 " Internal Constants for unicode characters
+"
+" To enter them :
+"
+" insert mode
+" Ctrl + V u 0000 - ffff
+" Ctrl + V U height digit hex - 7fffffff
 
 " ---- philosophy
 
@@ -129,6 +135,7 @@ let s:punctuation = [
 	\ [ 'en dash'                  , '–'  ],
 	\ [ 'em dash'                  , '—'  ],
 	\ [ 'horizontal bar'           , '―'  ],
+	\ [ 'fullwidth low line'       , '＿' ],
 	\ [ 'double low line'          , '‗'  ],
 	\ [ 'overline'                 , '‾'  ],
 	\ [ 'vertical bar var'         , '│'  ],
@@ -162,30 +169,32 @@ if exists('s:arrows')
 unlockvar! s:arrows
 endif
 let s:arrows = [
-	\ [ 'left arrow'              , '←' ],
-	\ [ 'right arrow'             , '→' ],
-	\ [ 'up arrow'                , '↑' ],
-	\ [ 'down arrow'              , '↓' ],
-	\ [ 'north west arrow'        , '↖' ],
-	\ [ 'north east arrow'        , '↗' ],
-	\ [ 'south west arrow'        , '↙' ],
-	\ [ 'south east arrow'        , '↘' ],
-	\ [ 'left right arrow'        , '↔' ],
-	\ [ 'up down arrow'           , '↕' ],
-	\ [ 'barred left arrow'       , '⟻' ],
-	\ [ 'barred right arrow'      , '⟼' ],
-	\ [ 'barred up arrow'         , '↥' ],
-	\ [ 'barred down arrow'       , '↧' ],
-	\ [ 'triangular left arrow'   , '◁' ],
-	\ [ 'triangular right arrow'  , '▷' ],
-	\ [ 'triangular up arrow'     , '△' ],
-	\ [ 'triangular down arrow'   , '▽' ],
-	\ [ 'double left arrow'       , '⇐' ],
-	\ [ 'double right arrow'      , '⇒' ],
-	\ [ 'double up arrow'         , '⇑' ],
-	\ [ 'double down arrow'       , '⇓' ],
-	\ [ 'double left right arrow' , '⇔' ],
-	\ [ 'double up down arrow'    , '⇕' ],
+	\ [ 'left arrow'              , '←' ]  ,
+	\ [ 'right arrow'             , '→' ]  ,
+	\ [ 'up arrow'                , '↑' ]  ,
+	\ [ 'down arrow'              , '↓' ]  ,
+	\ [ 'north west arrow'        , '↖' ]  ,
+	\ [ 'north east arrow'        , '↗' ]  ,
+	\ [ 'south west arrow'        , '↙' ]  ,
+	\ [ 'south east arrow'        , '↘' ]  ,
+	\ [ 'left right arrow'        , '↔' ]  ,
+	\ [ 'up down arrow'           , '↕' ]  ,
+	\ [ 'barred left arrow'       , '⟻' ]  ,
+	\ [ 'barred right arrow'      , '⟼' ]  ,
+	\ [ 'barred up arrow'         , '↥' ]  ,
+	\ [ 'barred down arrow'       , '↧' ]  ,
+	\ [ 'triangular left arrow'   , '◁' ]  ,
+	\ [ 'triangular right arrow'  , '▷' ]  ,
+	\ [ 'triangular up arrow'     , '△' ]  ,
+	\ [ 'triangular down arrow'   , '▽' ]  ,
+	\ [ 'double left arrow'       , '⇐' ]  ,
+	\ [ 'double right arrow'      , '⇒' ]  ,
+	\ [ 'wide double left arrow'  , '⟸' ]  ,
+	\ [ 'wide double right arrow' , '⟹' ]  ,
+	\ [ 'double up arrow'         , '⇑' ]  ,
+	\ [ 'double down arrow'       , '⇓' ]  ,
+	\ [ 'double left right arrow' , '⇔' ]  ,
+	\ [ 'double up down arrow'    , '⇕' ]  ,
 \ ]
 lockvar! s:arrows
 
