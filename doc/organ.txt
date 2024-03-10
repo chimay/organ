@@ -292,8 +292,8 @@ Some of them are filetype dependent :
 
 | Map | Org                | Asciidoc                | Other              |
 | --- | ------------------ | ----------------------- | ------------------ |
-| e   | export with emacs  | export with asciidoc    | export with pandoc |
-| E   | export with pandoc | export with asciidoctor | export with pandoc |
+| %   | export with emacs  | export with asciidoc    | export with pandoc |
+| g%  | export with pandoc | export with asciidoctor | export with pandoc |
 
 ------------------------------------------------------------------------------
 ALWAYS DEFINED					*organ-bindings-always*

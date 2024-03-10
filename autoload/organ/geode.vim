@@ -38,8 +38,8 @@ let s:speedkeys = [
 	\ [ 't'          , "organ#nest#oper('cycle_todo', 1)"         ] ,
 	\ [ 'T'          , "organ#nest#oper('cycle_todo', -1)"        ] ,
 	\ [ 'C'          , 'organ#bush#toggle_checkbox'               ] ,
-	\ [ 'e'          , 'organ#nest#export'                        ] ,
-	\ [ 'E'          , 'organ#nest#alter_export'                  ] ,
+	\ [ '%'          , 'organ#nest#export'                        ] ,
+	\ [ 'g%'         , 'organ#nest#alter_export'                  ] ,
 	\ ]
 lockvar! s:speedkeys
 

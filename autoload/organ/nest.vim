@@ -100,8 +100,8 @@ fun! organ#nest#speed_help ()
 	echomsg '+ : parent              | - : loose child        | _ : strict child'
 	echomsg '<space> : go to heading | <tab> : cycle fold vis | <s-tab> : cycle all folds vis'
 	echomsg 's : select subtree      | Y : yank subtree       | X : delete subtree'
-	echomsg '<del> : promote         | <ins> : demote         | e : export'
-	echomsg 'H : promote subtree     | L : demote subtree     | E : alter export'
+	echomsg '<del> : promote         | <ins> : demote         | % : export'
+	echomsg 'H : promote subtree     | L : demote subtree     | g% : alter export'
 	echomsg 'U : move sub back       | D : move sub forward   | M : move subtree to heading'
 endfun
 

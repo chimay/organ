@@ -3,39 +3,39 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-    * [What is it ?](#what-is-it-)
-    * [Screenshots](#screenshots)
-    * [Compatibilty](#compatibilty)
-    * [Features](#features)
-    * [Differences with standard orgmode](#differences-with-standard-orgmode)
-    * [Dependencies](#dependencies)
-        * [Export](#export)
-        * [Across files](#across-files)
+  * [What is it ?](#what-is-it-)
+  * [Screenshots](#screenshots)
+  * [Features](#features)
+  * [Compatibilty](#compatibilty)
+  * [Differences with standard orgmode](#differences-with-standard-orgmode)
+  * [Dependencies](#dependencies)
+    * [Export](#export)
+    * [Across files](#across-files)
 * [Installation](#installation)
-    * [Using vim-packager](#using-vim-packager)
-    * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
+  * [Using vim-packager](#using-vim-packager)
+  * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
 * [Configuration](#configuration)
-    * [Persistent data](#persistent-data)
+  * [Persistent data](#persistent-data)
 * [Bindings](#bindings)
-    * [Available plugs](#available-plugs)
-    * [Speed keys](#speed-keys)
-    * [Always defined](#always-defined)
-    * [Prefixless](#prefixless)
-        * [Restrict](#restrict)
-    * [With prefix](#with-prefix)
-    * [Custom](#custom)
+  * [Available plugs](#available-plugs)
+  * [Speed keys](#speed-keys)
+  * [Always defined](#always-defined)
+  * [Prefixless](#prefixless)
+    * [Restrict](#restrict)
+  * [With prefix](#with-prefix)
+  * [Custom](#custom)
 * [Folding](#folding)
-    * [Markers](#markers)
-    * [Indent](#indent)
+  * [Markers](#markers)
+  * [Indent](#indent)
 * [Meta-command](#meta-command)
 * [Prompt completion](#prompt-completion)
 * [Autocommands](#autocommands)
-    * [Update table](#update-table)
-    * [Conversion](#conversion)
+  * [Update table](#update-table)
+  * [Conversion](#conversion)
 * [Related](#related)
 * [Misc](#misc)
-    * [Why this name](#why-this-name)
-    * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+  * [Why this name](#why-this-name)
+  * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
 * [Warning](#warning)
 
 <!-- vim-markdown-toc -->
@@ -395,10 +395,10 @@ Some of them are context sensitive :
 
 Some of them are filetype dependent :
 
-| Map | Org                | Asciidoc                | Other              |
-|-----|--------------------|-------------------------|--------------------|
-| `e` | export with emacs  | export with asciidoc    | export with pandoc |
-| `E` | export with pandoc | export with asciidoctor | export with pandoc |
+| Map  | Org                | Asciidoc                | Other              |
+|------|--------------------|-------------------------|--------------------|
+| `%`  | export with emacs  | export with asciidoc    | export with pandoc |
+| `g%` | export with pandoc | export with asciidoctor | export with pandoc |
 
 ## Always defined
 
