@@ -2,7 +2,8 @@
 
 " Tree
 "
-" Operations on orgmode or markdown headings hierarchy
+" Operations on headings hierarchy
+" orgmode, markdown, or markers
 
 " ---- script constants
 

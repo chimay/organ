@@ -2,7 +2,8 @@
 
 " Bush
 "
-" Operations on orgmode or markdown lists hierarchy
+" Operations on lists hierarchy
+" orgmode, markdown, or markers
 
 " ---- script constants
 

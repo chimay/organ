@@ -2,7 +2,8 @@
 
 " Colibri
 "
-" Navigation on orgmode or markdown lists hierarchy
+" Navigation on lists hierarchy
+" orgmode, markdown, or markers
 
 " ---- script constants
 

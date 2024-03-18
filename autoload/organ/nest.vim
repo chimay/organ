@@ -2,8 +2,7 @@
 
 " Eagle
 "
-" Navigation and operations on orgmode or markdown
-" headings or items hierarchy
+" Navigation and operations on headings or items hierarchy
 
 " ---- script constants
 
