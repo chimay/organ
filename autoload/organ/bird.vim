@@ -3,7 +3,7 @@
 " Bird
 "
 " Navigation on headings hierarchy
-" orgmode, markdown, or markers
+" orgmode, markdown, asciidoc, indent or markers
 
 " ---- script constants
 

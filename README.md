@@ -58,7 +58,7 @@ See also the [organ-multimedia repository](https://github.com/chimay/organ-multi
 ## Features
 
 - folding based on headings in org and markdown files
-- headings based on folding in folded files
+- headings based on markers folding in folded files
   + you can handle your folds like headings in orgmode
 - navigate in headings or list items hierarchy
   + next, previous : any level

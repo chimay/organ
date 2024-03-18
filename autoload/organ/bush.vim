@@ -3,7 +3,7 @@
 " Bush
 "
 " Operations on lists hierarchy
-" orgmode, markdown, or markers
+" orgmode, markdown, asciidoc, indent or markers
 
 " ---- script constants
 
