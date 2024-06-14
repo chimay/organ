@@ -292,8 +292,11 @@ fun! organ#vine#goto ()
 	endif
 	" ---- init
 	let url = organ#vine#url (link)
+	" -- file name
 	let file = ''
+	" -- iden in properties below heading
 	let iden = ''
+	" -- heading
 	let heading = ''
 	" ---- extract fields
 	if url !~ '\m^file:'
@@ -330,8 +333,10 @@ fun! organ#vine#goto ()
 		let linum = search(searchme, flags)
 	elseif ! empty(heading)
 		call cursor(1, 1)
+		let headline_pattern = organ#bird#generic_pattern ()
+		let searchme = headline_pattern .. heading
 		let flags = organ#utils#search_flags ('forward', 'move', 'dont-wrap')
-		let linum = search(heading, flags)
+		let linum = search(searchme, flags)
 	endif
 	normal! zv
 	" ---- coda
