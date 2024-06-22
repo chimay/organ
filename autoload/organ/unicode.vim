@@ -278,17 +278,26 @@ if exists('s:math_basic')
 unlockvar! s:math_basic
 endif
 let s:math_basic = [
-	\ [ 'equivalent'       , '≡' ],
-	\ [ 'less or equal'    , '≤' ],
-	\ [ 'greater or equal' , '≥' ],
-	\ [ 'for all'          , '∀' ],
-	\ [ 'exists'           , '∃' ],
-	\ [ 'does not exists'  , '∄' ],
-	\ [ 'per mille'        , '‰' ],
-	\ [ 'per ten thousand' , '‱' ],
-	\ [ 'prime'            , '′' ],
-	\ [ 'double prime'     , '″' ],
-	\ [ 'triple prime'     , '‴' ],
+	\ [ 'equivalent'                    , '≡' ]  ,
+	\ [ 'less or equal'                 , '≤' ]  ,
+	\ [ 'greater or equal'              , '≥' ]  ,
+	\ [ 'for all'                       , '∀' ]  ,
+	\ [ 'exists'                        , '∃' ]  ,
+	\ [ 'does not exists'               , '∄' ]  ,
+	\ [ 'per mille'                     , '‰' ]  ,
+	\ [ 'per ten thousand'              , '‱' ]  ,
+	\ [ 'prime'                         , '′' ]  ,
+	\ [ 'double prime'                  , '″' ]  ,
+	\ [ 'triple prime'                  , '‴' ]  ,
+	\ [ 'vulgar fraction one half'      , '½' ]  ,
+	\ [ 'vulgar fraction one quarter'   , '¼' ]  ,
+	\ [ 'vulgar fraction three quarter' , '¾' ]  ,
+	\ [ 'vulgar fraction one third'     , '⅓' ]  ,
+	\ [ 'vulgar fraction two third'     , '⅔' ]  ,
+	\ [ 'vulgar fraction one fifth'     , '⅕' ]  ,
+	\ [ 'vulgar fraction two fifth'     , '⅖' ]  ,
+	\ [ 'vulgar fraction one sixth'     , '⅙' ]  ,
+	\ [ 'vulgar fraction one seventh'   , '⅐' ]  ,
 \ ]
 lockvar! s:math_basic
 
