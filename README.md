@@ -3,42 +3,6 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Introduction](#introduction)
-  * [What is it ?](#what-is-it-)
-  * [Screenshots](#screenshots)
-  * [Features](#features)
-  * [Compatibilty](#compatibilty)
-  * [Differences with standard orgmode](#differences-with-standard-orgmode)
-  * [Dependencies](#dependencies)
-    * [Export](#export)
-    * [Across files](#across-files)
-* [Installation](#installation)
-  * [Using vim-packager](#using-vim-packager)
-  * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
-* [Configuration](#configuration)
-  * [Persistent data](#persistent-data)
-* [Bindings](#bindings)
-  * [Available plugs](#available-plugs)
-  * [Speed keys](#speed-keys)
-  * [Always defined](#always-defined)
-  * [Prefixless](#prefixless)
-    * [Restrict](#restrict)
-  * [With prefix](#with-prefix)
-  * [Custom](#custom)
-* [Folding](#folding)
-  * [Markers](#markers)
-  * [Indent](#indent)
-* [Meta-command](#meta-command)
-* [Prompt completion](#prompt-completion)
-* [Autocommands](#autocommands)
-  * [Update table](#update-table)
-  * [Conversion](#conversion)
-* [Related](#related)
-* [Misc](#misc)
-  * [Why this name](#why-this-name)
-  * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
-* [Warning](#warning)
-
-<!-- vim-markdown-toc -->
 
 # Introduction
 ## What is it ?
@@ -318,7 +282,7 @@ Here is a complete list :
 | `<plug>`(organ-yank-subtree)       | yank subtree              |                        |
 | `<plug>`(organ-delete-subtree)     | delete subtree            |                        |
 | `<plug>`(organ-meta-return)        | new heading or item       | new row                |
-| `<plug>`(organ-shift-return)       | new heading or checkbox   | new row                |
+| `<plug>`(organ-shift-return)       | new heading or checkbox   |                        |
 | `<plug>`(organ-tab)                |                           | go to next cell        |
 | `<plug>`(organ-shift-tab)          |                           | go to prev cell        |
 | `<plug>`(organ-meta-left)          | promote                   | move column left       |
@@ -727,3 +691,39 @@ and folded files. And here it is !
 # Warning
 
 Despite abundant testing, some bugs might remain, so be careful.
+  * [What is it ?](#what-is-it-)
+  * [Screenshots](#screenshots)
+  * [Features](#features)
+  * [Compatibilty](#compatibilty)
+  * [Differences with standard orgmode](#differences-with-standard-orgmode)
+  * [Dependencies](#dependencies)
+    * [Export](#export)
+    * [Across files](#across-files)
+* [Installation](#installation)
+  * [Using vim-packager](#using-vim-packager)
+  * [Cloning the repo in a pack-start directory](#cloning-the-repo-in-a-pack-start-directory)
+* [Configuration](#configuration)
+  * [Persistent data](#persistent-data)
+* [Bindings](#bindings)
+  * [Available plugs](#available-plugs)
+  * [Speed keys](#speed-keys)
+  * [Always defined](#always-defined)
+  * [Prefixless](#prefixless)
+    * [Restrict](#restrict)
+  * [With prefix](#with-prefix)
+  * [Custom](#custom)
+* [Folding](#folding)
+  * [Markers](#markers)
+  * [Indent](#indent)
+* [Meta-command](#meta-command)
+* [Prompt completion](#prompt-completion)
+* [Autocommands](#autocommands)
+  * [Update table](#update-table)
+  * [Conversion](#conversion)
+* [Related](#related)
+* [Misc](#misc)
+  * [Why this name](#why-this-name)
+  * [Why another orgmode clone for vim ?](#why-another-orgmode-clone-for-vim-)
+* [Warning](#warning)
+
+<!-- vim-markdown-toc -->

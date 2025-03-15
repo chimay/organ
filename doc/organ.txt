@@ -332,7 +332,7 @@ Here is a complete list :
 | <plug>(organ-yank-subtree)       | yank subtree              |                        |
 | <plug>(organ-delete-subtree)     | delete subtree            |                        |
 | <plug>(organ-meta-return)        | new heading or item       | new row                |
-| <plug>(organ-shift-return)       | new heading or checkbox   | new row                |
+| <plug>(organ-shift-return)       | new heading or checkbox   |                        |
 | <plug>(organ-tab)                |                           | go to next cell        |
 | <plug>(organ-shift-tab)          |                           | go to prev cell        |
 | <plug>(organ-meta-left)          | promote                   | move column left       |
@@ -707,7 +707,7 @@ of the modules within them.
 | diadem.vim      | internal constants for meta command                |
 | geode.vim       | internal constants for plugs & maps                |
 | kyusu.vim       | filters for prompt & dedicated buffers             |
-| nest.vim        | navigation & operations on generic hierrachy       |
+| nest.vim        | navigation & operations on generic hierarchy       |
 | origami.vim     | folding                                            |
 | perspective.vim | content generators for prompt                      |
 | pipe.vim        | export using pandoc or emacs                       |
