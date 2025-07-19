@@ -39,8 +39,8 @@ FEATURES		    			*organ-introduction-features*
   + forward, backward : same level as current one
   + parent heading, upper level
   + child heading, lower level :
-    - loosely speaking : first headline of level + 1, forward
-    - strictly speaking : must be in the current subtree
+    - loose child : first headline of level + 1, forward
+    - strict child : must be in the current subtree
   + go to another headline with prompt completion of full path
 - modify headings or list items
   + new headline or list item

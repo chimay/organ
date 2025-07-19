@@ -436,7 +436,7 @@ fun! organ#table#adapt_localshift (oldshift, oldcont, newcont)
 	if newshift < 0
 		return len(newcont)
 	endif
-	echomsg oldshift charnum newshift
+	"echomsg oldshift charnum newshift
 	return newshift
 endfun
 
