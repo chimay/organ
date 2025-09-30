@@ -149,6 +149,7 @@ let s:templates_languages = [
 	\ 'sql',
 	\ 'sed',
 	\ 'shell',
+	\ 'vim',
 	\]
 lockvar! s:templates_languages
 
