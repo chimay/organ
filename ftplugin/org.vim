@@ -7,4 +7,4 @@ endif
 
 let b:did_organ_ftplugin = 1
 
-call organ#void#enable ()
+silent! call organ#void#enable ()
