@@ -175,10 +175,17 @@ fun! organ#vine#store ()
 	let iden = ''
 	let heading = ''
 	let last_linum = line('$')
+	let colonprop_linum = linum
+	while colonprop_linum < last_linum
+		let colonprop_linum += 1
+		if getline(colonprop_linum) !~ '^$'
+			break
+		endif
+	endwhile
 	if linum + 2 <= last_linum
-		let next_line = getline(linum + 1)
-		if next_line =~ '\m\c^:properties:'
-			let iden_line = getline(linum + 2)
+		let colonprop = getline(colonprop_linum)
+		if colonprop =~ '\m\c^:properties:'
+			let iden_line = getline(colonprop_linum + 1)
 			let prefix = '\m\c:custom_id: '
 			let iden = substitute(iden_line, prefix, '', '')
 		endif
