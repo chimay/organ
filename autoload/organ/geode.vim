@@ -228,6 +228,8 @@ let s:maps_visual = [
 	\ [ '<m-a>'     , 'organ-align'       ]  ,
 	\ [ '<s-left>'  , 'organ-shift-left'  ]  ,
 	\ [ '<s-right>' , 'organ-shift-right' ]  ,
+	\ [ '<m-p>'     , 'organ-previous'    ]  ,
+	\ [ '<m-n>'     , 'organ-next'        ]  ,
 	\]
 lockvar! s:maps_visual
 

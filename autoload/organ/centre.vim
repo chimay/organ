@@ -289,8 +289,8 @@ endfun
 fun! organ#centre#cables ()
 	" Link keys to <plug> mappings
 	" ---- speed keys
+	call organ#centre#storemaps ()
 	if g:organ_config.speedkeys > 0
-		call organ#centre#storemaps ()
 		call organ#centre#speedkeys ()
 	endif
 	" ---- always defined maps
