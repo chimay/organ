@@ -41,7 +41,7 @@ fun! organ#colibri#generic_pattern ()
 	endif
 	let pattern = '\m\%(^\s*[' .. unordered .. ']\s\+\|'
 	let pattern ..= '^\s*[0-9]\+[' .. ordered .. ']\s\+\)'
-	if &filetype ==# 'org'
+	if &filetype ==# 'org' || &filetype ==# 'norg'
 		let pattern ..= '\&^[^*]'
 	endif
 	return pattern
@@ -251,7 +251,7 @@ fun! organ#colibri#level_pattern (minlevel = 1, maxlevel = 30, ...)
 	let pattern ..= '\)'
 	let pattern ..= '\%([' .. unordered .. ']\s\+\|'
 	let pattern ..= '[0-9]\+[' .. ordered .. ']\s\+\)'
-	if &filetype ==# 'org'
+	if &filetype ==# 'org' || &filetype ==# 'norg'
 		let pattern ..= '\&^[^*]'
 		return pattern
 	endif

@@ -60,6 +60,7 @@ if exists('s:filetypes_heading_char')
 endif
 let s:filetypes_heading_char = [
 	\ ['org', '*'],
+	\ ['norg', '*'],
 	\ ['markdown', '#'],
 	\ ['asciidoc', '='],
 	\ ['vimwiki', '='],

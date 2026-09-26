@@ -99,7 +99,7 @@ endfun
 
 fun! organ#origami#folding ()
 	" Generic folding
-	if &filetype ==# 'org'
+	if &filetype ==# 'org' || &filetype ==# 'norg'
 		setlocal foldexpr=organ#origami#orgmode(v:lnum)
 	elseif &filetype ==# 'markdown'
 		setlocal foldexpr=organ#origami#markdown(v:lnum)
